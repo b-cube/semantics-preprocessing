@@ -70,6 +70,13 @@ class Query():
 	special handling for the sample element (return some number of 
 		documents between index x and y) -> converted to limit/offset structures
 	'''
+
+	_key_mappings - {
+		'query': 'q',
+		'ext': 'wt', 
+		'fields': 'fl'
+	}
+
 	def __init__(self):
 		pass
 
@@ -81,13 +88,35 @@ class Query():
 
 		self._yaml = yaml.load(text)
 
-	def build_query(self):
+	def build_queries(self):
 		'''
 		build the query string from the parsed yaml
 
 		?q=raw_content%3A+(soil+OR+pedon+OR+sand+OR+silt+OR+clay)&rows=50&fl=id%2Craw_content&wt=json&indent=true
+		?q=raw_content:+(soil+OR+pedon+OR+sand+OR+silt+OR+clay)&rows=50&fl=id,raw_content&wt=json&indent=true
 		'''
+		kvp = {}
+		for k, v in self._key_mappings.iteritems():
+			if k in self._yaml:
+				kvp[v] = ''
+
+		query = self._convert_kvp_to_qs(kvp)
+
+		#if the yaml includes a sample, we need multiple start, rows requests
+		queries = []
+		if 'sample' in self._yaml:
+			#append the additional start, rows to the end of the query string
+			range_values = xrange(self._yaml['sample']['start'], self._yaml['sample']['end'])
+			indices = random.sample(range_values, self.yaml['sample']['size'])
+			queries += [query + self._convert_sample(index) for index in indices]
+
+		return queries if queries else [query]
+
+	def _convert_kvp_to_qs(self, kvp):
 		pass
+		
+	def _convert_sample(self, index):
+		return '&start=%s&rows=1' % index
 
 def main():
 	parser = argparse.ArgumentParser(description='CLI to pull records from the nutch solr instance.')
