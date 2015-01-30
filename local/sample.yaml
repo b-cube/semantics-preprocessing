@@ -1,0 +1,10 @@
+fields:
+  - raw_content
+  - id
+  - date
+sample:
+  start: 0
+  end: 10
+  size: 3
+query: 
+  field:value
