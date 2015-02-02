@@ -27,4 +27,6 @@ ext: json
 
 ```
 
+Note, this doesn't have anything to reset the range to fall within the result set if you include the sample.
+
 

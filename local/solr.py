@@ -45,19 +45,21 @@ class Solr():
 		host = 'http://' + self._host
 		if self._port:
 			host += ':' + self._port
-		return '/'.join([host, 'solr', '#', self._collection, 'query'])
+		return '/'.join([host, 'solr', self._collection, 'query'])
 
 	def execute_request(self, query):
 		'''
 		make the solr request based on the initial url settings
 		and the query block
 		'''
-		url = '?'.join(self._url, self._generate_qs_from_query(query))
+		url = self.url + query
 
 		if self._auth:	
 			req = requests.get(url, auth=self._auth)
 		else:
 			req = requests.get(url)
+
+		print req.status_code, url
 
 		assert req.status_code == 200, 'failed request: %s' % url
 
@@ -82,7 +84,7 @@ class Query():
 		pass
 
 	def open_yaml(self, yaml_file):
-		assert os.path.exists(yaml_path)
+		assert os.path.exists(yaml_file)
 
 		with open(yaml_file, 'r') as f:
 			text = f.read()
@@ -150,7 +152,7 @@ def main():
 	parser = argparse.ArgumentParser(description='CLI to pull records from the nutch solr instance.')
 
 	parser.add_argument('-s', '--solr', help='Host or ip address of the solr instance', required=True)
-	parser.add_argument('-p', '--port', help='Port of the solr instance')
+	parser.add_argument('-p', '--port', default='', help='Port of the solr instance')
 	parser.add_argument('-c', '--collection', help='Collection to query of the solr instance', required=True)
 	parser.add_argument('-U', '--user', help='User name if solr requires authenticated access')
 	parser.add_argument('-P', '--password', help='Password if solr requires authenticated access')
@@ -159,7 +161,28 @@ def main():
 
 	args = parser.parse_args()
 
-	print args
+	auth = (args.user, args.password) if 'user' in args and 'password' in args else ()
+	solr = Solr(args.solr, args.collection, args.port, auth)
+
+	query_config = args.query if 'query' in args else 'local/default.yaml'
+	output = args.output
+
+	query = Query()
+	query.open_yaml(query_config)
+	queries = query.build_queries()
+
+	responses = {'queries': queries, 'responses': []}
+	for q in queries:
+		solr_response = solr.execute_request(q)
+
+		#we are ignoring the query settings for solr response type today
+		responses['responses'].append(json.loads(solr_response))
+
+	with open(output, 'w') as f:
+		f.write(json.dumps(responses, indent=4))
+
+	print 'Sample complete'
+
 
 if __name__ == '__main__':
      main()
