@@ -77,7 +77,9 @@ class Query():
 	_key_mappings = {
 		'query': 'q',
 		'ext': 'wt', 
-		'fields': 'fl'
+		'fields': 'fl',
+		'limit': 'rows',
+		'offset': 'start'
 	}
 
 	def __init__(self):
@@ -111,7 +113,7 @@ class Query():
 				elif k == 'fields':
 					kvp[v] = ','.join(self._yaml[k])
 				else:
-					kvp[v] = self._yaml[k]
+					kvp[v] = str(self._yaml[k])
 
 		query = self._convert_kvp_to_qs(kvp)
 
