@@ -95,16 +95,21 @@ class Query():
 
 		?q=raw_content%3A+(soil+OR+pedon+OR+sand+OR+silt+OR+clay)&rows=50&fl=id%2Craw_content&wt=json&indent=true
 		?q=raw_content:+(soil+OR+pedon+OR+sand+OR+silt+OR+clay)&rows=50&fl=id,raw_content&wt=json&indent=true
+
+		?q=content%3ARGIS+and+raw_content%3Asoil&start=12&rows=1&wt=json&indent=true
 		'''
 		kvp = {}
 		for k, v in self._key_mappings.iteritems():
 			if k in self._yaml:
 				if k == 'query':
-					value = self._convert_value_to_solr(v)
+					#where v is a kvp
+					value = self._convert_value_to_solr(self._yaml[k])
 					if value:
-						kvp[k] = value
+						kvp[v] = value
+				elif k == 'fields':
+					kvp[v] = ','.join(self._yaml[k])
 				else:
-					kvp[k] = v
+					kvp[v] = self._yaml[k]
 
 		query = self._convert_kvp_to_qs(kvp)
 
@@ -113,7 +118,7 @@ class Query():
 		if 'sample' in self._yaml:
 			#append the additional start, rows to the end of the query string
 			range_values = xrange(self._yaml['sample']['start'], self._yaml['sample']['end'])
-			indices = random.sample(range_values, self.yaml['sample']['size'])
+			indices = random.sample(range_values, self._yaml['sample']['size'])
 			queries += [query + self._convert_sample(index) for index in indices]
 
 		return queries if queries else [query]
@@ -121,17 +126,23 @@ class Query():
 	def _convert_kvp_to_qs(self, kvp):
 		'''
 		well. that just got a little silly.
+		urllib urlencode doesn't handle the + or paren in a way
+		solr finds acceptable.
 		'''
-		return '?' + urllib.urlencode(kvp)
+		qs = '?' + '&'.join([k + '=' + v for k, v in kvp.iteritems()])
+		qs = qs.replace(':', '%3A').replace(',', '%2C')
+		return qs
 		
-	def _convert_sample(self, index):
+	def _convert_sample(self, index):	
 		return '&start=%s&rows=1' % index
 
 	def _convert_value_to_solr(self, value):
 		if isinstance(value, str):
-			return urllib.quote(value)
+			return value
 		elif isinstance(value, list):
-			return '+(%s)' % '+'.join([urllib.quote(v) for v in value])
+			return '+(%s)' % '+OR+'.join(value)
+		elif isinstance(value, dict):
+			return ' AND '.join([':'.join([k, self._convert_value_to_solr(v)]) for k, v in value.iteritems()])
 		else:
 			return None
 
