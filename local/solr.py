@@ -6,6 +6,7 @@ import json
 import requests
 import sys
 import random
+import urllib
 import yaml
 
 '''
@@ -71,7 +72,7 @@ class Query():
 		documents between index x and y) -> converted to limit/offset structures
 	'''
 
-	_key_mappings - {
+	_key_mappings = {
 		'query': 'q',
 		'ext': 'wt', 
 		'fields': 'fl'
@@ -98,7 +99,12 @@ class Query():
 		kvp = {}
 		for k, v in self._key_mappings.iteritems():
 			if k in self._yaml:
-				kvp[v] = ''
+				if k == 'query':
+					value = self._convert_value_to_solr(v)
+					if value:
+						kvp[k] = value
+				else:
+					kvp[k] = v
 
 		query = self._convert_kvp_to_qs(kvp)
 
@@ -113,10 +119,21 @@ class Query():
 		return queries if queries else [query]
 
 	def _convert_kvp_to_qs(self, kvp):
-		pass
+		'''
+		well. that just got a little silly.
+		'''
+		return '?' + urllib.urlencode(kvp)
 		
 	def _convert_sample(self, index):
 		return '&start=%s&rows=1' % index
+
+	def _convert_value_to_solr(self, value):
+		if isinstance(value, str):
+			return urllib.quote(value)
+		elif isinstance(value, list):
+			return '+(%s)' % '+'.join([urllib.quote(v) for v in value])
+		else:
+			return None
 
 def main():
 	parser = argparse.ArgumentParser(description='CLI to pull records from the nutch solr instance.')
