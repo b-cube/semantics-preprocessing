@@ -1,86 +1,86 @@
 from lxml import etree
-import urllib2
-import urlparse
 
 class Parser():
     '''
     This class contains helper methods to parse XML documents.
+
+
+    NOTE: from b-cube/semantics, modified to use in-memory
+          xml sources and (I suspect) encoding issues   
+
+          (basically no longer from b-cube/semantics)
     '''
 
-    def __init__(self, url):
-        try:
-            if url.startswith('http') or url.startswith('ftp'):
-                self.data = urllib2.urlopen(url).read()
-            else:
-                self.data = open(url).read()
-        except:
-            print "The url could not be openned"
-            return None
+    def __init__(self, string_to_parse, encoding='utf-8'):
+        #this is a horror show of nutch and cdata line breaks.
+        self._string = string_to_parse.replace('\\n', ' ')
+        self._encoding = encoding
         self._parse()
-        self.url = url
 
     def _parse(self):
         '''
-        This method parses the xml document and stores all the namespaces
-        found in self.ns, not to be confused with the namespaces used by
-        the ontology. This namespaces are used later to match elements
-        in the document.
+        parse the xml, optional encoding
         '''
+        parser = etree.XMLParser(encoding=self._encoding, remove_blank_text=True)
+
         try:
-            self.doc = etree.fromstring(self.data)
+            self.xml = etree.fromstring(self._string, parser)
         except:
             print "The XML is malformed or truncated"
-            self.doc = None
-        ns = []
-        match = re.findall("xmlns.*\"(.*?)\"", self.data)
-        for namespace in match:
-            if namespace.startswith("http"):
-                ns.append("{" + namespace + "}")
-        self.ns = set()
-        self.default_ns = ns[0]
-        self.ns.update(ns)
-        self.data = None  # No longer needed.
+            self.xml = None
 
-    def find_node(self, nanmespaces, element, tag):
-        '''
-        Finds elements from the root documents. Namespaces can vary therefore
-        an array of their possible forms is used in the matching function.
-        '''
-        if element is None:
-            element = self.doc
-        for ns in nanmespaces:
-            if ns.startswith("http"):
-                ns = '{' + ns + '}'
-            found = element.findall(ns+tag)
-            if found is not None:
-                return found
-            else:
-                continue
-        return None
+        self._namespaces = self._get_document_namespaces()
 
-    def find(self, tag):
+    def find_text_nodes(self, exclude_descriptors=[]]):
         '''
-        Finds elements based on the default namespace set and the document root
-        '''
-        found = self.doc.findall(self.default_ns+tag)
-        if found is not None:
-            return found
-        else:
-            return None
+        pull ANY node with a text() and return the node text() 
+        and the xpath trace back up to root
 
-    def get_namespaces(self):
+        if exclude_descriptors, then drop any text() node found
+            (it is already parsed as part of the basic service 
+            description) in the namespaced xpath of the provided list
+        
+        it's a tuple (text, xpath)
         '''
-        returns a list with the document's namespaces
-        '''
-        doc_ns = []
-        for ns in self.ns:
-            doc_ns.append(ns[1:-1])
-        return doc_ns
+        text_nodes = []
+        for elem in self.xml.iter():
+            if elem.text:
+                t = elem.text.strip()
+                if t:
+                    tags = [elem.tag] + [e.tag for e in elem.iterancestors()]
+                    tags.reverse()
+                    text_nodes.append((t, '/'.join(tags)))
 
-    def get_document_namespaces(self):
+        if exclude_descriptors:
+            text_nodes = [t for t in text_nodes if t[1] not in exclude_descriptors]
+
+        return text_nodes
+
+    def find_attributes(self):
+        '''
+        it's a tuple (text, xpath)
+        '''
+        attributes = []
+        for elem in self.xml.iter():
+            if elem.attrib:
+                tags = [elem.tag] + [e.tag for e in elem.iterancestors()]
+                tags.reverse()
+
+                for k, v in elem.attrib.iteritems():
+                    if v.strip():
+                        attributes.append((v, '/'.join(tags) + '/@' + k))
+
+        return attributes
+
+    def find(self, xpath):
+        '''
+        finds any element that matches the xpath
+        '''
+        return self.doc.findall(xpath)
+
+    def _get_document_namespaces(self):
         '''
         Pull all of the namespaces in the source document
         and generate a list of tuples (prefix, URI) to dict
         '''
-
-        return dict(self.doc.xpath('/*/namespace::*'))
+        return dict(self.xml.xpath('/*/namespace::*'))

@@ -25,12 +25,10 @@ class BaseReader():
 	def __init__(self, response):
 		self._response = response
 
-	def load_xml(self, prepared_content):
-		try:
-			parser = etree.XMLParser(encoding="utf-8")
-		except ParseError as pe:
-			print pe
-			sys.exit(1)
+	def _load_xml(self):
+		parser = Parser(self._response)
+		
+
 
 	def return_service_descriptors(self):
 		'''
