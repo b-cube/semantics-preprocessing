@@ -42,35 +42,46 @@ class FileParser():
 		string from the solr raw_content element, unmodified
 		'''	
 
-		#unicode escape (solr?)
+		#unicode escape for solr (cdata pattern matching fails without)
 		raw_content = raw_content.encode('unicode_escape')
 
-		#regex for the CDATA
-		#TODO: there are internal CDATAs so neat, i guess
 		m = re.search(self._pttn, raw_content)
+
 		assert m
 
-		raw_content = m.group(1)
+		return m.group(1)
 
-		#there is a certain amount of cargocult encoding right here.
-		return raw_content.decode('string_escape').strip().decode('unicode_escape').encode('utf-8')
-
+	#TODO: This might turn into a much larger thing (combinations of namespaces, etc)
 	def identify_response_type(self, prepared_content):
 		'''
 		let's try to identify what kind of service response it 
 		is based on the namespaces
 
-		no namespaces:
-			FGDC
-			zenodo
+		PRIORITY:
+			opensearch
+			opensearch esip
+			thredds catalog
+			OAI-PMH
+			iso
+			ogc getcapabilities
+			wadl
 		'''
 
 		if 'http://www.isotc211.org/2005/gmi' in raw_content:
 			return 'ISO'
+		elif 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0' in raw_content:
+			return 'THREDDS'
+		elif 'http://wadl.dev.java.net/2009/02' in raw_content:
+			return 'WADL'
 		elif 'http://www.w3.org/2005/Atom' in raw_content:
+			'''
+			note: this can be some combination of atom, opensearch, and georss content
+			'''
 			return 'ATOM'
 		elif 'http://www.opengis.net/wms' in raw_content:
 			return 'WMS'
+		elif 'http://www.opengis.net/wfs' in raw_content:
+			return 'WFS'
 		elif 'http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/' in raw_content:
 			return 'DIF'
 		elif 'http://www.openarchives.org/OAI/2.0/oai_dc/' in raw_content:
@@ -84,6 +95,13 @@ class FileParser():
 			return 'FGDC-1998'
 		elif '<metstdv>FGDC-STD-012-2002' in raw_content:
 			return 'FGDC-2002'
+		elif 'http://www.incident.com/cap/1.0' in raw_content:
+			'''
+			usgs alerts
+				view-source:http://www.usgs.gov/alerts/cap/USGS-landslides.20060831T184846
+			'''
+			return 'CAP-ALERT'
+
 
 		return ''
 
