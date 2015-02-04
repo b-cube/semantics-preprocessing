@@ -15,7 +15,7 @@ parser = etree.XMLParser(encoding="utf-8")
 '''
 if they are all ascii how is the one in japanese?
 '''
-def identify(raw_content):
+def identify(raw_content, url):
 	if 'http://www.isotc211.org/2005/gmi' in raw_content or 'http://www.isotc211.org/2005/gmd' in raw_content:
 		return 'ISO'
 	elif 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0' in raw_content:
@@ -24,7 +24,7 @@ def identify(raw_content):
 		return 'OpenDap'
 	elif 'http://a9.com/-/spec/opensearch/1.1/' in raw_content:
 		return 'OpenSearch'
-	elif 'http://wadl.dev.java.net/2009/02' in raw_content:
+	elif 'http://wadl.dev.java.net' in raw_content:
 		return 'WADL'
 	elif 'http://schemas.xmlsoap.org/wsdl/' in raw_content:
 		return 'WSDL'
@@ -33,18 +33,16 @@ def identify(raw_content):
 		note: this can be some combination of atom, opensearch, and georss content
 		'''
 		return 'ATOM'
-	elif 'http://www.opengis.net/wms' in raw_content:
+	elif 'http://www.opengis.net/wms' in raw_content or 'SERVICE=WMS' in url.upper() or ('http://mapserver.gis.umn.edu/mapserver' in raw_content and 'SERVICE=WMS' in url.upper()):
 		return 'WMS'
 	elif 'http://www.opengis.net/wmts/1.0' in raw_content:
 		return 'WMTS'
-	elif 'http://www.opengis.net/wfs' in raw_content:
+	elif 'http://www.opengis.net/wfs' in raw_content or 'SERVICE=WFS' in url.upper() or ('http://mapserver.gis.umn.edu/mapserver' in raw_content and 'SERVICE=WFS' in url.upper()):
 		return 'WFS'
-	elif 'http://www.opengis.net/wcs' in raw_content:
+	elif 'http://www.opengis.net/wcs' in raw_content or 'SERVICE=WCS' in url.upper() or ('http://mapserver.gis.umn.edu/mapserver' in raw_content and 'SERVICE=WCS' in url.upper()):
 		return 'WCS'
 	elif 'http://www.opengis.net/swe/1.0.1' in raw_content:
 		return 'SWE'
-	elif 'http://www.opengis.net/' in raw_content:
-		return 'Unidentified OGC'
 	elif 'http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/' in raw_content:
 		return 'DIF'
 	elif 'http://www.openarchives.org/OAI/' in raw_content:
@@ -74,9 +72,9 @@ def identify(raw_content):
 		return 'MS Office'
 	elif 'http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2' in raw_content:
 		return 'NetCDF'
-	elif '<rss version="' in raw_content or 'http://api.npr.org/nprml' in raw_content or 'rss' in data['id']:
+	elif '<rss version="' in raw_content or 'http://api.npr.org/nprml' in raw_content or 'rss' in url:
 		return 'RSS'	
-	elif 'http://archipelago.phrasewise.com/rsd' in raw_content or '?rsd' in data['id'] or 'rsd.xml' in data['id']:
+	elif 'http://archipelago.phrasewise.com/rsd' in raw_content or '?rsd' in url or 'rsd.xml' in url:
 		return 'WordPress'	
 	elif 'http://www.loc.gov/METS_Profile/' in raw_content:
 		return 'LOC-METS'
@@ -98,6 +96,14 @@ def identify(raw_content):
 		return 'iTunes'
 	elif 'http://www.cuahsi.org/waterML/' in raw_content:
 		return 'WaterML'
+	elif 'http://echo.nasa.gov/' in raw_content:
+		return 'ECHO'
+	elif 'http://modapsws.gsfc.nasa.gov/xsd' in raw_content:
+		return 'MODAPS'
+	elif 'http://www.noaa.gov/ioos/' in raw_content:
+		return 'IOOS'
+	elif 'http://www.opengis.net/' in raw_content:
+		return 'Unidentified OGC'
 
 	return ''
 
@@ -128,7 +134,7 @@ for f in files:
 	namespaces = dict(xml.xpath('/*/namespace::*'))
 
 	#try to grok what it is
-	data_service = identify(raw_content)
+	data_service = identify(raw_content, data['id'])
 
 	if data_service:
 		with open('identified_nutch_namespaces.csv', 'a') as g:
@@ -138,7 +144,7 @@ for f in files:
 
 		repacked = []
 		for p, n in namespaces.iteritems():
-			repacked.append(','.join([data['digest'], data['id'], (p if p else 'default'), n]))
+			repacked.append('|'.join([data['digest'], data['id'], (p if p else 'default'), n]))
 
 		with open('unidentified_nutch_namespaces.csv', 'a') as g:
 			g.write('\n'.join(repacked) + '\n')

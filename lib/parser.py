@@ -50,26 +50,35 @@ class Parser():
                 if t:
                     tags = [elem.tag] + [e.tag for e in elem.iterancestors()]
                     tags.reverse()
-                    text_nodes.append((t, '/'.join(tags)))
 
-        if exclude_descriptors:
-            text_nodes = [t for t in text_nodes if t[1] not in exclude_descriptors]
+                    atts = self._parse_node_attributes(elem)
+
+                    if not '/'.join(tags) in exclude_descriptors:
+                        text_nodes.append((t, '/'.join(tags), atts))
 
         return text_nodes
 
-    def find_attributes(self):
+    def _parse_node_attributes(self, node):
+        if not node.attrib:
+            return None
+
+        tags = [node.tag] + [e.tag for e in node.iterancestors()]
+        tags.reverse()
+
+        attributes = []
+        for k, v in node.attrib.iteritems():
+            if v.strip():
+                attributes.append((v, '/'.join(tags) + '/@' + k))
+
+        return attributes
+
+    def _find_attributes(self):
         '''
         it's a tuple (text, xpath)
         '''
         attributes = []
         for elem in self.xml.iter():
-            if elem.attrib:
-                tags = [elem.tag] + [e.tag for e in elem.iterancestors()]
-                tags.reverse()
-
-                for k, v in elem.attrib.iteritems():
-                    if v.strip():
-                        attributes.append((v, '/'.join(tags) + '/@' + k))
+            attributes += self._parse_node_attributes(elem)
 
         return attributes
 
@@ -101,7 +110,7 @@ class Parser():
         '''
         for prefix, ns in self._namespaces.iteritems();
             wrapped_ns = '{%s}' % ns
-            xpath = xpath.replace(wrapped_ns, (prefix if prefix else 'default' + ':'))
+            xpath = xpath.replace(wrapped_ns, (prefix if prefix else 'default') + ':')
         return xpath
 
 
