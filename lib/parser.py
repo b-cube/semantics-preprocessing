@@ -42,8 +42,6 @@ class Parser():
             description) in the namespaced xpath of the provided list
         
         it's a tuple (text, xpath)
-
-        TODO: it needs some understanding of the relationships
         '''
         text_nodes = []
         for elem in self.xml.iter():
@@ -63,8 +61,6 @@ class Parser():
         '''
         it's a tuple (text, xpath)
         '''
-
-        #TODO: update to manage the relationships (see wms bounding box)
         attributes = []
         for elem in self.xml.iter():
             if elem.attrib:
@@ -81,7 +77,9 @@ class Parser():
         '''
         finds any element that matches the xpath
         '''
-        return self.doc.findall(xpath)
+        if self._namespaces:
+            xpath = self._remap_namespaced_xpaths(xpath)
+        return self.doc.xpath(xpath)
 
     def _get_document_namespaces(self):
         '''
@@ -103,8 +101,7 @@ class Parser():
         '''
         for prefix, ns in self._namespaces.iteritems();
             wrapped_ns = '{%s}' % ns
-            xpath = xpath.replace(wrapped_ns, prefix + ':')
-
+            xpath = xpath.replace(wrapped_ns, (prefix if prefix else 'default' + ':'))
         return xpath
 
 
