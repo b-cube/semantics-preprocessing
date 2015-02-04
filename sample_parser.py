@@ -21,7 +21,7 @@ class FileParser():
 		untouched from the solr cli)
 	'''
 
-	_pttn = u'^<!\[CDATA\[(.*?)\]\]>'
+	_pttn = u'^<!\[CDATA\[(.*?)\]\]>$'
 
 	def __init__(self):
 		pass

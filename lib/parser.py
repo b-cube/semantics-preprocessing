@@ -31,7 +31,7 @@ class Parser():
 
         self._namespaces = self._get_document_namespaces()
 
-    def find_text_nodes(self, exclude_descriptors=[]]):
+    def find_text_nodes(self, exclude_descriptors=[]):
         '''
         pull ANY node with a text() and return the node text() 
         and the xpath trace back up to root
@@ -41,6 +41,8 @@ class Parser():
             description) in the namespaced xpath of the provided list
         
         it's a tuple (text, xpath)
+
+        TODO: it needs some understanding of the relationships
         '''
         text_nodes = []
         for elem in self.xml.iter():
@@ -60,6 +62,8 @@ class Parser():
         '''
         it's a tuple (text, xpath)
         '''
+
+        #TODO: update to manage the relationships (see wms bounding box)
         attributes = []
         for elem in self.xml.iter():
             if elem.attrib:
@@ -84,3 +88,25 @@ class Parser():
         and generate a list of tuples (prefix, URI) to dict
         '''
         return dict(self.xml.xpath('/*/namespace::*'))
+
+    def _remap_namespaced_xpaths(self, xpath, namespaces):
+        '''
+        so we have this:
+            {http://www.opengis.net/wms}WMS_Capabilities{.....}.../'
+        and we need this:
+            w:WMS_Capabilities, ns={'w': 'http://www.opengis.net/wms'}
+
+        for the actual querying
+
+        and we don't really care for storage - we care for this path, this query
+        '''
+        pass
+
+
+
+
+
+
+
+
+

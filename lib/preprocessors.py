@@ -26,9 +26,8 @@ class BaseReader():
 		self._response = response
 
 	def _load_xml(self):
-		parser = Parser(self._response)
-		
-
+		#TODO: add the encoding widgetry
+		self.parser = Parser(self._response)
 
 	def return_service_descriptors(self):
 		'''
@@ -36,11 +35,26 @@ class BaseReader():
 
 		title
 		abtract
+
+		note: what to do about keywords (thesaurus + list + type)?
 		keywords
 
 		'''
+		service_elements = {}
 		for k, v in self._service_descriptors.iteritems():
+			elems = self.parser.find(v)
+			if elems:
+				service_elements[k] = elements
+		return service_elements
 
+	def return_everything_else(self, excluded_elements):
+		'''
+		so not service descriptors and not anything else that
+		may be extracted based on the service type (so deepcopy + append)
+		'''
+		#TODO: parse the results of this (it's pretty nasty) into 
+		#      something that at least understands prefix, namespace uri, value
+		return self.parser.find_text_nodes(excluded_elements)
 
 class IsoReader(BaseReader):
 	pass
@@ -86,7 +100,37 @@ class WxsReader(BaseReader):
 		pass
 
 class WmsReader(WxsReader):
-	pass
+	_service_descriptors = {
+		"title": "{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Service/{http://www.opengis.net/wms}Title",
+		"name": "{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Service/{http://www.opengis.net/wms}Name'",
+		"abstract": "{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Service/{http://www.opengis.net/wms}Abstract",
+		"tags": "{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Service/{http://www.opengis.net/wms}KeywordList/{http://www.opengis.net/wms}Keyword",
+		"contact": "{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Service/{http://www.opengis.net/wms}ContactInformation/{http://www.opengis.net/wms}ContactPersonPrimary" 
+	}
+	
+	def parse_capabilities(self):
+		'''
+		go get the bboxes, endpoints, etc
+		'''
+
+		endpoint_descriptors = {
+			"GetCapabilities": {
+				"formats": "{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Capability/{http://www.opengis.net/wms}Request/{http://www.opengis.net/wms}GetCapabilities/{http://www.opengis.net/wms}Format",
+				"url": "{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Capability/{http://www.opengis.net/wms}Request/{http://www.opengis.net/wms}GetCapabilities/{http://www.opengis.net/wms}/DCPType/{http://www.opengis.net/wms}HTTP/{http://www.opengis.net/wms}Get/{http://www.opengis.net/wms}OnlineResource/{}@href"
+
+			},
+			"GetMap": {}
+
+		}
+
+		endpoints = [
+			(
+
+			)
+		]
+
+
+
 class WcsReader(WxsReader):
 	pass
 class WfsReader(WxsReader):
