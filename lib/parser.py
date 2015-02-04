@@ -1,4 +1,5 @@
 from lxml import etree
+import re
 
 class Parser():
     '''
@@ -100,7 +101,7 @@ class Parser():
 
         and we don't really care for storage - we care for this path, this query
         '''
-        pass
+        pttn = '{(\s)}(\s)'
 
 
 
