@@ -71,8 +71,12 @@ class FileParser():
 			return 'ISO'
 		elif 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0' in raw_content:
 			return 'THREDDS'
+		elif 'http://a9.com/-/spec/opensearch/1.1/' in raw_content:
+			return 'OpenSearch'
 		elif 'http://wadl.dev.java.net/2009/02' in raw_content:
 			return 'WADL'
+		elif 'http://schemas.xmlsoap.org/wsdl/' in raw_content:
+			return 'WSDL'
 		elif 'http://www.w3.org/2005/Atom' in raw_content:
 			'''
 			note: this can be some combination of atom, opensearch, and georss content
@@ -84,7 +88,7 @@ class FileParser():
 			return 'WFS'
 		elif 'http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/' in raw_content:
 			return 'DIF'
-		elif 'http://www.openarchives.org/OAI/2.0/oai_dc/' in raw_content:
+		elif 'http://www.openarchives.org/OAI/2.0/oai_d c/' in raw_content:
 			#OAI-PMH as Dublin Core
 			return 'OAI-PMH'
 		elif 'http://pds.nasa.gov/pds4/pds/v1' in raw_content:

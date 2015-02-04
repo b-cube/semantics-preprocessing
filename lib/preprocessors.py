@@ -86,7 +86,7 @@ class WxsReader(BaseReader):
 
 	note:
 		we are ignoring layers right now and the fact that the endpoint urls
-			are always without the query parameter definitions (to acutally id the 
+			are always without the query parameter definitions (to actually id the 
 			things). 
 	
 		we are not ignoring the parent layer element - it contains the bbox(es)

@@ -90,20 +90,22 @@ class Parser():
         '''
         return dict(self.xml.xpath('/*/namespace::*'))
 
-    def _remap_namespaced_xpaths(self, xpath, namespaces):
+    def _remap_namespaced_xpaths(self, xpath):
         '''
         so we have this:
             {http://www.opengis.net/wms}WMS_Capabilities{.....}.../'
         and we need this:
-            w:WMS_Capabilities, ns={'w': 'http://www.opengis.net/wms'}
+            wms:WMS_Capabilities, ns={'wms': 'http://www.opengis.net/wms'}
 
-        for the actual querying
+        for the actual querying (replace the '{ns}' with 'prefix:')
 
         and we don't really care for storage - we care for this path, this query
         '''
-        pttn = '{(\s)}(\s)'
+        for prefix, ns in self._namespaces.iteritems();
+            wrapped_ns = '{%s}' % ns
+            xpath = xpath.replace(wrapped_ns, prefix + ':')
 
-
+        return xpath
 
 
 
