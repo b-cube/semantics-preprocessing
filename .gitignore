@@ -1,3 +1,5 @@
+*.csv
 *.pyc
 test.txt
-tests/
+testdata/
+we_hate_xml*
