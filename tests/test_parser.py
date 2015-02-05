@@ -1,5 +1,6 @@
 import unittest
 from lib.parser import Parser
+from lib.preprocessors import *
 import os
 import json
 
@@ -55,3 +56,46 @@ class TestParser(unittest.TestCase):
     	self.assertTrue(nodes[0][0] == 'CEOS')
     	self.assertTrue(nodes[1][2][1][0] == '16')
     	self.assertTrue(nodes[1][2][0][1] == '{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}Image/@type')
+
+
+class TestBaseReader(unittest.TestCase):
+	def setUp(self):    	
+		pass
+
+	def test_load_xml(self):
+		#honestly, this is just a parser test
+
+		pass
+
+	def test_return_descriptors(self):
+		pass
+
+	def return_everything_else(self):
+		pass
+
+class TestWmsReader(unittest.TestCase):
+	def setUp(self):   
+		with open('tests/test_data/esri_wms_35bd4e2ce8cd13e8697b03976ffe1ee6.txt', 'r') as f:
+			text = f.read() 	
+		self.reader = WmsReader(text)
+		self.reader._load_xml()
+
+	def test_load_xml(self):
+		#honestly, this is just a parser test
+
+		self.assertTrue(self.reader.parser is not None)
+		self.assertTrue(self.reader.parser.xml is not None)
+
+	def test_return_descriptors(self):
+		descriptors = self.reader.return_service_descriptors()
+
+		self.assertTrue(descriptors is not None)
+
+	def return_everything_else(self):
+		nodes = self.reader.return_everything_else({})
+
+		self.assertTrue(nodes is not None)
+
+
+
+

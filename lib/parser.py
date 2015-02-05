@@ -26,7 +26,8 @@ class Parser():
 
         try:
             self.xml = etree.fromstring(self._string, parser)
-        except:
+        except Exception as ex:
+            print ex
             self.xml = None
 
         self._namespaces = self._get_document_namespaces()
@@ -88,14 +89,20 @@ class Parser():
         '''
         if self._namespaces:
             xpath = self._remap_namespaced_xpaths(xpath)
-        return self.doc.xpath(xpath)
+            print xpath, self._namespaces
+            return self.xml.xpath(xpath, namespaces=self._namespaces)
+        return self.xml.xpath(xpath)
 
     def _get_document_namespaces(self):
         '''
         Pull all of the namespaces in the source document
         and generate a list of tuples (prefix, URI) to dict
         '''
-        return dict(self.xml.xpath('/*/namespace::*'))
+        namespaces = dict(self.xml.xpath('/*/namespace::*'))
+        if None in namespaces:
+            namespaces['default'] = namespaces[None]
+            del namespaces[None]
+        return namespaces
 
     def _remap_namespaced_xpaths(self, xpath):
         '''
