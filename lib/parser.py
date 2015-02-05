@@ -32,16 +32,16 @@ class Parser():
 
         self._namespaces = self._get_document_namespaces()
 
-    def find_text_nodes(self, exclude_descriptors=[]):
+    def find_nodes(self, exclude_descriptors=[]):
         '''
-        pull ANY node with a text() and return the node text() 
+        pull ANY node with a text() and/or attributes and return the node text() 
         and the xpath trace back up to root
 
         if exclude_descriptors, then drop any text() node found
             (it is already parsed as part of the basic service 
             description) in the namespaced xpath of the provided list
         
-        it's a tuple (text, xpath)
+        it's a tuple (text, xpath, attributes)
         '''
         text_nodes = []
         for elem in self.xml.iter():
@@ -51,20 +51,14 @@ class Parser():
                     tags = [elem.tag] + [e.tag for e in elem.iterancestors()]
                     tags.reverse()
 
-                    atts = self._parse_node_attributes(elem)
+                    atts = self._parse_node_attributes(elem, exclude_descriptors)
 
                     if not '/'.join(tags) in exclude_descriptors:
                         text_nodes.append((t, '/'.join(tags), atts))
 
         return text_nodes
 
-    def find_terminal_attribute_nodes(self, exclude_descriptors):
-        '''
-        find any node without text but with attributes
-        '''
-        pass
-
-    def _parse_node_attributes(self, node):
+    def _parse_node_attributes(self, node, exclude_descriptors):
         if not node.attrib:
             return None
 
@@ -73,8 +67,9 @@ class Parser():
 
         attributes = []
         for k, v in node.attrib.iteritems():
-            if v.strip():
-                attributes.append((v, '/'.join(tags) + '/@' + k))
+            attr_tag = '/'.join(tags) + '/@' + k
+            if v.strip() and attr_tag not in exclude_descriptors:
+                attributes.append((v, attr_tag))
 
         return attributes
 
@@ -114,7 +109,7 @@ class Parser():
 
         and we don't really care for storage - we care for this path, this query
         '''
-        for prefix, ns in self._namespaces.iteritems();
+        for prefix, ns in self._namespaces.iteritems():
             wrapped_ns = '{%s}' % ns
             xpath = xpath.replace(wrapped_ns, (prefix if prefix else 'default') + ':')
         return xpath
