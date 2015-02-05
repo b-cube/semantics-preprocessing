@@ -13,7 +13,8 @@ class Parser():
     '''
 
     def __init__(self, string_to_parse, encoding='utf-8'):
-        #this is a horror show of nutch and cdata line breaks.
+        #there is some encoding issue somewhere around solr/nutch 
+        #that should be handled better than this
         self._string = string_to_parse.replace('\\n', ' ')
         self._encoding = encoding
         self._parse()
@@ -31,6 +32,15 @@ class Parser():
             self.xml = None
 
         self._namespaces = self._get_document_namespaces()
+
+    def find(self, xpath):
+        '''
+        finds any element that matches the xpath
+        '''
+        if self._namespaces:
+            xpath = self._remap_namespaced_xpaths(xpath)
+            return self.xml.xpath(xpath, namespaces=self._namespaces)
+        return self.xml.xpath(xpath)
 
     def find_nodes(self, exclude_descriptors=[]):
         '''
@@ -50,14 +60,14 @@ class Parser():
             tags.reverse()
             atts = self._parse_node_attributes(elem, exclude_descriptors)
 
-            if not '/'.join(tags) in exclude_descriptors and (atts or t):
+            if '/'.join(tags) not in exclude_descriptors and (atts or t):
                 nodes.append((t, '/'.join(tags), atts))
 
         return nodes
 
-    def _parse_node_attributes(self, node, exclude_descriptors):
+    def _parse_node_attributes(self, node, exclude_descriptors=[]):
         '''
-
+        return any attributes for a node
         '''
         if not node.attrib:
             return None
@@ -83,16 +93,6 @@ class Parser():
 
         return attributes
 
-    def find(self, xpath):
-        '''
-        finds any element that matches the xpath
-        '''
-        if self._namespaces:
-            xpath = self._remap_namespaced_xpaths(xpath)
-            print xpath, self._namespaces
-            return self.xml.xpath(xpath, namespaces=self._namespaces)
-        return self.xml.xpath(xpath)
-
     def _get_document_namespaces(self):
         '''
         Pull all of the namespaces in the source document
@@ -117,7 +117,7 @@ class Parser():
         '''
         for prefix, ns in self._namespaces.iteritems():
             wrapped_ns = '{%s}' % ns
-            xpath = xpath.replace(wrapped_ns, (prefix if prefix else 'default') + ':')
+            xpath = xpath.replace(wrapped_ns, prefix + ':')
         return xpath
 
 

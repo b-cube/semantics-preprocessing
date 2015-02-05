@@ -1,5 +1,9 @@
 ## Text Processing 
 
+###Preprocessing
+
+XML and text parsing for the pipeline between Nutch/Solr and a triplestore or NLP/ML pipeline.
+
 
 ###YAML Query Configuration
 
