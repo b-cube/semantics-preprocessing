@@ -27,7 +27,6 @@ class Parser():
         try:
             self.xml = etree.fromstring(self._string, parser)
         except:
-            print "The XML is malformed or truncated"
             self.xml = None
 
         self._namespaces = self._get_document_namespaces()
@@ -43,22 +42,22 @@ class Parser():
         
         it's a tuple (text, xpath, attributes)
         '''
-        text_nodes = []
+        nodes = []
         for elem in self.xml.iter():
-            if elem.text:
-                t = elem.text.strip()
-                if t:
-                    tags = [elem.tag] + [e.tag for e in elem.iterancestors()]
-                    tags.reverse()
+            t = elem.text.strip() if elem.text else ''
+            tags = [elem.tag] + [e.tag for e in elem.iterancestors()]
+            tags.reverse()
+            atts = self._parse_node_attributes(elem, exclude_descriptors)
 
-                    atts = self._parse_node_attributes(elem, exclude_descriptors)
+            if not '/'.join(tags) in exclude_descriptors and (atts or t):
+                nodes.append((t, '/'.join(tags), atts))
 
-                    if not '/'.join(tags) in exclude_descriptors:
-                        text_nodes.append((t, '/'.join(tags), atts))
-
-        return text_nodes
+        return nodes
 
     def _parse_node_attributes(self, node, exclude_descriptors):
+        '''
+
+        '''
         if not node.attrib:
             return None
 

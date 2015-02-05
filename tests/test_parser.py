@@ -1,6 +1,5 @@
 import unittest
 from lib.parser import Parser
-from rdflib import Literal
 import os
 import json
 
@@ -41,6 +40,18 @@ class TestParser(unittest.TestCase):
     def test_find_nodes(self):
     	nodes = self.parser.find_nodes()
 
-    	self.assertTrue(len(nodes) == 3)
+    	self.assertTrue(len(nodes) == 5)
     	self.assertTrue(len(nodes[2][2]) == 3)
     	self.assertTrue(nodes[1][0] == 'UTF-8')
+
+    	#run with excludes
+    	excludes = [
+    		'{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}InputEncoding',
+    		'{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}Image/@width'
+    	]
+    	nodes = self.parser.find_nodes(excludes)
+    	self.assertTrue(len(nodes) == 4)
+    	self.assertTrue(len(nodes[1][2]) == 2)
+    	self.assertTrue(nodes[0][0] == 'CEOS')
+    	self.assertTrue(nodes[1][2][1][0] == '16')
+    	self.assertTrue(nodes[1][2][0][1] == '{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}Image/@type')
