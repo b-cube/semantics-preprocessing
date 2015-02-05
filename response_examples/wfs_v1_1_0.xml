@@ -1,0 +1,1783 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<wfs:WFS_Capabilities xmlns:gml="http://www.opengis.net/gml" xmlns:wfs="http://www.opengis.net/wfs" xmlns:ows="http://www.opengis.net/ows" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ogc="http://www.opengis.net/ogc" xmlns="http://www.opengis.net/wfs" version="1.1.0" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd">
+  <ows:ServiceIdentification>
+    <ows:Title>1998 Assessment of Undiscovered Deposits of Gold, Silver, Copper, Lead, and Zinc in the United States</ows:Title>
+    <ows:Abstract>Estimates of the number and size of undiscovered mineral deposits containing gold, silver, copper, lead, and zinc in the US, by type of deposit.</ows:Abstract>
+    <ows:Keywords>
+      <ows:Keyword>metallic mineral resources; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+    </ows:Keywords>
+    <ows:ServiceType codeSpace="OGC">OGC WFS</ows:ServiceType>
+    <ows:ServiceTypeVersion>1.1.0</ows:ServiceTypeVersion>
+    <ows:Fees>none</ows:Fees>
+    <ows:AccessConstraints>none</ows:AccessConstraints>
+  </ows:ServiceIdentification>
+  <ows:ServiceProvider>
+    <ows:ProviderName>U.S. Geological Survey Mineral Resources Program</ows:ProviderName>
+    <ows:ProviderSite xlink:type="simple" xlink:href="http://mrdata.usgs.gov/"/>
+    <ows:ServiceContact>
+      <ows:IndividualName>Peter N. Schweitzer</ows:IndividualName>
+      <ows:PositionName>Geologist</ows:PositionName>
+      <ows:ContactInfo>
+        <ows:Phone>
+          <ows:Voice>703-648-6533</ows:Voice>
+          <ows:Facsimile>703-648-6252</ows:Facsimile>
+        </ows:Phone>
+        <ows:Address>
+          <ows:DeliveryPoint>Mail Stop 954 USGS National Center</ows:DeliveryPoint>
+          <ows:City>Reston</ows:City>
+          <ows:AdministrativeArea>VA</ows:AdministrativeArea>
+          <ows:PostalCode>20192</ows:PostalCode>
+          <ows:Country>USA</ows:Country>
+          <ows:ElectronicMailAddress>pschweitzer@usgs.gov</ows:ElectronicMailAddress>
+        </ows:Address>
+        <ows:OnlineResource xlink:type="simple" xlink:href="http://mrdata.usgs.gov/"/>
+        <ows:HoursOfService>M-F 9:00am-5:30pm EST/EDT</ows:HoursOfService>
+        <ows:ContactInstructions>Alternate email address: ask@usgs.gov</ows:ContactInstructions>
+      </ows:ContactInfo>
+      <ows:Role>distributor</ows:Role>
+    </ows:ServiceContact>
+  </ows:ServiceProvider>
+  <ows:OperationsMetadata>
+    <ows:Operation name="GetCapabilities">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:type="simple" xlink:href="http://mrdata.usgs.gov/services/nmra?"/>
+          <ows:Post xlink:type="simple" xlink:href="http://mrdata.usgs.gov/services/nmra?"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="service">
+        <ows:Value>WFS</ows:Value>
+      </ows:Parameter>
+      <ows:Parameter name="AcceptVersions">
+        <ows:Value>1.0.0</ows:Value>
+        <ows:Value>1.1.0</ows:Value>
+      </ows:Parameter>
+      <ows:Parameter name="AcceptFormats">
+        <ows:Value>text/xml</ows:Value>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="DescribeFeatureType">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:type="simple" xlink:href="http://mrdata.usgs.gov/services/nmra?"/>
+          <ows:Post xlink:type="simple" xlink:href="http://mrdata.usgs.gov/services/nmra?"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="outputFormat">
+        <ows:Value>XMLSCHEMA</ows:Value>
+        <ows:Value>text/xml; subtype=gml/2.1.2</ows:Value>
+        <ows:Value>text/xml; subtype=gml/3.1.1</ows:Value>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetFeature">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:type="simple" xlink:href="http://mrdata.usgs.gov/services/nmra?"/>
+          <ows:Post xlink:type="simple" xlink:href="http://mrdata.usgs.gov/services/nmra?"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="resultType">
+        <ows:Value>results</ows:Value>
+        <ows:Value>hits</ows:Value>
+      </ows:Parameter>
+      <ows:Parameter name="outputFormat">
+        <ows:Value>text/xml; subtype=gml/3.1.1</ows:Value>
+      </ows:Parameter>
+    </ows:Operation>
+  </ows:OperationsMetadata>
+  <FeatureTypeList>
+    <Operations>
+      <Operation>Query</Operation>
+    </Operations>
+    <FeatureType>
+      <Name>Alkaline_AuTe</Name>
+      <Title>Permissive tracts for Alkaline Au-Te</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Distal_disseminated_AgAu</Name>
+      <Title>Permissive tracts for Distal disseminated Ag-Au</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Duluth_CuNiPGE</Name>
+      <Title>Permissive tracts for Duluth Cu-Ni-PGE</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Epithermal_vein_Comstock</Name>
+      <Title>Permissive tracts for Epithermal vein, Comstock</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Epithermal_vein_quartzadularia</Name>
+      <Title>Permissive tracts for Epithermal vein, quartz-adularia</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Epithermal_vein_quartzalunite</Name>
+      <Title>Permissive tracts for Epithermal vein, quartz-alunite</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Epithermal_vein_Sado</Name>
+      <Title>Permissive tracts for Epithermal vein, Sado</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Homestake_stratiform_Au</Name>
+      <Title>Permissive tracts for Homestake stratiform Au</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Hotspring_AuAg</Name>
+      <Title>Permissive tracts for Hot-spring Au-Ag</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Lowsulfide_Auquartz_vein</Name>
+      <Title>Permissive tracts for Low-sulfide Au-quartz vein</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Lowsulfide_Auquartz_vein_Archean</Name>
+      <Title>Permissive tracts for Low-sulfide Au-quartz vein, Archean</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Magmatic_Cu</Name>
+      <Title>Permissive tracts for Magmatic Cu</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Massive_sulfide_Besshi</Name>
+      <Title>Permissive tracts for Massive sulfide, Besshi</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Massive_sulfide_Cyprus</Name>
+      <Title>Permissive tracts for Massive sulfide, Cyprus</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Massive_sulfide_kuroko</Name>
+      <Title>Permissive tracts for Massive sulfide, kuroko</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Massive_sulfide_kuroko_Phanerozoic</Name>
+      <Title>Permissive tracts for Massive sulfide, kuroko (Phanerozoic)</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Massive_sulfide_Sierran_kuroko</Name>
+      <Title>Permissive tracts for Massive sulfide, Sierran kuroko</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Mississippi_Valley_Appalachian_Zn</Name>
+      <Title>Permissive tracts for Mississippi Valley, Appalachian Zn</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Mississippi_Valley_minor</Name>
+      <Title>Permissive tracts for Mississippi Valley, minor</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Mississippi_Valley_SE_Missouri_PbZn</Name>
+      <Title>Permissive tracts for Mississippi Valley, S.E. Missouri Pb-Zn</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Native_Cu</Name>
+      <Title>Permissive tracts for Native Cu</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Polymetallic_replacement</Name>
+      <Title>Permissive tracts for Polymetallic replacement</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Polymetallic_replacement_skarn_ZnPb</Name>
+      <Title>Permissive tracts for Polymetallic replacement + skarn Zn-Pb</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Porphyry_Cu</Name>
+      <Title>Permissive tracts for Porphyry Cu</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Porphyry_CuAu</Name>
+      <Title>Permissive tracts for Porphyry Cu-Au</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Porphyry_Cu_BCAK</Name>
+      <Title>Permissive tracts for Porphyry Cu (BC-AK)</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Porphyry_Cu_North_America</Name>
+      <Title>Permissive tracts for Porphyry Cu (North America)</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Porphyry_Cu_skarnrelated</Name>
+      <Title>Permissive tracts for Porphyry Cu, skarn-related</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Sandstonehosted_PbZn</Name>
+      <Title>Permissive tracts for Sandstone-hosted Pb-Zn</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Sedimentary_exhalative_Zn</Name>
+      <Title>Permissive tracts for Sedimentary exhalative Zn</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Sedimentary_exhalative_ZnPb</Name>
+      <Title>Permissive tracts for Sedimentary exhalative Zn-Pb</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Sedimenthosted_Au</Name>
+      <Title>Permissive tracts for Sediment-hosted Au</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Sedimenthosted_Cu</Name>
+      <Title>Permissive tracts for Sediment-hosted Cu</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Sedimenthosted_Cu_redbed</Name>
+      <Title>Permissive tracts for Sediment-hosted Cu, redbed</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Sedimenthosted_Cu_reducedfacies</Name>
+      <Title>Permissive tracts for Sediment-hosted Cu, reduced-facies</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Sedimenthosted_Cu_reducedfacies_modified</Name>
+      <Title>Permissive tracts for Sediment-hosted Cu, reduced-facies (modified)</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Sedimenthosted_Cu_Revett</Name>
+      <Title>Permissive tracts for Sediment-hosted Cu, Revett</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Skarn_Au</Name>
+      <Title>Permissive tracts for Skarn Au</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Skarn_Au_truncated</Name>
+      <Title>Permissive tracts for Skarn Au, truncated</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Skarn_Cu</Name>
+      <Title>Permissive tracts for Skarn Cu</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>Skarn_ZnPb</Name>
+      <Title>Permissive tracts for Skarn Zn-Pb</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Alaskan_PGE</Name>
+      <Title>Permissive tracts in Alaska for Alaskan PGE</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_AuSb_veins</Name>
+      <Title>Permissive tracts in Alaska for Au-Sb veins</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Basaltic_Cu</Name>
+      <Title>Permissive tracts in Alaska for Basaltic Cu</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Basaltic_Cu_Kennecott_Cu</Name>
+      <Title>Permissive tracts in Alaska for Basaltic Cu/Kennecott Cu</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Besshi_massive_sulfide</Name>
+      <Title>Permissive tracts in Alaska for Besshi massive sulfide</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Creede_epithermal_veins</Name>
+      <Title>Permissive tracts in Alaska for Creede epithermal veins</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_CuAg_quartz_veins</Name>
+      <Title>Permissive tracts in Alaska for Cu-Ag quartz veins</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Cu_Au_skarn</Name>
+      <Title>Permissive tracts in Alaska for Cu (Au) skarn</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Cu_Skarn</Name>
+      <Title>Permissive tracts in Alaska for Cu Skarn</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Cyprus_massive_sulfide</Name>
+      <Title>Permissive tracts in Alaska for Cyprus massive sulfide</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Epithermal_vein_generic</Name>
+      <Title>Permissive tracts in Alaska for Epithermal vein, generic</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Epithermal_vein_hot_spring_Au</Name>
+      <Title>Permissive tracts in Alaska for Epithermal vein, hot spring Au</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Kipushi_CuPbZn</Name>
+      <Title>Permissive tracts in Alaska for Kipushi Cu-Pb-Zn</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Kuroko_massive_sulfide</Name>
+      <Title>Permissive tracts in Alaska for Kuroko massive sulfide</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Lowsulfide_Auquartz_veins</Name>
+      <Title>Permissive tracts in Alaska for Low-sulfide Au-quartz veins</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Lowsulfide_Auquartz_veins_Chugach_type</Name>
+      <Title>Permissive tracts in Alaska for Low-sulfide Au-quartz veins, Chugach type</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Mississippi_Valley_Type</Name>
+      <Title>Permissive tracts in Alaska for Mississippi Valley Type</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Mississippi_Valley_Type_SE_Missouri_PbZn</Name>
+      <Title>Permissive tracts in Alaska for Mississippi Valley Type (SE Missouri Pb-Zn)</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Peraluminous_granite_porphyry_gold</Name>
+      <Title>Permissive tracts in Alaska for Peraluminous granite porphyry gold</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Placer_Au</Name>
+      <Title>Permissive tracts in Alaska for Placer Au</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Plutonic_porphyry_Au</Name>
+      <Title>Permissive tracts in Alaska for Plutonic porphyry Au</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Polymetallic_replacement</Name>
+      <Title>Permissive tracts in Alaska for Polymetallic replacement</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Polymetallic_vein</Name>
+      <Title>Permissive tracts in Alaska for Polymetallic vein</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Porphyry_Cu</Name>
+      <Title>Permissive tracts in Alaska for Porphyry Cu</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Porphyry_Cu_BCAk_type</Name>
+      <Title>Permissive tracts in Alaska for Porphyry Cu, BC-Ak type</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Porphyry_CuMo</Name>
+      <Title>Permissive tracts in Alaska for Porphyry Cu-Mo</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Porphyry_Cu_skarn_related</Name>
+      <Title>Permissive tracts in Alaska for Porphyry Cu, skarn related</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Sandstone_hosted_PbZn</Name>
+      <Title>Permissive tracts in Alaska for Sandstone hosted Pb-Zn</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Sedex_ZnPb</Name>
+      <Title>Permissive tracts in Alaska for Sedex Zn-Pb</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Sedimenthosted_Cu</Name>
+      <Title>Permissive tracts in Alaska for Sediment-hosted Cu</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Sierran_Kuroko_mass_sulf</Name>
+      <Title>Permissive tracts in Alaska for Sierran Kuroko mass. sulf.</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_Synorogenicsynvolcanic_NiCu</Name>
+      <Title>Permissive tracts in Alaska for Synorogenic-synvolcanic Ni-Cu</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_ZnPbAg_veins</Name>
+      <Title>Permissive tracts in Alaska for Zn-Pb-Ag veins</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+    <FeatureType>
+      <Name>AK_ZnPb_skarn</Name>
+      <Title>Permissive tracts in Alaska for Zn-Pb skarn</Title>
+      <Abstract>Estimates of the number and size of undiscovered mineral deposits of this type in Alaska</Abstract>
+      <ows:Keywords>
+        <ows:Keyword>metallic mineral resources; economic geology; natural resource assessment; gold; silver; copper; lead; zinc; Alaska</ows:Keyword>
+      </ows:Keywords>
+      <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4269</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::4267</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::3857</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::900913</OtherSRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG::102113</OtherSRS>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox dimensions="2">
+        <ows:LowerCorner>-165 24</ows:LowerCorner>
+        <ows:UpperCorner>-66 73</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <MetadataURL format="text/xml" type="FGDC">http://mrdata.usgs.gov/metadata/nmra.xml</MetadataURL>
+    </FeatureType>
+  </FeatureTypeList>
+  <ogc:Filter_Capabilities>
+    <ogc:Spatial_Capabilities>
+      <ogc:GeometryOperands>
+        <ogc:GeometryOperand>gml:Point</ogc:GeometryOperand>
+        <ogc:GeometryOperand>gml:LineString</ogc:GeometryOperand>
+        <ogc:GeometryOperand>gml:Polygon</ogc:GeometryOperand>
+        <ogc:GeometryOperand>gml:Envelope</ogc:GeometryOperand>
+      </ogc:GeometryOperands>
+      <ogc:SpatialOperators>
+        <ogc:SpatialOperator name="Equals"/>
+        <ogc:SpatialOperator name="Disjoint"/>
+        <ogc:SpatialOperator name="Touches"/>
+        <ogc:SpatialOperator name="Within"/>
+        <ogc:SpatialOperator name="Overlaps"/>
+        <ogc:SpatialOperator name="Crosses"/>
+        <ogc:SpatialOperator name="Intersects"/>
+        <ogc:SpatialOperator name="Contains"/>
+        <ogc:SpatialOperator name="DWithin"/>
+        <ogc:SpatialOperator name="Beyond"/>
+        <ogc:SpatialOperator name="BBOX"/>
+      </ogc:SpatialOperators>
+    </ogc:Spatial_Capabilities>
+    <ogc:Scalar_Capabilities>
+      <ogc:LogicalOperators/>
+      <ogc:ComparisonOperators>
+        <ogc:ComparisonOperator>LessThan</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>GreaterThan</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>LessThanEqualTo</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>GreaterThanEqualTo</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>EqualTo</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>NotEqualTo</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>Like</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>Between</ogc:ComparisonOperator>
+      </ogc:ComparisonOperators>
+    </ogc:Scalar_Capabilities>
+    <ogc:Id_Capabilities>
+      <ogc:EID/>
+      <ogc:FID/>
+    </ogc:Id_Capabilities>
+  </ogc:Filter_Capabilities>
+</wfs:WFS_Capabilities>
