@@ -58,6 +58,12 @@ class Parser():
 
         return text_nodes
 
+    def find_terminal_attribute_nodes(self, exclude_descriptors):
+        '''
+        find any node without text but with attributes
+        '''
+        pass
+
     def _parse_node_attributes(self, node):
         if not node.attrib:
             return None
