@@ -9,11 +9,13 @@ def parse_gml_envelope(envelope, namespaces):
 	from a wcs lonLatEnvelope node, extract a bbox as 
 	[min, miny, maxx, maxy] with crs understanding
 
-	note: no reprojection here so if not epsg:4326?
+	note: no reprojection here so if not epsg:4326? and what to 
+	do about invalid srsName values/versions?
 	'''
-	srs = envelope.attrib['srsName'] if 'srsName' in envelope.attrib
-	if srs != 'EPSG:4326':
-		return []
+	# srs = envelope.attrib['srsName'] if 'srsName' in envelope.attrib
+	# if srs != 'EPSG:4326':
+	# if srs != 'urn:ogc:def:crs:OGC:1.3:CRS84'
+	# 	return []
 
 	#two nodes required, first as lower left, second as upper right
 	lower_left = envelope.xpath('gml:pos[1]', namespaces=namespaces)
@@ -24,4 +26,4 @@ def parse_gml_envelope(envelope, namespaces):
 	assert upper_right
 	maxes = map(float, upper_right[0].text.split(' '))
 
-	return mins + ,axes
+	return mins + maxes

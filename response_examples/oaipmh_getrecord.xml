@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OAI-PMH 
+    xmlns="http://www.openarchives.org/OAI/2.0/" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+    <responseDate>2015-02-06T22:22:24Z</responseDate>
+    <request verb="GetRecord" identifier="oai:openknowledge.worldbank.org:10986/13971" metadataPrefix="oai_dc">http://openknowledge.worldbank.org/oai/request</request>
+    <GetRecord>
+        <record>
+            <header>
+                <identifier>oai:openknowledge.worldbank.org:10986/13971</identifier>
+                <datestamp>2014-09-29T06:51:43Z</datestamp>
+                <setSpec>com_10986_2137</setSpec>
+                <setSpec>com_10986_4</setSpec>
+                <setSpec>col_10986_4392</setSpec>
+            </header>
+            <metadata>
+                <oai_dc:dc 
+                    xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" 
+                    xmlns:doc="http://www.lyncode.com/xoai" 
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+                    xmlns:dc="http://purl.org/dc/elements/1.1/" 
+                    xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+                <dc:title>Bulgaria : A Changing Poverty Profile</dc:title>
+                <dc:creator>World Bank</dc:creator>
+                <dc:subject>ABSOLUTE POVERTY</dc:subject>
+                <dc:subject>ABSOLUTE POVERTY LINE</dc:subject>
+                <dc:subject>ACCESS TO DISTRICT HEATING</dc:subject>
+                <dc:subject>ACCESS TO EDUCATION</dc:subject>
+                <dc:subject>ACCESSION REQUIREMENTS</dc:subject>
+                <dc:subject>AGRICULTURAL INCOMES</dc:subject>
+                <dc:subject>AGRICULTURAL POLICY</dc:subject>
+                <dc:subject>AGRICULTURAL PRODUCTIVITY</dc:subject>
+                <dc:subject>AGRICULTURAL WAGES</dc:subject>
+                <dc:subject>ANTI-POVERTY</dc:subject>
+                <dc:subject>ANTI-POVERTY STRATEGY</dc:subject>
+                <dc:subject>BASIC EDUCATION</dc:subject>
+                <dc:subject>BASIC HEALTH</dc:subject>
+                <dc:subject>CHANGES IN POVERTY</dc:subject>
+                <dc:subject>CHILD ALLOWANCES</dc:subject>
+                <dc:subject>CHRONIC POVERTY</dc:subject>
+                <dc:subject>CLEAN DRINKING WATER</dc:subject>
+                <dc:subject>COMPULSORY EDUCATION</dc:subject>
+                <dc:subject>CONSUMER PRICE INDEX</dc:subject>
+                <dc:subject>CONSUMPTION AGGREGATE</dc:subject>
+                <dc:subject>CORRELATES OF POVERTY</dc:subject>
+                <dc:subject>CURRENCY BOARD</dc:subject>
+                <dc:subject>DECLINE IN POVERTY</dc:subject>
+                <dc:subject>DECLINE IN POVERTY RATES</dc:subject>
+                <dc:subject>DENSITY FUNCTION</dc:subject>
+                <dc:subject>DEVELOPMENT REPORT</dc:subject>
+                <dc:subject>DIMENSIONS OF POVERTY</dc:subject>
+                <dc:subject>DROP IN POVERTY</dc:subject>
+                <dc:subject>DROUGHT</dc:subject>
+                <dc:subject>EDUCATION LEVEL</dc:subject>
+                <dc:subject>EDUCATIONAL ATTAINMENT</dc:subject>
+                <dc:subject>EDUCATIONAL OPPORTUNITIES</dc:subject>
+                <dc:subject>ELDERLY HOUSEHOLDS</dc:subject>
+                <dc:subject>EMPLOYMENT CREATION</dc:subject>
+                <dc:subject>EMPLOYMENT OPPORTUNITIES</dc:subject>
+                <dc:subject>ESTIMATES OF POVERTY</dc:subject>
+                <dc:subject>EXPENDITURE ISSUES</dc:subject>
+                <dc:subject>EXTREME POVERTY</dc:subject>
+                <dc:subject>FAMILY BENEFITS</dc:subject>
+                <dc:subject>FARM EMPLOYMENT</dc:subject>
+                <dc:subject>FARM EMPLOYMENT OPPORTUNITIES</dc:subject>
+                <dc:subject>FEMALE-HEADED HOUSEHOLDS</dc:subject>
+                <dc:subject>FINANCIAL MARKETS</dc:subject>
+                <dc:subject>FINANCIAL SECTOR</dc:subject>
+                <dc:subject>FOOD EXPENDITURES</dc:subject>
+                <dc:subject>FOOD INDUSTRY</dc:subject>
+                <dc:subject>FOOD ITEMS</dc:subject>
+                <dc:subject>FOOD NECESSITIES</dc:subject>
+                <dc:subject>FOOD SHARE</dc:subject>
+                <dc:subject>FUNCTIONING STATE</dc:subject>
+                <dc:subject>GINI COEFFICIENT</dc:subject>
+                <dc:subject>HEALTH CARE</dc:subject>
+                <dc:subject>HEALTH INSURANCE</dc:subject>
+                <dc:subject>HIGH POVERTY</dc:subject>
+                <dc:subject>HOUSEHOLD BUDGET</dc:subject>
+                <dc:subject>HOUSEHOLD CONSUMPTION</dc:subject>
+                <dc:subject>HOUSEHOLD EXPENDITURES ON FOOD</dc:subject>
+                <dc:subject>HOUSEHOLD HEAD</dc:subject>
+                <dc:subject>HOUSEHOLD HEADS</dc:subject>
+                <dc:subject>HOUSEHOLD INCOME</dc:subject>
+                <dc:subject>HOUSEHOLD SIZE</dc:subject>
+                <dc:subject>HOUSEHOLD SURVEY</dc:subject>
+                <dc:subject>HOUSEHOLD SURVEYS</dc:subject>
+                <dc:subject>HOUSEHOLD WELFARE</dc:subject>
+                <dc:subject>HOUSEHOLDS WITH CHILDREN</dc:subject>
+                <dc:subject>HOUSING</dc:subject>
+                <dc:subject>HUMAN CAPITAL</dc:subject>
+                <dc:subject>HUMAN DEVELOPMENT</dc:subject>
+                <dc:subject>IMPACT ON POVERTY</dc:subject>
+                <dc:subject>IMPROVING GOVERNANCE</dc:subject>
+                <dc:subject>INCOME</dc:subject>
+                <dc:subject>INCOME GROUPS</dc:subject>
+                <dc:subject>INCOME POVERTY</dc:subject>
+                <dc:subject>INCREASING INEQUALITY</dc:subject>
+                <dc:subject>INEQUALITY</dc:subject>
+                <dc:subject>INEQUALITY MEASURES</dc:subject>
+                <dc:subject>INFANT MORTALITY</dc:subject>
+                <dc:subject>INFANT MORTALITY RATE</dc:subject>
+                <dc:subject>INFORMAL EMPLOYMENT</dc:subject>
+                <dc:subject>INSURANCE</dc:subject>
+                <dc:subject>INVESTMENT CLIMATE</dc:subject>
+                <dc:subject>LABOR FORCE</dc:subject>
+                <dc:subject>LABOR MARKET</dc:subject>
+                <dc:subject>LABOR MARKET PROGRAMS</dc:subject>
+                <dc:subject>LIFE EXPECTANCY</dc:subject>
+                <dc:subject>LIVING STANDARDS</dc:subject>
+                <dc:subject>LOW WAGES</dc:subject>
+                <dc:subject>MACROECONOMIC STABILITY</dc:subject>
+                <dc:subject>MATERNAL MORTALITY</dc:subject>
+                <dc:subject>MEASURING POVERTY</dc:subject>
+                <dc:subject>MEAT</dc:subject>
+                <dc:subject>NON-INCOME DIMENSIONS</dc:subject>
+                <dc:subject>NON-POOR HOUSEHOLDS</dc:subject>
+                <dc:subject>PER CAPITA CONSUMPTION</dc:subject>
+                <dc:subject>PER CAPITA INCOME</dc:subject>
+                <dc:subject>POLICY CHANGES</dc:subject>
+                <dc:subject>POLICY IMPLICATIONS</dc:subject>
+                <dc:subject>POLICY LEVEL</dc:subject>
+                <dc:subject>POOR</dc:subject>
+                <dc:subject>POOR CHILDREN</dc:subject>
+                <dc:subject>POOR FAMILIES</dc:subject>
+                <dc:subject>POOR HEALTH</dc:subject>
+                <dc:subject>POOR HOUSEHOLDS</dc:subject>
+                <dc:subject>POOR INDIVIDUALS</dc:subject>
+                <dc:subject>POOR POPULATION</dc:subject>
+                <dc:subject>POVERTY ASSESSMENT</dc:subject>
+                <dc:subject>POVERTY GAP</dc:subject>
+                <dc:subject>POVERTY LEVELS</dc:subject>
+                <dc:subject>POVERTY LINE</dc:subject>
+                <dc:subject>POVERTY LINES</dc:subject>
+                <dc:subject>POVERTY MAP</dc:subject>
+                <dc:subject>POVERTY MEASURE</dc:subject>
+                <dc:subject>POVERTY MEASUREMENT</dc:subject>
+                <dc:subject>POVERTY MEASURES</dc:subject>
+                <dc:subject>POVERTY POVERTY</dc:subject>
+                <dc:subject>POVERTY PROFILE</dc:subject>
+                <dc:subject>POVERTY RATE</dc:subject>
+                <dc:subject>POVERTY RATES</dc:subject>
+                <dc:subject>POVERTY REDUCTION</dc:subject>
+                <dc:subject>POVERTY REDUCTION STRATEGY</dc:subject>
+                <dc:subject>POVERTY RISK</dc:subject>
+                <dc:subject>POVERTY SEVERITY</dc:subject>
+                <dc:subject>POWERLESSNESS</dc:subject>
+                <dc:subject>PRIMARY EDUCATION</dc:subject>
+                <dc:subject>PRO-POOR</dc:subject>
+                <dc:subject>PUBLIC EXPENDITURE</dc:subject>
+                <dc:subject>PUBLIC PROGRAMS</dc:subject>
+                <dc:subject>PUBLIC SECTOR</dc:subject>
+                <dc:subject>REDUCTION IN POVERTY</dc:subject>
+                <dc:subject>REGIONAL DEVELOPMENT</dc:subject>
+                <dc:subject>REGIONAL DIFFERENTIALS</dc:subject>
+                <dc:subject>REGIONAL LEVEL</dc:subject>
+                <dc:subject>REGIONAL POVERTY</dc:subject>
+                <dc:subject>REMOTE COMMUNITIES</dc:subject>
+                <dc:subject>RURAL</dc:subject>
+                <dc:subject>RURAL AREAS</dc:subject>
+                <dc:subject>RURAL DIMENSION</dc:subject>
+                <dc:subject>RURAL HOUSEHOLDS</dc:subject>
+                <dc:subject>RURAL INCOMES</dc:subject>
+                <dc:subject>RURAL POOR</dc:subject>
+                <dc:subject>RURAL POPULATION</dc:subject>
+                <dc:subject>RURAL POVERTY</dc:subject>
+                <dc:subject>RURAL RESIDENTS</dc:subject>
+                <dc:subject>RURAL UNEMPLOYMENT</dc:subject>
+                <dc:subject>RURAL WELFARE</dc:subject>
+                <dc:subject>SAFETY NET</dc:subject>
+                <dc:subject>SANITATION</dc:subject>
+                <dc:subject>SCHOOL ATTENDANCE</dc:subject>
+                <dc:subject>SCHOOLING</dc:subject>
+                <dc:subject>SECTOR ACTIVITY</dc:subject>
+                <dc:subject>SELF-EMPLOYMENT</dc:subject>
+                <dc:subject>SHARP REDUCTION</dc:subject>
+                <dc:subject>SIGNIFICANT IMPACT</dc:subject>
+                <dc:subject>SOCIAL ASSISTANCE</dc:subject>
+                <dc:subject>SOCIAL PROGRAMS</dc:subject>
+                <dc:subject>SOCIAL PROTECTION</dc:subject>
+                <dc:subject>SOCIAL SECURITY</dc:subject>
+                <dc:subject>SPATIAL DIFFERENCES</dc:subject>
+                <dc:subject>SPATIAL DIMENSION</dc:subject>
+                <dc:subject>STABILIZATION POLICIES</dc:subject>
+                <dc:subject>STRUCTURAL REFORMS</dc:subject>
+                <dc:subject>SUBSISTENCE</dc:subject>
+                <dc:subject>TARGETING</dc:subject>
+                <dc:subject>TAXATION</dc:subject>
+                <dc:subject>TRANSACTION COSTS</dc:subject>
+                <dc:subject>TRANSITION COUNTRIES</dc:subject>
+                <dc:subject>TRANSITION ECONOMIES</dc:subject>
+                <dc:subject>UNEMPLOYMENT</dc:subject>
+                <dc:subject>URBAN AREAS</dc:subject>
+                <dc:subject>VEGETABLES</dc:subject>
+                <dc:subject>VULNERABLE GROUPS</dc:subject>
+                <dc:subject>WORKING CONDITIONS</dc:subject>
+                <dc:description>Bulgaria's economic progress in&#13;
+                    recent years has been notable. Since 1997, the country has&#13;
+                    implemented a range of structural reforms alongside&#13;
+                    substantive fiscal and sectoral reforms. Measures have&#13;
+                    included the introduction of a currency board to stabilize&#13;
+                    the lev and more aggressive privatization of large state&#13;
+                    owned enterprises. These developments have led to a&#13;
+                    significant turnaround from the period of economic crisis in&#13;
+                    1996-1997, which was marked by a decline in real Gross&#13;
+                    Domestic Product (GDP) of 18 percent and annual inflation of&#13;
+                    579 percent in 1997. Growth resumed in 1998 and has been&#13;
+                    sustained. Bulgaria's current government, which took&#13;
+                    office in July 2001, has affirmed its commitment to the&#13;
+                    objectives of macrostability, including a continuation of&#13;
+                    the currency board and market reforms. Poverty in 2001 has&#13;
+                    become more concentrated among distinct and identifiable&#13;
+                    groups within the population than in previous years. In this&#13;
+                    regard, the profile of poverty in Bulgaria has come to&#13;
+                    resemble poverty patterns in other countries in Central and&#13;
+                    Eastern European countries more closely. The strong link&#13;
+                    between unemployment and poverty, and the emergence of&#13;
+                    children and households in rural areas as high poverty risk&#13;
+                    groups, as well as ethnic minorities are features of poverty&#13;
+                    common to ED accession countries. While the concentration of&#13;
+                    poverty among specific groups indicates that targeting&#13;
+                    interventions to address poverty in Bulgaria will be easier,&#13;
+                    on the other hand, these pockets of chronic poverty are more&#13;
+                    resilient and harder to reach than shallower poverty linked&#13;
+                    to transient declines in incomes. These developments&#13;
+                    highlight the need for a long term commitment to poverty&#13;
+                    reduction in Bulgaria which will require continuity in&#13;
+                    policy, as well as on-going monitoring and evaluation.</dc:description>
+                <dc:date>2013-06-17T18:31:46Z</dc:date>
+                <dc:date>2013-06-17T18:31:46Z</dc:date>
+                <dc:date>2002-10-29</dc:date>
+                <dc:identifier>http://hdl.handle.net/10986/13971</dc:identifier>
+                <dc:language>en_US</dc:language>
+                <dc:relation>A World Bank country study;</dc:relation>
+                <dc:rights>http://creativecommons.org/licenses/by/3.0/igo</dc:rights>
+                <dc:rights>World Bank</dc:rights>
+                <dc:rights>CC BY 3.0 IGO</dc:rights>
+                <dc:publisher>Washington, DC</dc:publisher>
+            </oai_dc:dc>
+            </metadata>
+        </record>
+    </GetRecord>
+</OAI-PMH>

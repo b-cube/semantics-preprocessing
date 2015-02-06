@@ -1,4 +1,5 @@
 from lib.preprocessors import *
+from lib.utils import parse_gml_envelope
 
 class WmsReader(BaseReader):
 	_versions = {
@@ -8,11 +9,7 @@ class WmsReader(BaseReader):
 				"name": "/{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Service/{http://www.opengis.net/wms}Name",
 				"abstract": "/{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Service/{http://www.opengis.net/wms}Abstract",
 				"tags": "/{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Service/{http://www.opengis.net/wms}KeywordList/{http://www.opengis.net/wms}Keyword",
-				"contact": "/{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Service/{http://www.opengis.net/wms}ContactInformation/{http://www.opengis.net/wms}ContactPersonPrimary",
-				"minx": "/{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Capability/{http://www.opengis.net/wms}Layer/{http://www.opengis.net/wms}EX_GeographicBoundingBox/{http://www.opengis.net/wms}westBoundLongitude",
-				"miny": "/{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Capability/{http://www.opengis.net/wms}Layer/{http://www.opengis.net/wms}EX_GeographicBoundingBox/{http://www.opengis.net/wms}southBoundLatitude",
-				"maxx": "/{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Capability/{http://www.opengis.net/wms}Layer/{http://www.opengis.net/wms}EX_GeographicBoundingBox/{http://www.opengis.net/wms}eastBoundLongitude",
-				"maxy": "/{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Capability/{http://www.opengis.net/wms}Layer/{http://www.opengis.net/wms}EX_GeographicBoundingBox/{http://www.opengis.net/wms}northBoundLatitude"
+				"contact": "/{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Service/{http://www.opengis.net/wms}ContactInformation/{http://www.opengis.net/wms}ContactPersonPrimary"
 			},
 			"endpoint": {
 				"GetCapabilities": {
@@ -105,18 +102,36 @@ class WfsReader(BaseReader):
 					"formats": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}OperationsMetadata/{http://www.opengis.net/ows}Operation[@{http://www.opengis.net/ows}name='GetCapabilities']/{http://www.opengis.net/ows}Parameter[@{http://www.opengis.net/ows}name='AcceptFormats']/{http://www.opengis.net/ows}Value"
 				},
 				"DescribeFeatureType": {
-					"url": "",
-					"formats": ""
+					"url": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}OperationsMetadata/{http://www.opengis.net/ows}Operation[@{http://www.opengis.net/ows}name='DescribeFeatureType']/{http://www.opengis.net/ows}DCP/{http://www.opengis.net/ows}HTTP/{http://www.opengis.net/ows}Get/@{http://www.w3.org/1999/xlink}href",
+					"formats": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}OperationsMetadata/{http://www.opengis.net/ows}Operation[@{http://www.opengis.net/ows}name='DescribeFeatureType']/{http://www.opengis.net/ows}Parameter[@{http://www.opengis.net/ows}name='outputFormat']/{http://www.opengis.net/ows}Value"
 				},
 				"GetFeature": {
-					"url": "",
-					"formats": ""
+					"url": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}OperationsMetadata/{http://www.opengis.net/ows}Operation[@{http://www.opengis.net/ows}name='GetFeature']/{http://www.opengis.net/ows}DCP/{http://www.opengis.net/ows}HTTP/{http://www.opengis.net/ows}Get/@{http://www.w3.org/1999/xlink}href",
+					"formats": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}OperationsMetadata/{http://www.opengis.net/ows}Operation[@{http://www.opengis.net/ows}name='GetFeature']/{http://www.opengis.net/ows}Parameter[@{http://www.opengis.net/ows}name='outputFormat']/{http://www.opengis.net/ows}Value"
 				}
 			}
 		},
 		'1.0.0': {
-			"service": {},
-			"endpoint": {}
+			"service": {
+				"title": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}Service/{http://www.opengis.net/ows}Title",
+				"name": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}Service/{http://www.opengis.net/ows}Name",
+				"abstract": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}Service/{http://www.opengis.net/ows}Abstract",
+				"tags": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}Service/{http://www.opengis.net/ows}KeywordList/{http://www.opengis.net/ows}Keyword",
+				"contact": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}Service/{http://www.opengis.net/ows}ContactInformation/{http://www.opengis.net/ows}ContactPersonPrimary"
+			},
+			"endpoint": {
+				"GetCapabilities": {
+					"url": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/wfs}Capability/{http://www.opengis.net/wfs}Request/{http://www.opengis.net/wfs}GetCapabilities/{http://www.opengis.net/wfs}DCPType/{http://www.opengis.net/wfs}HTTP/{http://www.opengis.net/wfs}Get/@{http://www.opengis.net/wfs}onineResource"
+				},
+				"DescribeFeatureType": {
+					"url": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/wfs}Capability/{http://www.opengis.net/wfs}Request/{http://www.opengis.net/wfs}DescribeFeatureType/{http://www.opengis.net/wfs}DCPType/{http://www.opengis.net/wfs}HTTP/{http://www.opengis.net/wfs}Get/@{http://www.opengis.net/wfs}onineResource",
+					"formats": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/wfs}Capability/{http://www.opengis.net/wfs}Request/{http://www.opengis.net/wfs}DescribeFeatureType/{http://www.opengis.net/wfs}SchemaDescriptionLanguage/{http://www.opengis.net/wfs}XMLSCHEMA/name()"
+				},
+				"GetFeature": {
+					"url": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/wfs}Capability/{http://www.opengis.net/wfs}Request/{http://www.opengis.net/wfs}GetFeature/{http://www.opengis.net/wfs}DCPType/{http://www.opengis.net/wfs}HTTP/{http://www.opengis.net/wfs}Get/@{http://www.opengis.net/wfs}onineResource",
+					"formats": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/wfs}Capability/{http://www.opengis.net/wfs}Request/{http://www.opengis.net/wfs}GetFeature/{http://www.opengis.net/wfs}ResultFormat/{http://www.opengis.net/wfs}GML2/name()"
+				}
+			}
 		}
 	}
 
