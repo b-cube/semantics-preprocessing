@@ -140,9 +140,11 @@ class Parser():
             hparser.feed(t)
             elem.text = hparser.get_data()
 
+        print etree.tostring(self.xml, pretty_print=True)
+
 class TextParser(HTMLParser):
     '''
-    basic html parsing
+    basic html parsing for text with html-encoded tags
     '''
     def __init__(self):
         self.reset()

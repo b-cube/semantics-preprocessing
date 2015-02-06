@@ -48,7 +48,7 @@ class BaseReader():
 				service_elements[k] = [e.text for e in elems] if len(elems) > 0 else elems[0].text
 
 		endpoints = self.parse_endpoints()
-		if cendpoints:
+		if endpoints:
 			service_elements['endpoints'] = endpoints
 		return service_elements
 
@@ -158,9 +158,9 @@ class WmsReader(BaseReader):
 		for k, v in self._endpoint_descriptors.iteritems():
 			endpoints.append(
 				(
-					k, 
-					self.parser.find(v['url']),
-					self.parser.find(v['formats'])
+					# k, 
+					# self.parser.find(v['url']),
+					# self.parser.find(v['formats'])
 				)
 			)
 

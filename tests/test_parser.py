@@ -30,12 +30,14 @@ class TestParser(unittest.TestCase):
     	self.assertTrue(len(self.parser._namespaces) > 0)
 
     def test_remap_namespaced_paths(self):
+    	#basic check
     	in_xpath = '{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}Image'
     	out_xpath = 'default:OpenSearchDescription/default:Image'
 
     	test_xpath = self.parser._remap_namespaced_xpaths(in_xpath)
 
     	self.assertTrue(test_xpath == out_xpath)
+
 
 
     def test_find_nodes(self):
@@ -57,10 +59,21 @@ class TestParser(unittest.TestCase):
     	self.assertTrue(nodes[1][2][1][0] == '16')
     	self.assertTrue(nodes[1][2][0][1] == '{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}Image/@type')
 
+class TestHtmlParsing(unittest.TestCase):
+	def setUp(self):    
+		data = '''<xml>
+        <node>Does it parse?  &lt;br/&gt; It &lt;em&gt;should&lt;/em&gt;!</node>
+        <nextnode>Wow, that's a typography sin right there, but &lt;a href="#anchor"&gt;Nope&lt;/a&gt; and &lt;span&gt;Many XML&lt;/span&gt;.</nextnode>
+        </xml>
+        '''
+		self.parser = Parser(data)
 
-    def test_html_parsing(self):
+	def test_did_it_parse_the_html(self):
+		test_node = etree.fromstring('<node>Does it parse?   It should!</node>')
+		check_node = self.parser.xml.find('node')
 
-    	self.assertTrue(True)
+		self.assertTrue(check_node is not None)
+		self.assertEqual(check_node.text, test_node.text)
 
 class TestBaseReader(unittest.TestCase):
 	def setUp(self):    	
