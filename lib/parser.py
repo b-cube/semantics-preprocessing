@@ -100,7 +100,8 @@ class Parser():
         Pull all of the namespaces in the source document
         and generate a list of tuples (prefix, URI) to dict
         '''
-        namespaces = dict(self.xml.xpath('/*/namespace::*'))
+        #namespaces = dict(self.xml.xpath('/*/namespace::*'))
+        namespaces = dict(self.xml.xpath('//namespace::*'))
         if None in namespaces:
             namespaces['default'] = namespaces[None]
             del namespaces[None]
@@ -139,8 +140,6 @@ class Parser():
             hparser = TextParser()
             hparser.feed(t)
             elem.text = hparser.get_data()
-
-        print etree.tostring(self.xml, pretty_print=True)
 
 class TextParser(HTMLParser):
     '''

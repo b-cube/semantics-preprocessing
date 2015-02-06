@@ -1,8 +1,11 @@
 import unittest
-from lib.parser import Parser
-from lib.preprocessors import *
 import os
 import json
+
+from lib.parser import Parser
+from lib.preprocessors import *
+from lib.wxs_preprocessors import *
+
 
 
 class TestParser(unittest.TestCase):

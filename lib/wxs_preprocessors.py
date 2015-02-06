@@ -17,17 +17,17 @@ class WmsReader(BaseReader):
 			"endpoint": {
 				"GetCapabilities": {
 					"formats": "/{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Capability/{http://www.opengis.net/wms}Request/{http://www.opengis.net/wms}GetCapabilities/{http://www.opengis.net/wms}Format",
-					"url": "/{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Capability/{http://www.opengis.net/wms}Request/{http://www.opengis.net/wms}GetCapabilities/{http://www.opengis.net/wms}/DCPType/{http://www.opengis.net/wms}HTTP/{http://www.opengis.net/wms}Get/{http://www.opengis.net/wms}OnlineResource/@{http://www.w3.org/1999/xlink}href"
+					"url": "/{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Capability/{http://www.opengis.net/wms}Request/{http://www.opengis.net/wms}GetCapabilities/{http://www.opengis.net/wms}DCPType/{http://www.opengis.net/wms}HTTP/{http://www.opengis.net/wms}Get/{http://www.opengis.net/wms}OnlineResource/@{http://www.w3.org/1999/xlink}href"
 
 				},
 				"GetMap": {
 					"formats": "/{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Capability/{http://www.opengis.net/wms}Request/{http://www.opengis.net/wms}GetMap/{http://www.opengis.net/wms}Format",
-					"url": "/{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Capability/{http://www.opengis.net/wms}Request/{http://www.opengis.net/wms}GetMap/{http://www.opengis.net/wms}/DCPType/{http://www.opengis.net/wms}HTTP/{http://www.opengis.net/wms}Get/{http://www.opengis.net/wms}OnlineResource/@{http://www.w3.org/1999/xlink}href"
+					"url": "/{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Capability/{http://www.opengis.net/wms}Request/{http://www.opengis.net/wms}GetMap/{http://www.opengis.net/wms}DCPType/{http://www.opengis.net/wms}HTTP/{http://www.opengis.net/wms}Get/{http://www.opengis.net/wms}OnlineResource/@{http://www.w3.org/1999/xlink}href"
 
 				},
 				"GetFeatureInfo": {
 					"formats": "/{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Capability/{http://www.opengis.net/wms}Request/{http://www.opengis.net/wms}GetFeatureInfo/{http://www.opengis.net/wms}Format",
-					"url": "/{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Capability/{http://www.opengis.net/wms}Request/{http://www.opengis.net/wms}GetFeatureInfo/{http://www.opengis.net/wms}/DCPType/{http://www.opengis.net/wms}HTTP/{http://www.opengis.net/wms}Get/{http://www.opengis.net/wms}OnlineResource/@{http://www.w3.org/1999/xlink}href"
+					"url": "/{http://www.opengis.net/wms}WMS_Capabilities/{http://www.opengis.net/wms}Capability/{http://www.opengis.net/wms}Request/{http://www.opengis.net/wms}GetFeatureInfo/{http://www.opengis.net/wms}DCPType/{http://www.opengis.net/wms}HTTP/{http://www.opengis.net/wms}Get/{http://www.opengis.net/wms}OnlineResource/@{http://www.w3.org/1999/xlink}href"
 
 				}
 			}
@@ -35,7 +35,7 @@ class WmsReader(BaseReader):
 
 	}
 
-	def __init__(self):
+	def __init__(self, response):
 		self._response = response
 		self._load_xml()
 
@@ -46,8 +46,8 @@ class WmsReader(BaseReader):
 		self._version = self._version[0]
 
 		#setup up the xpaths at least
-		self._service_descriptors = self._versions[version]['service']
-		self._endpoint_descriptors = self._versions[version]['endpoint']
+		self._service_descriptors = self._versions[self._version]['service']
+		self._endpoint_descriptors = self._versions[self._version]['endpoint']
 
 	def return_exclude_descriptors(self):
 		excluded = self._service_descriptors.values()
@@ -64,11 +64,12 @@ class WmsReader(BaseReader):
 
 		endpoints = []
 		for k, v in self._endpoint_descriptors.iteritems():
+			print k, v['url']
 			endpoints.append(
 				(
-					# k, 
-					# self.parser.find(v['url']),
-					# self.parser.find(v['formats'])
+					k, 
+					self.parser.find(v['url']),
+					self.parser.find(v['formats'])
 				)
 			)
 
@@ -119,7 +120,7 @@ class WfsReader(BaseReader):
 		}
 	}
 
-	def __init__(self):
+	def __init__(self, response):
 		self._response = response
 		self._load_xml()
 
@@ -130,8 +131,8 @@ class WfsReader(BaseReader):
 		self._version = self._version[0]
 
 		#setup up the xpaths at least
-		self._service_descriptors = self._versions[version]['service']
-		self._endpoint_descriptors = self._versions[version]['endpoint']
+		self._service_descriptors = self._versions[self._version]['service']
+		self._endpoint_descriptors = self._versions[self._version]['endpoint']
 
 
 	def return_exclude_descriptors(self):
