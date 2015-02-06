@@ -1,5 +1,6 @@
 from lxml import etree
 import re
+from HTMLParser import HTMLParser
 
 class Parser():
     '''
@@ -32,6 +33,7 @@ class Parser():
             self.xml = None
 
         self._namespaces = self._get_document_namespaces()
+        self._strip_html()
 
     def find(self, xpath):
         '''
@@ -121,8 +123,33 @@ class Parser():
         return xpath
 
 
+    def _strip_html(self):
+        '''
+        remove any html tags from any text chunk
 
+        note:
+            when this strips out a tags, it drops the href. not worried
+            about that in this context
+        '''
+        for elem in self.xml.iter():
+            t = elem.text.strip() if elem.text else ''
+            if not t:
+                continue
 
+            hparser = TextParser()
+            hparser.feed(t)
+            elem.text = hparser.get_data()
 
+class TextParser(HTMLParser):
+    '''
+    basic html parsing
+    '''
+    def __init__(self):
+        self.reset()
+        self.fed = []
+    def handle_data(self, d):
+        self.fed.append(d)
+    def get_data(self):
+        return ''.join(self.fed)
 
 

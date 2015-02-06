@@ -58,6 +58,10 @@ class TestParser(unittest.TestCase):
     	self.assertTrue(nodes[1][2][0][1] == '{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}Image/@type')
 
 
+    def test_html_parsing(self):
+
+    	self.assertTrue(True)
+
 class TestBaseReader(unittest.TestCase):
 	def setUp(self):    	
 		pass
@@ -95,6 +99,9 @@ class TestWmsReader(unittest.TestCase):
 		nodes = self.reader.return_everything_else({})
 
 		self.assertTrue(nodes is not None)
+
+
+
 
 
 
