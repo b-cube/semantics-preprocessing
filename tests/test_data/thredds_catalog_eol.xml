@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0" 
+    xmlns:xlink="http://www.w3.org/1999/xlink" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0 http://www.unidata.ucar.edu/schemas/thredds/InvCatalog.1.0.2.xsd" 
+    version="1.0.2" name="Actinic Flux measurements during OASIS Barrow field intensive Spring 2009">
+    <service name="codiac_order" base="http://data.eol.ucar.edu/codiac/fgr_form/id=" serviceType="WebForm" desc="Codiac access: order, subset, change formats; pickup data by FTP"/>
+    <dataset authority="edu.ucar.eol.codiac" ID="ucar.ncar.eol.dataset.106_359" name="Actinic Flux measurements during OASIS Barrow field intensive Spring 2009" harvest="true">
+        <metadata xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_359.metadata.xml" metadataType="THREDDS" inherited="true"/>
+        <access serviceName="codiac_order" urlPath="106.359"/>
+        <catalogRef xlink:title="companion: Location information and pictures of the OASIS Barrow field intensive Spring 2009" xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_366.thredds.xml"/>
+    </dataset>
+</catalog>

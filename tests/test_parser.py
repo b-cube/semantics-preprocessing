@@ -78,43 +78,7 @@ class TestHtmlParsing(unittest.TestCase):
 		self.assertTrue(check_node is not None)
 		self.assertEqual(check_node.text, test_node.text)
 
-class TestBaseReader(unittest.TestCase):
-	def setUp(self):    	
-		pass
 
-	def test_load_xml(self):
-		#honestly, this is just a parser test
-
-		pass
-
-	def test_return_descriptors(self):
-		pass
-
-	def return_everything_else(self):
-		pass
-
-class TestWmsReader(unittest.TestCase):
-	def setUp(self):   
-		with open('tests/test_data/esri_wms_35bd4e2ce8cd13e8697b03976ffe1ee6.txt', 'r') as f:
-			text = f.read() 	
-		self.reader = WmsReader(text)
-		self.reader._load_xml()
-
-	def test_load_xml(self):
-		#honestly, this is just a parser test
-
-		self.assertTrue(self.reader.parser is not None)
-		self.assertTrue(self.reader.parser.xml is not None)
-
-	def test_return_descriptors(self):
-		descriptors = self.reader.return_service_descriptors()
-
-		self.assertTrue(descriptors is not None)
-
-	def return_everything_else(self):
-		nodes = self.reader.return_everything_else({})
-
-		self.assertTrue(nodes is not None)
 
 
 

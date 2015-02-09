@@ -45,7 +45,8 @@ class BaseReader():
 		for k, v in self._service_descriptors.iteritems():
 			elems = self.parser.find(v)
 			if elems:
-				service_elements[k] = [e.text for e in elems] if len(elems) > 0 else elems[0].text
+				service_elements[k] = [e.text if isinstance(e, etree._Element) else e for e in elems] if len(elems) > 1 \
+					else (elems[0].text if isinstance(elems[0], etree._Element) else elems[0])
 
 		endpoints = self.parse_endpoints()
 		if endpoints:
