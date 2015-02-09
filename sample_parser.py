@@ -14,6 +14,7 @@ import yaml
 base nutch/solr response parser
 '''
 
+#TODO: how to handle any nested service type (like csw with internal iso representations)
 class FileParser():
 	'''
 	from a file, return a tuple of id, date, raw_content
@@ -51,53 +52,6 @@ class FileParser():
 
 		return m.group(1)
 
-	def identify_response_type(self, prepared_content, url):
-		'''
-		let's try to identify what kind of service response it 
-		is based on the namespaces
 
-		PRIORITY:
-			opensearch
-			opensearch esip
-			thredds catalog
-			OAI-PMH
-			iso
-			ogc getcapabilities
-			wadl
-		'''
-
-		if 'http://www.isotc211.org/2005/gmi' in prepared_content \
-			or 'http://www.isotc211.org/2005/gmd' in prepared_content:
-
-			return 'ISO'
-		elif 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0' in prepared_content:
-			return 'THREDDS'
-		elif 'http://a9.com/-/spec/opensearch/1.1/' in prepared_content:
-			return 'OpenSearch'
-		elif 'http://wadl.dev.java.net' in prepared_content:
-			return 'WADL'
-		elif 'http://www.opengis.net/wms' in prepared_content \
-			or 'SERVICE=WMS' in url.upper() \
-			or ('http://mapserver.gis.umn.edu/mapserver' in prepared_content \
-				and 'SERVICE=WMS' in url.upper()):
-
-			return 'WMS'
-		elif 'http://www.opengis.net/wfs' in prepared_content \
-			or 'SERVICE=WFS' in url.upper() \
-			or ('http://mapserver.gis.umn.edu/mapserver' in prepared_content \
-				and 'SERVICE=WFS' in url.upper()):
-
-			return 'WFS'
-		elif 'http://www.opengis.net/wcs' in prepared_content \
-			or 'SERVICE=WCS' in url.upper() \
-			or ('http://mapserver.gis.umn.edu/mapserver' in prepared_content \
-				and 'SERVICE=WCS' in url.upper()):
-
-			return 'WCS'			
-		elif 'http://www.openarchives.org/OAI/' in prepared_content:
-			#OAI-PMH as Dublin Core
-			return 'OAI-PMH'
-
-		return ''
 
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thredds:catalog xmlns:fn="http://www.w3.org/2005/02/xpath-functions"
+    xmlns:thredds="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:bes="http://xml.opendap.org/ns/bes/1.0#">
+    <thredds:service name="dap" serviceType="OPeNDAP" base="/opendap/hyrax"/>
+    <thredds:service name="file" serviceType="HTTPServer" base="/opendap/hyrax"/>
+    <thredds:dataset name="/TRMM_3Hourly_3B42/1997/365"
+        ID="/opendap/hyrax/TRMM_3Hourly_3B42/1997/365/">
+        <thredds:dataset name="3B42.19980101.00.7.HDF.Z"
+            ID="/opendap/hyrax/TRMM_3Hourly_3B42/1997/365/3B42.19980101.00.7.HDF.Z">
+            <thredds:dataSize units="bytes">740599</thredds:dataSize>
+            <thredds:date type="modified">2012-05-23T18:37:42</thredds:date>
+            <thredds:access serviceName="dap"
+                urlPath="/TRMM_3Hourly_3B42/1997/365/3B42.19980101.00.7.HDF.Z"/>
+            <thredds:access serviceName="file"
+                urlPath="/TRMM_3Hourly_3B42/1997/365/3B42.19980101.00.7.HDF.Z"/>
+        </thredds:dataset>
+    </thredds:dataset>
+</thredds:catalog>
