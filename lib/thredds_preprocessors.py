@@ -7,8 +7,12 @@ class ThreddsReader(BaseReader):
 	}
 
 	def return_exclude_descriptors(self):
+		'''
+		need to return the fully qualified structure for the root
+		attributes for the remainder processing
+		'''
 		excluded = self._service_descriptors.values()
-		return [e[1:] for e in excluded]
+		return ['{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/' + e for e in excluded]
 
 	def parse_endpoints(self):
 		pass

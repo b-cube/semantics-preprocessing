@@ -56,11 +56,18 @@ class TestThreddsReader(unittest.TestCase):
 	def test_return_descriptors(self):
 		descriptors = self.reader.return_service_descriptors()
 		
-		#self.assertTrue('Actinic Flux' in descriptors['title'])
+		self.assertTrue('Actinic Flux' in descriptors['title'])
 		self.assertTrue(descriptors['version'] == "1.0.2")
 
 	def test_return_everything_else(self):
-		pass
+		excluded = self.reader.return_exclude_descriptors()
+		remainder = self.reader.return_everything_else(excluded)
+
+		self.assertTrue(len(remainder) > 0)
+		self.assertTrue(remainder[1][2][0][0] == 'codiac_order')
+		self.assertTrue(remainder[2][1] == '{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}dataset')
+
+
 
 
 
