@@ -6,6 +6,7 @@ from lib.parser import Parser
 from lib.preprocessors import *
 from lib.wxs_preprocessors import *
 from lib.thredds_preprocessors import *
+from lib.oaipmh_preprocessors import *
 
 class TestBaseReader(unittest.TestCase):
 	def setUp(self):    	
@@ -68,6 +69,20 @@ class TestThreddsReader(unittest.TestCase):
 		self.assertTrue(remainder[2][1] == '{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}dataset')
 
 
+class TestOaiPmhReader(unittest.TestCase):
+	def setUp(self):  
+		#this response doesn't come from nay harvest 
+		with open('tests/test_data/oaipmh_identify.xml', 'r') as f:
+			text = f.read() 	
+		self.reader = OaiPmhReader(text)
+		self.reader._load_xml()
+
+	def test_return_descriptors(self):
+		descriptors = self.reader.return_service_descriptors()
+		
+		self.assertTrue('Aberdeen' in descriptors['title'])
+		self.assertTrue(descriptors['version'] == "2.0")
+		self.assertTrue(descriptors['source'] == 'http://aura.abdn.ac.uk/dspace-oai/request')
 
 
 

@@ -100,11 +100,19 @@ class Parser():
         Pull all of the namespaces in the source document
         and generate a list of tuples (prefix, URI) to dict
         '''
-        namespaces = dict(self.xml.xpath('//namespace::*'))
-        if None in namespaces:
-            namespaces['default'] = namespaces[None]
-            del namespaces[None]
-        return namespaces
+        document_namespaces = dict(self.xml.xpath('/*/namespace::*'))
+        if None in document_namespaces:
+            document_namespaces['default'] = document_namespaces[None]
+            del document_namespaces[None]
+
+        #now run through any child namespace issues
+        all_namespaces = self.xml.xpath('//namespace::*')
+        for i, ns in enumerate(all_namespaces):
+            if ns[1] not in document_namespaces.values():
+                new_key = ns[0] if ns[0] else 'default%s' % i
+                document_namespaces[new_key] = ns[1]
+
+        return document_namespaces
 
     def _remap_namespaced_xpaths(self, xpath):
         '''
