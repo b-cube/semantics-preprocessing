@@ -53,17 +53,16 @@ def identify_protocol(source_content, source_url):
 def is_service_description(protocol, source_content, source_url):
 	'''
 	based on the protocol and source information, identify whether
-	a response/service is an acutal service description document or
+	a response/service is an actual service description document or
 	some other thing
 	'''
 	if protocol in ['OGC:WMS', 'OGC:WFS', 'OGC:WCS'] and in_url(source_url.upper(), ['REQUEST=GETCAPABILITIES']):
 		return True
-	elif protocol in ['OAI-PMH'] and (in_url(source_url, ['VERB=IDENTIFY']) or in_content(source_content, ['<Identify>'])):
+	elif protocol in ['OAI-PMH'] and (in_url(source_url.upper(), ['VERB=IDENTIFY']) or in_content(source_content, ['<Identify>'])):
 		return True
 	elif protocol in ['OpenSearch']	and in_content(source_content, ['OpenSearchDescription']):
 		return True
- 	elif protocol in ['THREDDS Catalog', 'ISO-19115']:
- 		#these just are the descriptions (we can quibble about iso)
+ 	elif protocol in ['THREDDS Catalog']:
  		return True
 
  	return False

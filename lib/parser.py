@@ -108,9 +108,10 @@ class Parser():
         #now run through any child namespace issues
         all_namespaces = self.xml.xpath('//namespace::*')
         for i, ns in enumerate(all_namespaces):
-            if ns[1] not in document_namespaces.values():
-                new_key = ns[0] if ns[0] else 'default%s' % i
-                document_namespaces[new_key] = ns[1]
+            if ns[1] in document_namespaces.values():
+                continue
+            new_key = ns[0] if ns[0] else 'default%s' % i
+            document_namespaces[new_key] = ns[1]
 
         return document_namespaces
 
