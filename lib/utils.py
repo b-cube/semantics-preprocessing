@@ -1,4 +1,5 @@
 from lxml import etree
+import urlparse
 
 '''
 spatial handling:
@@ -27,3 +28,17 @@ def parse_gml_envelope(envelope, namespaces):
 	maxes = map(float, upper_right[0].text.split(' '))
 
 	return mins + maxes
+
+
+'''
+url handling:
+	query parameter parsing
+'''
+def parse_url(url):
+	'''
+	strip out the query parameters
+	'''
+	if not url:
+		return ''
+	parsed_url = urlparse.urlparse(url)
+	return urlparse.parse_qs(parsed_url.query)

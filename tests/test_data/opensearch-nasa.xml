@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription
+  xmlns="http://a9.com/-/spec/opensearch/1.1/"
+  xmlns:time="http://a9.com/-/opensearch/extensions/time/1.0/"
+  xmlns:geo="http://a9.com/-/opensearch/extensions/geo/1.0/">
+   <ShortName>MODAPS Web Services Search</ShortName>
+   <Description>Use MODAPS Web Services to search for various MODIS related data products</Description>
+   <Tags>modis modaps laads ladsweb terra aqua</Tags>
+   <Contact>MODAPSUSO@lists.nasa.gov</Contact>
+   <Url type="text/html"
+        xmlns:MODAPSParameters="http://modwebsrv.modaps.eosdis.nasa.gov/opensearchextensions/1.0/"
+        template="http://modwebsrv.modaps.eosdis.nasa.gov/axis2/services/MODAPSservices/getOpenSearch?products={MODAPSParameters:products}&amp;collection={MODAPSParameters:collection?}&amp;start={time:start}&amp;stop={time:stop}&amp;bbox={geo:box}&amp;coordsOrTiles={MODAPSParameters:coordsOrTiles?}&amp;dayNightBoth={MODAPSParameters:dayNightBoth?}"/>
+    <Url type="text/html"
+        xmlns:MODAPSParameters="http://modwebsrv.modaps.eosdis.nasa.gov/opensearchextensions/1.0/"
+        template="http://modwebsrv.modaps.eosdis.nasa.gov/axis2/services/MODAPSservices/getOpenSearch?products={MODAPSParameters:products}&amp;collection={MODAPSParameters:collection?}&amp;start={time:start}&amp;stop={time:stop}&amp;bbox={geo:box}&amp;coordsOrTiles={MODAPSParameters:coordsOrTiles?}"/>
+   <LongName>Search For Level 1 and Atmosphere Products</LongName>
+   <Query xmlns:MODAPSParameters="http://modwebsrv.modaps.eosdis.nasa.gov/opensearchextensions/1.0/" role="example" MODAPSParameters:products="MOD021KM" MODAPSParameters:collection="5" time:start="2009-09-01" time:stop="2009-09-02" geo:box="10,17,35,0"  MODAPSParameters:coordsOrTiles="tiles" MODAPSParameters:dayNightBoth="DNB" />
+   <Developer>MODAPS Web Services Development Team</Developer>
+   <Attribution>nasa.gov</Attribution>
+   <SyndicationRight>open</SyndicationRight>
+   <AdultContent>false</AdultContent>
+   <Language>en-us</Language>
+   <OutputEncoding>UTF-8</OutputEncoding>
+   <InputEncoding>UTF-8</InputEncoding>
+   <geo:Dummy>TestValue</geo:Dummy>
+ </OpenSearchDescription>

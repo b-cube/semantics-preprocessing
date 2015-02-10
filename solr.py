@@ -59,8 +59,6 @@ class Solr():
 		else:
 			req = requests.get(url)
 
-		print req.status_code, url
-
 		assert req.status_code == 200, 'failed request: %s' % url
 
 		return req.content

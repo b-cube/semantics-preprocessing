@@ -5,7 +5,11 @@
 XML and text parsing for the pipeline between Nutch/Solr and a triplestore or NLP/ML pipeline.
 
 
-###YAML Query Configuration
+### Sample Extraction
+
+Pull some set of data from the Solr instance, extract the raw_content, perform some basic text cleanup, extract elements for the high level service description and extract everything else as generic text/attribute object.
+
+####YAML Query Configuration
 
 ```yaml
 #list of fields to return in the result set

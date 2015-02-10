@@ -101,5 +101,50 @@ class TestOpenSearchReader(unittest.TestCase):
 		self.assertTrue('version' not in descriptors)
 		self.assertTrue(descriptors['description'] is None)
 
+class TestOpenSearchReaderWithEndpoints(unittest.TestCase):
+	def setUp(self):
+		with open('tests/test_data/opensearch-nasa.xml', 'r') as f:
+			text = f.read()
+		self.reader = OpenSearchReader(text)
+		self.reader._load_xml()	
+
+	def test_parse_endpoints(self):
+		endpoints = self.reader.parse_endpoints()
+
+		self.assertTrue(len(endpoints) == 2)
+		self.assertTrue(endpoints[0][2][0] == ('coordsOrTiles', '', 'MODAPSParameters', 'coordsOrTiles?', None))
+		self.assertTrue(endpoints[0][1] == 'http://modwebsrv.modaps.eosdis.nasa.gov/axis2/services/MODAPSservices/getOpenSearch?products={MODAPSParameters:products}&collection={MODAPSParameters:collection?}&start={time:start}&stop={time:stop}&bbox={geo:box}&coordsOrTiles={MODAPSParameters:coordsOrTiles?}&dayNightBoth={MODAPSParameters:dayNightBoth?}')
+
+	def test_extract_parameter_type(self):
+		with_brackets = '{geo:bbox}'
+		without_brackets = 'time:start'
+		singleton = 'coords'
+
+		test_tuple = self.reader._extract_parameter_type(singleton)
+		self.assertTrue(test_tuple == ('', singleton))
+
+		test_tuple = self.reader._extract_parameter_type(with_brackets)
+		self.assertTrue(test_tuple[0] == 'geo')
+		self.assertTrue(test_tuple[1] == 'bbox')
+
+		test_tuple = self.reader._extract_parameter_type(without_brackets)
+		self.assertTrue(test_tuple[0] == 'time')
+		self.assertTrue(test_tuple[1] == 'start')
+
+	def test_extract_url_parameters(self):
+		url = self.reader.parser.find('/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}Url')
+		url = url[0].get('template', '')
+		params = self.reader._extract_url_parameters(url)
+
+		self.assertTrue(len(params) == 7)
+		self.assertTrue(params[0] == ('coordsOrTiles', '', 'MODAPSParameters', 'coordsOrTiles?', None))
+		self.assertTrue(params[6][4] == 'west, south, east, north')
+
+
+
+
+
+
+
 
 
