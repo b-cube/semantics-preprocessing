@@ -7,6 +7,7 @@ from lib.preprocessors import *
 from lib.wxs_preprocessors import *
 from lib.thredds_preprocessors import *
 from lib.oaipmh_preprocessors import *
+from lib.opensearch_preprocessors import *
 
 class TestBaseReader(unittest.TestCase):
 	def setUp(self):    	
@@ -85,10 +86,20 @@ class TestOaiPmhReader(unittest.TestCase):
 		self.assertTrue(descriptors['source'] == 'http://aura.abdn.ac.uk/dspace-oai/request')
 
 
+class TestOpenSearchReader(unittest.TestCase):
+	def setUp(self):
+		with open('tests/test_data/basic_osdd_c1576284036448b5ef3d16b2cd37acbc.txt', 'r') as f:
+			text = f.read()
+		self.reader = OpenSearchReader(text)
+		self.reader._load_xml()		
 
 
-
-
+	def test_return_descriptors(self):
+		descriptors = self.reader.return_service_descriptors()
+		
+		self.assertTrue('CEOS' in descriptors['title'])
+		self.assertTrue('version' not in descriptors)
+		self.assertTrue(descriptors['description'] is None)
 
 
 
