@@ -180,8 +180,148 @@ class WfsReader(BaseReader):
 		'''
 		return []
 
+class OwsExtractor():
+	'''
+	to handle the more current OGC OWS metadata blocks (ows-namespaced blocks),
+	we are just building xpath dictionaries
 
+	build the ows metadata block (SERVICE description)
+	build the endpoints by service_type & known available methods
+	'''
+	_service_patterns = {
+		"title": "/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}Title",
+		"name": "/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}Name",
+		"abstract": "/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}Abstract",
+		"tags": "/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}KeywordList/{http://www.opengis.net/ows}Keyword",
+		"contact": "/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/ows}ServiceProvider/{http://www.opengis.net/ows}ProviderName"
+	}
+	#NOTE: how to handle the widget where the value is the tag name and it is empty?
+	_endpoint_patterns = {
 
+	}
+
+	def __init__(self, service_type, prefix, namespace):
+		self.service_type = service_type
+		self.prefix = prefix
+		self.namespace = namespace
+
+	def generate_metadata_xpaths(self):
+		return {k: v % {"lower": self.prefix.lower(), "upper": self.prefix.upper()} for k, v in self._service_patterns.iteritems()}
+
+	def generate_method_xpaths(self):
+
+		return {}
+
+class OgcExtractor():
+	'''
+	for the older ogc services where the service metadata block is standard
+	and we can make some decent assumptions about the capabilities
+
+	and here's where the inconsistency in early wcs comes back to bite everyone.
+
+	the xpaths are ugly because they have to be ugly for the excludes functionality.
+	otherwise, yes, there are better ways.
+	'''
+
+	_service_patterns = {
+		"title": [
+			"/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/%(lower)s}Service/{http://www.opengis.net/%(lower)s}Title",
+			"/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/%(lower)s}Service/{http://www.opengis.net/%(lower)s}title"
+		],
+		"name": [
+			"/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/%(lower)s}Service/{http://www.opengis.net/%(lower)s}Name",
+			"/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/%(lower)s}Service/{http://www.opengis.net/%(lower)s}name"
+		],
+		"abstract": [
+			"/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/%(lower)s}Service/{http://www.opengis.net/%(lower)s}Abstract",
+			"/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/%(lower)s}Service/{http://www.opengis.net/%(lower)s}description"
+		],
+		"tags": [
+			"/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/%(lower)s}Service/{http://www.opengis.net/%(lower)s}KeywordList/{http://www.opengis.net/%(lower)s}Keyword",
+			"/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/%(lower)s}Service/{http://www.opengis.net/%(lower)s}keywords/{http://www.opengis.net/%(lower)s}keyword"
+		],
+		"contact": [
+			"/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/%(lower)s}Service/{http://www.opengis.net/%(lower)s}ContactInformation/{http://www.opengis.net/%(lower)s}ContactPersonPrimary",
+			"/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/%(lower)s}Service/{http://www.opengis.net/%(lower)s}responsibleParty/{http://www.opengis.net/%(lower)s}organisationName"
+		]
+	}
+
+	_url_pattern = '/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities'+ \
+		'/{http://www.opengis.net/%(lower)s}Capability/{http://www.opengis.net/%(lower)s}Request'+ \
+		'/{http://www.opengis.net/%(lower)s}%(method)s/{http://www.opengis.net/%(lower)s}DCPType'+ \
+		'/{http://www.opengis.net/%(lower)s}HTTP/{http://www.opengis.net/%(lower)s}%(type)s'+ \
+		'/{http://www.opengis.net/%(lower)s}OnlineResource/@{http://www.w3.org/1999/xlink}href'
+
+	_format_pattern = '/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities'+ \
+		'/{http://www.opengis.net/%(lower)s}Capability/{http://www.opengis.net/%(lower)s}Request'+ \
+		'/{http://www.opengis.net/%(lower)s}%(method)s/{http://www.opengis.net/%(lower)s}Format'
+
+	def __init__(self, service_type, xml, namespaces):
+		self.service_type = service_type
+		self.xml = xml
+		self.namespaces = namespaces
+
+	def generate_metadata_xpaths(self):
+		return {
+			k: [x % {"lower": self.service_type.lower(), "upper": self.service_type.upper()} for x in v]
+			for k, v in self._service_patterns.iteritems()
+		}
+
+	def generate_method_xpaths(self):
+		'''
+		for any capablility/request, pull the dcptype & link
+
+		and we're parsing the metadata to figure out how we should parse the metadata
+		'''
+		xpath = "/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/%(lower)s}Capability/{http://www.opengis.net/%(lower)s}Request/{http://www.opengis.net/%(lower)s}*" % {
+			"lower": self.service_type.lower(), 
+			"upper": self.service_type.upper()
+		}
+		xpath = self._remap_namespaced_xpaths(xpath)
+
+		request_pattern = "{http://www.opengis.net/%(lower)s}DCPType/{http://www.opengis.net/%(lower)s}HTTP/{http://www.opengis.net/%(lower)s}*" % {"lower": self.service_type.lower()}
+		request_pattern = self._remap_namespaced_xpaths(request_pattern)
+
+		requests = self.xml.xpath(xpath, namespaces=self.namespaces)
+		endpoint_xpaths = {}
+		for request in requests:
+			method = self._strip_namespaces(request.tag)
+
+			urls = request.xpath(request_pattern, namespaces=self.namespaces)
+			methods = []
+			for url in urls:
+				request_method = self._strip_namespaces(url.tag)
+
+				url_xpath = self._url_pattern % {'lower': self.service_type.lower(), 'upper': self.service_type.upper(), 'method': method, 'type': request_method}
+			
+				methods.append((request_method, url_xpath))
+
+			endpoint_xpaths[method] = [{
+				"url": m[1],
+				"request_type": m[0],
+				"formats": self._format_pattern % {'lower': self.service_type.lower(), 'upper': self.service_type.upper(), 'method': method}
+			} for m in methods]
+
+		return endpoint_xpaths
+
+	def _strip_namespaces(self, string):
+		'''
+		strip out the namepspace from a tag and just return the tag
+		'''
+		return string.split('}')[-1]
+
+	def _remap_namespaced_xpaths(self, xpath):
+		'''
+		and we don't really care for storage - we care for this path, this query
+		'''
+
+		for prefix, ns in self.namespaces.iteritems():
+			wrapped_ns = '{%s}' % ns
+			xpath = xpath.replace(wrapped_ns, prefix + ':')
+		return xpath
+
+	
+		
 
 
 
