@@ -14,7 +14,9 @@ class OpenSearchReader(BaseReader):
 		"language": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}Language",
 		"subject": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}Tags"
 	}
-	_to_exclude = []
+	_to_exclude = [
+		'/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}Url'
+	]
 
 	_parameter_formats = {
         "geo:box": "west, south, east, north",
