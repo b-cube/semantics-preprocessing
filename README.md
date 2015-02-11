@@ -9,7 +9,32 @@ XML and text parsing for the pipeline between Nutch/Solr and a triplestore or NL
 ```
 {
 	"service": {
-		
+		"title": "",
+		"abstract": "",
+		"description": "",
+		"source": "",
+		"contact": "",
+		"rights": "", // access, usage rights (this is conflating a variety of "rights" concepts)
+		"language": "",
+		"subject": "", // keywords as string or list
+		"endpoints": [
+			// it's a tuple
+			(
+				"type", 
+				"source url", 
+				[
+					// it's a list of tuples
+					// for the parameter descriptions
+					(
+						"parameter name",
+						"namespaces",
+						"namespace prefix",
+						"parameter type",
+						"parameter format"
+					)
+				]
+			)
+		]
 	},
 	"remainder": [
 		// a list of tuples containing any text from an element or 
@@ -21,7 +46,6 @@ XML and text parsing for the pipeline between Nutch/Solr and a triplestore or NL
 			"fully qualified xpath to element",
 			"attributes": [
 				// array of tuples for any attributes on the parent element
-				//
 				(
 					"text",
 					"fully qualified xpath to attribute"
@@ -30,8 +54,11 @@ XML and text parsing for the pipeline between Nutch/Solr and a triplestore or NL
 		), ...
 	]
 }
-
 ```
+
+Notes:
+
+The service elements are based on the DCTerms supported in the ontology. 
 
 ####Currently Supported Service Descriptions
 
