@@ -4,6 +4,53 @@
 
 XML and text parsing for the pipeline between Nutch/Solr and a triplestore or NLP/ML pipeline.
 
+####Parsing/Extraction Output:
+
+```
+{
+	"service": {
+		
+	},
+	"remainder": [
+		// a list of tuples containing any text from an element or 
+		// attribute not captured in the service set
+		// note that the text value can be empty if the element
+		// only has attribute values
+		(
+			"text",
+			"fully qualified xpath to element",
+			"attributes": [
+				// array of tuples for any attributes on the parent element
+				//
+				(
+					"text",
+					"fully qualified xpath to attribute"
+				)
+			]
+		), ...
+	]
+}
+
+```
+
+####Currently Supported Service Descriptions
+
+- [x] OpenSearch
+- [x] THREDDS Catalog
+- [x] OAI-PMH Identify
+- [ ] WxS GetCapabilities
+- [ ] ATOM (OpenSearch?/GeoRSS?)
+- [ ] WADL
+- [ ] WSDL
+
+This is contigent on those service types having service-level descriptions. 
+
+####Currently Supported Dataset Descriptions
+
+- [ ] ISO 19115
+- [ ] FGDC
+- [ ] Dif (?)
+
 
 ### Sample Extraction
 

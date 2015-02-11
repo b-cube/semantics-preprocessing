@@ -180,7 +180,45 @@ class WfsReader(BaseReader):
 		'''
 		return []
 
-class OwsExtractor():
+def class BaseOgcExtractor():
+	_service_patterns = {}
+	_endpoint_patterns = {}
+
+	def __init__(self, service_type, prefix, namespace):
+		self.service_type = service_type
+		self.prefix = prefix
+		self.namespace = namespace
+
+	def generate_metadata_xpaths(self):
+		'''
+
+		'''
+		return {
+			k: [x % {"lower": self.service_type.lower(), "upper": self.service_type.upper()} for x in v] 
+				if isinstance(v, list) else v % {"lower": self.service_type.lower(), "upper": self.service_type.upper()}
+			for k, v in self._service_patterns.iteritems()
+		}
+
+	def generate_method_xpaths(self):
+		pass
+
+	def _strip_namespaces(self, string):
+		'''
+		strip out the namepspace from a tag and just return the tag
+		'''
+		return string.split('}')[-1]
+
+	def _remap_namespaced_xpaths(self, xpath):
+		'''
+		and we don't really care for storage - we care for this path, this query
+		'''
+
+		for prefix, ns in self.namespaces.iteritems():
+			wrapped_ns = '{%s}' % ns
+			xpath = xpath.replace(wrapped_ns, prefix + ':')
+		return xpath
+
+class OwsExtractor(BaseOgcExtractor):
 	'''
 	to handle the more current OGC OWS metadata blocks (ows-namespaced blocks),
 	we are just building xpath dictionaries
@@ -200,19 +238,11 @@ class OwsExtractor():
 
 	}
 
-	def __init__(self, service_type, prefix, namespace):
-		self.service_type = service_type
-		self.prefix = prefix
-		self.namespace = namespace
-
-	def generate_metadata_xpaths(self):
-		return {k: v % {"lower": self.prefix.lower(), "upper": self.prefix.upper()} for k, v in self._service_patterns.iteritems()}
-
 	def generate_method_xpaths(self):
 
 		return {}
 
-class OgcExtractor():
+class OgcExtractor(BaseOgcExtractor):
 	'''
 	for the older ogc services where the service metadata block is standard
 	and we can make some decent assumptions about the capabilities
@@ -256,17 +286,6 @@ class OgcExtractor():
 		'/{http://www.opengis.net/%(lower)s}Capability/{http://www.opengis.net/%(lower)s}Request'+ \
 		'/{http://www.opengis.net/%(lower)s}%(method)s/{http://www.opengis.net/%(lower)s}Format'
 
-	def __init__(self, service_type, xml, namespaces):
-		self.service_type = service_type
-		self.xml = xml
-		self.namespaces = namespaces
-
-	def generate_metadata_xpaths(self):
-		return {
-			k: [x % {"lower": self.service_type.lower(), "upper": self.service_type.upper()} for x in v]
-			for k, v in self._service_patterns.iteritems()
-		}
-
 	def generate_method_xpaths(self):
 		'''
 		for any capablility/request, pull the dcptype & link
@@ -304,21 +323,7 @@ class OgcExtractor():
 
 		return endpoint_xpaths
 
-	def _strip_namespaces(self, string):
-		'''
-		strip out the namepspace from a tag and just return the tag
-		'''
-		return string.split('}')[-1]
-
-	def _remap_namespaced_xpaths(self, xpath):
-		'''
-		and we don't really care for storage - we care for this path, this query
-		'''
-
-		for prefix, ns in self.namespaces.iteritems():
-			wrapped_ns = '{%s}' % ns
-			xpath = xpath.replace(wrapped_ns, prefix + ':')
-		return xpath
+	
 
 	
 		
