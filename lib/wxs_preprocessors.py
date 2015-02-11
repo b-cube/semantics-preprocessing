@@ -180,7 +180,8 @@ class WfsReader(BaseReader):
 		'''
 		return []
 
-def class BaseOgcExtractor():
+
+class BaseOgcExtractor():
 	_service_patterns = {}
 	_endpoint_patterns = {}
 
