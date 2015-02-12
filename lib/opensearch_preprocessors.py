@@ -79,7 +79,7 @@ class OpenSearchReader(BaseReader):
 		return [
 			(
 				qp[0], 
-				'',
+				self.parser._namespaces,
 				qp[1],
 				qp[2],
 				self._parameter_formats.get(':'.join(qp[1:]))

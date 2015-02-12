@@ -112,7 +112,9 @@ class TestOpenSearchReaderWithEndpoints(unittest.TestCase):
 		endpoints = self.reader.parse_endpoints()
 
 		self.assertTrue(len(endpoints) == 2)
-		self.assertTrue(endpoints[0][2][0] == ('coordsOrTiles', '', 'MODAPSParameters', 'coordsOrTiles?', None))
+		self.assertTrue(len(endpoints[0][2][0]) == 5)
+		self.assertTrue(isinstance(endpoints[0][2][0][1], dict))
+		self.assertTrue(endpoints[0][2][0][2] == 'MODAPSParameters')
 		self.assertTrue(endpoints[0][1] == 'http://modwebsrv.modaps.eosdis.nasa.gov/axis2/services/MODAPSservices/getOpenSearch?products={MODAPSParameters:products}&collection={MODAPSParameters:collection?}&start={time:start}&stop={time:stop}&bbox={geo:box}&coordsOrTiles={MODAPSParameters:coordsOrTiles?}&dayNightBoth={MODAPSParameters:dayNightBoth?}')
 
 	def test_extract_parameter_type(self):
@@ -137,7 +139,7 @@ class TestOpenSearchReaderWithEndpoints(unittest.TestCase):
 		params = self.reader._extract_url_parameters(url)
 
 		self.assertTrue(len(params) == 7)
-		self.assertTrue(params[0] == ('coordsOrTiles', '', 'MODAPSParameters', 'coordsOrTiles?', None))
+		self.assertTrue(params[0][0] == 'coordsOrTiles')
 		self.assertTrue(params[6][4] == 'west, south, east, north')
 
 
