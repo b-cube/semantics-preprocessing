@@ -187,20 +187,21 @@ class BaseOgcExtractor():
 	_service_patterns = {}
 	_endpoint_patterns = {}
 
-	def __init__(self, service_type, prefix, namespace):
+	def __init__(self, xml, service_type, prefix, namespaces):
+		self.xml = xml
 		self.service_type = service_type
 		self.prefix = prefix
-		self.namespace = namespace
+		self.namespaces = namespaces
 
-		self.ns = _wxs_namespace_pattern % {'ns': service_type.lower()}
+		self.ns = self._wxs_namespace_pattern % {'ns': service_type.lower()}
 
 	def generate_metadata_xpaths(self):
 		'''
 
 		'''
 		return {
-			k: [x % {"lower": self.service_type.lower(), "upper": self.service_type.upper()} for x in v] 
-				if isinstance(v, list) else v % {"lower": self.service_type.lower(), "upper": self.service_type.upper()}
+			k: [x % {"ns": self.ns, "upper": self.service_type.upper()} for x in v] 
+				if isinstance(v, list) else v % {"ns": self.ns, "upper": self.service_type.upper()}
 			for k, v in self._service_patterns.iteritems()
 		}
 
@@ -317,7 +318,11 @@ class OgcExtractor(BaseOgcExtractor):
 			for url in urls:
 				request_method = self._strip_namespaces(url.tag)
 
-				url_xpath = self._url_pattern % {"ns": self.ns, 'upper': self.service_type.upper(), 'method': method, 'type': request_method}
+				url_xpath = self._url_pattern % {"ns": self.ns, 
+					'upper': self.service_type.upper(), 
+					'method': method, 
+					'type': request_method
+				}
 			
 				methods.append((request_method, url_xpath))
 
@@ -327,6 +332,9 @@ class OgcExtractor(BaseOgcExtractor):
 				"parameters": self.return_parameters(method) 
 			} for m in methods]
 
+		#x = parser.xml.xpath('/default:WMS_Capabilities/default:Capability/default:Request/*[namespace-uri() != "http://www.opengis.net/wms"]', 
+		#    namespaces=parser._namespaces)
+
 		return endpoint_xpaths
 
 	def return_parameters(self, method):
@@ -335,7 +343,10 @@ class OgcExtractor(BaseOgcExtractor):
 		'''
 		parameters = []
 
-		formats = self._format_pattern % {"ns": self.ns, 'upper': self.service_type.upper(), 'method': method}
+		formats = self._format_pattern % {"ns": self.ns, 
+			'upper': self.service_type.upper(), 
+			'method': method
+		}
 
 		return parameters
 
