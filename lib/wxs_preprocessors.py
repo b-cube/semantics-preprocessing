@@ -285,67 +285,79 @@ class OgcExtractor(BaseOgcExtractor):
 
 	_url_pattern = '/%(ns)s%(upper)s_Capabilities'+ \
 		'/%(ns)sCapability/%(ns)sRequest'+ \
-		'/%(ns)s%(method)s/%(ns)sDCPType'+ \
+		'/%(local_ns)s%(method)s/%(ns)sDCPType'+ \
 		'/%(ns)sHTTP/%(ns)s%(type)s'+ \
 		'/%(ns)sOnlineResource/@{http://www.w3.org/1999/xlink}href'
 
 	_format_pattern = '/%(ns)s%(upper)s_Capabilities'+ \
 		'/%(ns)sCapability/%(ns)sRequest'+ \
-		'/%(ns)s%(method)s/%(ns)sFormat'
+		'/%(local_ns)s%(method)s/%(ns)sFormat'
 
 	def generate_method_xpaths(self):
 		'''
 		for any capablility/request, pull the dcptype & link
+		note that we can have standard ogc methods and extended service support
+			through other namespaces
 
 		and we're parsing the metadata to figure out how we should parse the metadata
 		'''
-		xpath = "/%(ns)s%(upper)s_Capabilities/%(ns)sCapability/%(ns)sRequest/%(ns)s*" % {
-			"ns": self.ns, 
-			"upper": self.service_type.upper()
-		}
-		xpath = self._remap_namespaced_xpaths(xpath)
+		request_xpaths = ["/%(ns)s%(upper)s_Capabilities/%(ns)sCapability/%(ns)sRequest/%(ns)s*" % {
+				"ns": self.ns, 
+				"upper": self.service_type.upper()
+			},
+			"/%(ns)s%(upper)s_Capabilities/%(ns)sCapability/%(ns)sRequest/*[namespace-uri() != '%(ns_unbracketed)s']" % {
+				"ns": self.ns, 
+				"upper": self.service_type.upper(),
+				"ns_unbracketed": self.ns[1:-1]
+			}
+		]
 
-		request_pattern = "%(ns)sDCPType/%(ns)sHTTP/%(ns)s*" % {"ns": self.ns}
-		request_pattern = self._remap_namespaced_xpaths(request_pattern)
-
-		requests = self.xml.xpath(xpath, namespaces=self.namespaces)
 		endpoint_xpaths = {}
-		for request in requests:
-			method = self._strip_namespaces(request.tag)
+		for request_xpath in request_xpaths:
+			xpath = self._remap_namespaced_xpaths(request_xpath)
 
-			urls = request.xpath(request_pattern, namespaces=self.namespaces)
-			methods = []
-			for url in urls:
-				request_method = self._strip_namespaces(url.tag)
+			request_pattern = "%(ns)sDCPType/%(ns)sHTTP/%(ns)s*" % {"ns": self.ns}
+			request_pattern = self._remap_namespaced_xpaths(request_pattern)
 
-				url_xpath = self._url_pattern % {"ns": self.ns, 
-					'upper': self.service_type.upper(), 
-					'method': method, 
-					'type': request_method
-				}
+			requests = self.xml.xpath(xpath, namespaces=self.namespaces)
 			
-				methods.append((request_method, url_xpath))
+			for request in requests:
+				method = self._strip_namespaces(request.tag)
+				local_ns = request.tag[:request.tag.index('}') + 1]
 
-			endpoint_xpaths[method] = [{
-				"url": m[1],
-				"request_type": m[0],
-				"parameters": self.return_parameters(method) 
-			} for m in methods]
+				urls = request.xpath(request_pattern, namespaces=self.namespaces)
+				methods = []
+				for url in urls:
+					request_method = self._strip_namespaces(url.tag)
 
-		#x = parser.xml.xpath('/default:WMS_Capabilities/default:Capability/default:Request/*[namespace-uri() != "http://www.opengis.net/wms"]', 
-		#    namespaces=parser._namespaces)
+					url_xpath = self._url_pattern % {"ns": self.ns, 
+						'upper': self.service_type.upper(), 
+						'method': method, 
+						'type': request_method,
+						'local_ns': local_ns
+					}
+				
+					methods.append((request_method, url_xpath))
+
+				endpoint_xpaths[method] = [{
+					"url": m[1],
+					"request_type": m[0],
+					"parameters": self.return_parameters(method, local_ns) 
+				} for m in methods]
 
 		return endpoint_xpaths
 
-	def return_parameters(self, method):
+	def return_parameters(self, method, local_ns):
 		'''
 		where the format element(s) 
 		'''
 		parameters = []
 
+		#this is the enumeration
 		formats = self._format_pattern % {"ns": self.ns, 
 			'upper': self.service_type.upper(), 
-			'method': method
+			'method': method,
+			'local_ns': local_ns
 		}
 
 		return parameters
