@@ -182,6 +182,8 @@ class WfsReader(BaseReader):
 
 
 class BaseOgcExtractor():
+
+	_wxs_namespace_pattern = '{http://www.opengis.net/%(ns)s}'
 	_service_patterns = {}
 	_endpoint_patterns = {}
 
@@ -189,6 +191,8 @@ class BaseOgcExtractor():
 		self.service_type = service_type
 		self.prefix = prefix
 		self.namespace = namespace
+
+		self.ns = _wxs_namespace_pattern % {'ns': service_type.lower()}
 
 	def generate_metadata_xpaths(self):
 		'''
@@ -228,16 +232,17 @@ class OwsExtractor(BaseOgcExtractor):
 	build the endpoints by service_type & known available methods
 	'''
 	_service_patterns = {
-		"title": "/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}Title",
-		"name": "/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}Name",
-		"abstract": "/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}Abstract",
-		"tags": "/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}KeywordList/{http://www.opengis.net/ows}Keyword",
-		"contact": "/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/ows}ServiceProvider/{http://www.opengis.net/ows}ProviderName"
+		"title": "/%(ns)s%(upper)s_Capabilities/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}Title",
+		"name": "/%(ns)s%(upper)s_Capabilities/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}Name",
+		"abstract": "/%(ns)s%(upper)s_Capabilities/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}Abstract",
+		"tags": "/%(ns)s%(upper)s_Capabilities/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}KeywordList/{http://www.opengis.net/ows}Keyword",
+		"contact": "/%(ns)s%(upper)s_Capabilities/{http://www.opengis.net/ows}ServiceProvider/{http://www.opengis.net/ows}ProviderName"
 	}
-	#NOTE: how to handle the widget where the value is the tag name and it is empty?
-	_endpoint_patterns = {
+	_url_pattern = '/%(ns)s%(upper)s_Capabilities/{http://www.opengis.net/ows}OperationsMetadata'+ \
+		'/{http://www.opengis.net/ows}Operation[@name="%(method)s"]/{http://www.opengis.net/ows}DCP/{http://www.opengis.net/ows}HTTP'+ \
+		'/{http://www.opengis.net/ows}HTTP/{http://www.opengis.net/ows}%(type)s/@{http://www.w3.org/1999/xlink}href'
 
-	}
+	_format_pattern = ''
 
 	def generate_method_xpaths(self):
 
@@ -256,36 +261,36 @@ class OgcExtractor(BaseOgcExtractor):
 
 	_service_patterns = {
 		"title": [
-			"/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/%(lower)s}Service/{http://www.opengis.net/%(lower)s}Title",
-			"/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/%(lower)s}Service/{http://www.opengis.net/%(lower)s}title"
+			"/%(ns)s%(upper)s_Capabilities/%(ns)sService/%(ns)sTitle",
+			"/%(ns)s%(upper)s_Capabilities/%(ns)sService/%(ns)stitle"
 		],
 		"name": [
-			"/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/%(lower)s}Service/{http://www.opengis.net/%(lower)s}Name",
-			"/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/%(lower)s}Service/{http://www.opengis.net/%(lower)s}name"
+			"/%(ns)s%(upper)s_Capabilities/%(ns)sService/%(ns)sName",
+			"/%(ns)s%(upper)s_Capabilities/%(ns)sService/%(ns)sname"
 		],
 		"abstract": [
-			"/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/%(lower)s}Service/{http://www.opengis.net/%(lower)s}Abstract",
-			"/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/%(lower)s}Service/{http://www.opengis.net/%(lower)s}description"
+			"/%(ns)s%(upper)s_Capabilities/%(ns)sService/%(ns)sAbstract",
+			"/%(ns)s%(upper)s_Capabilities/%(ns)sService/%(ns)sdescription"
 		],
 		"tags": [
-			"/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/%(lower)s}Service/{http://www.opengis.net/%(lower)s}KeywordList/{http://www.opengis.net/%(lower)s}Keyword",
-			"/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/%(lower)s}Service/{http://www.opengis.net/%(lower)s}keywords/{http://www.opengis.net/%(lower)s}keyword"
+			"/%(ns)s%(upper)s_Capabilities/%(ns)sService/%(ns)sKeywordList/%(ns)sKeyword",
+			"/%(ns)s%(upper)s_Capabilities/%(ns)sService/%(ns)skeywords/%(ns)skeyword"
 		],
 		"contact": [
-			"/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/%(lower)s}Service/{http://www.opengis.net/%(lower)s}ContactInformation/{http://www.opengis.net/%(lower)s}ContactPersonPrimary",
-			"/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/%(lower)s}Service/{http://www.opengis.net/%(lower)s}responsibleParty/{http://www.opengis.net/%(lower)s}organisationName"
+			"/%(ns)s%(upper)s_Capabilities/%(ns)sService/%(ns)sContactInformation/%(ns)sContactPersonPrimary",
+			"/%(ns)s%(upper)s_Capabilities/%(ns)sService/%(ns)sresponsibleParty/%(ns)sorganisationName"
 		]
 	}
 
-	_url_pattern = '/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities'+ \
-		'/{http://www.opengis.net/%(lower)s}Capability/{http://www.opengis.net/%(lower)s}Request'+ \
-		'/{http://www.opengis.net/%(lower)s}%(method)s/{http://www.opengis.net/%(lower)s}DCPType'+ \
-		'/{http://www.opengis.net/%(lower)s}HTTP/{http://www.opengis.net/%(lower)s}%(type)s'+ \
-		'/{http://www.opengis.net/%(lower)s}OnlineResource/@{http://www.w3.org/1999/xlink}href'
+	_url_pattern = '/%(ns)s%(upper)s_Capabilities'+ \
+		'/%(ns)sCapability/%(ns)sRequest'+ \
+		'/%(ns)s%(method)s/%(ns)sDCPType'+ \
+		'/%(ns)sHTTP/%(ns)s%(type)s'+ \
+		'/%(ns)sOnlineResource/@{http://www.w3.org/1999/xlink}href'
 
-	_format_pattern = '/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities'+ \
-		'/{http://www.opengis.net/%(lower)s}Capability/{http://www.opengis.net/%(lower)s}Request'+ \
-		'/{http://www.opengis.net/%(lower)s}%(method)s/{http://www.opengis.net/%(lower)s}Format'
+	_format_pattern = '/%(ns)s%(upper)s_Capabilities'+ \
+		'/%(ns)sCapability/%(ns)sRequest'+ \
+		'/%(ns)s%(method)s/%(ns)sFormat'
 
 	def generate_method_xpaths(self):
 		'''
@@ -293,13 +298,13 @@ class OgcExtractor(BaseOgcExtractor):
 
 		and we're parsing the metadata to figure out how we should parse the metadata
 		'''
-		xpath = "/{http://www.opengis.net/%(lower)s}%(upper)s_Capabilities/{http://www.opengis.net/%(lower)s}Capability/{http://www.opengis.net/%(lower)s}Request/{http://www.opengis.net/%(lower)s}*" % {
-			"lower": self.service_type.lower(), 
+		xpath = "/%(ns)s%(upper)s_Capabilities/%(ns)sCapability/%(ns)sRequest/%(ns)s*" % {
+			"ns": self.ns, 
 			"upper": self.service_type.upper()
 		}
 		xpath = self._remap_namespaced_xpaths(xpath)
 
-		request_pattern = "{http://www.opengis.net/%(lower)s}DCPType/{http://www.opengis.net/%(lower)s}HTTP/{http://www.opengis.net/%(lower)s}*" % {"lower": self.service_type.lower()}
+		request_pattern = "%(ns)sDCPType/%(ns)sHTTP/%(ns)s*" % {"ns": self.ns}
 		request_pattern = self._remap_namespaced_xpaths(request_pattern)
 
 		requests = self.xml.xpath(xpath, namespaces=self.namespaces)
@@ -312,19 +317,27 @@ class OgcExtractor(BaseOgcExtractor):
 			for url in urls:
 				request_method = self._strip_namespaces(url.tag)
 
-				url_xpath = self._url_pattern % {'lower': self.service_type.lower(), 'upper': self.service_type.upper(), 'method': method, 'type': request_method}
+				url_xpath = self._url_pattern % {"ns": self.ns, 'upper': self.service_type.upper(), 'method': method, 'type': request_method}
 			
 				methods.append((request_method, url_xpath))
 
 			endpoint_xpaths[method] = [{
 				"url": m[1],
 				"request_type": m[0],
-				"formats": self._format_pattern % {'lower': self.service_type.lower(), 'upper': self.service_type.upper(), 'method': method}
+				"parameters": self.return_parameters(method) 
 			} for m in methods]
 
 		return endpoint_xpaths
 
-	
+	def return_parameters(self, method):
+		'''
+		where the format element(s) 
+		'''
+		parameters = []
+
+		formats = self._format_pattern % {"ns": self.ns, 'upper': self.service_type.upper(), 'method': method}
+
+		return parameters
 
 	
 		
