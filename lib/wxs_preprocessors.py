@@ -210,9 +210,9 @@ class BaseOgcExtractor():
 
 	def _strip_namespaces(self, string):
 		'''
-		strip out the namepspace from a tag and just return the tag
+		strip out the namespace from a tag and just return the tag
 		'''
-		return string.split('}')[-1]
+		return string[string.index('}') + 1:]
 
 	def _remap_namespaced_xpaths(self, xpath):
 		'''
@@ -231,6 +231,9 @@ class OwsExtractor(BaseOgcExtractor):
 
 	build the ows metadata block (SERVICE description)
 	build the endpoints by service_type & known available methods
+
+	note: this does not appear to have the same issue with third-party
+		method extensions
 	'''
 	_service_patterns = {
 		"title": "/%(ns)s%(upper)s_Capabilities/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}Title",
@@ -243,11 +246,37 @@ class OwsExtractor(BaseOgcExtractor):
 		'/{http://www.opengis.net/ows}Operation[@name="%(method)s"]/{http://www.opengis.net/ows}DCP/{http://www.opengis.net/ows}HTTP'+ \
 		'/{http://www.opengis.net/ows}HTTP/{http://www.opengis.net/ows}%(type)s/@{http://www.w3.org/1999/xlink}href'
 
-	_format_pattern = ''
-
 	def generate_method_xpaths(self):
+		request_xpath = "/%(ns)s%(upper)s_Capabilities/{http://www.opengis.net/ows}OperationsMetadata/{http://www.opengis.net/ows}Operation" % {
+			"ns": self.ns, 
+			"upper": self.service_type.upper()
+		}
 
-		return {}
+		endpoint_xpaths = {}
+		request_xpath = self._remap_namespaced_xpaths(request_xpath)
+
+		url_xpath = "{http://www.opengis.net/ows}DCP/{http://www.opengis.net/ows}HTTP/{http://www.opengis.net/ows}*"
+		url_xpath = self._remap_namespaced_xpaths(url_xpath)
+
+		param_xpath = "{http://www.opengis.net/ows}Parameter"
+		param_xpath = self._remap_namespaced_xpaths(param_xpath)
+
+		requests = self.xml.xpath(request_xpath, namespaces=self.namespaces)
+		for request in requests:
+			method = self._strip_namespaces(request.tag)
+
+			urls = request.xpath(url_xpath, namespaces=self.namespaces)
+			methods = []
+			for url in urls:
+				request_method = self._strip_namespaces(url.tag)
+				href = url.attrib['href']
+
+			#get the parameters
+			params = request.xpath(param_xpath, namespaces=self.namespaces)
+			
+
+
+		return endpoint_xpaths
 
 class OgcExtractor(BaseOgcExtractor):
 	'''
@@ -312,12 +341,12 @@ class OgcExtractor(BaseOgcExtractor):
 			}
 		]
 
+		request_pattern = "%(ns)sDCPType/%(ns)sHTTP/%(ns)s*" % {"ns": self.ns}
+		request_pattern = self._remap_namespaced_xpaths(request_pattern)
+
 		endpoint_xpaths = {}
 		for request_xpath in request_xpaths:
 			xpath = self._remap_namespaced_xpaths(request_xpath)
-
-			request_pattern = "%(ns)sDCPType/%(ns)sHTTP/%(ns)s*" % {"ns": self.ns}
-			request_pattern = self._remap_namespaced_xpaths(request_pattern)
 
 			requests = self.xml.xpath(xpath, namespaces=self.namespaces)
 			

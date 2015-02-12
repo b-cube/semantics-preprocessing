@@ -1,0 +1,41 @@
+{
+  "WMS-1.0.0": {
+      "GetCapabilities": {
+          "Version": {
+              "Format": "",
+              "Type": "",
+              "Namespace": "",
+              "Prefix": "",
+              "Required": true
+          },
+          "Request": {
+              "Format": "",
+              "Type": "",
+              "Namespace": "",
+              "Prefix": "",
+              "Required": true
+          },
+          "Format": {
+              "Format": "",
+              "Type": "",
+              "Namespace": "",
+              "Prefix": "",
+              "Required": true
+          },
+          "Service": {
+              "Format": "",
+              "Type": "",
+              "Namespace": "",
+              "Prefix": "",
+              "Required": true
+          }
+      },
+      "GetMap": {},
+      "GetLegendGraphic": {},
+      "GetFeatureInfo": {},
+      "DescribeLayer": {}
+  },
+  "WFS-1.0.0": {
+      
+  }
+}
