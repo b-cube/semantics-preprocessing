@@ -1,5 +1,7 @@
 from lib.preprocessors import *
 from lib.utils import parse_gml_envelope
+import os
+import json
 
 class WmsReader(BaseReader):
 	_versions = {
@@ -86,54 +88,7 @@ class WcsReader(BaseReader):
 
 
 class WfsReader(BaseReader):
-	#for v1.1.0
-	_versions = {
-		'1.1.0' :{
-			"service": {
-				"title": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}Title",
-				"name": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}Name",
-				"abstract": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}Abstract",
-				"tags": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}KeywordList/{http://www.opengis.net/ows}Keyword",
-				"contact": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}ServiceProvider/{http://www.opengis.net/ows}ProviderName"
-			},
-			"endpoint": {
-				"GetCapabilities": {
-					"url": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}OperationsMetadata/{http://www.opengis.net/ows}Operation[@{http://www.opengis.net/ows}name='GetCapabilities']/{http://www.opengis.net/ows}DCP/{http://www.opengis.net/ows}HTTP/{http://www.opengis.net/ows}Get/@{http://www.w3.org/1999/xlink}href",
-					"formats": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}OperationsMetadata/{http://www.opengis.net/ows}Operation[@{http://www.opengis.net/ows}name='GetCapabilities']/{http://www.opengis.net/ows}Parameter[@{http://www.opengis.net/ows}name='AcceptFormats']/{http://www.opengis.net/ows}Value"
-				},
-				"DescribeFeatureType": {
-					"url": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}OperationsMetadata/{http://www.opengis.net/ows}Operation[@{http://www.opengis.net/ows}name='DescribeFeatureType']/{http://www.opengis.net/ows}DCP/{http://www.opengis.net/ows}HTTP/{http://www.opengis.net/ows}Get/@{http://www.w3.org/1999/xlink}href",
-					"formats": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}OperationsMetadata/{http://www.opengis.net/ows}Operation[@{http://www.opengis.net/ows}name='DescribeFeatureType']/{http://www.opengis.net/ows}Parameter[@{http://www.opengis.net/ows}name='outputFormat']/{http://www.opengis.net/ows}Value"
-				},
-				"GetFeature": {
-					"url": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}OperationsMetadata/{http://www.opengis.net/ows}Operation[@{http://www.opengis.net/ows}name='GetFeature']/{http://www.opengis.net/ows}DCP/{http://www.opengis.net/ows}HTTP/{http://www.opengis.net/ows}Get/@{http://www.w3.org/1999/xlink}href",
-					"formats": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}OperationsMetadata/{http://www.opengis.net/ows}Operation[@{http://www.opengis.net/ows}name='GetFeature']/{http://www.opengis.net/ows}Parameter[@{http://www.opengis.net/ows}name='outputFormat']/{http://www.opengis.net/ows}Value"
-				}
-			}
-		},
-		'1.0.0': {
-			"service": {
-				"title": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}Service/{http://www.opengis.net/ows}Title",
-				"name": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}Service/{http://www.opengis.net/ows}Name",
-				"abstract": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}Service/{http://www.opengis.net/ows}Abstract",
-				"tags": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}Service/{http://www.opengis.net/ows}KeywordList/{http://www.opengis.net/ows}Keyword",
-				"contact": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/ows}Service/{http://www.opengis.net/ows}ContactInformation/{http://www.opengis.net/ows}ContactPersonPrimary"
-			},
-			"endpoint": {
-				"GetCapabilities": {
-					"url": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/wfs}Capability/{http://www.opengis.net/wfs}Request/{http://www.opengis.net/wfs}GetCapabilities/{http://www.opengis.net/wfs}DCPType/{http://www.opengis.net/wfs}HTTP/{http://www.opengis.net/wfs}Get/@{http://www.opengis.net/wfs}onineResource"
-				},
-				"DescribeFeatureType": {
-					"url": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/wfs}Capability/{http://www.opengis.net/wfs}Request/{http://www.opengis.net/wfs}DescribeFeatureType/{http://www.opengis.net/wfs}DCPType/{http://www.opengis.net/wfs}HTTP/{http://www.opengis.net/wfs}Get/@{http://www.opengis.net/wfs}onineResource",
-					"formats": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/wfs}Capability/{http://www.opengis.net/wfs}Request/{http://www.opengis.net/wfs}DescribeFeatureType/{http://www.opengis.net/wfs}SchemaDescriptionLanguage/{http://www.opengis.net/wfs}XMLSCHEMA/name()"
-				},
-				"GetFeature": {
-					"url": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/wfs}Capability/{http://www.opengis.net/wfs}Request/{http://www.opengis.net/wfs}GetFeature/{http://www.opengis.net/wfs}DCPType/{http://www.opengis.net/wfs}HTTP/{http://www.opengis.net/wfs}Get/@{http://www.opengis.net/wfs}onineResource",
-					"formats": "/{http://www.opengis.net/wfs}WFS_Capabilities/{http://www.opengis.net/wfs}Capability/{http://www.opengis.net/wfs}Request/{http://www.opengis.net/wfs}GetFeature/{http://www.opengis.net/wfs}ResultFormat/{http://www.opengis.net/wfs}GML2/name()"
-				}
-			}
-		}
-	}
+	
 
 	def __init__(self, response):
 		self._response = response
@@ -145,9 +100,11 @@ class WfsReader(BaseReader):
 
 		self._version = self._version[0]
 
-		#setup up the xpaths at least
-		self._service_descriptors = self._versions[self._version]['service']
-		self._endpoint_descriptors = self._versions[self._version]['endpoint']
+		extractor = OwsExtractor(self.parser.xml, self._version, 'wfs', 'wfs', self.parser._namespaces) \
+			if self._version in ['1.1.0'] else OgcExtractor(self.parser.xml, self._version, 'wfs', 'wfs', self.parser._namespaces)
+
+		self._service_descriptors = extractor.generate_metadata_xpaths()
+		self._endpoint_descriptors = extractor.generate_method_xpaths()
 
 
 	def return_exclude_descriptors(self):
@@ -180,6 +137,23 @@ class WfsReader(BaseReader):
 		'''
 		return []
 
+class OgcDefaults():
+	'''
+	a container for the parameter definitions
+	'''
+	def __init__(self, service_type, version):
+		with open('lib/ogc_parameter_defaults.json', 'r') as f:
+			self.defaults = json.loads(f.read())
+
+		self.defaults = self._get_defaults(service_type, version)
+
+	def _get_defaults(self, service_type, version):
+		'''
+		return the method/parameter set for the service and version
+		keys: WMS-1.0.0
+		'''
+		key = service_type.upper() + '-' + version
+		return self.defaults[key] if key in self.defaults else {}
 
 class BaseOgcExtractor():
 
@@ -187,7 +161,7 @@ class BaseOgcExtractor():
 	_service_patterns = {}
 	_endpoint_patterns = {}
 
-	def __init__(self, xml, service_type, prefix, namespaces):
+	def __init__(self, xml, version, service_type, prefix, namespaces):
 		self.xml = xml
 		self.service_type = service_type
 		self.prefix = prefix
@@ -195,9 +169,12 @@ class BaseOgcExtractor():
 
 		self.ns = self._wxs_namespace_pattern % {'ns': service_type.lower()}
 
+		defaults = OgcDefaults(service_type, version)
+		self.parameter_defaults = defaults.defaults
+
 	def generate_metadata_xpaths(self):
 		'''
-
+		map the list or a singleton depending on the differences in the implementations
 		'''
 		return {
 			k: [x % {"ns": self.ns, "upper": self.service_type.upper()} for x in v] 
@@ -243,7 +220,7 @@ class OwsExtractor(BaseOgcExtractor):
 		"contact": "/%(ns)s%(upper)s_Capabilities/{http://www.opengis.net/ows}ServiceProvider/{http://www.opengis.net/ows}ProviderName"
 	}
 	_url_pattern = '/%(ns)s%(upper)s_Capabilities/{http://www.opengis.net/ows}OperationsMetadata'+ \
-		'/{http://www.opengis.net/ows}Operation[@name="%(method)s"]/{http://www.opengis.net/ows}DCP/{http://www.opengis.net/ows}HTTP'+ \
+		'/{http://www.opengis.net/ows}Operation[@name="%(method)s"]/{http://www.opengis.net/ows}DCP'+ \
 		'/{http://www.opengis.net/ows}HTTP/{http://www.opengis.net/ows}%(type)s/@{http://www.w3.org/1999/xlink}href'
 
 	def generate_method_xpaths(self):
@@ -263,20 +240,62 @@ class OwsExtractor(BaseOgcExtractor):
 
 		requests = self.xml.xpath(request_xpath, namespaces=self.namespaces)
 		for request in requests:
-			method = self._strip_namespaces(request.tag)
+			method = request.attrib['name']
+
+			print url_xpath
 
 			urls = request.xpath(url_xpath, namespaces=self.namespaces)
 			methods = []
 			for url in urls:
 				request_method = self._strip_namespaces(url.tag)
-				href = url.attrib['href']
+
+				url_xpath = self._url_pattern % {
+					'ns': self.ns,
+					'upper': self.service_type.upper(),
+					'method': method,
+					'type': request_method
+				}
+
+				methods.append((request_method, url_xpath))
 
 			#get the parameters
-			params = request.xpath(param_xpath, namespaces=self.namespaces)
-			
+			method_params = self.parameter_defaults.get(method.upper(), '')
+			assert method_params, 'Invalid method definition for Method %s' % method
 
+			params = request.xpath(param_xpath, namespaces=self.namespaces)
+
+			defs = [self._get_parameter(p, method_params) for p in params]
+
+			endpoint_xpaths[method] = [
+				{
+					'url': m[1],
+					'request_type': m[0],
+					'parameters': defs
+				} for m in methods
+			]
 
 		return endpoint_xpaths
+
+	def _get_parameter(self, node, parameter_options):
+		'''
+		using some combination of default info (see OgcDefaults) and
+		node information, return the json element for this parameter
+		'''
+		node_name = node.attrib.get('name', '')
+		assert node_name, 'Invalid parameter node for ows:Parameter'
+
+		#check for a one-to-one
+		default = {node_name.upper(): parameter_options[node_name.upper()]} if node_name.upper() in parameter_options \
+			else {k:v for k, v in parameter_options.iteritems() if (v['Remap']['remapped'] == node_name if 'Remap' in v else False)}
+
+		if not default:
+			#TODO: return something very basic but not a null dict
+			#AND this will not be triggered
+			return {}
+
+		k, v = next(default.iteritems())
+		return (k, v['Namespace'], v['Prefix'], '', (v['Format'] if 'Format' in v else ''))		
+				
 
 class OgcExtractor(BaseOgcExtractor):
 	'''

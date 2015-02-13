@@ -1,41 +1,130 @@
 {
-  "WMS-1.0.0": {
-      "GetCapabilities": {
-          "Version": {
-              "Format": "",
-              "Type": "",
-              "Namespace": "",
-              "Prefix": "",
-              "Required": true
-          },
-          "Request": {
-              "Format": "",
-              "Type": "",
-              "Namespace": "",
-              "Prefix": "",
-              "Required": true
-          },
-          "Format": {
-              "Format": "",
-              "Type": "",
-              "Namespace": "",
-              "Prefix": "",
-              "Required": true
-          },
-          "Service": {
-              "Format": "",
-              "Type": "",
-              "Namespace": "",
-              "Prefix": "",
-              "Required": true
-          }
+  "WFS-1.1.0": {
+    "GETCAPABILITIES": {
+      "VERSION": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true,
+        "Remap": {
+          "remapped": "AcceptVersions",
+          "can_have_values": true
+        }
       },
-      "GetMap": {},
-      "GetLegendGraphic": {},
-      "GetFeatureInfo": {},
-      "DescribeLayer": {}
+      "REQUEST": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true
+      },
+      "FORMAT": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": false,
+        "Remap": {
+          "remapped": "AcceptFormats",
+          "can_have_values": true
+        }
+      },
+      "SERVICE": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true,
+        "Remap": {
+          "remapped": "service",
+          "can_have_values": true
+        }
+      }
+    },
+    "DESCRIBEFEATURETYPE": {
+      "VERSION": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true
+      },
+      "REQUEST": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true
+      },
+      "OUTPUTFORMAT": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true,
+        "Remap": {
+          "remapped": "outputFormat",
+          "can_have_values": true,
+          "value_remaps": {
+            "XMLSCHEMA": "text/xml"
+          }
+        }
+      },
+      "SERVICE": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true
+      }
+    },
+    "GETFEATURE": {
+      "VERSION": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true
+      },
+      "REQUEST": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true
+      },
+      "OUTPUTFORMAT": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true,
+        "Remap": {
+          "remapped": "outputFormat",
+          "can_have_values": true
+        }
+      },
+      "SERVICE": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true
+      },
+      "TYPENAME": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true
+      },
+      "MAXFEATURES": {
+        "Format": "integer",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": false
+      }
+    }
   },
   "WFS-1.0.0": {
-      
+
+    },
+  "WMS-1.3.0": {
+
+    },
+  "WCS-1.0.0": {
+
+    }.
+  "WCS-1.1.2": {
+    
   }
 }
+

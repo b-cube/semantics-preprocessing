@@ -1,6 +1,6 @@
 from lxml import etree
-import re
 from HTMLParser import HTMLParser
+
 
 class Parser():
     '''
@@ -8,14 +8,14 @@ class Parser():
 
 
     NOTE: from b-cube/semantics, modified to use in-memory
-          xml sources and (I suspect) encoding issues   
+          xml sources and (I suspect) encoding issues
 
           (basically no longer from b-cube/semantics)
     '''
 
     def __init__(self, string_to_parse, encoding='utf-8'):
-        #there is some encoding issue somewhere around solr/nutch 
-        #that should be handled better than this
+        # there is some encoding issue somewhere around solr/nutch
+        # xthat should be handled better than this
         self._string = string_to_parse.replace('\\n', ' ')
         self._encoding = encoding
         self._parse()
@@ -24,7 +24,7 @@ class Parser():
         '''
         parse the xml, optional encoding
         '''
-        parser = etree.XMLParser(encoding=self._encoding, remove_blank_text=True)
+        parser = etree.XMLParser(encoding=self._encoding)
 
         try:
             self.xml = etree.fromstring(self._string, parser)
@@ -46,13 +46,13 @@ class Parser():
 
     def find_nodes(self, exclude_descriptors=[]):
         '''
-        pull ANY node with a text() and/or attributes and return the node text() 
+        pull ANY node with a text() and/or attributes and return the node text()
         and the xpath trace back up to root
 
         if exclude_descriptors, then drop any text() node found
-            (it is already parsed as part of the basic service 
+            (it is already parsed as part of the basic service
             description) in the namespaced xpath of the provided list
-        
+
         it's a tuple (text, xpath, attributes)
         '''
         nodes = []
@@ -105,7 +105,7 @@ class Parser():
             document_namespaces['default'] = document_namespaces[None]
             del document_namespaces[None]
 
-        #now run through any child namespace issues
+        # now run through any child namespace issues
         all_namespaces = self.xml.xpath('//namespace::*')
         for i, ns in enumerate(all_namespaces):
             if ns[1] in document_namespaces.values():
@@ -131,7 +131,6 @@ class Parser():
             xpath = xpath.replace(wrapped_ns, prefix + ':')
         return xpath
 
-
     def _strip_html(self):
         '''
         remove any html tags from any text chunk
@@ -149,6 +148,7 @@ class Parser():
             hparser.feed(t)
             elem.text = hparser.get_data()
 
+
 class TextParser(HTMLParser):
     '''
     basic html parsing for text with html-encoded tags
@@ -156,9 +156,9 @@ class TextParser(HTMLParser):
     def __init__(self):
         self.reset()
         self.fed = []
+
     def handle_data(self, d):
         self.fed.append(d)
+
     def get_data(self):
         return ''.join(self.fed)
-
-
