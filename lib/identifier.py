@@ -2,71 +2,105 @@ import logging
 
 LOGGER = logging.getLogger(__name__)
 
-def in_url(url, filters):
-	'''
-	check for some string in a url 
-	(not concerned so much about where)
-	'''
-	url = url.strip()
-	return len([f for f in filters if f.strip() in url]) > 0
-	
 
-def in_content(content, filters):
-	'''
-	check for some string in a text blob
-	(not concerned so much about where)
-	'''    	
-	return len([f for f in filters if f in content]) > 0
+def identify_response(source_content, source_url):
+    '''
+    from a url and some response content, try:
+        to identify what kind of service, version
+        of the service (this is very tricky without
+            parsing the xml - namespaces and urls
+            cannot be trusted), type of response (catalog,
+            dataset, visualization, whatever)
+    '''
 
-def identify_protocol(source_content, source_url):
-	'''
-	basic identification
+    def _in_url(url, filters):
+        '''
+        check for some string in a url
+        (not concerned so much about where)
+        '''
+        url = url.strip()
+        return len([f for f in filters if f.strip() in url]) > 0
 
-	note:
-		currently starting with high priority service types
-	'''
-	if in_content(source_content, ['http://www.isotc211.org/2005/gmi', 'http://www.isotc211.org/2005/gmd']):
-		#note: not differentiating between versions here
-		return 'ISO-19115'
-	elif in_content(source_content, ['http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0']):
-		return 'THREDDS Catalog'
-	elif in_content(source_content, ['http://a9.com/-/spec/opensearch/1.1/']):
-		return 'OpenSearch'
-	elif in_content(source_content, ['http://wadl.dev.java.net']):
-		return 'WADL'
-	elif in_content(source_content, ['http://www.opengis.net/wms']) or in_url(source_url.upper(), ['SERVICE=WMS']) \
-		or (in_content(source_content, ['http://mapserver.gis.umn.edu/mapserver']) and in_url(source_url.upper(), ['SERVICE=WMS'])):
-		return 'OGC:WMS'
-	elif in_content(source_content, ['http://www.opengis.net/wfs']) or in_url(source_url.upper(), ['SERVICE=WFS']) \
-		or (in_content(source_content, ['http://mapserver.gis.umn.edu/mapserver']) and in_url(source_url.upper(), ['SERVICE=WFS'])):
-		return 'OGC:WFS'
-	elif in_content(source_content, ['http://www.opengis.net/wcs']) or in_url(source_url.upper(), ['SERVICE=WCS']) \
-		or (in_content(source_content, ['http://mapserver.gis.umn.edu/mapserver']) and in_url(source_url.upper(), ['SERVICE=WCS'])):
-		return 'OGC:WCS'
-	elif in_content(source_content, ['http://www.openarchives.org/OAI/']):
-		return 'OAI-PMH'
+    def _in_content(content, filters):
+        '''
+        check for some string in a text blob
+        (not concerned so much about where)
+        '''
+        return len([f for f in filters if f in content]) > 0
 
-	logger.info('Unable to identify: %s' % source_url)
+    def identify_protocol(source_content, source_url):
+        '''
+        basic identification
 
-	return ''
+        note:
+            currently starting with high priority service types
+        '''
+        if _in_content(source_content, ['http://www.isotc211.org/2005/gmi',
+                                        'http://www.isotc211.org/2005/gmd']):
+            # note: not differentiating between versions here
+            return 'ISO-19115'
+        elif _in_content(source_content, ['http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0']):
+            return 'UNIDATA:Catalog'
+        elif _in_content(source_content, ['http://a9.com/-/spec/opensearch/1.1/']):
+            return 'OpenSearch1.1'
+        elif _in_content(source_content, ['http://wadl.dev.java.net']):
+            return 'WWW:WADL'
+        elif _in_content(source_content, ['http://www.opengis.net/wms']) \
+                or _in_url(source_url.upper(), ['SERVICE=WMS']) \
+                or (_in_content(source_content, ['http://mapserver.gis.umn.edu/mapserver'])
+                    and _in_url(source_url.upper(), ['SERVICE=WMS'])):
+            return 'OGC:WMS'
+        elif _in_content(source_content, ['http://www.opengis.net/wfs']) \
+                or _in_url(source_url.upper(), ['SERVICE=WFS']) \
+                or (_in_content(source_content, ['http://mapserver.gis.umn.edu/mapserver'])
+                    and _in_url(source_url.upper(), ['SERVICE=WFS'])):
+            return 'OGC:WFS'
+        elif _in_content(source_content, ['http://www.opengis.net/wcs']) \
+                or _in_url(source_url.upper(), ['SERVICE=WCS']) \
+                or (_in_content(source_content, ['http://mapserver.gis.umn.edu/mapserver'])
+                    and _in_url(source_url.upper(), ['SERVICE=WCS'])):
+            return 'OGC:WCS'
+        elif _in_content(source_content, ['http://www.openarchives.org/OAI/']):
+            return 'OAI-PMH'
 
-def is_service_description(protocol, source_content, source_url):
-	'''
-	based on the protocol and source information, identify whether
-	a response/service is an actual service description document or
-	some other thing
-	'''
-	if protocol in ['OGC:WMS', 'OGC:WFS', 'OGC:WCS'] and in_url(source_url.upper(), ['REQUEST=GETCAPABILITIES']):
-		return True
-	elif protocol in ['OAI-PMH'] and (in_url(source_url.upper(), ['VERB=IDENTIFY']) or in_content(source_content, ['<Identify>'])):
-		return True
-	elif protocol in ['OpenSearch']	and in_content(source_content, ['OpenSearchDescription']):
-		return True
- 	elif protocol in ['THREDDS Catalog']:
- 		return True
+        LOGGER.info('Unable to identify: %s' % source_url)
 
- 	return False
+        return ''
 
+    def identify_as_service(protocol, source_content, source_url):
+        '''
+        based on the protocol and source information, identify whether
+        a response/service is an actual service description document or
+        some other thing
+        '''
+        if protocol in ['OGC:WMS', 'OGC:WFS', 'OGC:WCS'] and \
+                _in_url(source_url.upper(), ['REQUEST=GETCAPABILITIES']):
+            return True
+        elif protocol in ['OAI-PMH'] and (_in_url(source_url.upper(),
+                ['VERB=IDENTIFY']) or _in_content(source_content, ['<Identify>'])):
+            return True
+        elif protocol in ['OpenSearch'] and _in_content(source_content,
+                ['OpenSearchDescription']):
+            return True
+        elif protocol in ['THREDDS Catalog']:
+            return True
 
+        return False
 
+    def identify_as_dataset(protocol, source_content, source_url):
+        return ''
 
+    def generate_urn(protocol, service, dataset, version):
+        return ':'.join([protocol, service, dataset, version])
+
+    # identify protocol
+    # identify service type
+    # ignore the version?
+    # identify response type
+
+    protocol = identify_protocol(source_content, source_url)
+    service = identify_as_service(protocol, source_content, source_url)
+    dataset = identify_as_dataset(protocol, source_content, source_url)
+    version = ''
+
+    return generate_urn(protocol, service, dataset, version)
