@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WMS_Capabilities version="1.3.0"
+    xmlns="http://www.opengis.net/wms"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:esri_wms="http://www.esri.com/wms"
+    xsi:schemaLocation="http://www.opengis.net/wms http://schemas.opengis.net/wms/1.3.0/capabilities_1_3_0.xsd http://www.esri.com/wms http://encdirect.noaa.gov/arcgis/services/HSD_Web_Services/HSD_Surveys_EstimatedtoMCD/MapServer/WmsServer?version=1.3.0%26service=WMS%26request=GetSchemaExtension">
+    <Service>
+        <Name><![CDATA[WMS]]></Name>
+        <Title>WMS</Title>
+        <Abstract>WMS</Abstract>
+        <KeywordList><Keyword><![CDATA[]]></Keyword></KeywordList>
+        <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://encdirect.noaa.gov/arcgis/services/HSD_Web_Services/HSD_Surveys_EstimatedtoMCD/MapServer/WmsServer?"/>
+        <ContactInformation>
+            <ContactPersonPrimary>
+                <ContactPerson><![CDATA[]]></ContactPerson>
+                <ContactOrganization><![CDATA[]]></ContactOrganization>
+            </ContactPersonPrimary>
+            <ContactPosition><![CDATA[]]></ContactPosition>
+            <ContactAddress>
+                <AddressType><![CDATA[]]></AddressType>
+                <Address><![CDATA[]]></Address>
+                <City><![CDATA[]]></City>
+                <StateOrProvince><![CDATA[]]></StateOrProvince>
+                <PostCode><![CDATA[]]></PostCode>
+                <Country><![CDATA[]]></Country>
+            </ContactAddress>
+            <ContactVoiceTelephone><![CDATA[]]></ContactVoiceTelephone>
+            <ContactFacsimileTelephone><![CDATA[]]></ContactFacsimileTelephone>
+            <ContactElectronicMailAddress><![CDATA[]]></ContactElectronicMailAddress>
+        </ContactInformation>
+        <Fees><![CDATA[]]></Fees>
+        <AccessConstraints><![CDATA[]]></AccessConstraints>
+        <MaxWidth>2048</MaxWidth>
+        <MaxHeight>2048</MaxHeight>
+    </Service>
+    <Capability>
+        <Request>
+            <GetCapabilities>
+                <Format>application/vnd.ogc.wms_xml</Format>
+                <Format>text/xml</Format>
+                <DCPType>
+                    <HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://encdirect.noaa.gov/arcgis/services/HSD_Web_Services/HSD_Surveys_EstimatedtoMCD/MapServer/WmsServer?"/></Get></HTTP>
+                </DCPType>
+            </GetCapabilities>
+            <GetMap>
+                <Format>image/bmp</Format>
+                <Format>image/jpeg</Format>
+                <Format>image/tiff</Format>
+                <Format>image/png</Format>
+                <Format>image/png8</Format>
+                <Format>image/png24</Format>
+                <Format>image/png32</Format>
+                <Format>image/gif</Format>
+                <Format>image/svg+xml</Format>
+                <DCPType>
+                    <HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://encdirect.noaa.gov/arcgis/services/HSD_Web_Services/HSD_Surveys_EstimatedtoMCD/MapServer/WmsServer?"/></Get></HTTP>
+                </DCPType>
+            </GetMap>
+            <GetFeatureInfo>
+                <Format>application/vnd.esri.wms_raw_xml</Format>
+                <Format>application/vnd.esri.wms_featureinfo_xml</Format>
+                <Format>application/vnd.ogc.wms_xml</Format>
+                <Format>text/xml</Format>
+                <Format>text/html</Format>
+                <Format>text/plain</Format>
+                <DCPType>
+                    <HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://encdirect.noaa.gov/arcgis/services/HSD_Web_Services/HSD_Surveys_EstimatedtoMCD/MapServer/WmsServer?"/></Get></HTTP>
+                </DCPType>
+            </GetFeatureInfo>
+            <esri_wms:GetStyles>
+                <Format>application/vnd.ogc.sld+xml</Format>
+                <DCPType>
+                    <HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://encdirect.noaa.gov/arcgis/services/HSD_Web_Services/HSD_Surveys_EstimatedtoMCD/MapServer/WmsServer?"/></Get></HTTP>
+                </DCPType>
+            </esri_wms:GetStyles>
+        </Request>
+        <Exception>
+            <Format>application/vnd.ogc.se_xml</Format>
+            <Format>application/vnd.ogc.se_inimage</Format>
+            <Format>application/vnd.ogc.se_blank</Format>
+            <Format>text/xml</Format>
+            <Format>XML</Format>
+        </Exception>
+        <Layer>
+            <Title><![CDATA[Layers]]></Title>
+            <CRS>CRS:84</CRS>
+            <CRS>EPSG:4326</CRS>
+            <CRS>EPSG:4269</CRS>
+            <EX_GeographicBoundingBox><westBoundLongitude>-166.178853</westBoundLongitude><eastBoundLongitude>-70.611888</eastBoundLongitude><southBoundLatitude>30.071370</southBoundLatitude><northBoundLatitude>54.853966</northBoundLatitude></EX_GeographicBoundingBox>
+            <BoundingBox CRS="CRS:84" minx="-166.178853" miny="30.071370" maxx="-70.611888" maxy="54.853966"/>
+            <BoundingBox CRS="EPSG:4326" minx="30.071370" miny="-166.178853" maxx="54.853966" maxy="-70.611888"/>
+            <BoundingBox CRS="EPSG:4269" minx="30.071370" miny="-166.178853" maxx="54.853966" maxy="-70.611888"/>
+            <Layer queryable="1">
+                <Name>0</Name>
+                <Title><![CDATA[Estimated_to_MCD]]></Title>
+                <Abstract><![CDATA[Estimated_to_MCD]]></Abstract>
+                <CRS>CRS:84</CRS>
+                <CRS>EPSG:4326</CRS>
+                <CRS>EPSG:4269</CRS>
+                <EX_GeographicBoundingBox><westBoundLongitude>-166.178853</westBoundLongitude><eastBoundLongitude>-70.611888</eastBoundLongitude><southBoundLatitude>30.071370</southBoundLatitude><northBoundLatitude>54.853966</northBoundLatitude></EX_GeographicBoundingBox>
+                <BoundingBox CRS="CRS:84" minx="-166.178853" miny="30.071370" maxx="-70.611888" maxy="54.853966"/>
+                <BoundingBox CRS="EPSG:4326" minx="30.071370" miny="-166.178853" maxx="54.853966" maxy="-70.611888"/>
+                <BoundingBox CRS="EPSG:4269" minx="30.071370" miny="-166.178853" maxx="54.853966" maxy="-70.611888"/>
+                <Style>
+                    <Name>default</Name>
+                    <Title>0</Title>
+                    <LegendURL width="124" height="48">
+                        <Format>image/png</Format>
+                        <OnlineResource xlink:href="http://encdirect.noaa.gov/arcgis/services/HSD_Web_Services/HSD_Surveys_EstimatedtoMCD/MapServer/WmsServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=0" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink" />
+                    </LegendURL>
+                </Style>
+            </Layer>
+            <Layer queryable="1">
+                <Name>1</Name>
+                <Title><![CDATA[Estimated_to_MCD_pts]]></Title>
+                <Abstract><![CDATA[Estimated_to_MCD_pts]]></Abstract>
+                <CRS>CRS:84</CRS>
+                <CRS>EPSG:4326</CRS>
+                <CRS>EPSG:4269</CRS>
+                <EX_GeographicBoundingBox><westBoundLongitude>-166.110393</westBoundLongitude><eastBoundLongitude>-70.714292</eastBoundLongitude><southBoundLatitude>30.134285</southBoundLatitude><northBoundLatitude>54.788191</northBoundLatitude></EX_GeographicBoundingBox>
+                <BoundingBox CRS="CRS:84" minx="-166.110393" miny="30.134285" maxx="-70.714292" maxy="54.788191"/>
+                <BoundingBox CRS="EPSG:4326" minx="30.134285" miny="-166.110393" maxx="54.788191" maxy="-70.714292"/>
+                <BoundingBox CRS="EPSG:4269" minx="30.134285" miny="-166.110393" maxx="54.788191" maxy="-70.714292"/>
+                <Style>
+                    <Name>default</Name>
+                    <Title>1</Title>
+                    <LegendURL width="214" height="56">
+                        <Format>image/png</Format>
+                        <OnlineResource xlink:href="http://encdirect.noaa.gov/arcgis/services/HSD_Web_Services/HSD_Surveys_EstimatedtoMCD/MapServer/WmsServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=1" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink" />
+                    </LegendURL>
+                </Style>
+            </Layer>
+        </Layer>
+    </Capability>
+</WMS_Capabilities>

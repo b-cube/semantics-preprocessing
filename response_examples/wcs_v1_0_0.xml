@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WCS_Capabilities xmlns="http://www.opengis.net/wcs" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" updateSequence="1.0" xsi:schemaLocation="http://www.opengis.net/wcs http://schemas.opengis.net/wcs/1.0.0/wcsCapabilities.xsd">
+    <Service>
+        <description>GeoBrain Web Coverage Server for DEM data</description>
+        <name>Geobrain_WCS_DEM</name>
+        <label>GMU LAITS Web Coverage Server</label>
+        <keywords>
+            <keyword>GMU LAITS GeoBrain WCS DEM</keyword>
+        </keywords>
+        <responsibleParty>
+            <individualName>Liping Di</individualName>
+            <organisationName>Laboratory for Advanced Information Technology and Standards, George Mason University</organisationName>
+            <positionName>Director</positionName>
+            <contactInfo>
+                <phone>
+                    <voice>+1-703-933-6114</voice>
+                </phone>
+                <address>
+               <deliveryPoint>4400 University Drive, MS 6E1</deliveryPoint>
+               <city>Fairfax</city>
+               <administrativeArea>Virginia</administrativeArea>
+               <postalCode>22030</postalCode>
+               <country>USA</country>
+               <electronicMailAddress>ldi@gmu.edu</electronicMailAddress>
+            </address>
+            </contactInfo>
+        </responsibleParty>
+        <fees>NONE</fees>
+        <accessConstraints>NONE</accessConstraints>
+    </Service>
+    <Capability>
+        <Request>
+            <GetCapabilities>
+                <DCPType>
+                    <HTTP>
+                        <Get>
+                            <OnlineResource xlink:href="http://geobrain.laits.gmu.edu/cgi-bin/gbwcs-dem?" />
+                        </Get>
+                        <Post>
+                            <OnlineResource xlink:href="http://geobrain.laits.gmu.edu/cgi-bin/gbwcs-dem?" />
+                        </Post>
+                    </HTTP>
+                </DCPType>
+            </GetCapabilities>
+            <DescribeCoverage>
+                <DCPType>
+                    <HTTP>
+                        <Get>
+                            <OnlineResource xlink:href="http://geobrain.laits.gmu.edu/cgi-bin/gbwcs-dem?" />
+                        </Get>
+                        <Post>
+                            <OnlineResource xlink:href="http://geobrain.laits.gmu.edu/cgi-bin/gbwcs-dem?" />
+                        </Post>
+                    </HTTP>
+                </DCPType>
+            </DescribeCoverage>
+            <GetCoverage>
+                <DCPType>
+                    <HTTP>
+                        <Get>
+                            <OnlineResource xlink:href="http://geobrain.laits.gmu.edu/cgi-bin/gbwcs-dem?" />
+                        </Get>
+                        <Post>
+                            <OnlineResource xlink:href="http://geobrain.laits.gmu.edu/cgi-bin/gbwcs-dem?" />
+                        </Post>
+                    </HTTP>
+                </DCPType>
+            </GetCoverage>
+        </Request>
+        <Exception>
+            <Format>text/xml</Format>
+        </Exception>
+    </Capability>
+    <ContentMetadata>
+        <CoverageOfferingBrief>
+            <name>SRTM_30m_USA</name>
+            <label>SRTM USA 30m spatial resolution GeoTiff (Int16)</label>
+            <lonLatEnvelope srsName="EPSG:4326">
+                <gml:pos dimension="2">-180 -15</gml:pos>
+                <gml:pos dimension="2">180 61</gml:pos>
+            </lonLatEnvelope>
+        </CoverageOfferingBrief>
+        <CoverageOfferingBrief>
+            <name>SRTM_90m_Global</name>
+            <label>SRTM Global 90m spatial resolution GeoTiff (Int16)</label>
+            <lonLatEnvelope srsName="EPSG:4326">
+                <gml:pos dimension="2">-180 -60</gml:pos>
+                <gml:pos dimension="2">180 60</gml:pos>
+            </lonLatEnvelope>
+        </CoverageOfferingBrief>
+        <CoverageOfferingBrief>
+            <name>GTOPO_30arc_Global</name>
+            <label>GTOPO Global 30 arc seconds (approximately 1 kilometer) spatial resolution GeoTiff (Int16)</label>
+            <lonLatEnvelope srsName="EPSG:4326">
+                <gml:pos dimension="2">-180 -90</gml:pos>
+                <gml:pos dimension="2">180 90</gml:pos>
+            </lonLatEnvelope>
+        </CoverageOfferingBrief>
+        <CoverageOfferingBrief>
+            <name>GLSDEM_90m_Global</name>
+            <label>The Global Land Survey Digital Elevation Model (GLSDEM) is a spatial data collection crucial to new global imagery products from NASA and the USGS.</label>
+            <lonLatEnvelope srsName="EPSG:4326">
+                <gml:pos dimension="2">-180 -56</gml:pos>
+                <gml:pos dimension="2">180 84</gml:pos>
+            </lonLatEnvelope>
+        </CoverageOfferingBrief>
+        <CoverageOfferingBrief>
+            <name>SRTM30_Plus_Global</name>
+            <label>A dataset of world-wide coverage combining NASA's Shuttle Radar Topography Mission (SRTM) obtained elevation data and Smith and Sandwell global 2-minute bathymetry. This data set provides a global composite of elevation that can be utilized to create elevation/bathymetry visualization. GeoTiff (Int16)</label>
+            <lonLatEnvelope srsName="EPSG:4326">
+                <gml:pos dimension="2">-180 -90</gml:pos>
+                <gml:pos dimension="2">180 90</gml:pos>
+            </lonLatEnvelope>
+        </CoverageOfferingBrief>
+        <CoverageOfferingBrief>
+            <name>NED_30m_USA</name>
+            <label>The National Elevation Dataset (NED) is the primary elevation data product of the USGS. The NED is a seamless dataset with the best available raster elevation data of the conterminous United States, Alaska, Hawaii, and territorial islands. The NED is updated on a nominal two month cycle to integrate newly available, improved elevation source data. All NED data are public domain. The NED is derived from diverse source data that are processed to a common coordinate system and unit of vertical measure. NED data are distributed in geographic coordinates in units of decimal degrees, and in conformance with the North American Datum of 1983 (NAD 83). All elevation values are in meters and, over the conterminous United States, are referenced to the North American Vertical Datum of 1988 (NAVD 88). The vertical reference will vary in other areas. NED data are available nationally (except for Alaska) at resolutions of 1 arc-second (about 30 meters) and 1/3 arc-second (about 10 meters), and in limited areas at 1/9 arc-second (about 3 meters). In most of Alaska, only lower resolution source data are available. As a result, most NED data for Alaska are at 2-arc-second (about 60 meters) grid spacing, Part of Alaska is available at the 1- and 1/3-arc-second resolution, and plans are in development for a significant improvement in elevation data coverage of the state.</label>
+            <lonLatEnvelope srsName="EPSG:4326">
+                <gml:pos dimension="2">-180 -15</gml:pos>
+                <gml:pos dimension="2">180 61</gml:pos>
+            </lonLatEnvelope>
+        </CoverageOfferingBrief>	  
+    </ContentMetadata>
+</WCS_Capabilities>

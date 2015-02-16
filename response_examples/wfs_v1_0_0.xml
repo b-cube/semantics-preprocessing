@@ -12,7 +12,7 @@
     <Service>
         <Name>MapServer WFS</Name>
         <!-- WARNING: Mandatory metadata '..._title' was missing in this context. -->
-        <Title>AKages_Geographic</Title>
+        <Title>Podiform_chromite_deposits</Title>
         <OnlineResource>http://mrdata.usgs.gov/</OnlineResource>
         <Fees>none</Fees>
         <AccessConstraints>none</AccessConstraints>
@@ -23,12 +23,12 @@
             <GetCapabilities>
                 <DCPType>
                     <HTTP>
-                        <Get onlineResource="http://mrdata.usgs.gov/cgi-bin/mapserv?map=/mnt/mrt/map-files/akages-geo.map&amp;" />
+                        <Get onlineResource="http://mrdata.usgs.gov/cgi-bin/mapserv?map=/mnt/mrt/map-files/podchrome.map&amp;" />
                     </HTTP>
                 </DCPType>
                 <DCPType>
                     <HTTP>
-                        <Post onlineResource="http://mrdata.usgs.gov/cgi-bin/mapserv?map=/mnt/mrt/map-files/akages-geo.map&amp;" />
+                        <Post onlineResource="http://mrdata.usgs.gov/cgi-bin/mapserv?map=/mnt/mrt/map-files/podchrome.map&amp;" />
                     </HTTP>
                 </DCPType>
             </GetCapabilities>
@@ -38,12 +38,12 @@
                 </SchemaDescriptionLanguage>
                 <DCPType>
                     <HTTP>
-                        <Get onlineResource="http://mrdata.usgs.gov/cgi-bin/mapserv?map=/mnt/mrt/map-files/akages-geo.map&amp;" />
+                        <Get onlineResource="http://mrdata.usgs.gov/cgi-bin/mapserv?map=/mnt/mrt/map-files/podchrome.map&amp;" />
                     </HTTP>
                 </DCPType>
                 <DCPType>
                     <HTTP>
-                        <Post onlineResource="http://mrdata.usgs.gov/cgi-bin/mapserv?map=/mnt/mrt/map-files/akages-geo.map&amp;" />
+                        <Post onlineResource="http://mrdata.usgs.gov/cgi-bin/mapserv?map=/mnt/mrt/map-files/podchrome.map&amp;" />
                     </HTTP>
                 </DCPType>
             </DescribeFeatureType>
@@ -53,12 +53,12 @@
                 </ResultFormat>
                 <DCPType>
                     <HTTP>
-                        <Get onlineResource="http://mrdata.usgs.gov/cgi-bin/mapserv?map=/mnt/mrt/map-files/akages-geo.map&amp;" />
+                        <Get onlineResource="http://mrdata.usgs.gov/cgi-bin/mapserv?map=/mnt/mrt/map-files/podchrome.map&amp;" />
                     </HTTP>
                 </DCPType>
                 <DCPType>
                     <HTTP>
-                        <Post onlineResource="http://mrdata.usgs.gov/cgi-bin/mapserv?map=/mnt/mrt/map-files/akages-geo.map&amp;" />
+                        <Post onlineResource="http://mrdata.usgs.gov/cgi-bin/mapserv?map=/mnt/mrt/map-files/podchrome.map&amp;" />
                     </HTTP>
                 </DCPType>
             </GetFeature>
@@ -70,15 +70,15 @@
             <Query/>
         </Operations>
         <FeatureType>
-            <Name>akages</Name>
-            <Title>akages</Title>
-            <Abstract>Radiometric ages of rocks or minerals sampled from Alaska. The data were collected from professional publications and/or received from researchers and used by permission.</Abstract>
+            <Name>podchrome</Name>
+            <Title>podchrome</Title>
+            <Abstract>Location and characteristics of 1,124 individual podiform chromite mineral deposits, with grade and tonnage models for chromium as well as several related elements.</Abstract>
             <Keywords>
-                geochronology; radiometric dating
+                mineral resources; mining and quarrying; mine sites; chromium; rhodium; iridium; ruthenium; palladium; platinum
             </Keywords>
-            <SRS>EPSG:2964</SRS>
-            <LatLongBoundingBox minx="-1.57603e+07" miny="1438.7" maxx="1.57608e+07" maxy="3.00003e+07" />
-            <MetadataURL type="FGDC" format="text/xml">http://mrdata.usgs.gov/metadata/akages.xml</MetadataURL>
+            <SRS>EPSG:4326</SRS>
+            <LatLongBoundingBox minx="-179" miny="-89" maxx="179" maxy="89" />
+            <MetadataURL type="FGDC" format="text/xml">http://mrdata.usgs.gov/metadata/sir-2012-5157.xml</MetadataURL>
         </FeatureType>
     </FeatureTypeList>
     
