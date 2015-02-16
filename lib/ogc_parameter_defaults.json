@@ -170,52 +170,52 @@
     "GETCAPABILITIES": {
       "VERSION": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wfs",
+        "Prefix": "wfs",
         "Required": true
       },
       "REQUEST": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wfs",
+        "Prefix": "wfs",
         "Required": true
       },
       "SERVICE": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wfs",
+        "Prefix": "wfs",
         "Required": true
       }
     },
     "DESCRIBEFEATURETYPE": {
       "VERSION": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wfs",
+        "Prefix": "wfs",
         "Required": true
       },
       "REQUEST": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wfs",
+        "Prefix": "wfs",
         "Required": true
       },
       "SERVICE": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wfs",
+        "Prefix": "wfs",
         "Required": true
       },
       "TYPENAME": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wfs",
+        "Prefix": "wfs",
         "Required": true
       },
       "FORMAT": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wfs",
+        "Prefix": "wfs",
         "Required": true,
         "Remap": {
           "remapped": "SchemaDescriptionLanguage",
@@ -229,75 +229,75 @@
     "GETFEATURE": {
       "VERSION": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wfs",
+        "Prefix": "wfs",
         "Required": true
       },
       "REQUEST": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wfs",
+        "Prefix": "wfs",
         "Required": true
       },
       "SERVICE": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wfs",
+        "Prefix": "wfs",
         "Required": true
       },
       "FORMAT": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wfs",
+        "Prefix": "wfs",
         "Required": true
         "Remap": {
           "remapped": "ResultFormat",
           "can_have_values": true,
           "value_remaps": {
-            "GML2": ""
+            "GML2": "text/xml; subtype=gml/2.1.2"
           }
         }
       },
       "TYPENAME": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wfs",
+        "Prefix": "wfs",
         "Required": true
       },
       "PROPERTYNAME": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wfs",
+        "Prefix": "wfs",
         "Required": false
       },
       "FEATUREVERSION": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wfs",
+        "Prefix": "wfs",
         "Required": false
       },
       "BBOX": {
         "Format": "string; minx,miny,maxx,maxy",
-        "Namespace": "http://www.opengis.net/wms",
-        "Prefix": "wms",
+        "Namespace": "http://www.opengis.net/wfs",
+        "Prefix": "wfs",
         "Required": true
       },
       "FEATUREID": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wfs",
+        "Prefix": "wfs",
         "Required": false
       },
       "FILTER": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wfs",
+        "Prefix": "wfs",
         "Required": false
       },
       "MAXFEATURES": {
         "Format": "integer",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wfs",
+        "Prefix": "wfs",
         "Required": false
       }
     }
