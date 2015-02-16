@@ -2,6 +2,20 @@ import logging
 
 LOGGER = logging.getLogger(__name__)
 
+# TODO: put together a configuration widget for
+#       to map protocol to some search filters
+#       and some service description filters,
+#       and some dataset filters so that we can
+#       have one thing to map the priority set
+#       vs the IDENTIFY ALL THE THINGS! set. oh,
+#       and wind up with reasonable line lengths
+#       for beto. :) so basically elasticsearch all
+#       the things.
+#
+# _ors: [content filters] + [url filters] (ANY match)
+# _ands [content filter + url filter (or other combo)]
+# where an _ands can be a filter in an _ors
+
 
 def identify_response(source_content, source_url):
     '''
@@ -28,7 +42,7 @@ def identify_response(source_content, source_url):
         '''
         return len([f for f in filters if f in content]) > 0
 
-    def identify_protocol(source_content, source_url):
+    def identify_protocol():
         '''
         basic identification
 
@@ -67,7 +81,7 @@ def identify_response(source_content, source_url):
 
         return ''
 
-    def identify_as_service(protocol, source_content, source_url):
+    def identify_as_service(protocol):
         '''
         based on the protocol and source information, identify whether
         a response/service is an actual service description document or
@@ -87,7 +101,7 @@ def identify_response(source_content, source_url):
 
         return False
 
-    def identify_as_dataset(protocol, source_content, source_url):
+    def identify_as_dataset(protocol):
         return ''
 
     def generate_urn(protocol, service, dataset, version):
