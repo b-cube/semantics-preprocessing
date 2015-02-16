@@ -500,60 +500,138 @@
     "GETCAPABILITIES": {
       "VERSION": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wcs",
+        "Prefix": "wcs",
         "Required": true
       },
       "REQUEST": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wcs",
+        "Prefix": "wcs",
         "Required": true
       },
       "SERVICE": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wcs",
+        "Prefix": "wcs",
         "Required": true
       }
     },
     "DESCRIBECOVERAGE": {
       "VERSION": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wcs",
+        "Prefix": "wcs",
         "Required": true
       },
       "REQUEST": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wcs",
+        "Prefix": "wcs",
         "Required": true
       },
       "SERVICE": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wcs",
+        "Prefix": "wcs",
+        "Required": true
+      },
+      "COVERAGE": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/wcs",
+        "Prefix": "wcs",
         "Required": true
       }
     },
     "GETCOVERAGE": {
       "VERSION": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wcs",
+        "Prefix": "wcs",
         "Required": true
       },
       "REQUEST": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wcs",
+        "Prefix": "wcs",
         "Required": true
       },
       "SERVICE": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wcs",
+        "Prefix": "wcs",
+        "Required": true
+      },
+      "COVERAGE": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/wcs",
+        "Prefix": "wcs",
+        "Required": true
+      },
+      "CRS": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/wcs",
+        "Prefix": "wcs",
+        "Required": true
+      },
+      "RESPONSE_CRS": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/wcs",
+        "Prefix": "wcs",
+        "Required": true
+      },
+      "BBOX": {
+        "Format": "string; minx,miny,maxx,maxy",
+        "Namespace": "http://www.opengis.net/wcs",
+        "Prefix": "wcs",
+        "Required": true
+      },
+      "TIME": {
+        "Format": "timestamps",
+        "Namespace": "http://www.opengis.net/wcs",
+        "Prefix": "wcs",
+        "Required": false
+      },
+      "PARAMETER": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/wcs",
+        "Prefix": "wcs",
+        "Required": false
+      },
+      "WIDTH": {
+        "Format": "integer",
+        "Namespace": "http://www.opengis.net/wcs",
+        "Prefix": "wcs",
+        "Required": true
+      },
+      "HEIGHT": {
+        "Format": "integer",
+        "Namespace": "http://www.opengis.net/wcs",
+        "Prefix": "wcs",
+        "Required": true
+      },
+      "RESX": {
+        "Format": "double",
+        "Namespace": "http://www.opengis.net/wcs",
+        "Prefix": "wcs",
+        "Required": true
+      },
+      "RESY": {
+        "Format": "double",
+        "Namespace": "http://www.opengis.net/wcs",
+        "Prefix": "wcs",
+        "Required": true
+      },
+      "INTERPOLATION": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/wcs",
+        "Prefix": "wcs",
+        "Required": true
+      },
+      "FORMAT": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/wcs",
+        "Prefix": "wcs",
         "Required": true
       }
     }
