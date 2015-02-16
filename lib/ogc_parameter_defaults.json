@@ -206,24 +206,195 @@
     "GETCAPABILITIES": {
       "VERSION": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
         "Required": true
       },
       "REQUEST": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
         "Required": true
       },
       "SERVICE": {
         "Format": "string",
-        "Namespace": "http://www.opengis.net/ows",
-        "Prefix": "ows",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
         "Required": true,
+      },
+      "FORMAT": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
+        "Required": false,
+        "Remap": {
+          "remapped": "Format",
+          "can_have_values": true
+        }
+      }
+    },
+    "GETMAP": {
+      "VERSION": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
+        "Required": true
+      },
+      "REQUEST": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
+        "Required": true
+      },
+      "SERVICE": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
+        "Required": true
+      },
+      "FORMAT": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
+        "Required": true,
+        "Remap": {
+          "remapped": "Format",
+          "can_have_values": true
+        }
+      },
+      "LAYERS": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
+        "Required": true
+      },
+      "BBOX": {
+        "Format": "string; minx,miny,maxx,maxy",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
+        "Required": true
+      },
+      "HEIGHT": {
+        "Format": "integer",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
+        "Required": true
+      },
+      "WIDTH": {
+        "Format": "integer",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
+        "Required": true
+      },
+      "STYLES": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
+        "Required": true
+      },
+      "CRS": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
+        "Required": true
+      },
+      "TRANSPARENT": {
+        "Format": "boolean",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
+        "Required": false
+      },
+      "BGCOLOR": {
+        "Format": "hexadecimal",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
+        "Required": false
+      },
+      "ELEVATION": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
+        "Required": false
+      },
+      "TIME": {
+        "Format": "string; timestamp",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
+        "Required": false
+      }
+    },
+    "GETFEATUREINFO": {
+      "VERSION": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
+        "Required": true
+      },
+      "REQUEST": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
+        "Required": true
+      },
+      "SERVICE": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
+        "Required": true
+      },
+      "INFO_FORMAT": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
+        "Required": true,
+        "Remap": {
+          "remapped": "Format",
+          "can_have_values": true
+        }
+      },
+      "FEATURE_COUNT": {
+        "Format": "integer",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
+        "Required": false
+      },
+      "I": {
+        "Format": "double",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
+        "Required": true
+      },
+      "J": {
+        "Format": "double",
+        "Namespace": "http://www.opengis.net/wms",
+        "Prefix": "wms",
+        "Required": true
+      },
+    },
+    "DESCRIBELAYER": {
+      "FORMAT" :{
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/sld",
+        "Prefix": "sld",
+        "Required": true,
+        "Remap": {
+          "remapped": "Format",
+          "can_have_values": true
+        }
+      }
+    },
+    "GETSTYLES": {
+      "FORMAT" :{
+        "Format": "string",
+        "Namespace": "http://www.esri.com/wms",
+        "Prefix": "esri_wms",
+        "Required": true,
+        "Remap": {
+          "remapped": "Format",
+          "can_have_values": true
+        }
       }
     }
-
   },
   "WCS-1.0.0": {
     "GETCAPABILITIES": {
@@ -245,9 +416,47 @@
         "Prefix": "ows",
         "Required": true,
       }
+    },
+    "DESCRIBECOVERAGE": {
+      "VERSION": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true
+      },
+      "REQUEST": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true
+      },
+      "SERVICE": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true,
+      }
+    },
+    "GETCOVERAGE": {
+      "VERSION": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true
+      },
+      "REQUEST": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true
+      },
+      "SERVICE": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true,
+      }
     }
-
-
   },
   "WCS-1.1.2": {
     "GETCAPABILITIES": {
@@ -269,8 +478,48 @@
         "Prefix": "ows",
         "Required": true,
       }
+    },
+    "DESCRIBECOVERAGE": {
+      "VERSION": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true
+      },
+      "REQUEST": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true
+      },
+      "SERVICE": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true,
+      }
+    },
+    "GETCOVERAGE": {
+      "VERSION": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true
+      },
+      "REQUEST": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true
+      },
+      "SERVICE": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true,
+      }
     }
-    
+
   }
 }
 
