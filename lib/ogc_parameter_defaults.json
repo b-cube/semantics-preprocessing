@@ -642,7 +642,11 @@
         "Format": "string",
         "Namespace": "http://www.opengis.net/ows",
         "Prefix": "ows",
-        "Required": true
+        "Required": true,
+        "Remap": {
+          "remapped": "AcceptVersions",
+          "can_have_values": true
+        }
       },
       "REQUEST": {
         "Format": "string",
@@ -654,7 +658,21 @@
         "Format": "string",
         "Namespace": "http://www.opengis.net/ows",
         "Prefix": "ows",
-        "Required": true
+        "Required": true,
+        "Remap": {
+          "remapped": "service",
+          "can_have_values": true
+        }
+      },
+      "FORMAT": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/wcs",
+        "Prefix": "wcs",
+        "Required": false,
+        "Remap": {
+          "remapped": "AcceptFormats",
+          "can_have_values": true
+        }
       }
     },
     "DESCRIBECOVERAGE": {
@@ -662,7 +680,11 @@
         "Format": "string",
         "Namespace": "http://www.opengis.net/ows",
         "Prefix": "ows",
-        "Required": true
+        "Required": true,
+        "Remap": {
+          "remapped": "AcceptVersions",
+          "can_have_values": true
+        }
       },
       "REQUEST": {
         "Format": "string",
@@ -674,7 +696,21 @@
         "Format": "string",
         "Namespace": "http://www.opengis.net/ows",
         "Prefix": "ows",
-        "Required": true
+        "Required": true,
+        "Remap": {
+          "remapped": "service",
+          "can_have_values": true
+        }
+      },
+      "IDENTIFIER": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true,
+        "Remap": {
+          "remapped": "Identifier",
+          "can_have_values": true
+        }
       }
     },
     "GETCOVERAGE": {
@@ -682,7 +718,11 @@
         "Format": "string",
         "Namespace": "http://www.opengis.net/ows",
         "Prefix": "ows",
-        "Required": true
+        "Required": true,
+        "Remap": {
+          "remapped": "AcceptVersions",
+          "can_have_values": true
+        }
       },
       "REQUEST": {
         "Format": "string",
@@ -694,7 +734,41 @@
         "Format": "string",
         "Namespace": "http://www.opengis.net/ows",
         "Prefix": "ows",
-        "Required": true
+        "Required": true,
+        "Remap": {
+          "remapped": "service",
+          "can_have_values": true
+        }
+      },
+      "IDENTIFIER": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true,
+        "Remap": {
+          "remapped": "Identifier",
+          "can_have_values": true
+        }
+      },
+      "INTERPOLATION": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": false,
+        "Remap": {
+          "remapped": "InterpolationType",
+          "can_have_values": true
+        }
+      },
+      "FORMAT": {
+        "Format": "string",
+        "Namespace": "http://www.opengis.net/ows",
+        "Prefix": "ows",
+        "Required": true,
+        "Remap": {
+          "remapped": "format",
+          "can_have_values": true
+        }
       }
     }
 

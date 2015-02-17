@@ -15,6 +15,10 @@ LOGGER = logging.getLogger(__name__)
 # _ors: [content filters] + [url filters] (ANY match)
 # _ands [content filter + url filter (or other combo)]
 # where an _ands can be a filter in an _ors
+#
+# add the bit about is it valid xml?
+# add the bit about version extraction?
+# add the bit about it's valid xml but a error response
 
 
 def identify_response(source_content, source_url):
@@ -41,6 +45,12 @@ def identify_response(source_content, source_url):
         (not concerned so much about where)
         '''
         return len([f for f in filters if f in content]) > 0
+
+    def _is_valid_xml():
+        '''
+        can etree parse the string? we have a parser for this
+        '''
+        pass
 
     def identify_protocol():
         '''

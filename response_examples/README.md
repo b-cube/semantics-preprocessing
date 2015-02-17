@@ -3,7 +3,7 @@
 
 WSDL:  [c55136dcb4dfed0a29d9c1e35948b012](http://opendap.co-ops.nos.noaa.gov/axis/webservices/historicstations/wsdl/HistoricStations.wsdl)
 
-
+WADL: [57b6b5ffc08b6e3e2f3704e33cf61c45](http://www.fueleconomy.gov/ws/rest/application.wadl)
 
 OAI-PMH (getrecord): a775e96d08a92b90f423f1061db11725
 
