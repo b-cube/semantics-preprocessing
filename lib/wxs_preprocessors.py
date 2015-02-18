@@ -86,7 +86,7 @@ class WfsReader(BaseReader):
         for k, v in self._endpoint_descriptors.iteritems():
             endpoints.append(
                 (
-                    k, 
+                    k,
                     self.parser.find(v['url']),
                     self.parser.find(v['formats'])
                 )

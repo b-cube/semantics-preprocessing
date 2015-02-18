@@ -14,9 +14,7 @@ class Parser():
     '''
 
     def __init__(self, string_to_parse, encoding='utf-8'):
-        # there is some encoding issue somewhere around solr/nutch
-        # xthat should be handled better than this
-        self._string = string_to_parse.replace('\\n', ' ')
+        self._string = string_to_parse
         self._encoding = encoding
         self._parse()
 
@@ -124,7 +122,8 @@ class Parser():
 
         for the actual querying (replace the '{ns}' with 'prefix:')
 
-        and we don't really care for storage - we care for this path, this query
+        and we don't really care for storage -
+            we care for this path, this query
         '''
         for prefix, ns in self._namespaces.iteritems():
             wrapped_ns = '{%s}' % ns

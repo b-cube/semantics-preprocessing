@@ -1,0 +1,105 @@
+protocols:
+  - name: OGC
+    filters:
+      ors: 
+        - type: complex
+          operator: and
+          filters:
+            - type: regex
+              object: content
+              value: '^(http:\/\/www\.opengis\.net\/[o|w]][a-z]s)'
+            - type: simple
+              object: url
+              value: '(SERVICE=W[a-z]S)*'
+        - type: complex
+          operator: and
+          filters:
+            - type: simple
+              object: url
+              value: '(SERVICE=W[a-z]S)*'
+            - type: simple
+              object: content
+              value: 'http://mapserver.gis.umn.edu/mapserver'
+    services: 
+      - name: WMS
+        filters:
+          ands:
+            - type: simple
+              object: url
+              value: 'SERVICE=WMS'
+            - type: simple
+              object: url
+              value: 'REQUEST=GETCAPABILITIES'
+      - name: WFS
+        filters:
+          ands:
+            - type: simple
+              object: url
+              value: 'SERVICE=WFS'
+            - type: simple
+              object: url
+              value: 'REQUEST=GETCAPABILITIES'
+      - name: WCS
+        filters:
+          ands:
+            - type: simple
+              object: url
+              value: 'SERVICE=WCS'
+            - type: simple
+              object: url
+              value: 'REQUEST=GETCAPABILITIES'
+  - name: OpenSearch
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://a9.com/-/spec/opensearch/1.1/'
+    services: 
+      - name: 'OpenSearchDescription'
+        filters: 
+          ors:
+            - type: simple
+              object: content
+              value: 'OpenSearchDescription'
+  - name: ISO-19115
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://www.isotc211.org/2005'
+  - name: UNIDATA
+    filters: 
+      ors:
+        - type: simple
+          object: content
+          value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
+    services:
+      - name: Catalog
+  - name: www # this is a catchall so how to handle the filtering
+    filters:
+    services:
+      - name: WADL
+        filters:
+          ors:
+            - type: simple
+              object: content
+              value: 'http://wadl.dev.java.net'
+  - name: OAI-PMH 
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://www.openarchives.org/OAI/'
+    services:
+      - name: Identify
+        filters:
+          ors:
+            - type: simple
+              object: url
+              value: 'VERB=IDENTIFY'
+            - type: simple
+              object: content
+              value: '<Identify>'
+
+
+
