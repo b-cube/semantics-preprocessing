@@ -55,16 +55,21 @@ class Identify():
             if filter_type == 'complex':
                 filter_operator = f['operator']
                 clauses.append(self._filter(filter_operator, f['filters']))
-                continue
-
-            filter_object = self.source_content if f['object'] == 'content' else self.source_url
-            filter_value = f['value']
-            if filter_type == 'simple':
+                # TODO: get this to return the recursed clause list correctly
+                print 'nested', clauses
+            elif filter_type == 'simple':
+                filter_object = self.source_content if f['object'] == 'content' else self.source_url
+                filter_value = f['value']
                 clauses.append(filter_value in filter_object)
             elif filter_type == 'regex':
+                filter_object = self.source_content if f['object'] == 'content' else self.source_url
+                filter_value = f['value']
                 clauses.append(len(re.findall(filter_value, filter_object)) > 0)
 
         print clauses
+        return self._evaluate(operator, clauses)
+
+    def _evaluate(self, operator, clauses):
         if operator == 'ands':
             # everything must be true
             return sum(clauses) == len(clauses)

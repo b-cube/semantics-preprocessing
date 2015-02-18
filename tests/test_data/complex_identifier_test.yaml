@@ -7,14 +7,14 @@ protocols:
           filters:
             - type: regex
               object: content
-              value: '^(http:\/\/www\.opengis\.net\/[o|w]][a-z]s)'
-            - type: simple
+              value: '(http:\/\/www\.opengis\.net\/[o|w]][a-z]s)*'
+            - type: regex
               object: url
               value: '(SERVICE=W[a-z]S)*'
         - type: complex
           operator: and
           filters:
-            - type: simple
+            - type: regex
               object: url
               value: '(SERVICE=W[a-z]S)*'
             - type: simple
