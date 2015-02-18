@@ -35,10 +35,11 @@ class Identify():
                  for a protocol
     '''
     def __init__(self, yaml_file, source_content, source_url, **options):
+        self.yaml_file = yaml_file
         self.source_content = source_content
         self.source_url = source_url
         self.options = options
-        self.yaml = self._parse_yaml(yaml_file)
+        self.yaml = self._parse_yaml()
 
     def _parse_yaml(self):
         with open(self.yaml_file, 'r') as f:
@@ -48,18 +49,22 @@ class Identify():
     def _filter(self, operator, filters):
         clauses = []
         for f in filters:
-            filter_object = self.source_content if f['object'] == 'content' else self.source_url
-            filter_value = f['value']
+            print 'filter', f
             filter_type = f['type']
 
+            if filter_type == 'complex':
+                filter_operator = f['operator']
+                clauses.append(self._filter(filter_operator, f['filters']))
+                continue
+
+            filter_object = self.source_content if f['object'] == 'content' else self.source_url
+            filter_value = f['value']
             if filter_type == 'simple':
                 clauses.append(filter_value in filter_object)
             elif filter_type == 'regex':
                 clauses.append(len(re.findall(filter_value, filter_object)) > 0)
-            elif filter_type == 'complex':
-                filter_operator = f['operator']
-                clauses.append(self._filter(filter_operator, f['filters']))
 
+        print clauses
         if operator == 'ands':
             # everything must be true
             return sum(clauses) == len(clauses)
@@ -86,6 +91,7 @@ class Identify():
 
         for service in protocol_data['services']:
             for k, v in service['filters'].iteritems():
+                print k, v
                 is_match = self._filter(k, v)
                 if is_match:
                     return service['name']
