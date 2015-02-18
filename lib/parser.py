@@ -46,8 +46,8 @@ class Parser():
 
     def find_nodes(self, exclude_descriptors=[]):
         '''
-        pull ANY node with a text() and/or attributes and return the node text()
-        and the xpath trace back up to root
+        pull ANY node with a text() and/or attributes and return
+        the node text() and the xpath trace back up to root.
 
         if exclude_descriptors, then drop any text() node found
             (it is already parsed as part of the basic service
@@ -122,9 +122,8 @@ class Parser():
         and we need this:
             wms:WMS_Capabilities, ns={'wms': 'http://www.opengis.net/wms'}
 
-        for the actual querying (replace the '{ns}' with 'prefix:')
-
-        and we don't really care for storage - we care for this path, this query
+        for the actual querying (replace the '{ns}' with 'prefix:') and
+        we don't really care for storage - we care for this path, this query.
         '''
         for prefix, ns in self._namespaces.iteritems():
             wrapped_ns = '{%s}' % ns

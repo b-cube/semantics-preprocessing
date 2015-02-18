@@ -4,10 +4,10 @@ fields:
   - date
 sample:
   start: 0
-  end: 10
-  size: 3
-query: 
+  end: 20
+  size: 2
+query:
   raw_content:
-    - soil
-    - pedon
+    - http://www.isotc211.org/2005/gmi
+    - http://www.isotc211.org/2005/gmd
 ext: json

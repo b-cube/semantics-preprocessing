@@ -1,0 +1,118 @@
+[
+     {
+        "DocType" : "ISO 19115:2003/19139",
+        "fingerprint": [
+            "http://www.isotc211.org/2005/gmi",
+            "http://www.isotc211.org/2005/gmi"
+        ],
+        "url": ""
+    },
+    {
+        "DocType": "THREDDS",
+        "fingerprint": [
+            "http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+        ],
+        "url": ""
+    },
+    {
+        "DocType": "OPeNDAP:OPeNDAP",
+        "fingerprint": [
+            "http://xml.opendap.org/ns/DAP2"
+        ],
+        "url": ""
+    },
+    {
+        "DocType": "OpenSearch",
+        "fingerprint": [
+            "http://a9.com/"
+        ],
+        "url": ""
+    },
+    {
+        "DocType": "WADL",
+        "fingerprint": [
+            "http://wadl.dev.java.net"
+        ],
+        "url": ""
+    },
+    {
+        "DocType": "WSDL",
+        "fingerprint": [
+            "hhttp://schemas.xmlsoap.org/wsdl/"
+        ],
+        "url": ""
+    },
+    {
+        "DocType": "Atom",
+        "fingerprint": [
+            "http://www.w3.org/2005/Atom"
+        ],
+        "url": ""
+    },
+    {
+        "DocType": "OGC:WMS",
+        "fingerprint": [
+            "http://www.opengis.net/wms",
+            "http://mapserver.gis.umn.edu/mapserver"
+        ],
+        "url": "SERVICE=WMS"
+    },
+    {
+        "DocType": "OGC:WMTS",
+        "fingerprint": [
+            "http://www.opengis.net/wmts"
+        ],
+        "url": ""
+    },
+    {
+        "DocType": "OGC:WFS",
+        "fingerprint": [
+            "http://www.opengis.net/wfs",
+            "http://mapserver.gis.umn.edu/mapserver"
+        ],
+        "url": "SERVICE=WFS"
+    },
+    {
+        "DocType": "OGC:WCS",
+        "fingerprint": [
+            "http://www.opengis.net/wcs",
+            "http://mapserver.gis.umn.edu/mapserver"
+        ],
+        "url": "SERVICE=WCS"
+    },
+    {
+        "DocType": "OGC:WMTS",
+        "fingerprint": [
+            "http://www.opengis.net/wmts/"
+        ],
+        "url": ""
+    },
+    {
+        "DocType": "OGC:SWE",
+        "fingerprint": [
+            "http://www.opengis.net/swe/"
+        ],
+        "url": ""
+    },
+    {
+        "DocType": "DIF",
+        "fingerprint": [
+            "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/"
+        ],
+        "url": ""
+    },
+    {
+        "DocType": "OAI-PMH",
+        "fingerprint": [
+            "http://www.openarchives.org/OAI/"
+        ],
+        "url": ""
+    },
+    {
+        "DocType": "KML",
+        "fingerprint": [
+            "http://earth.google.com/kml"
+        ],
+        "url": ""
+    }
+]
