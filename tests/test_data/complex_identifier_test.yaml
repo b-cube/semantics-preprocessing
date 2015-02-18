@@ -3,7 +3,7 @@ protocols:
     filters:
       ors: 
         - type: complex
-          operator: and
+          operator: ands
           filters:
             - type: regex
               object: content
@@ -12,7 +12,7 @@ protocols:
               object: url
               value: '(SERVICE=W[a-z]S)*'
         - type: complex
-          operator: and
+          operator: ands
           filters:
             - type: regex
               object: url

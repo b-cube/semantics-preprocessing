@@ -46,17 +46,18 @@ class Identify():
             text = f.read()
         return yaml.load(text)
 
-    def _filter(self, operator, filters):
-        clauses = []
+    def _filter(self, operator, filters, clauses):
+        '''
+        generate a list of dicts for operator and booleans
+        that can be rolled up into some bool for a match
+        '''
         for f in filters:
             print 'filter', f
             filter_type = f['type']
 
             if filter_type == 'complex':
                 filter_operator = f['operator']
-                clauses.append(self._filter(filter_operator, f['filters']))
-                # TODO: get this to return the recursed clause list correctly
-                print 'nested', clauses
+                clauses.append(self._filter(filter_operator, f['filters'], []))
             elif filter_type == 'simple':
                 filter_object = self.source_content if f['object'] == 'content' else self.source_url
                 filter_value = f['value']
@@ -66,23 +67,40 @@ class Identify():
                 filter_value = f['value']
                 clauses.append(len(re.findall(filter_value, filter_object)) > 0)
 
-        print clauses
-        return self._evaluate(operator, clauses)
+        return {operator: clauses}
 
-    def _evaluate(self, operator, clauses):
-        if operator == 'ands':
-            # everything must be true
-            return sum(clauses) == len(clauses)
-        elif operator == 'ors':
-            # any one must be true
-            return sum(clauses) > 0
+    def _evaluate(self, clauses, sums):
+        '''
+        evaluate a list a dicts where the key is
+        the operator and the value is a list of
+        booleans
+        '''
+        if isinstance(clauses, bool):
+            # so this should be the rolled up value
+            return clauses
+
+        for k, v in clauses.iteritems():
+            if isinstance(v, dict):
+                sums += self._evaluate(v, 0)
+            elif isinstance(v, list):
+                for i in v:
+                    sums += self._evaluate(i, 0)
+            else:
+                if k == 'ands':
+                    # everything must be true
+                    sums += sum(v) == len(v)
+                elif k == 'ors':
+                    # any one must be true
+                    sums += sum(v) > 0
+        return sums
 
     def _identify_protocol(self):
         for protocol in self.protocols:
             protocol_filters = protocol['filters']
 
             for k, v in protocol_filters.iteritems():
-                is_match = self._filter(k, v)
+                is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
+                print 'match', is_match
                 if is_match:
                     return protocol['name']
 
@@ -97,7 +115,8 @@ class Identify():
         for service in protocol_data['services']:
             for k, v in service['filters'].iteritems():
                 print k, v
-                is_match = self._filter(k, v)
+                is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
+                print 'match', is_match
                 if is_match:
                     return service['name']
 
