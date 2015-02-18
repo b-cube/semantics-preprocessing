@@ -23,7 +23,18 @@ LOGGER = logging.getLogger(__name__)
 # add the bit about it's valid xml but a error response
 
 
-def identify(yaml_file, source_content, source_url):
+def identify(yaml_file, source_content, source_url, **options):
+    '''
+    parameters:
+        yaml_file: path to the yaml definition yaml
+        source_content: the content string for comparisons
+        source_url: the url string for comparisons
+        options: dict containing the filtering options, ie
+                 identify which protocol, identify which service
+                 of a protocol, identify if it's a dataset service
+                 for a protocol
+    '''
+
     def _parse_yaml(self):
         with open(yaml_file, 'r') as f:
             text = f.read()
@@ -74,6 +85,28 @@ def identify(yaml_file, source_content, source_url):
                 if is_match:
                     return service['name']
 
+        return ''
+
+    def _identify_if_dataset_service(protocol):
+        '''
+        TODO: sort out if this needs to be a named
+              response or just the boolean
+        '''
+        return False
+
+    def _is_protocol_error(protocol):
+        '''
+        TODO: get the xpath? or whatever for the
+              protocol to determine if error
+        '''
+        return False
+
+    def _identify_version(protocol):
+        '''
+        TODO: get the xpath? or whatever for the
+              protocol to determine the version
+              if that is possible at all
+        '''
         return ''
 
     config_data = _parse_yaml()
