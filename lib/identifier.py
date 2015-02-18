@@ -46,12 +46,6 @@ def identify_response(source_content, source_url):
         '''
         return len([f for f in filters if f in content]) > 0
 
-    def _is_valid_xml():
-        '''
-        can etree parse the string? we have a parser for this
-        '''
-        pass
-
     def identify_protocol():
         '''
         basic identification
