@@ -1,0 +1,63 @@
+protocols:
+  - name: OGC
+    filters:
+      ors: 
+        - type: complex
+          operator: and
+          filters:
+            - type: regex
+              object: content
+              value: '^(http:\/\/www\.opengis\.net\/[o|w]][a-z]s)'
+            - type: simple
+              object: url
+              value: '(SERVICE=W[a-z]S)*'
+        - type: complex
+          operator: and
+          filters:
+            - type: simple
+              object: url
+              value: '(SERVICE=W[a-z]S)*'
+            - type: simple
+              object: content
+              value: 'http://mapserver.gis.umn.edu/mapserver'
+    services: 
+      - name: WMS
+        filters:
+          ands:
+            - type: simple
+              object: url
+              value: 'SERVICE=WMS'
+            - type: simple
+              object: url
+              value: 'REQUEST=GETCAPABILITIES'
+      - name: WFS
+        filters:
+          ands:
+            - type: simple
+              object: url
+              value: 'SERVICE=WFS'
+            - type: simple
+              object: url
+              value: 'REQUEST=GETCAPABILITIES'
+      - name: WCS
+        filters:
+          ands:
+            - type: simple
+              object: url
+              value: 'SERVICE=WCS'
+            - type: simple
+              object: url
+              value: 'REQUEST=GETCAPABILITIES'
+  - name: OpenSearch
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://a9.com/-/spec/opensearch/1.1/'
+    services: 
+      - name: 'OpenSearchDescription'
+        filters: 
+          ors:
+            - type: simple
+              object: content
+              value: 'OpenSearchDescription'

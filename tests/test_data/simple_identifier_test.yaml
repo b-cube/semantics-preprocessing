@@ -1,0 +1,14 @@
+protocols:
+  - name: OpenSearch
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://a9.com/-/spec/opensearch/1.1/'
+    services: 
+      - name: 'OpenSearchDescription'
+        filters: 
+          ors:
+            - type: simple
+              object: content
+              value: 'OpenSearchDescription'

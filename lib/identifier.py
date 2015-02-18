@@ -23,7 +23,7 @@ LOGGER = logging.getLogger(__name__)
 # add the bit about it's valid xml but a error response
 
 
-def identify(yaml_file, source_content, source_url, **options):
+class Identify():
     '''
     parameters:
         yaml_file: path to the yaml definition yaml
@@ -34,16 +34,21 @@ def identify(yaml_file, source_content, source_url, **options):
                  of a protocol, identify if it's a dataset service
                  for a protocol
     '''
+    def __init__(self, yaml_file, source_content, source_url, **options):
+        self.source_content = source_content
+        self.source_url = source_url
+        self.options = options
+        self.yaml = self._parse_yaml(yaml_file)
 
     def _parse_yaml(self):
-        with open(yaml_file, 'r') as f:
+        with open(self.yaml_file, 'r') as f:
             text = f.read()
         return yaml.load(text)
 
-    def _filter(operator, filters):
+    def _filter(self, operator, filters):
         clauses = []
         for f in filters:
-            filter_object = source_content if f['object'] == 'content' else source_url
+            filter_object = self.source_content if f['object'] == 'content' else self.source_url
             filter_value = f['value']
             filter_type = f['type']
 
@@ -53,7 +58,7 @@ def identify(yaml_file, source_content, source_url, **options):
                 clauses.append(len(re.findall(filter_value, filter_object)) > 0)
             elif filter_type == 'complex':
                 filter_operator = f['operator']
-                clauses.append(_filter(filter_operator, f['filters']))
+                clauses.append(self._filter(filter_operator, f['filters']))
 
         if operator == 'ands':
             # everything must be true
@@ -62,46 +67,46 @@ def identify(yaml_file, source_content, source_url, **options):
             # any one must be true
             return sum(clauses) > 0
 
-    def _identify_protocol():
-        for protocol in protocols:
+    def _identify_protocol(self):
+        for protocol in self.protocols:
             protocol_filters = protocol['filters']
 
             for k, v in protocol_filters.iteritems():
-                is_match = _filter(k, v)
+                is_match = self._filter(k, v)
                 if is_match:
                     return protocol['name']
 
         return ''
 
-    def _identify_service_of_protocol(protocol):
-        protocol_data = next(p for p in protocols if p['name'] == protocol)
+    def _identify_service_of_protocol(self, protocol):
+        protocol_data = next(p for p in self.protocols if p['name'] == protocol)
         if not protocol_data:
             LOGGER.warn('failed to identify protocol %s' % protocol)
             return False
 
         for service in protocol_data['services']:
             for k, v in service['filters'].iteritems():
-                is_match = _filter(k, v)
+                is_match = self._filter(k, v)
                 if is_match:
                     return service['name']
 
         return ''
 
-    def _identify_if_dataset_service(protocol):
+    def _identify_if_dataset_service(self, protocol):
         '''
         TODO: sort out if this needs to be a named
               response or just the boolean
         '''
         return False
 
-    def _is_protocol_error(protocol):
+    def _is_protocol_error(self, protocol):
         '''
         TODO: get the xpath? or whatever for the
               protocol to determine if error
         '''
         return False
 
-    def _identify_version(protocol):
+    def _identify_version(self, protocol):
         '''
         TODO: get the xpath? or whatever for the
               protocol to determine the version
@@ -109,5 +114,5 @@ def identify(yaml_file, source_content, source_url, **options):
         '''
         return ''
 
-    config_data = _parse_yaml()
-    protocols = config_data['protocols']
+    def identify(self):
+        self.protocols = self.yaml['protocols']
