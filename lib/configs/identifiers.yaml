@@ -20,6 +20,9 @@ protocols:
             - type: simple
               object: content
               value: 'http://mapserver.gis.umn.edu/mapserver'
+        - type: simple
+          object: content
+          value: 'http://www.opengis.net/ogc'
     services: 
       - name: WMS
         filters:

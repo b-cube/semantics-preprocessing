@@ -66,3 +66,23 @@ class TestComplexIdentifiers(unittest.TestCase):
 
         self.assertTrue(returned_service)
         self.assertTrue(expected_service == returned_service)
+
+    def test_is_error(self):
+        returned_error = self.identifier._is_protocol_error('OGC')
+        self.assertFalse(returned_error)
+
+
+class TestExceptionIdentification(unittest.TestCase):
+    def setUp(self):
+        yaml_file = 'tests/test_data/complex_identifier_test.yaml'
+
+        with open('tests/test_data/wms_exception.xml', 'r') as f:
+            content = f.read()
+        url = 'http://www.mapserver.com/cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GETCAPABILITIES'
+
+        self.identifier = Identify(yaml_file, content, url)
+        self.identifier.identify()
+
+    def test_is_error(self):
+        returned_error = self.identifier._is_protocol_error('OGC')
+        self.assertTrue(returned_error)

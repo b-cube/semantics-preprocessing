@@ -20,6 +20,10 @@ protocols:
             - type: simple
               object: content
               value: 'http://mapserver.gis.umn.edu/mapserver'
+        - type: simple
+          object: content
+          # for the exception response
+          value: 'http://www.opengis.net/ogc'
     services: 
       - name: WMS
         filters:
@@ -48,6 +52,12 @@ protocols:
             - type: simple
               object: url
               value: 'REQUEST=GETCAPABILITIES'
+    errors:
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'ServiceExceptionReport'
   - name: OpenSearch
     filters:
       ors:

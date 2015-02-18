@@ -100,7 +100,6 @@ class Identify():
 
             for k, v in protocol_filters.iteritems():
                 is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
-                print 'match', is_match
                 if is_match:
                     return protocol['name']
 
@@ -114,9 +113,7 @@ class Identify():
 
         for service in protocol_data['services']:
             for k, v in service['filters'].iteritems():
-                print k, v
                 is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
-                print 'match', is_match
                 if is_match:
                     return service['name']
 
@@ -134,6 +131,17 @@ class Identify():
         TODO: get the xpath? or whatever for the
               protocol to determine if error
         '''
+        protocol_data = next(p for p in self.protocols if p['name'] == protocol)
+        if not protocol_data:
+            LOGGER.warn('failed to identify protocol %s' % protocol)
+            return False
+
+        filters = protocol_data['errors']['filters']
+        for k, v in filters.iteritems():
+            is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
+            if is_match:
+                return True
+
         return False
 
     def _identify_version(self, protocol):
