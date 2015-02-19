@@ -1,6 +1,6 @@
 Copyright (c) 2014 Regents of the University of Colorado
 
-This software was developed by the National Snow and Ice Data Center.
+This software was developed by the National Snow and Ice Data Center under NSF Award number ICER 1343802 (EarthCube Building Blocks: A Broker Framework for Next Generation Geoscience (BCube)).
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this
 software and associated documentation files (the "Software"), to deal in the Software
