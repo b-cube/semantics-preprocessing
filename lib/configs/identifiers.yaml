@@ -76,6 +76,17 @@ protocols:
             - type: simple
               object: content
               value: 'OpenSearchDescription'
+    errors:
+      filters:
+        ors:
+            # these are baed on the cwic best practices and may 
+            # not be in widespread use
+          - type: simple
+            object: content
+            value: 'OpenSearch Exception'
+          - type: simple
+            object: content
+            value: 'REQUEST_EXCEPTION:'
   - name: ISO-19115
     filters:
       ors:
@@ -90,8 +101,17 @@ protocols:
           value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
     services:
       - name: Catalog
+        filters: 
+          ors:
+            - type: simple
+              object: content
+              value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
   - name: www # this is a catchall so how to handle the filtering
     filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://wadl.dev.java.net'
     services:
       - name: WADL
         filters:

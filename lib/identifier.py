@@ -1,8 +1,8 @@
-import logging
+# import logging
 import yaml
 import re
 
-LOGGER = logging.getLogger(__name__)
+# LOGGER = logging.getLogger(__name__)
 
 
 class Identify():
@@ -34,7 +34,6 @@ class Identify():
         that can be rolled up into some bool for a match
         '''
         for f in filters:
-            print 'filter', f
             filter_type = f['type']
 
             if filter_type == 'complex':
@@ -90,8 +89,12 @@ class Identify():
     def _identify_service_of_protocol(self, protocol):
         protocol_data = next(p for p in self.protocols if p['name'] == protocol)
         if not protocol_data:
-            LOGGER.warn('failed to identify protocol %s' % protocol)
+            # LOGGER.warn('failed to identify protocol %s' % protocol)
             return False
+
+        if 'services' not in protocol_data:
+            # LOGGER.warn('no services defined for protocol')
+            return ''
 
         for service in protocol_data['services']:
             for k, v in service['filters'].iteritems():
@@ -116,7 +119,7 @@ class Identify():
         '''
         protocol_data = next(p for p in self.protocols if p['name'] == protocol)
         if not protocol_data:
-            LOGGER.warn('failed to identify protocol %s' % protocol)
+            # LOGGER.warn('failed to identify protocol %s' % protocol)
             return False
 
         if 'errors' not in protocol_data:
@@ -141,7 +144,7 @@ class Identify():
         '''
         protocol_data = next(p for p in self.protocols if p['name'] == protocol)
         if not protocol_data:
-            LOGGER.warn('failed to identify protocol %s' % protocol)
+            # LOGGER.warn('failed to identify protocol %s' % protocol)
             return ''
 
         if 'versions' not in protocol_data:
@@ -174,7 +177,9 @@ class Identify():
         # determine the protocol
         protocol = self._identify_protocol()
 
-        assert protocol, 'Unknown protocol for %s' % self.digest
+        # assert protocol, 'Unknown protocol for %s' % self.source_url
+        if not protocol:
+            return '', '', '', '', False
 
         # make sure it's not an error response
         is_error = self._is_protocol_error(protocol)
@@ -184,7 +189,7 @@ class Identify():
         # and if it's a service description (and which)
         service = self._identify_service_of_protocol(protocol)
         if not service:
-            LOGGER.warn('Unable to identify service for %s' % self.digest)
+            # LOGGER.warn('Unable to identify service for %s' % self.source_url)
             return protocol, '', '', '', is_error
 
         # determine if it contains dataset-level info

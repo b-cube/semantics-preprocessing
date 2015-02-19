@@ -1,5 +1,7 @@
 from lxml import etree
 from HTMLParser import HTMLParser
+import traceback
+import sys
 
 
 class Parser():
@@ -28,6 +30,7 @@ class Parser():
             self.xml = etree.fromstring(self._string, parser)
         except Exception as ex:
             print ex
+            traceback.print_exc(file=sys.stdout)
             self.xml = None
 
         self._namespaces = self._get_document_namespaces()
@@ -98,6 +101,9 @@ class Parser():
         Pull all of the namespaces in the source document
         and generate a list of tuples (prefix, URI) to dict
         '''
+        if self.xml is None:
+            return {}
+
         document_namespaces = dict(self.xml.xpath('/*/namespace::*'))
         if None in document_namespaces:
             document_namespaces['default'] = document_namespaces[None]

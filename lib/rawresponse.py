@@ -19,7 +19,7 @@ class RawResponse():
             strip unicode escaped text: boolean
         '''
         self.identifier = identifier
-        self.response = self._extract_from_cdata(source_content)
+        self.response = source_content
         self.url = source_url
         self.options = options
 
@@ -38,7 +38,7 @@ class RawResponse():
         self.content = m.group(1)
 
     def _strip_newline(self):
-        self.content = self.content.replace('\\n', ' ')
+        self.content = self.content.replace('\\n', ' ').replace('\\t', ' ')
 
     def clean_raw_content(self):
         '''
@@ -46,5 +46,7 @@ class RawResponse():
         the clean-up methods (remove html, remove
             newline, remove unicode cruft)
         '''
+        self._extract_from_cdata()
+        self._strip_newline()
 
         return self.content
