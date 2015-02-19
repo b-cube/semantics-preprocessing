@@ -4,24 +4,6 @@ import re
 
 LOGGER = logging.getLogger(__name__)
 
-# TODO: put together a configuration widget for
-#       to map protocol to some search filters
-#       and some service description filters,
-#       and some dataset filters so that we can
-#       have one thing to map the priority set
-#       vs the IDENTIFY ALL THE THINGS! set. oh,
-#       and wind up with reasonable line lengths
-#       for beto. :) so basically elasticsearch all
-#       the things.
-#
-# _ors: [content filters] + [url filters] (ANY match)
-# _ands [content filter + url filter (or other combo)]
-# where an _ands can be a filter in an _ors
-#
-# add the bit about is it valid xml?
-# add the bit about version extraction?
-# add the bit about it's valid xml but a error response
-
 
 class Identify():
     '''
@@ -128,8 +110,7 @@ class Identify():
 
     def _is_protocol_error(self, protocol):
         '''
-        TODO: get the xpath? or whatever for the
-              protocol to determine if error
+        check to see if this is an error response for a protocol
         '''
         protocol_data = next(p for p in self.protocols if p['name'] == protocol)
         if not protocol_data:
@@ -144,13 +125,31 @@ class Identify():
 
         return False
 
-    def _identify_version(self, protocol):
+    def _identify_version(self, protocol, source_as_parser):
         '''
-        TODO: get the xpath? or whatever for the
-              protocol to determine the version
-              if that is possible at all
+        this is likely to be some xml action, so xpaths and
+        the parsed xml (as a Parser obj)
+
+        and not using the _filter method - we need to return
+        the value from the source, not just an existence flag
         '''
+        protocol_data = next(p for p in self.protocols if p['name'] == protocol)
+        if not protocol_data:
+            LOGGER.warn('failed to identify protocol %s' % protocol)
+            return ''
+
+        checks = protocol_data['checks']
+        for k, v in checks.iteritems():
+            # i am not dealing with recursive xpath checks tonight
+            if v['type'] == 'xpath':
+                value = source_as_parser.find(v['value'])
+                if value:
+                    return value
+
         return ''
+
+    def generate_urn(self):
+        pass
 
     def identify(self):
         self.protocols = self.yaml['protocols']

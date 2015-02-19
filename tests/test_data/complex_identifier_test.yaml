@@ -52,6 +52,12 @@ protocols:
             - type: simple
               object: url
               value: 'REQUEST=GETCAPABILITIES'
+    versions: 
+      checks:
+        ors:
+          - type: xpath
+            # fully qualified xpath which is lovely and short here
+            value: '@version'
     errors:
       filters:
         ors:
