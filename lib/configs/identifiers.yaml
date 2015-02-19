@@ -51,6 +51,18 @@ protocols:
             - type: simple
               object: url
               value: 'REQUEST=GETCAPABILITIES'
+    versions: 
+      checks:
+        ors:
+          - type: xpath
+            # fully qualified xpath which is lovely and short here
+            value: '@version'
+    errors:
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'ServiceExceptionReport'
   - name: OpenSearch
     filters:
       ors:
@@ -103,6 +115,13 @@ protocols:
             - type: simple
               object: content
               value: '<Identify>'
-
+    errors:
+      filters:
+        ors:
+          - type:  simple
+            object: content
+            # note that this should probably be an xpath search
+            # for the error element
+            value: '<error code="'
 
 
