@@ -138,13 +138,14 @@ class Identify():
             LOGGER.warn('failed to identify protocol %s' % protocol)
             return ''
 
-        checks = protocol_data['checks']
+        checks = protocol_data['versions']['checks']
         for k, v in checks.iteritems():
             # i am not dealing with recursive xpath checks tonight
-            if v['type'] == 'xpath':
-                value = source_as_parser.find(v['value'])
-                if value:
-                    return value
+            for f in v:
+                if f['type'] == 'xpath':
+                    value = source_as_parser.find(f['value'])
+                    if value:
+                        return value[0] if isinstance(value, list) else value
 
         return ''
 
