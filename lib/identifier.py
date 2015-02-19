@@ -144,11 +144,17 @@ class Identify():
             LOGGER.warn('failed to identify protocol %s' % protocol)
             return ''
 
+        if 'versions' not in protocol_data:
+            return ''
+
         checks = protocol_data['versions']['checks']
         for k, v in checks.iteritems():
             # i am not dealing with recursive xpath checks tonight
             for f in v:
                 if f['type'] == 'xpath':
+                    if not source_as_parser:
+                        # TODO: log this
+                        continue
                     value = source_as_parser.find(f['value'])
                     if value:
                         return value[0] if isinstance(value, list) else value
@@ -167,14 +173,25 @@ class Identify():
 
         # determine the protocol
         protocol = self._identify_protocol()
-        
+
+        assert protocol, 'Unknown protocol for %s' % self.digest
+
         # make sure it's not an error response
+        is_error = self._is_protocol_error(protocol)
+        if is_error:
+            return protocol, '', '', '', is_error
 
         # and if it's a service description (and which)
+        service = self._identify_service_of_protocol(protocol)
+        if not service:
+            LOGGER.warn('Unable to identify service for %s' % self.digest)
+            return protocol, '', '', '', is_error
 
         # determine if it contains dataset-level info
+        is_dataset = self._identify_if_dataset_service(protocol)
 
         # extract the version
+        parser = self.options.get('parser', None)
+        version = self._identify_version(protocol, parser)
 
-
-        return protocol, service, is_dataset, version, is_error
+        return protocol, service, is_dataset, version, False

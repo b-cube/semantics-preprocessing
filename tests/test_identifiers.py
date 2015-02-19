@@ -43,7 +43,11 @@ class TestComplexIdentifiers(unittest.TestCase):
             content = f.read()
         url = 'http://www.mapserver.com/cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GETCAPABILITIES'
 
-        self.identifier = Identify(yaml_file, content, url)
+        parser_content = content.replace('\\n', '')
+        parser = Parser(parser_content)
+        options = {'parser': parser}
+
+        self.identifier = Identify(yaml_file, content, url, **options)
         self.identifier.identify()
 
     def test_load_yaml(self):
@@ -71,6 +75,17 @@ class TestComplexIdentifiers(unittest.TestCase):
     def test_is_error(self):
         returned_error = self.identifier._is_protocol_error('OGC')
         self.assertFalse(returned_error)
+
+    def test_identify(self):
+        # just run it again?
+
+        protocol, service, is_dataset, version, is_error = self.identifier.identify()
+
+        self.assertFalse(is_error)
+        self.assertTrue(protocol == 'OGC')
+        self.assertTrue(service == 'WMS')
+        self.assertTrue(version)
+        self.assertTrue(version == '1.3.0')
 
 
 class TestExceptionIdentification(unittest.TestCase):
@@ -109,3 +124,7 @@ class TestVersionExtraction(unittest.TestCase):
         returned_version = self.identifier._identify_version('OGC', self.parser)
 
         self.assertTrue(expected_version == returned_version)
+
+    def test_no_parser(self):
+        returned_version = self.identifier._identify_version('OGC', None)
+        self.assertTrue(not returned_version)
