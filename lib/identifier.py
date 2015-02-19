@@ -105,6 +105,8 @@ class Identify():
         '''
         TODO: sort out if this needs to be a named
               response or just the boolean
+
+        this will depend on the service type and version
         '''
         return False
 
@@ -115,6 +117,10 @@ class Identify():
         protocol_data = next(p for p in self.protocols if p['name'] == protocol)
         if not protocol_data:
             LOGGER.warn('failed to identify protocol %s' % protocol)
+            return False
+
+        if 'errors' not in protocol_data:
+            # we don't know how to determine error here
             return False
 
         filters = protocol_data['errors']['filters']
@@ -153,4 +159,22 @@ class Identify():
         pass
 
     def identify(self):
+        '''
+        **options:
+            parser: Parser from source_content
+        '''
         self.protocols = self.yaml['protocols']
+
+        # determine the protocol
+        protocol = self._identify_protocol()
+        
+        # make sure it's not an error response
+
+        # and if it's a service description (and which)
+
+        # determine if it contains dataset-level info
+
+        # extract the version
+
+
+        return protocol, service, is_dataset, version, is_error
