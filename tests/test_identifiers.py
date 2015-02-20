@@ -128,3 +128,23 @@ class TestVersionExtraction(unittest.TestCase):
     def test_no_parser(self):
         returned_version = self.identifier._identify_version('OGC', None)
         self.assertTrue(not returned_version)
+
+
+class TestVersionDefaults(unittest.TestCase):
+    def setUp(self):
+        yaml_file = 'tests/test_data/simple_identifier_test.yaml'
+
+        content = '''<OpenSearch xmlns="http://a9.com/-/spec/opensearch/1.1/">
+                        <element>OpenSearchDescription</element></OpenSearch>'''
+        url = 'http://www.opensearch.com'
+
+        self.identifier = Identify(yaml_file, content, url)
+        self.identifier.identify()
+
+    def test_default_version(self):
+        expected_version = '1.1'
+
+        returned_version = self.identifier._identify_version('OpenSearch', None)
+
+        self.assertTrue(returned_version)
+        self.assertTrue(expected_version == returned_version)

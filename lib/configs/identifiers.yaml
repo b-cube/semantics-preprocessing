@@ -3,15 +3,6 @@ protocols:
     filters:
       ors: 
         # - type: complex
-        #   operator: ors
-        #   filters:
-        #     - type: regex
-        #       object: content
-        #       value: 'xmlns=\"http:\/\/([www]|[schemas]\.opengis\.net)\/[o|w][mfcw]s'
-        #     - type: simple
-        #       object: url
-        #       value: 'SERVICE=W[MFC]S'
-        # - type: complex
         #   operator: ands
         #   filters:
         #     - type: simple
@@ -135,6 +126,13 @@ protocols:
           - type: simple
             object: content
             value: 'REQUEST_EXCEPTION:'
+    versions:
+      defaults:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://a9.com/-/spec/opensearch/1.1/'
+            text: '1.1'
   - name: ISO-19115
     filters:
       ors:

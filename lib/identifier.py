@@ -163,17 +163,36 @@ class Identify():
         if 'versions' not in protocol_data:
             return ''
 
-        checks = protocol_data['versions']['checks']
-        for k, v in checks.iteritems():
-            # i am not dealing with recursive xpath checks tonight
-            for f in v:
-                if f['type'] == 'xpath':
-                    if not source_as_parser:
-                        # TODO: log this
-                        continue
-                    value = source_as_parser.find(f['value'])
-                    if value:
-                        return value[0] if isinstance(value, list) else value
+        versions = protocol_data['versions']
+
+        # basic check for implied defaults
+        if 'defaults' in versions:
+            for k, v in versions['defaults'].iteritems():
+                for f in v:
+                    if f['type'] == 'simple':
+                        filter_value = f['value']
+                        filter_object = self.source_content if f['object'] == 'content' \
+                            else self.source_url
+
+                        if self.ignore_case:
+                            filter_value = filter_value.upper()
+                            filter_object = filter_object.upper()
+
+                        if filter_value in filter_object:
+                            return f['text']
+
+        # run against any explicit version definition
+        if 'checks' in versions:
+            for k, v in versions['checks'].iteritems():
+                # i am not dealing with recursive xpath checks tonight
+                for f in v:
+                    if f['type'] == 'xpath':
+                        if not source_as_parser:
+                            # TODO: log this
+                            continue
+                        value = source_as_parser.find(f['value'])
+                        if value:
+                            return value[0] if isinstance(value, list) else value
 
         return ''
 
