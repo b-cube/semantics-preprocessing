@@ -2,15 +2,15 @@ protocols:
   - name: OGC
     filters:
       ors: 
-        - type: complex
-          operator: ors
-          filters:
-            - type: regex
-              object: content
-              value: 'xmlns=\"http:\/\/([www]|[schemas]\.opengis\.net)\/[o|w][mfcw]s'
-            - type: simple
-              object: url
-              value: 'SERVICE=W[MFC]S'
+        # - type: complex
+        #   operator: ors
+        #   filters:
+        #     - type: regex
+        #       object: content
+        #       value: 'xmlns=\"http:\/\/([www]|[schemas]\.opengis\.net)\/[o|w][mfcw]s'
+        #     - type: simple
+        #       object: url
+        #       value: 'SERVICE=W[MFC]S'
         # - type: complex
         #   operator: ands
         #   filters:
@@ -23,6 +23,18 @@ protocols:
         - type: simple
           object: content
           value: 'http://www.opengis.net/ogc'
+        - type: simple
+          object: content
+          value: 'http://www.opengis.net/wms'
+        - type: simple
+          object: content
+          value: 'http://www.opengis.net/wcs'
+        - type: simple
+          object: content
+          value: 'http://www.opengis.net/wfs'
+        - type: simple
+          object: content
+          value: 'http://schemas.opengis.net/ows'
     services: 
       - name: WMS
         filters:
@@ -41,7 +53,7 @@ protocols:
               filters:
               - type: simple
                 object: content
-                value: 'xmlns=\"http://www.opengis.net/wms\"'
+                value: 'xhttp://www.opengis.net/wms'
               - type: simple
                 object: content
                 value: '<GetCapabilities>'

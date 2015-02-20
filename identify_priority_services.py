@@ -14,20 +14,22 @@ process against a local file store of solr responses
 YAML_FILE = 'lib/configs/identifiers.yaml'
 
 # responses = glob.glob('testdata/docs/response_60de9ec6341a2116ff4bb2739c307739.json')
-responses = glob.glob('testdata/docs/response_*.json')
+# responses = glob.glob('testdata/docs/response_*.json')
 
-with open('priority_identification.csv', 'w') as f:
+with open('testdata/probable_ogc.txt', 'r') as f:
+    digests = f.readlines()
+responses = ['testdata/docs/response_%s.json' % d.strip() for d in digests]
+
+with open('priority_identification_ogc.csv', 'w') as f:
     f.write('digest|url|protocol|service|is dataset|version|is error\n')
 
-for response in responses:
+for response in responses[0:5]:
     with open(response, 'r') as f:
         data = json.loads(f.read())
 
     digest = data['digest']
     raw_content = data['raw_content']
     url = data['url']
-
-    print digest
 
     rr = RawResponse(url.upper(), raw_content, digest, **{})
     cleaned_text = rr.clean_raw_content()
@@ -43,8 +45,8 @@ for response in responses:
     identifier = Identify(YAML_FILE, cleaned_text, url, **{'parser': parser})
     protocol, service, is_dataset, version, is_error = identifier.identify()
 
-    print '\t', protocol, service, version, is_error
+    print digest, protocol, service, version, is_error
 
-    with open('priority_identification.csv', 'a') as f:
+    with open('priority_identification_ogc.csv', 'a') as f:
         f.write('|'.join([digest, url.replace(',', ';').replace('|', ';'), protocol, service,
                 str(is_dataset), version, str(is_error)]) + '\n')

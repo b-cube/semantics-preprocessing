@@ -1,8 +1,5 @@
-# import logging
 import yaml
 import re
-
-# LOGGER = logging.getLogger(__name__)
 
 
 class Identify():
@@ -62,26 +59,29 @@ class Identify():
 
         for k, v in clauses.iteritems():
             if isinstance(v, dict):
-                sums += self._evaluate(v, 0)
-            elif isinstance(v, list):
+                return sums + self._evaluate(v, 0)
+            elif isinstance(v, list) and not all(isinstance(i, bool) for i in v):
+                # TODO: this is not a good assumption
                 for i in v:
-                    sums += self._evaluate(i, 0)
-            else:
-                if k == 'ands':
-                    # everything must be true
-                    sums += sum(v) == len(v)
-                elif k == 'ors':
-                    # any one must be true
-                    sums += sum(v) > 0
+                    return sums + self._evaluate(i, 0)
+
+            if k == 'ands':
+                # everything must be true
+                sums += sum(v) == len(v)
+            elif k == 'ors':
+                # any one must be true
+                sums += sum(v) > 0
+
         return sums
 
     def _identify_protocol(self):
         for protocol in self.protocols:
             protocol_filters = protocol['filters']
 
+            # print protocol['name']
+
             for k, v in protocol_filters.iteritems():
-                # to_check = {k: self._filter(k, v, [])}
-                # print to_check
+                # print '\t', {k: self._filter(k, v, [])}
                 is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
                 if is_match:
                     return protocol['name']
@@ -91,15 +91,16 @@ class Identify():
     def _identify_service_of_protocol(self, protocol):
         protocol_data = next(p for p in self.protocols if p['name'] == protocol)
         if not protocol_data:
-            # LOGGER.warn('failed to identify protocol %s' % protocol)
             return ''
 
         if 'services' not in protocol_data:
-            # LOGGER.warn('no services defined for protocol')
             return ''
 
         for service in protocol_data['services']:
+            print service['name'], service['filters']
             for k, v in service['filters'].iteritems():
+                print '\t', {k: self._filter(k, v, [])}
+
                 is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
                 if is_match:
                     return service['name']
@@ -121,7 +122,6 @@ class Identify():
         '''
         protocol_data = next(p for p in self.protocols if p['name'] == protocol)
         if not protocol_data:
-            # LOGGER.warn('failed to identify protocol %s' % protocol)
             return False
 
         if 'errors' not in protocol_data:
@@ -146,7 +146,6 @@ class Identify():
         '''
         protocol_data = next(p for p in self.protocols if p['name'] == protocol)
         if not protocol_data:
-            # LOGGER.warn('failed to identify protocol %s' % protocol)
             return ''
 
         if 'versions' not in protocol_data:
@@ -179,7 +178,6 @@ class Identify():
         # determine the protocol
         protocol = self._identify_protocol()
 
-        # assert protocol, 'Unknown protocol for %s' % self.source_url
         if not protocol:
             return '', '', '', '', False
 
@@ -191,7 +189,6 @@ class Identify():
         # and if it's a service description (and which)
         service = self._identify_service_of_protocol(protocol)
         if not service:
-            # LOGGER.warn('Unable to identify service for %s' % self.source_url)
             return protocol, '', '', '', is_error
 
         # determine if it contains dataset-level info
