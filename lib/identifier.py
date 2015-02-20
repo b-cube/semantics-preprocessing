@@ -1,5 +1,6 @@
 import yaml
 import re
+from itertools import chain
 
 
 class Identify():
@@ -90,10 +91,7 @@ class Identify():
         for protocol in self.protocols:
             protocol_filters = protocol['filters']
 
-            # print protocol['name']
-
             for k, v in protocol_filters.iteritems():
-                # print '\t', {k: self._filter(k, v, [])}
                 is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
                 if is_match:
                     return protocol['name']
@@ -162,36 +160,38 @@ class Identify():
 
         versions = protocol_data['versions']
 
-        # TODO: revise this horrible nested thing
+        def _process_type(f):
+            if f['type'] == 'simple':
+                filter_value = f['value']
+                filter_object = self.source_content if f['object'] == 'content' \
+                    else self.source_url
 
-        # basic check for implied defaults
-        if 'defaults' in versions:
-            for k, v in versions['defaults'].iteritems():
-                for f in v:
-                    if f['type'] == 'simple':
-                        filter_value = f['value']
-                        filter_object = self.source_content if f['object'] == 'content' \
-                            else self.source_url
+                if self.ignore_case:
+                    filter_value = filter_value.upper()
+                    filter_object = filter_object.upper()
 
-                        if self.ignore_case:
-                            filter_value = filter_value.upper()
-                            filter_object = filter_object.upper()
+                if filter_value in filter_object:
+                    return f['text']
 
-                        if filter_value in filter_object:
-                            return f['text']
+            elif f['type'] == 'xpath':
+                if not source_as_parser:
+                    # TODO: log this
+                    return ''
+                value = source_as_parser.find(f['value'])
+                if value:
+                    return value[0] if isinstance(value, list) else value
 
-        # run against any explicit version definition
-        if 'checks' in versions:
-            for k, v in versions['checks'].iteritems():
-                # i am not dealing with recursive xpath checks tonight
-                for f in v:
-                    if f['type'] == 'xpath':
-                        if not source_as_parser:
-                            # TODO: log this
-                            continue
-                        value = source_as_parser.find(f['value'])
-                        if value:
-                            return value[0] if isinstance(value, list) else value
+            return ''
+
+        # check against either set of things (default vs check)
+        to_check = dict(chain(versions.get('defaults', {}).items(),
+                        versions.get('checks', {}).items()))
+
+        for k, v in to_check.iteritems():
+            for f in v:
+                version = _process_type(f)
+                if version:
+                    return version
 
         return ''
 
@@ -231,28 +231,28 @@ class Identify():
         # determine the protocol
         protocol = self._identify_protocol()
 
+        self.protocol = protocol
+        self.service = ''
+        self.version = ''
+        self.is_dataset = False
+        self.is_error = False
+
         if not protocol:
-            return '', '', '', '', False
+            return
 
         # make sure it's not an error response
-        is_error = self._is_protocol_error(protocol)
-        if is_error:
-            return protocol, '', '', '', is_error
+        self.is_error = self._is_protocol_error(protocol)
+        if self.is_error:
+            return
 
         # and if it's a service description (and which)
-        service = self._identify_service_of_protocol(protocol)
-        if not service:
-            return protocol, '', '', '', is_error
+        self.service = self._identify_service_of_protocol(protocol)
+        if not self.service:
+            return
 
         # determine if it contains dataset-level info
-        is_dataset = self._identify_if_dataset_service(protocol)
+        self.is_dataset = self._identify_if_dataset_service(protocol)
 
         # extract the version
         parser = self.options.get('parser', None)
-        version = self._identify_version(protocol, parser)
-
-        self.protocol = protocol
-        self.service = service
-        self.version = version
-        self.is_dataset = is_dataset
-        self.is_error = is_error
+        self.version = self._identify_version(protocol, parser)
