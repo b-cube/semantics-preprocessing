@@ -15,7 +15,7 @@ class RawResponse():
     def __init__(self, source_url, source_content, identifier, **options):
         '''
         options:
-            strip newline: boolean
+            strip whitespace: boolean
             strip unicode escaped text: boolean
         '''
         self.identifier = identifier
@@ -37,7 +37,7 @@ class RawResponse():
 
         self.content = m.group(1)
 
-    def _strip_newline(self):
+    def _strip_whitespace(self):
         self.content = self.content.replace('\\n', ' ').replace('\\t', ' ')
 
     def clean_raw_content(self):
@@ -47,6 +47,6 @@ class RawResponse():
             newline, remove unicode cruft)
         '''
         self._extract_from_cdata()
-        self._strip_newline()
+        self._strip_whitespace()
 
         return self.content
