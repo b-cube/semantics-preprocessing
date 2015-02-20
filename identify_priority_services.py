@@ -42,7 +42,7 @@ for response in responses[0:5]:
         traceback.print_exc(file=sys.stdout)
         continue
 
-    identifier = Identify(YAML_FILE, cleaned_text, url, **{'parser': parser})
+    identifier = Identify(YAML_FILE, cleaned_text, url, **{'parser': parser, 'ignore_case': True})
     protocol, service, is_dataset, version, is_error = identifier.identify()
 
     print digest, protocol, service, version, is_error

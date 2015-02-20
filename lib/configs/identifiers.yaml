@@ -53,7 +53,7 @@ protocols:
               filters:
               - type: simple
                 object: content
-                value: 'xhttp://www.opengis.net/wms'
+                value: 'http://www.opengis.net/wms'
               - type: simple
                 object: content
                 value: '<GetCapabilities>'

@@ -14,11 +14,18 @@ class Identify():
                  for a protocol
     '''
     def __init__(self, yaml_file, source_content, source_url, **options):
+        '''
+        **options:
+            parser: Parser from source_content
+            ignore_case: bool
+        '''
         self.yaml_file = yaml_file
         self.source_content = source_content
         self.source_url = source_url
         self.options = options
         self.yaml = self._parse_yaml()
+
+        self.ignore_case = options['ignore_case'] if 'ignore_case' in options else False
 
     def _parse_yaml(self):
         with open(self.yaml_file, 'r') as f:
@@ -39,6 +46,11 @@ class Identify():
             elif filter_type == 'simple':
                 filter_object = self.source_content if f['object'] == 'content' else self.source_url
                 filter_value = f['value']
+
+                if self.ignore_case:
+                    # TODO: a better solution than this
+                    filter_value = filter_value.upper()
+                    filter_object = filter_object.upper()
                 clauses.append(filter_value in filter_object)
             elif filter_type == 'regex':
                 filter_object = self.source_content if f['object'] == 'content' else self.source_url
@@ -97,9 +109,9 @@ class Identify():
             return ''
 
         for service in protocol_data['services']:
-            print service['name'], service['filters']
+            # print service['name'], service['filters']
             for k, v in service['filters'].iteritems():
-                print '\t', {k: self._filter(k, v, [])}
+                # print '\t', {k: self._filter(k, v, [])}
 
                 is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
                 if is_match:
@@ -170,8 +182,7 @@ class Identify():
 
     def identify(self):
         '''
-        **options:
-            parser: Parser from source_content
+        execute all of the identification options
         '''
         self.protocols = self.yaml['protocols']
 
