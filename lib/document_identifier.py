@@ -65,9 +65,16 @@ class Identifier():
         return self.responses
 
     def identify(self, raw_content, url):
+        '''
+        This method traverses fingerprint.json matching the fingerprint
+        patterns agains the raw_content and the url of a document.
+        Returns the code assigned for each service type or None.
+        '''
         for doc_type in self.fingerprints:
             for fp in doc_type['fingerprint']:
-                print fp
-                if (fp in raw_content or doc_type['url'] in url):
+                if doc_type['url'] != "":
+                    if (fp in raw_content or doc_type['url'] in url):
+                        return doc_type["DocType"]
+                elif fp in raw_content:
                     return doc_type["DocType"]
         return None
