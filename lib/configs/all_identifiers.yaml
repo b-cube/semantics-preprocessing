@@ -26,6 +26,9 @@ protocols:
         - type: simple
           object: content
           value: 'http://schemas.opengis.net/ows'
+        - type: simple
+          object: content
+          value: 'hhttp://www.opengis.net/swe'
     services: 
       - name: WMS
         filters:
@@ -87,6 +90,27 @@ protocols:
               - type: simple
                 object: content
                 value: 'http://www.opengis.net/wcs'
+              - type: simple
+                object: content
+                value: '<GetCapabilities>'
+      - name: SWE
+        filters:
+          ors:
+            - type: complex
+              operator: ands
+              filters:
+              - type: simple
+                object: url
+                value: 'SERVICE=SWE'
+              - type: simple
+                object: url
+                value: 'REQUEST=GETCAPABILITIES'
+            - type: complex
+              operator: ands
+              filters:
+              - type: simple
+                object: content
+                value: 'http://www.opengis.net/swe'
               - type: simple
                 object: content
                 value: '<GetCapabilities>'
@@ -165,6 +189,9 @@ protocols:
         - type: simple
           object: content
           value: 'http://wadl.dev.java.net'
+        - type: simple
+          object: content
+          value: 'http://schemas.xmlsoap.org/wsdl/'
     services:
       - name: WADL
         filters:
@@ -172,6 +199,12 @@ protocols:
             - type: simple
               object: content
               value: 'http://wadl.dev.java.net'
+      - name: WSDL
+        filters: 
+          ors:
+            - type: simple
+              object: content
+              value: 'http://schemas.xmlsoap.org/wsdl/'
   - name: OAI-PMH 
     filters:
       ors:
@@ -201,5 +234,117 @@ protocols:
         ors:
           - type: xpath
             value: '/{http://www.openarchives.org/OAI/2.0/}OAI-PMH/{http://www.openarchives.org/OAI/2.0/}Identify/{http://www.openarchives.org/OAI/2.0/}protocolVersion'  
+  - name: OPeNDAP
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://xml.opendap.org/ns/DAP2'
+    services:
+    versions:
+    errors:
 
+  - name: ATOM
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://www.w3.org/2005/Atom'
+    services:
+    versions:
+    errors:
+
+  - name: DIF
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/'
+  - name: FGDC-1998
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: '<metstdv>FGDC-STD-001-1998'
+  - name: FGDC-2002
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: '<metstdv>FGDC-STD-012-2002'
+
+  - name: PDS
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://pds.nasa.gov/pds4/pds/v1'
+
+  - name: CAP-ALERT
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://www.incident.com/cap/1.0'
+        - type: simple
+          object: content
+          value: 'urn:oasis:names:tc:emergency:cap:'
+
+  - name: MARC 21
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://www.loc.gov/MARC21/slim'
+  - name: KML
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://earth.google.com/kml'
+  - name: ArcGISExplorerDocument
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://www.esri.com/schemas/ArcGIS/9.2'
+  - name: Microsoft
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'urn:schemas-microsoft-com:office:office'
+  - name: NetCDF
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2'
+  - name: RSS
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: '<rss version="'
+        - type: simple
+          object: content
+          value: 'http://api.npr.org/nprml'
+  - name: RSS
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://archipelago.phrasewise.com/rsd'
+        - type: simple
+          object: url
+          value: '?rsd'
+        - type: simple
+          object: url
+          value: 'rsd.xml'
+
+  - name: OPeNDAP
+    filters:
+    services:
+    versions:
+    errors:
 

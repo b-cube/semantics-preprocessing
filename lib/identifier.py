@@ -109,10 +109,7 @@ class Identify():
             return ''
 
         for service in protocol_data['services']:
-            # print service['name'], service['filters']
             for k, v in service['filters'].iteritems():
-                # print '\t', {k: self._filter(k, v, [])}
-
                 is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
                 if is_match:
                     return service['name']
