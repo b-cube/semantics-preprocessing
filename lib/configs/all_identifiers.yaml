@@ -233,16 +233,16 @@ protocols:
       checks:
         ors:
           - type: xpath
-            value: '/{http://www.openarchives.org/OAI/2.0/}OAI-PMH/{http://www.openarchives.org/OAI/2.0/}Identify/{http://www.openarchives.org/OAI/2.0/}protocolVersion'  
+            value: '/{http://www.openarchives.org/OAI/2.0/}OAI-PMH/{http://www.openarchives.org/OAI/2.0/}Identify/{http://www.openarchives.org/OAI/2.0/}protocolVersion/text()'  
   - name: OPeNDAP
     filters:
       ors:
         - type: simple
           object: content
           value: 'http://xml.opendap.org/ns/DAP2'
-    services:
-    versions:
-    errors:
+    # services:
+    # versions:
+    # errors:
 
   - name: ATOM
     filters:
@@ -250,9 +250,9 @@ protocols:
         - type: simple
           object: content
           value: 'http://www.w3.org/2005/Atom'
-    services:
-    versions:
-    errors:
+    # services:
+    # versions:
+    # errors:
 
   - name: DIF
     filters:
@@ -329,7 +329,7 @@ protocols:
         - type: simple
           object: content
           value: 'http://api.npr.org/nprml'
-  - name: RSS
+  - name: WordPress
     filters:
       ors:
         - type: simple
@@ -341,10 +341,114 @@ protocols:
         - type: simple
           object: url
           value: 'rsd.xml'
-
-  - name: OPeNDAP
+  - name: NetCDF
     filters:
-    services:
-    versions:
-    errors:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2'
+  
+
+  - name: LOC-METS
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://www.loc.gov/METS_Profile/'
+
+  - name: DataCite
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://datacite.org/schema/'
+
+  - name: EML
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'eml://ecoinformatics.org/eml-'
+
+  - name: QuakeML
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://anss.org/xmlns/catalog'
+        - type: simple
+          object: content
+          value: 'http://anss.org/xmlns/tensor'
+        - type: simple
+          object: content
+          value: 'http://quakeml.org/xmlns/bed/'
+
+    #versions:
+
+  - name: Niem
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://niem.gov/'  
+
+  - name: Disco
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://schemas.xmlsoap.org/disco/'
+
+  - name: SOAP
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://schemas.xmlsoap.org/soap'
+
+  - name: Sitemap
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://www.google.com/geo/schemas/sitemap/'
+        - type: simple
+          object: content
+          value: 'http://www.sitemaps.org/schemas/sitemap/'
+  
+  - name: iTunes
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://www.itunes.com/dtds/podcast-1.0.dtd'
+
+  - name: waterML
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://www.cuahsi.org/waterML/'
+    #versions:
+
+  - name: ECHO
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://echo.nasa.gov/'
+
+  - name: MODAPS
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://modapsws.gsfc.nasa.gov/xsd'
+  - name: IOOS
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://www.noaa.gov/ioos/'
+
 

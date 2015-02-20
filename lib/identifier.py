@@ -194,6 +194,11 @@ class Identify():
         return ''
 
     def generate_urn(self):
+        '''
+        proposals
+
+        urn:
+        '''
         pass
 
     def identify(self):
