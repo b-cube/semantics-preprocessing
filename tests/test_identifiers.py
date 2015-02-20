@@ -79,13 +79,21 @@ class TestComplexIdentifiers(unittest.TestCase):
     def test_identify(self):
         # just run it again?
 
-        protocol, service, is_dataset, version, is_error = self.identifier.identify()
+        self.identifier.identify()
 
-        self.assertFalse(is_error)
-        self.assertTrue(protocol == 'OGC')
-        self.assertTrue(service == 'WMS')
-        self.assertTrue(version)
-        self.assertTrue(version == '1.3.0')
+        self.assertFalse(self.identifier.is_error)
+        self.assertTrue(self.identifier.protocol == 'OGC')
+        self.assertTrue(self.identifier.service == 'WMS')
+        self.assertTrue(self.identifier.version)
+        self.assertTrue(self.identifier.version == '1.3.0')
+
+    def test_generate_urn(self):
+        expected_urn = 'urn:OGC:WMS:1.3.0'
+        self.identifier.identify()
+
+        urn = self.identifier.generate_urn()
+
+        self.assertTrue(urn == expected_urn)
 
 
 class TestExceptionIdentification(unittest.TestCase):

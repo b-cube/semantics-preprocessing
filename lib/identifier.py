@@ -162,6 +162,8 @@ class Identify():
 
         versions = protocol_data['versions']
 
+        # TODO: revise this horrible nested thing
+
         # basic check for implied defaults
         if 'defaults' in versions:
             for k, v in versions['defaults'].iteritems():
@@ -193,13 +195,32 @@ class Identify():
 
         return ''
 
+    def to_json(self):
+        return {
+            "protocol": self.protocol,
+            "service": self.service,
+            "version": self.version,
+            "is_dataset": self.is_dataset,
+            "is_error": self.is_error
+        }
+
     def generate_urn(self):
         '''
-        proposals
+        this assumes that it is a good identification
 
-        urn:
+        urn:{type}:{protocol}:{service}:{version}
+
+        any unknown is represented as UNK (that is terrible)
         '''
-        pass
+        if not self.protocol:
+            return ''
+
+        return ':'.join([
+            'urn',
+            self.protocol,
+            self.service if self.service else 'UNK',
+            self.version if self.service else 'UNK'
+        ])
 
     def identify(self):
         '''
@@ -230,4 +251,8 @@ class Identify():
         parser = self.options.get('parser', None)
         version = self._identify_version(protocol, parser)
 
-        return protocol, service, is_dataset, version, False
+        self.protocol = protocol
+        self.service = service
+        self.version = version
+        self.is_dataset = is_dataset
+        self.is_error = is_error
