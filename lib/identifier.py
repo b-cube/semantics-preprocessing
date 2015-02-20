@@ -80,6 +80,8 @@ class Identify():
             protocol_filters = protocol['filters']
 
             for k, v in protocol_filters.iteritems():
+                # to_check = {k: self._filter(k, v, [])}
+                # print to_check
                 is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
                 if is_match:
                     return protocol['name']
@@ -90,7 +92,7 @@ class Identify():
         protocol_data = next(p for p in self.protocols if p['name'] == protocol)
         if not protocol_data:
             # LOGGER.warn('failed to identify protocol %s' % protocol)
-            return False
+            return ''
 
         if 'services' not in protocol_data:
             # LOGGER.warn('no services defined for protocol')

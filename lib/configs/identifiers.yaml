@@ -3,54 +3,90 @@ protocols:
     filters:
       ors: 
         - type: complex
-          operator: ands
+          operator: ors
           filters:
             - type: regex
               object: content
-              value: '^(http:\/\/www\.opengis\.net\/[o|w]][a-z]s)'
+              value: 'xmlns=\"http:\/\/([www]|[schemas]\.opengis\.net)\/[o|w][mfcw]s'
             - type: simple
               object: url
-              value: '(SERVICE=W[a-z]S)*'
-        - type: complex
-          operator: ands
-          filters:
-            - type: simple
-              object: url
-              value: '(SERVICE=W[a-z]S)*'
-            - type: simple
-              object: content
-              value: 'http://mapserver.gis.umn.edu/mapserver'
+              value: 'SERVICE=W[MFC]S'
+        # - type: complex
+        #   operator: ands
+        #   filters:
+        #     - type: simple
+        #       object: url
+        #       value: 'SERVICE=W[MFC]S'
+        #     - type: simple
+        #       object: content
+        #       value: 'http://mapserver.gis.umn.edu/mapserver'
         - type: simple
           object: content
           value: 'http://www.opengis.net/ogc'
     services: 
       - name: WMS
         filters:
-          ands:
-            - type: simple
-              object: url
-              value: 'SERVICE=WMS'
-            - type: simple
-              object: url
-              value: 'REQUEST=GETCAPABILITIES'
+          ors:
+            - type: complex
+              operator: ands
+              filters:
+              - type: simple
+                object: url
+                value: 'SERVICE=WMS'
+              - type: simple
+                object: url
+                value: 'REQUEST=GETCAPABILITIES'
+            - type: complex
+              operator: ands
+              filters:
+              - type: simple
+                object: content
+                value: 'xmlns=\"http://www.opengis.net/wms\"'
+              - type: simple
+                object: content
+                value: '<GetCapabilities>'
       - name: WFS
         filters:
-          ands:
-            - type: simple
-              object: url
-              value: 'SERVICE=WFS'
-            - type: simple
-              object: url
-              value: 'REQUEST=GETCAPABILITIES'
+          ors:
+            - type: complex
+              operator: ands
+              filters:
+              - type: simple
+                object: url
+                value: 'SERVICE=WFS'
+              - type: simple
+                object: url
+                value: 'REQUEST=GETCAPABILITIES'
+            - type: complex
+              operator: ands
+              filters:
+              - type: simple
+                object: content
+                value: 'http://www.opengis.net/wfs'
+              - type: simple
+                object: content
+                value: '<GetCapabilities>'
       - name: WCS
         filters:
-          ands:
-            - type: simple
-              object: url
-              value: 'SERVICE=WCS'
-            - type: simple
-              object: url
-              value: 'REQUEST=GETCAPABILITIES'
+          ors:
+            - type: complex
+              operator: ands
+              filters:
+              - type: simple
+                object: url
+                value: 'SERVICE=WCS'
+              - type: simple
+                object: url
+                value: 'REQUEST=GETCAPABILITIES'
+            - type: complex
+              operator: ands
+              filters:
+              - type: simple
+                object: content
+                value: 'http://www.opengis.net/wcs'
+              - type: simple
+                object: content
+                value: '<GetCapabilities>'
     versions: 
       checks:
         ors:
@@ -90,9 +126,9 @@ protocols:
   - name: ISO-19115
     filters:
       ors:
-        - type: simple
+        - type: regex
           object: content
-          value: 'http://www.isotc211.org/2005'
+          value: 'xmlns=\"http://www.isotc211.org/2005/(gmi)|(gmd)'
   - name: UNIDATA
     filters: 
       ors:
