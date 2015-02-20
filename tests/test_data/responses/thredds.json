@@ -1,0 +1,56 @@
+{
+    "responses": [
+        {
+            "responseHeader": {
+                "status": 0, 
+                "QTime": 12, 
+                "params": {
+                    "q": "raw_content:(\"http://www.unidata.ucar.edu\")", 
+                    "start": "7", 
+                    "wt": "json", 
+                    "fl": "raw_content,id,date", 
+                    "rows": "1"
+                }
+            }, 
+            "response": {
+                "start": 7, 
+                "numFound": 2276, 
+                "docs": [
+                    {
+                        "date": "2014-07-31T09:50:02.712Z", 
+                        "id": "http://disc2.nascom.nasa.gov/opendap/TRMM_L2/TRMM_2A12_CSI_LBAR/catalog.xml", 
+                        "raw_content": "<![CDATA[<?xml version=\"1.0\" encoding=\"UTF-8\"?><thredds:catalog xmlns:fn=\"http://www.w3.org/2005/02/xpath-functions\" xmlns:thredds=\"http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:bes=\"http://xml.opendap.org/ns/bes/1.0#\"> <thredds:service name=\"dap\" serviceType=\"OPeNDAP\" base=\"/opendap/hyrax\"/> <thredds:service name=\"file\" serviceType=\"HTTPServer\" base=\"/opendap/hyrax\"/><thredds:dataset name=\"/TRMM_L2/TRMM_2A12_CSI_LBAR\"ID=\"/opendap/hyrax/TRMM_L2/TRMM_2A12_CSI_LBAR/\"><thredds:catalogRef name=\"1998\" xlink:href=\"1998/catalog.xml\" xlink:title=\"1998\"xlink:type=\"simple\"ID=\"/opendap/hyrax/TRMM_L2/TRMM_2A12_CSI_LBAR/1998/\"/><thredds:catalogRef name=\"1999\" xlink:href=\"1999/catalog.xml\" xlink:title=\"1999\"xlink:type=\"simple\"ID=\"/opendap/hyrax/TRMM_L2/TRMM_2A12_CSI_LBAR/1999/\"/><thredds:catalogRef name=\"2014\" xlink:href=\"2014/catalog.xml\" xlink:title=\"2014\"xlink:type=\"simple\"ID=\"/opendap/hyrax/TRMM_L2/TRMM_2A12_CSI_LBAR/2014/\"/></thredds:dataset></thredds:catalog>]]>"
+                    }
+                ]
+            }
+        }, 
+        {
+            "responseHeader": {
+                "status": 0, 
+                "QTime": 1, 
+                "params": {
+                    "q": "raw_content:(\"http://www.unidata.ucar.edu\")", 
+                    "start": "10", 
+                    "wt": "json", 
+                    "fl": "raw_content,id,date", 
+                    "rows": "1"
+                }
+            }, 
+            "response": {
+                "start": 10, 
+                "numFound": 2276, 
+                "docs": [
+                    {
+                        "date": "2014-07-31T14:41:14.904Z", 
+                        "id": "http://ladsweb.nascom.nasa.gov/opendap/subsets/ab_BSRN_Bermuda/2012/catalog.xml", 
+                        "raw_content": "<![CDATA[<?xml version=\"1.0\" encoding=\"UTF-8\"?><thredds:catalog xmlns:fn=\"http://www.w3.org/2005/02/xpath-functions\" xmlns:thredds=\"http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:bes=\"http://xml.opendap.org/ns/bes/1.0#\"> <thredds:service name=\"dap\" serviceType=\"OPeNDAP\" base=\"/opendap/hyrax\"/> <thredds:service name=\"file\" serviceType=\"HTTPServer\" base=\"/opendap/hyrax\"/><thredds:dataset name=\"subsets/ab_BSRN_Bermuda/2012\"ID=\"/opendap/hyrax//subsets/ab_BSRN_Bermuda/2012\"><thredds:dataSize units=\"bytes\">1</thredds:dataSize><thredds:date type=\"modified\">2014-07-31T14:33:24</thredds:date><thredds:access serviceName=\"file\" urlPath=\"//subsets/ab_BSRN_Bermuda/2012\"/> </thredds:dataset></thredds:catalog>]]>"
+                    }
+                ]
+            }
+        }
+    ], 
+    "queries": [
+        "?q=raw_content%3A%28%22http%3A%2F%2Fwww.unidata.ucar.edu%22%29&wt=json&fl=raw_content%2Cid%2Cdate&start=7&rows=1", 
+        "?q=raw_content%3A%28%22http%3A%2F%2Fwww.unidata.ucar.edu%22%29&wt=json&fl=raw_content%2Cid%2Cdate&start=10&rows=1"
+    ]
+}
