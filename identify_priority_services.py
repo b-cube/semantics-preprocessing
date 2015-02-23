@@ -3,13 +3,15 @@ import json
 from lib.identifier import Identify
 from lib.parser import Parser
 from lib.rawresponse import RawResponse
-import traceback
-import sys
+import logging
 
 '''
 so a quick script to demonstrate the identification
 process against a local file store of solr responses
 '''
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 YAML_FILE = 'lib/configs/all_identifiers.yaml'
 
@@ -38,15 +40,17 @@ for response in responses:
     try:
         parser = Parser(cleaned_text)
     except Exception as ex:
-        print 'xml parsing error: ', ex, digest
-        traceback.print_exc(file=sys.stdout)
+        logger.debug('xml parsing error: %s' % digest, exc_info=1)
         continue
 
     identifier = Identify(YAML_FILE, cleaned_text, url, **{'parser': parser, 'ignore_case': True})
-    protocol, service, is_dataset, version, is_error = identifier.identify()
-
-    print digest, protocol, service, version, is_error
+    identifier.identify()
+    protocol = identifier.protocol
+    service = identifier.service
+    is_dataset = identifier.service
+    version = identifier.is_dataset
+    is_error = identifier.is_error
 
     with open('all_identification.csv', 'a') as f:
         f.write('|'.join([digest, url.replace(',', ';').replace('|', ';'), protocol, service,
-                str(is_dataset), version, str(is_error)]) + '\n')
+                str(is_dataset), str(version), str(is_error)]) + '\n')
