@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+    <ShortName>CEOS</ShortName>
+    <Description/>
+    <InputEncoding>UTF-8</InputEncoding>
+    <Image type="image/vnd.microsoft.icon" width="16" height="16"
+        >http://www.ceos.org/templates/oceanwaves/favicon.ico</Image>
+    <Url type="application/opensearchdescription+xml" rel="self"
+        template="http://www.ceos.org/index.php?option=com_search&amp;view=remind&amp;format=opensearch"/>
+    <Url type="text/html"
+        template="http://www.ceos.org/index.php?option=com_search&amp;searchword={searchTerms}"/>
+</OpenSearchDescription>

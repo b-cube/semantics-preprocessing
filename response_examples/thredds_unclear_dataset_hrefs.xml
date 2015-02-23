@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0" 
+    xmlns:xlink="http://www.w3.org/1999/xlink" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0 http://www.unidata.ucar.edu/schemas/thredds/InvCatalog.1.0.2.xsd" 
+    metadataType="THREDDS" inherited="true">
+    <documentation type="summary"> This dataset contains NCEP Reanalysis LongWaveNet Radiation Data, Aggregated by Administrative Regions. Gridded daily time step data from Ohio State University based on National Centers for Environmental Prediction/National Center for Atmospheric Research (NCEP/NCAR) reanalysis data, interpolated from the NCEP/NCAR grids (~209km) to the 25km Northern Hemisphere Equal-Area Scalable Earth Grid (EASE-Grid) using a bi-lagrange interpolation formula. As part of the data processing of Arctic Rapid Integrated Monitoring System (ArcticRIMS) based at the Water Systems Analysis Group (WSAG), University of New Hampshire all data sets have been aggregated to multiple temporal and spatial resolutions.  
+        The data is presented in 24 sub-datasets of different spatial and temporal aggregations. </documentation>
+    <documentation xlink:href="http://data.eol.ucar.edu/datafile/nph-get/106.277/3_5.txt" xlink:title="Documentation: 3_5.txt"/>
+    <documentation xlink:href="http://data.eol.ucar.edu/codiac/dss/id=106.277" xlink:title="EOL Data Archive website for dataset ArcticRIMS: NCEP Reanalysis LongWaveNet Radiation, Aggregated by Administrative Regions (106.277), containing more information and data download access"/>
+    <documentation xlink:title="homepage: ArcticRIMS" xlink:href="http://rims.unh.edu"/>
+    <documentation xlink:title="homepage: NCEP/NCAR" xlink:href="http://www.ncep.noaa.gov/"/>
+    <documentation xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.project.ARCSS.thredds.xml" xlink:title="Related project: ARCSS"/>
+    <project>ARCSS: NSF Arctic System Science</project>
+    <date type="metadataCreated">2009-10-21T06:51:45Z</date>
+    <geospatialCoverage>
+        <northsouth>
+            <start>45.0</start>
+            <size>45.0</size>
+            <units>Degrees</units>
+        </northsouth>
+        <eastwest>
+            <start>-180.0</start>
+            <size>360.0</size>
+            <units>Degrees</units>
+        </eastwest>
+    </geospatialCoverage>
+    <timeCoverage>
+        <start>1979-12-31T17:00:00Z</start>
+        <end>2006-03-31T16:59:59Z</end>
+    </timeCoverage>
+    <documentation type="funding">ID: 230243, 0531354</documentation>
+    <documentation type="frequency">criteria</documentation>
+    <publisher>
+        <name>UCAR/NCAR - Earth Observing Laboratory</name>
+        <contact url="http://data.eol.ucar.edu/" email="unknown"/>
+    </publisher>
+    <contributor role="pointOfContact">EOL Data Support, datahelp AT eol dot ucar dot edu</contributor>
+    <contributor role="author">David H. Bromwich, bromwich dot 1 AT osu dot edu</contributor>
+    <contributor role="originator">Richard B. Lammers, richard dot lammers AT unh dot edu</contributor>
+    <contributor role="author">Richard B. Lammers, richard dot lammers AT unh dot edu</contributor>
+    <contributor role="author">Charles J. Vorosmarty, cvorosmarty AT ccny dot cuny dot edu</contributor>
+    <keyword>Arctic</keyword>
+    <keyword>Hydrology</keyword>
+    <dataType>Grid</dataType>
+    <property name="numberOfFiles" value="4"/>
+    <dataSize units="Kbytes">979737</dataSize>
+</metadata>
