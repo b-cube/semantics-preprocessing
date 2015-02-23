@@ -180,20 +180,19 @@ class OwsExtractor(BaseOgcExtractor):
         method extensions
     '''
     _service_patterns = {
-        "title": "/%(ns)s%(upper)s_Capabilities/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}Title",
-        "name": "/%(ns)s%(upper)s_Capabilities/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}Name",
-        "abstract": "/%(ns)s%(upper)s_Capabilities/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}Abstract",
-        "tags": "/%(ns)s%(upper)s_Capabilities/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}KeywordList/{http://www.opengis.net/ows}Keyword",
-        "contact": "/%(ns)s%(upper)s_Capabilities/{http://www.opengis.net/ows}ServiceProvider/{http://www.opengis.net/ows}ProviderName"
+        "title": "/%(ns)s*/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}Title",
+        "name": "/%(ns)s*/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}Name",
+        "abstract": "/%(ns)s*/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}Abstract",
+        "tags": "/%(ns)s*/{http://www.opengis.net/ows}ServiceIdentification/{http://www.opengis.net/ows}KeywordList/{http://www.opengis.net/ows}Keyword",
+        "contact": "/%(ns)s*/{http://www.opengis.net/ows}ServiceProvider/{http://www.opengis.net/ows}ProviderName"
     }
-    _url_pattern = '/%(ns)s%(upper)s_Capabilities/{http://www.opengis.net/ows}OperationsMetadata'+ \
+    _url_pattern = '/%(ns)s*/{http://www.opengis.net/ows}OperationsMetadata'+ \
         '/{http://www.opengis.net/ows}Operation[@name="%(method)s"]/{http://www.opengis.net/ows}DCP'+ \
         '/{http://www.opengis.net/ows}HTTP/{http://www.opengis.net/ows}%(type)s/@{http://www.w3.org/1999/xlink}href'
 
     def generate_method_xpaths(self):
-        request_xpath = "/%(ns)s%(upper)s_Capabilities/{http://www.opengis.net/ows}OperationsMetadata/{http://www.opengis.net/ows}Operation" % {
-            "ns": self.ns, 
-            "upper": self.service_type.upper()
+        request_xpath = "/%(ns)s*/{http://www.opengis.net/ows}OperationsMetadata/{http://www.opengis.net/ows}Operation" % {
+            "ns": self.ns
         }
 
         endpoint_xpaths = {}
@@ -218,7 +217,6 @@ class OwsExtractor(BaseOgcExtractor):
 
                 url_xpath = self._url_pattern % {
                     'ns': self.ns,
-                    'upper': self.service_type.upper(),
                     'method': method,
                     'type': request_method
                 }
@@ -277,34 +275,34 @@ class OgcExtractor(BaseOgcExtractor):
 
     _service_patterns = {
         "title": [
-            "/%(ns)s%(upper)s_Capabilities/%(ns)sService/%(ns)sTitle",
+            "/%(ns)s*/%(ns)sService/%(ns)sTitle",
             "/%(ns)s%(upper)s_Capabilities/%(ns)sService/%(ns)stitle"
         ],
         "name": [
-            "/%(ns)s%(upper)s_Capabilities/%(ns)sService/%(ns)sName",
-            "/%(ns)s%(upper)s_Capabilities/%(ns)sService/%(ns)sname"
+            "/%(ns)s*/%(ns)sService/%(ns)sName",
+            "/%(ns)s*/%(ns)sService/%(ns)sname"
         ],
         "abstract": [
-            "/%(ns)s%(upper)s_Capabilities/%(ns)sService/%(ns)sAbstract",
-            "/%(ns)s%(upper)s_Capabilities/%(ns)sService/%(ns)sdescription"
+            "/%(ns)s*/%(ns)sService/%(ns)sAbstract",
+            "/%(ns)s*/%(ns)sService/%(ns)sdescription"
         ],
         "tags": [
-            "/%(ns)s%(upper)s_Capabilities/%(ns)sService/%(ns)sKeywordList/%(ns)sKeyword",
-            "/%(ns)s%(upper)s_Capabilities/%(ns)sService/%(ns)skeywords/%(ns)skeyword"
+            "/%(ns)s*/%(ns)sService/%(ns)sKeywordList/%(ns)sKeyword",
+            "/%(ns)s*/%(ns)sService/%(ns)skeywords/%(ns)skeyword"
         ],
         "contact": [
-            "/%(ns)s%(upper)s_Capabilities/%(ns)sService/%(ns)sContactInformation/%(ns)sContactPersonPrimary",
-            "/%(ns)s%(upper)s_Capabilities/%(ns)sService/%(ns)sresponsibleParty/%(ns)sorganisationName"
+            "/%(ns)s*/%(ns)sService/%(ns)sContactInformation/%(ns)sContactPersonPrimary",
+            "/%(ns)s*/%(ns)sService/%(ns)sresponsibleParty/%(ns)sorganisationName"
         ]
     }
 
-    _url_pattern = '/%(ns)s%(upper)s_Capabilities' + \
+    _url_pattern = '/%(ns)s*' + \
         '/%(ns)sCapability/%(ns)sRequest' + \
         '/%(local_ns)s%(method)s/%(ns)sDCPType' + \
         '/%(ns)sHTTP/%(ns)s%(type)s'+ \
         '/%(ns)sOnlineResource/@{http://www.w3.org/1999/xlink}href'
 
-    _format_pattern = '/%(ns)s%(upper)s_Capabilities' + \
+    _format_pattern = '/%(ns)s*' + \
         '/%(ns)sCapability/%(ns)sRequest' + \
         '/%(local_ns)s%(method)s/%(ns)sFormat'
 
@@ -316,13 +314,11 @@ class OgcExtractor(BaseOgcExtractor):
 
         and we're parsing the metadata to figure out how we should parse the metadata
         '''
-        request_xpaths = ["/%(ns)s%(upper)s_Capabilities/%(ns)sCapability/%(ns)sRequest/%(ns)s*" % {
-                "ns": self.ns,
-                "upper": self.service_type.upper()
+        request_xpaths = ["/%(ns)s*/%(ns)sCapability/%(ns)sRequest/%(ns)s*" % {
+                "ns": self.ns
             },
-            "/%(ns)s%(upper)s_Capabilities/%(ns)sCapability/%(ns)sRequest/*[namespace-uri() != '%(ns_unbracketed)s']" % {
+            "/%(ns)s*/%(ns)sCapability/%(ns)sRequest/*[namespace-uri() != '%(ns_unbracketed)s']" % {
                 "ns": self.ns,
-                "upper": self.service_type.upper(),
                 "ns_unbracketed": self.ns[1:-1]
             }
         ]
@@ -346,7 +342,6 @@ class OgcExtractor(BaseOgcExtractor):
                     request_method = self._strip_namespaces(url.tag)
 
                     url_xpath = self._url_pattern % {"ns": self.ns, 
-                        'upper': self.service_type.upper(), 
                         'method': method, 
                         'type': request_method,
                         'local_ns': local_ns
