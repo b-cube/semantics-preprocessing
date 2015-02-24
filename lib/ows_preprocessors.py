@@ -1,5 +1,5 @@
-from owslib import WebMapService
-# from owslib import WebCoverageService
+from owslib.wms import WebMapService
+# from owslib.wcs import WebCoverageService
 
 '''
 unmodified module supports:
@@ -8,6 +8,7 @@ unmodified module supports:
     wcs 1.1.0
 
 these do not inherit any of the BaseReader structures
+but retain some of the method names for clarity
 '''
 
 
@@ -26,6 +27,8 @@ class OwsWmsPreprocessor():
 
         self.version = version
         self.xml_as_string = xml_as_string
+
+        self._get_reader()
 
     def _get_reader(self):
         self.reader = WebMapService('', xml=self.xml_as_string, version=self.version)
@@ -87,7 +90,7 @@ class OwsWmsPreprocessor():
             url
             parameters as list of tuples
                 tuple: (parameter name, namespace(s), param
-                        namespace prefix, param type, format)
+                        namespace prefix, param type, format, enumerations)
         '''
         operation = self.reader.getOperationByName(method)
 
@@ -98,7 +101,7 @@ class OwsWmsPreprocessor():
             (
                 link['type'],
                 link['url'],
-
+                self._get_parameters(method.lower(), formats)
             )
             for link in links
         ]
@@ -106,18 +109,210 @@ class OwsWmsPreprocessor():
         return endpoints
 
     def _get_parameters(self, method, formats):
-        if method.lower() == 'getcapabiltiies':
+        _vocabs = {
+            "XMLSCHEMA": "application/xml"
+        }
+
+        def _check_controlled_vocabs(term):
+            if term in _vocabs:
+                return _vocabs[term]
+            return term
+
+        # TODO: add required!
+        # TODO: revise for actaully being 1.1.1 (based on 1.3.0)
+        if method == 'getcapabilities':
             return [
                 (
                     "Version",
                     "http://www.opengis.net/wms",
                     "wms",
                     "string",
-                    ""
+                    "",
+                    []
+                ),
+                (
+                    "Request",
+                    "http://www.opengis.net/wms",
+                    "wms",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Service",
+                    "http://www.opengis.net/wms",
+                    "wms",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Format",
+                    "http://www.opengis.net/wms",
+                    "wms",
+                    "string",
+                    "",
+                    [_check_controlled_vocabs(f) for f in formats]
                 )
             ]
-        elif method.lower() == 'getmap':
+        elif method == 'getmap':
+            return [
+                (
+                    "Version",
+                    "http://www.opengis.net/wms",
+                    "wms",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Request",
+                    "http://www.opengis.net/wms",
+                    "wms",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Service",
+                    "http://www.opengis.net/wms",
+                    "wms",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Format",
+                    "http://www.opengis.net/wms",
+                    "wms",
+                    "string",
+                    "",
+                    [_check_controlled_vocabs(f) for f in formats]
+                ),
+                (
+                    "Layers",
+                    "http://www.opengis.net/wms",
+                    "wms",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "BBOX",
+                    "http://www.opengis.net/wms",
+                    "wms",
+                    "string",
+                    "minx,miny,maxx,maxy",
+                    []
+                ),
+                (
+                    "Height",
+                    "http://www.opengis.net/wms",
+                    "wms",
+                    "integer",
+                    "",
+                    []
+                ),
+                (
+                    "Width",
+                    "http://www.opengis.net/wms",
+                    "wms",
+                    "integer",
+                    "",
+                    []
+                ),
+                (
+                    "Styles",
+                    "http://www.opengis.net/wms",
+                    "wms",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "CRS",
+                    "http://www.opengis.net/wms",
+                    "wms",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Transparent",
+                    "http://www.opengis.net/wms",
+                    "wms",
+                    "boolean",
+                    "",
+                    []
+                ),
+                (
+                    "BgColor",
+                    "http://www.opengis.net/wms",
+                    "wms",
+                    "hexadecimal",
+                    "",
+                    []
+                ),
+                (
+                    "Elevation",
+                    "http://www.opengis.net/wms",
+                    "wms",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Time",
+                    "http://www.opengis.net/wms",
+                    "wms",
+                    "string",
+                    "",
+                    []
+                )
+            ]
+        elif method == 'getlegendgraphic':
             return ()
-        elif method.lower() == 'getlegendgraphic':
-            return ()
-        return ()
+        elif method == 'getfeatureinfo':
+            return [
+                (
+                    "Version",
+                    "http://www.opengis.net/wms",
+                    "wms",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Request",
+                    "http://www.opengis.net/wms",
+                    "wms",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Service",
+                    "http://www.opengis.net/wms",
+                    "wms",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Info_Format",
+                    "http://www.opengis.net/wms",
+                    "wms",
+                    "string",
+                    "",
+                    [_check_controlled_vocabs(f) for f in formats]
+                ),
+                (
+                    "Feature_Count",
+                    "http://www.opengis.net/wms",
+                    "wms",
+                    "integer",
+                    "",
+                    []
+                )
+            ]
+        return []
