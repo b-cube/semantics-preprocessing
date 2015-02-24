@@ -16,8 +16,9 @@ class BaseReader():
     '''
 
     parameters:
-        _service_descriptors: dict containing the "generic" key and the xpath for
-            that element in the specific xml structure, ie abstract: idinfo/descript/abstract
+        _service_descriptors: dict containing the "generic" key
+            and the xpath for that element in the specific xml
+            structure, ie abstract: idinfo/descript/abstract
     '''
 
     _service_descriptors = {}

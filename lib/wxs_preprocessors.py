@@ -143,9 +143,8 @@ class BaseOgcExtractor():
         map the list or a singleton depending on the differences in the implementations
         '''
         return {
-            k: [x % {"ns": self.ns, "upper": self.service_type.upper()} for x in v] 
-                if isinstance(v, list) else v % {"ns": self.ns, "upper": self.service_type.upper()}
-            for k, v in self._service_patterns.iteritems()
+            k: [x % {"ns": self.ns} if isinstance(v, list) else v % {"ns": self.ns}
+                for k, v in self._service_patterns.iteritems()]
         }
 
     def generate_method_xpaths(self):
@@ -365,7 +364,6 @@ class OgcExtractor(BaseOgcExtractor):
 
         #this is the enumeration
         formats = self._format_pattern % {"ns": self.ns,
-            'upper': self.service_type.upper(),
             'method': method,
             'local_ns': local_ns
         }
