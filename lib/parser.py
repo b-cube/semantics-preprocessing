@@ -29,6 +29,7 @@ class Parser():
         try:
             self.xml = etree.fromstring(self._string, parser)
         except Exception as ex:
+            print self._string[0:50]
             print ex
             traceback.print_exc(file=sys.stdout)
             self.xml = None

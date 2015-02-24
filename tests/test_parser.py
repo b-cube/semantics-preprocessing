@@ -1,5 +1,6 @@
 import unittest
 from lib.parser import Parser
+from lxml import etree
 
 
 class TestParser(unittest.TestCase):
@@ -15,6 +16,8 @@ class TestParser(unittest.TestCase):
         '''
         with open('tests/test_data/basic_osdd_c1576284036448b5ef3d16b2cd37acbc.txt', 'r') as f:
             data = f.read()
+
+        data = data.replace('\\n', ' ')
 
         self.parser = Parser(data)
 

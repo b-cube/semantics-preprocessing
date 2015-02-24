@@ -62,6 +62,7 @@ class TestOpenSearchReader(unittest.TestCase):
     def setUp(self):
         with open('tests/test_data/basic_osdd_c1576284036448b5ef3d16b2cd37acbc.txt', 'r') as f:
             text = f.read()
+        text = text.replace('\\n', ' ')
         self.reader = OpenSearchReader(text)
         self.reader._load_xml()
 

@@ -1,7 +1,7 @@
 from lxml import etree
 
 # note: this is from b-cube/semantics
-from parser import Parser
+from lib.parser import Parser
 
 '''
 strip out some identified set of elements for the
