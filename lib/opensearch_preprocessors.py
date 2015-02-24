@@ -1,7 +1,8 @@
 import re
 
-from lib.preprocessors import *
+from lib.preprocessors import BaseReader
 from lib.utils import parse_url
+
 
 class OpenSearchReader(BaseReader):
 	_service_descriptors = {
