@@ -331,6 +331,16 @@ class OwsWcsPreprocessor():
     def _get_reader(self):
         self.reader = WebCoverageService('', xml=self.xml_as_string, version=self.version)
 
+    def parse_reader(self):
+        '''
+        this is a little unnecessary
+        '''
+        service = {
+            "service": self.return_service_descriptors(),
+            "remainder": []
+        }
+        return service
+
     def return_service_descriptors(self):
         '''
         return the dict based on the wms object
@@ -585,3 +595,103 @@ class OwsWcsPreprocessor():
                     []
                 ),
             ]
+
+
+class OwsWFsPreprocessor():
+    '''
+    getcapabilities parsing for 1.1.0/1.0.0
+
+    TODO: check on how well owslib handles the third party
+          namespaces (maybe it doesn't?)
+    TODO: I really truly profoundly hope that the parameter
+          names are handled consistently across the versioned
+          classes in owslib.
+    '''
+
+    def __init__(self, xml_as_string, version):
+        if version not in ['1.1.0', '1.0.0']:
+            return
+
+        self.version = version
+        self.xml_as_string = xml_as_string
+
+        self._get_reader()
+
+    def _get_reader(self):
+        self.reader = WebMapService('', xml=self.xml_as_string, version=self.version)
+
+    def parse_reader(self):
+        '''
+        this is a little unnecessary
+        '''
+        service = {
+            "service": self.return_service_descriptors(),
+            "remainder": []
+        }
+        return service
+
+    def return_service_descriptors(self):
+        '''
+        return the dict based on the wms object
+
+        title
+        abstract
+        tags
+        contact
+        rights
+
+        version
+        language(?)
+
+        endpoints
+        '''
+        services = {
+            "title": self.reader.identification.title,
+            "abstract": self.reader.identification.abstract,
+            "tags": self.reader.identification.keywords,
+            "rights": self.reader.identification.accessconstraints,
+            "contact": self.reader.provider.contact.name,
+            "version": self.version
+        }
+
+        # generate the endpoint info from what's listed and
+        # the config for this service + version
+        endpoints = {}
+        for op in self.reader.operations:
+            endpoints[op.name] = self._generate_endpoint(op.name)
+
+        services['endpoints'] = endpoints
+
+        return services
+
+    def return_everything_else(self):
+        '''
+        i expect this to not be used in these parsers
+        '''
+        pass
+
+    def _generate_endpoint(self, method):
+        '''
+        still a tuple:
+            type
+            url
+            parameters as list of tuples
+                tuple: (parameter name, namespace(s), param
+                        namespace prefix, param type, format, enumerations)
+        '''
+        operation = self.reader.getOperationByName(method)
+
+        links = operation.methods
+        # TODO: deal with the OWS parameter:value
+        formats = operation.formatOptions
+
+        endpoints = [
+            (
+                link['type'],
+                link['url'],
+                self._get_parameters(method.lower(), formats)
+            )
+            for link in links
+        ]
+
+        return endpoints
