@@ -1,5 +1,6 @@
 from owslib.wms import WebMapService
 from owslib.wcs import WebCoverageService
+from owslib.wfs import WebFeatureService
 
 '''
 unmodified module supports:
@@ -597,7 +598,7 @@ class OwsWcsPreprocessor():
             ]
 
 
-class OwsWFsPreprocessor():
+class OwsWfsPreprocessor():
     '''
     getcapabilities parsing for 1.1.0/1.0.0
 
@@ -607,6 +608,19 @@ class OwsWFsPreprocessor():
           names are handled consistently across the versioned
           classes in owslib.
     '''
+
+    _tuples_by_version = {
+        '1.0.0': {
+            'getcapabilities': [],
+            'describefeaturetype': [],
+            'getfeature': []
+        },
+        '1.1.0': {
+            'getcapabilities': [],
+            'describefeaturetype': [],
+            'getfeature': []
+        }
+    }
 
     def __init__(self, xml_as_string, version):
         if version not in ['1.1.0', '1.0.0']:
@@ -618,7 +632,7 @@ class OwsWFsPreprocessor():
         self._get_reader()
 
     def _get_reader(self):
-        self.reader = WebMapService('', xml=self.xml_as_string, version=self.version)
+        self.reader = WebFeatureService('', xml=self.xml_as_string, version=self.version)
 
     def parse_reader(self):
         '''
@@ -648,11 +662,26 @@ class OwsWFsPreprocessor():
         services = {
             "title": self.reader.identification.title,
             "abstract": self.reader.identification.abstract,
-            "tags": self.reader.identification.keywords,
             "rights": self.reader.identification.accessconstraints,
-            "contact": self.reader.provider.contact.name,
             "version": self.version
         }
+
+        # TODO: this is going to be an issue in owslib proper
+        #       in that it's not going to load correctly if
+        #       keywords don't exist
+        try:
+            tags = self.reader.identification.keywords
+            services['tags'] = tags
+        except:
+            pass
+
+        # this, however, is a difference in the versions
+        # 1.0.0 does not have contact information !!!
+        try:
+            contact = self.reader.provider.contact.name
+            services['contact'] = contact
+        except:
+            pass
 
         # generate the endpoint info from what's listed and
         # the config for this service + version

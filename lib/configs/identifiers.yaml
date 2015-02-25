@@ -159,6 +159,11 @@ protocols:
             object: content
             value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
             text: '1.0'
+      checks:
+        ors: 
+          - type: xpath
+            object: content
+            value: '@version'
   - name: www # this is a catchall so how to handle the filtering
     filters:
       ors:
