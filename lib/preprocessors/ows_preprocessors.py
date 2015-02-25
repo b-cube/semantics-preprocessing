@@ -1,5 +1,5 @@
 from owslib.wms import WebMapService
-# from owslib.wcs import WebCoverageService
+from owslib.wcs import WebCoverageService
 
 '''
 unmodified module supports:
@@ -119,7 +119,7 @@ class OwsWmsPreprocessor():
             return term
 
         # TODO: add required!
-        # TODO: revise for actaully being 1.1.1 (based on 1.3.0)
+        # TODO: revise for actually being 1.1.1 (based on 1.3.0)
         if method == 'getcapabilities':
             return [
                 (
@@ -316,3 +316,272 @@ class OwsWmsPreprocessor():
                 )
             ]
         return []
+
+
+class OwsWcsPreprocessor():
+    def __init__(self, xml_as_string, version):
+        if version != '1.0.0':
+            return
+
+        self.version = version
+        self.xml_as_string = xml_as_string
+
+        self._get_reader()
+
+    def _get_reader(self):
+        self.reader = WebCoverageService('', xml=self.xml_as_string, version=self.version)
+
+    def return_service_descriptors(self):
+        '''
+        return the dict based on the wms object
+
+        title
+        abstract
+        tags
+        contact
+        rights
+
+        version
+        language(?)
+
+        endpoints
+        '''
+        services = {
+            "title": self.reader.identification.title,
+            "abstract": self.reader.identification.abstract,
+            "tags": self.reader.identification.keywords,
+            "rights": self.reader.identification.accessConstraints,
+            "contact": self.reader.provider.contact.name,
+            "version": self.version
+        }
+
+        # generate the endpoint info from what's listed and
+        # the config for this service + version
+        endpoints = {}
+        for op in self.reader.operations:
+            endpoints[op.name] = self._generate_endpoint(op.name)
+
+        services['endpoints'] = endpoints
+
+        return services
+
+    def _generate_endpoint(self, method):
+        '''
+        still a tuple:
+            type
+            url
+            parameters as list of tuples
+                tuple: (parameter name, namespace(s), param
+                        namespace prefix, param type, format, enumerations)
+
+        wcs 1.0.0 does not support formats? in the method identification
+        '''
+        operation = self.reader.getOperationByName(method)
+
+        links = operation.methods
+
+        endpoints = [
+            (
+                link['type'],
+                link['url'],
+                self._get_parameters(method.lower(), [])
+            )
+            for link in links
+        ]
+
+        return endpoints
+
+    def _get_parameters(self, method, formats):
+        _vocabs = {}
+
+        def _check_controlled_vocabs(term):
+            if term in _vocabs:
+                return _vocabs[term]
+            return term
+
+        # TODO: add required!
+        if method == 'getcapabilities':
+            return [
+                (
+                    "Version",
+                    "http://www.opengis.net/wcs",
+                    "wcs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Request",
+                    "http://www.opengis.net/wcs",
+                    "wcs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Service",
+                    "http://www.opengis.net/wcs",
+                    "wcs",
+                    "string",
+                    "",
+                    []
+                )
+            ]
+        elif method == 'describecoverage':
+            return [
+                (
+                    "Version",
+                    "http://www.opengis.net/wcs",
+                    "wcs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Request",
+                    "http://www.opengis.net/wcs",
+                    "wcs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Service",
+                    "http://www.opengis.net/wcs",
+                    "wcs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Coverage",
+                    "http://www.opengis.net/wcs",
+                    "wcs",
+                    "string",
+                    "",
+                    []
+                )
+            ]
+        elif method == 'getcoverage':
+            return [
+                (
+                    "Version",
+                    "http://www.opengis.net/wcs",
+                    "wcs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Request",
+                    "http://www.opengis.net/wcs",
+                    "wcs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Service",
+                    "http://www.opengis.net/wcs",
+                    "wcs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Coverage",
+                    "http://www.opengis.net/wcs",
+                    "wcs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Format",
+                    "http://www.opengis.net/wcs",
+                    "wcs",
+                    "string",
+                    "",
+                    [_check_controlled_vocabs(f) for f in formats]
+                ),
+                (
+                    "BBOX",
+                    "http://www.opengis.net/wcs",
+                    "wcs",
+                    "string",
+                    "minx,miny,maxx,maxy",
+                    []
+                ),
+                (
+                    "Height",
+                    "http://www.opengis.net/wcs",
+                    "wcs",
+                    "integer",
+                    "",
+                    []
+                ),
+                (
+                    "Width",
+                    "http://www.opengis.net/wcs",
+                    "wcs",
+                    "integer",
+                    "",
+                    []
+                ),
+                (
+                    "CRS",
+                    "http://www.opengis.net/wcs",
+                    "wcs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Response_CRS",
+                    "http://www.opengis.net/wcs",
+                    "wcs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Time",
+                    "http://www.opengis.net/wcs",
+                    "wcs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Parameter",
+                    "http://www.opengis.net/wcs",
+                    "wcs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "ResX",
+                    "http://www.opengis.net/wcs",
+                    "wcs",
+                    "double",
+                    "",
+                    []
+                ),
+                (
+                    "ResY",
+                    "http://www.opengis.net/wcs",
+                    "wcs",
+                    "double",
+                    "",
+                    []
+                ),
+                (
+                    "Interpolation",
+                    "http://www.opengis.net/wcs",
+                    "wcs",
+                    "string",
+                    "",
+                    []
+                ),
+            ]

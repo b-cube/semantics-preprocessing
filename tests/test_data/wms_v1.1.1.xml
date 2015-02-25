@@ -1,0 +1,829 @@
+<?xml version='1.0' encoding="ISO-8859-1" standalone="no" ?>
+<!DOCTYPE WMT_MS_Capabilities SYSTEM "http://schemas.opengis.net/wms/1.1.1/WMS_MS_Capabilities.dtd"
+ [
+ <!ELEMENT VendorSpecificCapabilities EMPTY>
+ ]>  <!-- end of DOCTYPE declaration -->
+
+<WMT_MS_Capabilities version="1.1.1">
+
+<!-- MapServer version 6.4.1 OUTPUT=PNG OUTPUT=JPEG OUTPUT=KML SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=CAIRO SUPPORTS=ICONV SUPPORTS=XMP SUPPORTS=FRIBIDI SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=WCS_SERVER SUPPORTS=SOS_SERVER SUPPORTS=FASTCGI SUPPORTS=GEOS INPUT=JPEG INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+
+<Service>
+  <Name>OGC:WMS</Name>
+  <Title>Tropical Rainfall Measuring Mission (TRMM) Data from NASA Goddard Earth Sciences Data and Information Services Center (GES DISC)</Title>
+  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?"/>
+  <ContactInformation>
+    <ContactPersonPrimary>
+<!-- WARNING: Mandatory metadata '..._contactperson' was missing in this context. -->
+      <ContactOrganization>Goddard Earth Sciences Data and Information Services Center</ContactOrganization>
+    </ContactPersonPrimary>
+      <ContactVoiceTelephone>301-614-5224</ContactVoiceTelephone>
+  <ContactElectronicMailAddress>help-disc@listserv.gsfc.nasa.gov</ContactElectronicMailAddress>
+  </ContactInformation>
+</Service>
+
+<Capability>
+  <Request>
+    <GetCapabilities>
+      <Format>application/vnd.ogc.wms_xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetCapabilities>
+  </Request>
+  <Exception>
+    <Format>application/vnd.ogc.se_xml</Format>
+    <Format>application/vnd.ogc.se_inimage</Format>
+    <Format>application/vnd.ogc.se_blank</Format>
+  </Exception>
+  <VendorSpecificCapabilities />
+  <UserDefinedSymbolization SupportSLD="1" UserLayer="0" UserStyle="1" RemoteWFS="0"/>
+  <Layer>
+    <Name>GES_DISC_WMS_AG</Name>
+    <Title>Tropical Rainfall Measuring Mission (TRMM) Data from NASA Goddard Earth Sciences Data and Information Services Center (GES DISC)</Title>
+    <Abstract>GES_DISC_WMS_AG</Abstract>
+    <SRS>EPSG:4326</SRS>
+    <LatLonBoundingBox minx="-180" miny="-90" maxx="180" maxy="90" />
+    <BoundingBox SRS="EPSG:4326"
+                minx="-180" miny="-90" maxx="180" maxy="90" />
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>TRMM_3A11_V7_MONTHLY_rain</Name>
+        <Title>TRMM_3A11_V7_MONTHLY_rain</Title>
+        <Abstract></Abstract>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-40" maxx="180" maxy="40" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-40" maxx="180" maxy="40" />
+        <Dimension name="time" units="ISO8601"/>
+        <Extent name="time" default="2014-01-01" nearestValue="0">1997-12-01/2015-01-01</Extent>
+        <MetadataURL type="GCMD DIF">
+          <Format>text/html</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://gcmd.gsfc.nasa.gov/getdif.htm?GES_DISC_TRMM_3A11_V7"/>
+        </MetadataURL>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="777" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=TRMM_3A11_V7_MONTHLY_rain&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>TRMM_3A12_V7_MONTHLY_surfaceRain</Name>
+        <Title>TRMM_3A12_MONTHLY_surfaceRain</Title>
+        <Abstract></Abstract>
+        <KeywordList>
+            <Keyword>surface rain</Keyword>
+            <Keyword> cloud liquid water content</Keyword>
+            <Keyword> latent heat</Keyword>
+            <Keyword> NpixTotal</Keyword>
+            <Keyword> EOSDIS</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-40" maxx="180" maxy="40" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-40" maxx="180" maxy="40" />
+        <Dimension name="time" units="ISO8601"/>
+        <Extent name="time" default="2015-01-01" nearestValue="0">1997-12-01/2015-01-01</Extent>
+        <MetadataURL type="GCMD DIF">
+          <Format>text/html</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://gcmd.gsfc.nasa.gov/getdif.htm?GES_DISC_TRMM_3A12_V7"/>
+        </MetadataURL>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="825" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=TRMM_3A12_V7_MONTHLY_surfaceRain&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>TRMM_3A12_V7_MONTHLY_surfacePrecipitation</Name>
+        <Title>TRMM_3A12_MONTHLY_surfacePrecipitation</Title>
+        <Abstract></Abstract>
+        <KeywordList>
+            <Keyword>surface rain</Keyword>
+            <Keyword> cloud liquid water content</Keyword>
+            <Keyword> latent heat</Keyword>
+            <Keyword> NpixTotal</Keyword>
+            <Keyword> EOSDIS</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-40" maxx="180" maxy="40" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-40" maxx="180" maxy="40" />
+        <Dimension name="time" units="ISO8601"/>
+        <Extent name="time" default="2015-01-01" nearestValue="0">1997-12-01/2015-01-01</Extent>
+        <MetadataURL type="GCMD DIF">
+          <Format>text/html</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://gcmd.gsfc.nasa.gov/getdif.htm?GES_DISC_TRMM_3A12_V7"/>
+        </MetadataURL>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="849" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=TRMM_3A12_V7_MONTHLY_surfacePrecipitation&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>TRMM_3A12_V7_MONTHLY_convectPrecipitation</Name>
+        <Title>TRMM_3A12_MONTHLY_convectPrecipitation</Title>
+        <Abstract></Abstract>
+        <KeywordList>
+            <Keyword>surface rain</Keyword>
+            <Keyword> cloud liquid water content</Keyword>
+            <Keyword> latent heat</Keyword>
+            <Keyword> NpixTotal</Keyword>
+            <Keyword> EOSDIS</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-40" maxx="180" maxy="40" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-40" maxx="180" maxy="40" />
+        <Dimension name="time" units="ISO8601"/>
+        <Extent name="time" default="2015-01-01" nearestValue="0">1997-12-01/2015-01-01</Extent>
+        <MetadataURL type="GCMD DIF">
+          <Format>text/html</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://gcmd.gsfc.nasa.gov/getdif.htm?GES_DISC_TRMM_3A12_V7"/>
+        </MetadataURL>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="849" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=TRMM_3A12_V7_MONTHLY_convectPrecipitation&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>TRMM_3A25_V7_MONTHLY_surfRainMean</Name>
+        <Title>TRMM_3A25_V7_MONTHLY_surfrain</Title>
+        <Abstract></Abstract>
+        <KeywordList>
+            <Keyword>EOSDIS</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-37" maxx="180" maxy="37" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-37" maxx="180" maxy="37" />
+        <Dimension name="time" units="ISO8601"/>
+        <Extent name="time" default="2014-10-01" nearestValue="0">1998-01-01/2014-10-01</Extent>
+        <MetadataURL type="GCMD DIF">
+          <Format>text/html</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://gcmd.gsfc.nasa.gov/getdif.htm?GES_DISC_TRMM_3A25_V7"/>
+        </MetadataURL>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="825" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=TRMM_3A25_V7_MONTHLY_surfRainMean&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>TRMM_3A25_V7_MONTHLY_surfRainConvMean</Name>
+        <Title>TRMM_3A25_V7_MONTHLY_convRainMean</Title>
+        <Abstract></Abstract>
+        <KeywordList>
+            <Keyword>EOSDIS</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-37" maxx="180" maxy="37" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-37" maxx="180" maxy="37" />
+        <Dimension name="time" units="ISO8601"/>
+        <Extent name="time" default="2014-10-01" nearestValue="0">1998-01-01/2014-10-01</Extent>
+        <MetadataURL type="GCMD DIF">
+          <Format>text/html</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://gcmd.gsfc.nasa.gov/getdif.htm?GES_DISC_TRMM_3A25_V7"/>
+        </MetadataURL>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="873" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=TRMM_3A25_V7_MONTHLY_surfRainConvMean&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>TRMM_3A25_V7_MONTHLY_surfRainStratMean</Name>
+        <Title>TRMM_3A25_V7_MONTHLY_SurfaceRainStratMean</Title>
+        <Abstract></Abstract>
+        <KeywordList>
+            <Keyword>EOSDIS</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-37" maxx="180" maxy="37" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-37" maxx="180" maxy="37" />
+        <Dimension name="time" units="ISO8601"/>
+        <Extent name="time" default="2014-10-01" nearestValue="0">1998-01-01/2014-10-01</Extent>
+        <MetadataURL type="GCMD DIF">
+          <Format>text/html</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://gcmd.gsfc.nasa.gov/getdif.htm?GES_DISC_TRMM_3A25_V7"/>
+        </MetadataURL>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="861" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=TRMM_3A25_V7_MONTHLY_surfRainStratMean&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>TRMM_3A26_V7_MONTHLY_rainMean</Name>
+        <Title>TRMM_3A26_MONTHLY_rainMean</Title>
+        <Abstract> </Abstract>
+        <KeywordList>
+            <Keyword>EARTH SCIENCE</Keyword>
+            <Keyword>ATMOSPHERE</Keyword>
+            <Keyword>PRECIPITATION</Keyword>
+            <Keyword>RAIN</Keyword>
+            <Keyword>PRECIPITATION RATE</Keyword>
+            <Keyword>TRMM</Keyword>
+            <Keyword> ESDIS</Keyword>
+            <Keyword> ESIP</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-40" maxx="180" maxy="40" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-40" maxx="180" maxy="40" />
+        <Dimension name="time" units="ISO8601"/>
+        <Extent name="time" default="2014-09-01" nearestValue="0">1997-12-01/2014-09-01</Extent>
+        <MetadataURL type="GCMD DIF">
+          <Format>text/html</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://gcmd.gsfc.nasa.gov/getdif.htm?GES_DISC_TRMM_3A26_V7"/>
+        </MetadataURL>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="777" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=TRMM_3A26_V7_MONTHLY_rainMean&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>TRMM_3B31_V7_MONTHLY_surfacePrecipTMI</Name>
+        <Title>TRMM_3B31_V7_MONTHLY_surfacePrecipTMI</Title>
+        <Abstract> </Abstract>
+        <KeywordList>
+            <Keyword>EARTH SCIENCE</Keyword>
+            <Keyword>ATMOSPHERE</Keyword>
+            <Keyword>PRECIPITATION</Keyword>
+            <Keyword>RAIN</Keyword>
+            <Keyword>PRECIPITATION RATE</Keyword>
+            <Keyword>TRMM</Keyword>
+            <Keyword> ESDIS</Keyword>
+            <Keyword> ESIP</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-40" maxx="180" maxy="40" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-40" maxx="180" maxy="40" />
+        <Dimension name="time" units="ISO8601"/>
+        <Extent name="time" default="2014-10-01" nearestValue="0">1997-12-01/2014-10-01</Extent>
+        <MetadataURL type="GCMD DIF">
+          <Format>text/html</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://gcmd.gsfc.nasa.gov/getdif.htm?GES_DISC_TRMM_3B31_V7"/>
+        </MetadataURL>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="801" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=TRMM_3B31_V7_MONTHLY_surfacePrecipTMI&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>TRMM_3B31_V7_MONTHLY_convectPrecipTMI</Name>
+        <Title>TRMM_3B31_V7_MONTHLY_convectPrecipTMI</Title>
+        <Abstract> </Abstract>
+        <KeywordList>
+            <Keyword>EARTH SCIENCE</Keyword>
+            <Keyword>ATMOSPHERE</Keyword>
+            <Keyword>PRECIPITATION</Keyword>
+            <Keyword>RAIN</Keyword>
+            <Keyword>PRECIPITATION RATE</Keyword>
+            <Keyword>TRMM</Keyword>
+            <Keyword> ESDIS</Keyword>
+            <Keyword> ESIP</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-40" maxx="180" maxy="40" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-40" maxx="180" maxy="40" />
+        <Dimension name="time" units="ISO8601"/>
+        <Extent name="time" default="2014-10-01" nearestValue="0">1997-12-01/2014-10-01</Extent>
+        <MetadataURL type="GCMD DIF">
+          <Format>text/html</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://gcmd.gsfc.nasa.gov/getdif.htm?GES_DISC_TRMM_3B31_V7"/>
+        </MetadataURL>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="801" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=TRMM_3B31_V7_MONTHLY_convectPrecipTMI&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>TRMM_3B42_V7_3Hourly</Name>
+        <Title>TRMM_3B42_V7_3HOURLY</Title>
+        <Abstract> </Abstract>
+        <KeywordList>
+            <Keyword>EARTH SCIENCE</Keyword>
+            <Keyword>ATMOSPHERE</Keyword>
+            <Keyword>PRECIPITATION</Keyword>
+            <Keyword>RAIN</Keyword>
+            <Keyword>PRECIPITATION RATE</Keyword>
+            <Keyword>TRMM</Keyword>
+            <Keyword> ESDIS</Keyword>
+            <Keyword> ESIP</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-50" maxx="180" maxy="50" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-50" maxx="180" maxy="50" />
+        <Dimension name="time" units="ISO8601"/>
+        <Extent name="time" default="2014-09-30T21:00:00" nearestValue="0">1998-01-01T00:00:00/2014-09-30T21:00:00</Extent>
+        <MetadataURL type="GCMD DIF">
+          <Format>text/html</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://gcmd.gsfc.nasa.gov/getdif.htm?GES_DISC_TRMM_3B42_V7"/>
+        </MetadataURL>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="753" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=TRMM_3B42_V7_3Hourly&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>TRMM_3B42_V7_Daily</Name>
+        <Title>TRMM_3B42_V7_DAILY</Title>
+        <Abstract> </Abstract>
+        <KeywordList>
+            <Keyword>EARTH SCIENCE</Keyword>
+            <Keyword>ATMOSPHERE</Keyword>
+            <Keyword>PRECIPITATION</Keyword>
+            <Keyword>RAIN</Keyword>
+            <Keyword>PRECIPITATION RATE</Keyword>
+            <Keyword>TRMM</Keyword>
+            <Keyword> ESDIS</Keyword>
+            <Keyword> ESIP</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-50" maxx="180" maxy="50" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-50" maxx="180" maxy="50" />
+        <Dimension name="time" units="ISO8601"/>
+        <Extent name="time" default="2014-09-30" nearestValue="0">1997-12-01/2014-09-30</Extent>
+        <MetadataURL type="GCMD DIF">
+          <Format>text/html</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://gcmd.gsfc.nasa.gov/getdif.htm?GES_DISC_TRMM_3B42_V7"/>
+        </MetadataURL>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="753" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=TRMM_3B42_V7_Daily&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>TRMM_3B42RT_CURRENT</Name>
+        <Title>TRMM_3B42RT_CURRENT</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-50" maxx="180" maxy="50" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-50" maxx="180" maxy="50" />
+        <MetadataURL type="GCMD DIF">
+          <Format>text/html</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://gcmd.gsfc.nasa.gov/getdif.htm?GES_DISC_3B4XRT_V7"/>
+        </MetadataURL>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="735" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=TRMM_3B42RT_CURRENT&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>TRMM_3B43_V7_MONTHLY_precipitation</Name>
+        <Title>TRMM_3B43_V7_MONTHLY_precipitation</Title>
+        <Abstract> </Abstract>
+        <KeywordList>
+            <Keyword>EARTH SCIENCE</Keyword>
+            <Keyword>ATMOSPHERE</Keyword>
+            <Keyword>PRECIPITATION</Keyword>
+            <Keyword>RAIN</Keyword>
+            <Keyword>PRECIPITATION RATE</Keyword>
+            <Keyword>TRMM</Keyword>
+            <Keyword> ESDIS</Keyword>
+            <Keyword> ESIP</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-50" maxx="180" maxy="50" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-50" maxx="180" maxy="50" />
+        <Dimension name="time" units="ISO8601"/>
+        <Extent name="time" default="2014-09-01" nearestValue="0">1997-12-01/2014-09-01</Extent>
+        <MetadataURL type="GCMD DIF">
+          <Format>text/html</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://gcmd.gsfc.nasa.gov/getdif.htm?GES_DISC_TRMM_3B43_V7"/>
+        </MetadataURL>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="753" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=TRMM_3B43_V7_MONTHLY_precipitation&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>TRMM_G2A12_A</Name>
+        <Title>TRMM 2A12 Surface Rain Rate Ascending (0.5 degree)</Title>
+        <Abstract></Abstract>
+        <KeywordList>
+            <Keyword></Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-40" maxx="180" maxy="40" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-40" maxx="180" maxy="40" />
+        <Dimension name="time" units="ISO8601"/>
+        <Extent name="time" default="2010-01-31" nearestValue="0">2008-05-01/2010-01-31</Extent>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>TRMM_G2A12_D</Name>
+        <Title>TRMM 2A12 Surface Rain Rate Descending (0.5 degree)</Title>
+        <Abstract></Abstract>
+        <KeywordList>
+            <Keyword></Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-40" maxx="180" maxy="40" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-40" maxx="180" maxy="40" />
+        <Dimension name="time" units="ISO8601"/>
+        <Extent name="time" default="2010-01-31" nearestValue="0">2008-05-01/2010-01-31</Extent>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>TRMM_G2B31_A</Name>
+        <Title>TRMM 2B31 Surface Rain Rate Ascending (0.1 degree)</Title>
+        <Abstract></Abstract>
+        <KeywordList>
+            <Keyword></Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-40" maxx="180" maxy="40" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-40" maxx="180" maxy="40" />
+        <Dimension name="time" units="ISO8601"/>
+        <Extent name="time" default="2010-01-31" nearestValue="0">2008-05-01/2010-01-31</Extent>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>TRMM_G2B31_D</Name>
+        <Title>TRMM 2B31 Surface Rain Rate Descending (0.1 degree)</Title>
+        <Abstract></Abstract>
+        <KeywordList>
+            <Keyword></Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-40" maxx="180" maxy="40" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-40" maxx="180" maxy="40" />
+        <Dimension name="time" units="ISO8601"/>
+        <Extent name="time" default="2010-01-31" nearestValue="0">2008-05-01/2010-01-31</Extent>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>grid</Name>
+        <Title>GRID</Title>
+        <Abstract>Grid lines</Abstract>
+        <KeywordList>
+            <Keyword>GRIDS</Keyword>
+            <Keyword>GRATICULE</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <!-- WARNING: Optional LatLonBoundingBox could not be established for this layer.  Consider setting the EXTENT in the LAYER object, or wms_extent metadata. Also check that your data exists in the DATA statement -->
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="669" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=grid&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>grid60</Name>
+        <Title>GRID 60 degrees</Title>
+        <Abstract>Grid lines every 60 degrees</Abstract>
+        <KeywordList>
+            <Keyword>GRIDS</Keyword>
+            <Keyword>GRATICULE</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <!-- WARNING: Optional LatLonBoundingBox could not be established for this layer.  Consider setting the EXTENT in the LAYER object, or wms_extent metadata. Also check that your data exists in the DATA statement -->
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="681" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=grid60&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>grid45</Name>
+        <Title>GRID 45 degrees</Title>
+        <Abstract>Grid lines every 45 degrees</Abstract>
+        <KeywordList>
+            <Keyword>GRIDS</Keyword>
+            <Keyword>GRATICULE</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <!-- WARNING: Optional LatLonBoundingBox could not be established for this layer.  Consider setting the EXTENT in the LAYER object, or wms_extent metadata. Also check that your data exists in the DATA statement -->
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="681" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=grid45&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>grid20</Name>
+        <Title>GRID 20 degrees</Title>
+        <Abstract>Grid lines every 20 degrees</Abstract>
+        <KeywordList>
+            <Keyword>GRIDS</Keyword>
+            <Keyword>GRATICULE</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <!-- WARNING: Optional LatLonBoundingBox could not be established for this layer.  Consider setting the EXTENT in the LAYER object, or wms_extent metadata. Also check that your data exists in the DATA statement -->
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="681" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=grid20&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>grid15</Name>
+        <Title>GRID 15 degrees</Title>
+        <Abstract>Grid lines every 15 degrees</Abstract>
+        <KeywordList>
+            <Keyword>GRIDS</Keyword>
+            <Keyword>GRATICULE</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <!-- WARNING: Optional LatLonBoundingBox could not be established for this layer.  Consider setting the EXTENT in the LAYER object, or wms_extent metadata. Also check that your data exists in the DATA statement -->
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="681" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=grid15&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>grid10</Name>
+        <Title>GRID 10 degrees</Title>
+        <Abstract>Grid lines every 10 degrees</Abstract>
+        <KeywordList>
+            <Keyword>GRIDS</Keyword>
+            <Keyword>GRATICULE</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <!-- WARNING: Optional LatLonBoundingBox could not be established for this layer.  Consider setting the EXTENT in the LAYER object, or wms_extent metadata. Also check that your data exists in the DATA statement -->
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="681" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=grid10&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>grid05</Name>
+        <Title>GRID 5 degrees</Title>
+        <Abstract>Grid lines every 5 degrees</Abstract>
+        <KeywordList>
+            <Keyword>GRIDS</Keyword>
+            <Keyword>GRATICULE</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <!-- WARNING: Optional LatLonBoundingBox could not be established for this layer.  Consider setting the EXTENT in the LAYER object, or wms_extent metadata. Also check that your data exists in the DATA statement -->
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="681" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=grid05&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>grid02</Name>
+        <Title>GRID 2 degrees</Title>
+        <Abstract>Grid lines every 2 degrees</Abstract>
+        <KeywordList>
+            <Keyword>GRIDS</Keyword>
+            <Keyword>GRATICULE</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <!-- WARNING: Optional LatLonBoundingBox could not be established for this layer.  Consider setting the EXTENT in the LAYER object, or wms_extent metadata. Also check that your data exists in the DATA statement -->
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="681" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=grid02&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>grid01</Name>
+        <Title>GRID 1 degrees</Title>
+        <Abstract>Grid lines every 1 degrees</Abstract>
+        <KeywordList>
+            <Keyword>GRIDS</Keyword>
+            <Keyword>GRATICULE</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <!-- WARNING: Optional LatLonBoundingBox could not be established for this layer.  Consider setting the EXTENT in the LAYER object, or wms_extent metadata. Also check that your data exists in the DATA statement -->
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="681" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=grid01&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>grid1-2</Name>
+        <Title>GRID 0.5 degrees</Title>
+        <Abstract>Grid lines every 0.5 degrees</Abstract>
+        <KeywordList>
+            <Keyword>GRIDS</Keyword>
+            <Keyword>GRATICULE</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <!-- WARNING: Optional LatLonBoundingBox could not be established for this layer.  Consider setting the EXTENT in the LAYER object, or wms_extent metadata. Also check that your data exists in the DATA statement -->
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="687" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=grid1-2&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>grid1-8</Name>
+        <Title>GRID 0.125 degrees</Title>
+        <Abstract>Grid lines every 0.125 degrees</Abstract>
+        <KeywordList>
+            <Keyword>GRIDS</Keyword>
+            <Keyword>GRATICULE</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <!-- WARNING: Optional LatLonBoundingBox could not be established for this layer.  Consider setting the EXTENT in the LAYER object, or wms_extent metadata. Also check that your data exists in the DATA statement -->
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="687" height="80">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://disc1.sci.gsfc.nasa.gov/daac-bin/wms_trmm?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=grid1-8&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>coastline</Name>
+        <Title>coastlines</Title>
+        <Abstract>World Boundary coastline</Abstract>
+        <KeywordList>
+            <Keyword>Tiger/Line</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-90" maxx="180" maxy="90" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-90" maxx="180" maxy="90" />
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>coast_line</Name>
+        <Title>coastlines</Title>
+        <Abstract>World Boundary coastline</Abstract>
+        <KeywordList>
+            <Keyword>Tiger/Line</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-90" maxx="180" maxy="90" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-90" maxx="180" maxy="90" />
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>countries</Name>
+        <Title>countries</Title>
+        <Abstract>World Countries</Abstract>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-90" maxx="180" maxy="90" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-90" maxx="180" maxy="90" />
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>US_states</Name>
+        <Title>US States</Title>
+        <Abstract>US States</Abstract>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-179.147" miny="17.6744" maxx="179.778" maxy="71.3892" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-179.147" miny="17.6744" maxx="179.778" maxy="71.3892" />
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>continents</Name>
+        <Title>continents</Title>
+        <Abstract>World Continents</Abstract>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-90" maxx="180" maxy="90" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-90" maxx="180" maxy="90" />
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>VolcanoesSince2000</Name>
+        <Title>Volcanoes with Eruptions since 2000</Title>
+        <Abstract>Volcanoes with eruptions since 2000, obtained from a compilation by the Smithsonian Institution, Global Volcanism Program</Abstract>
+        <KeywordList>
+            <Keyword>volcano</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-90" maxx="180" maxy="90" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-90" maxx="180" maxy="90" />
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>VolcanoesSince2000_white</Name>
+        <Title>Volcanoes with Eruptions since 2000</Title>
+        <Abstract>Volcanoes with eruptions since 2000, obtained from a compilation by the Smithsonian Institution, Global Volcanism Program</Abstract>
+        <KeywordList>
+            <Keyword>volcano</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-90" maxx="180" maxy="90" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-90" maxx="180" maxy="90" />
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>bluemarble1</Name>
+        <Title>bluemarble</Title>
+        <Abstract>The Blue Marble: Next Generation is a series of images that show the color of the Earth\u2019s surface for each month of 2004 at very high resolution (500 meters/pixel) at a global scale. </Abstract>
+        <KeywordList>
+            <Keyword>Bluemarble</Keyword>
+            <Keyword>MODIS</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-90" maxx="180" maxy="90" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-90" maxx="180" maxy="90" />
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>bluemarble</Name>
+        <Title>bluemarble</Title>
+        <Abstract>The Blue Marble: Next Generation is a series of images that show the color of the Earth\u2019s surface for each month of 2004 at very high resolution (500 meters/pixel) at a global scale. </Abstract>
+        <KeywordList>
+            <Keyword>Bluemarble</Keyword>
+            <Keyword>MODIS</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180" miny="-90" maxx="180" maxy="90" />
+        <BoundingBox SRS="EPSG:4326"
+                    minx="-180" miny="-90" maxx="180" maxy="90" />
+    </Layer>
+  </Layer>
+</Capability>
+</WMT_MS_Capabilities>
