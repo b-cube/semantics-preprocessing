@@ -18,22 +18,21 @@ XML and text parsing for the pipeline between Nutch/Solr and a triplestore or NL
 		"language": "",
 		"subject": "", // keywords as string or list
 		"endpoints": [
-			// it's a tuple
-			(
-				"type", 
-				"source url", 
-				[
-					// it's a list of tuples
+			{
+				"type": "", 
+				"url": "", 
+				"http_method": "", // get | post
+				"parameters": [
 					// for the parameter descriptions
-					(
-						"parameter name",
-						"namespaces",
-						"namespace prefix",
-						"parameter type",
-						"parameter format"
-					)
+					{
+						"name": "parameter name",
+						"namespace": {"uri": "", "prefix": ""},
+						"type",
+						"format",
+						"values": [""]
+					}
 				]
-			)
+			}
 		]
 	},
 	"remainder": [
