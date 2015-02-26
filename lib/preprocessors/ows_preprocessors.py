@@ -7,6 +7,7 @@ unmodified module supports:
     wms 1.1.1
     wfs 1.0.0, 1.1.0
     wcs 1.1.0
+    csw 2.0.2
 
 these do not inherit any of the BaseReader structures
 but retain some of the method names for clarity
@@ -23,7 +24,7 @@ class OwsWmsPreprocessor():
     '''
 
     def __init__(self, xml_as_string, version):
-        if version != '1.1.1':
+        if version not in ['1.1.1']:
             return
 
         self.version = version
@@ -321,7 +322,7 @@ class OwsWmsPreprocessor():
 
 class OwsWcsPreprocessor():
     def __init__(self, xml_as_string, version):
-        if version != '1.0.0':
+        if version not in ['1.0.0']:
             return
 
         self.version = version
@@ -611,9 +612,100 @@ class OwsWfsPreprocessor():
 
     _tuples_by_version = {
         '1.0.0': {
-            'getcapabilities': [],
-            'describefeaturetype': [],
-            'getfeature': []
+            'getcapabilities': [
+                (
+                    "Version",
+                    "http://www.opengis.net/wfs",
+                    "wfs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Request",
+                    "http://www.opengis.net/wfs",
+                    "wfs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Service",
+                    "http://www.opengis.net/wfs",
+                    "wfs",
+                    "string",
+                    "",
+                    []
+                )
+            ],
+            'describefeaturetype': [
+                (
+                    "Version",
+                    "http://www.opengis.net/wfs",
+                    "wfs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Request",
+                    "http://www.opengis.net/wfs",
+                    "wfs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Service",
+                    "http://www.opengis.net/wfs",
+                    "wfs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "TypeName",
+                    "http://www.opengis.net/wfs",
+                    "wfs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Format",
+                    "http://www.opengis.net/wfs",
+                    "wfs",
+                    "string",
+                    "",
+                    []
+                )
+            ],
+            'getfeature': [
+                (
+                    "Version",
+                    "http://www.opengis.net/wfs",
+                    "wfs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Request",
+                    "http://www.opengis.net/wfs",
+                    "wfs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Service",
+                    "http://www.opengis.net/wfs",
+                    "wfs",
+                    "string",
+                    "",
+                    []
+                )
+            ]
         },
         '1.1.0': {
             'getcapabilities': [],
@@ -713,6 +805,7 @@ class OwsWfsPreprocessor():
         links = operation.methods
         # TODO: deal with the OWS parameter:value
         formats = operation.formatOptions
+        print formats
 
         endpoints = [
             (
@@ -724,3 +817,155 @@ class OwsWfsPreprocessor():
         ]
 
         return endpoints
+
+    def _get_parameters(self, method, formats):
+        _vocabs = {
+            "XMLSCHEMA": "text/xml"
+        }
+
+        def _check_controlled_vocabs(term):
+            if term in _vocabs:
+                return _vocabs[term]
+            return term
+
+        params = self._tuples_by_version[self.version] if self.version \
+            in self._tuples_by_version else []
+
+        # _check_controlled_vocabs(f) for f in formats
+
+
+class OwsCswPreprocessor():
+    '''
+    getcapabilities parsing for 2.0.2
+
+    TODO: handle multiple versions later
+    TODO: check on how well owslib handles the third party
+          namespaces (maybe it doesn't?)
+    '''
+
+    def __init__(self, xml_as_string, version):
+        if version not in ['2.0.2']:
+            return
+
+        self.version = version
+        self.xml_as_string = xml_as_string
+
+        self._get_reader()
+
+    def _get_reader(self):
+        self.reader = WebMapService('', xml=self.xml_as_string, version=self.version)
+
+    def parse_reader(self):
+        '''
+        this is a little unnecessary
+        '''
+        service = {
+            "service": self.return_service_descriptors(),
+            "remainder": []
+        }
+        return service
+
+    def return_service_descriptors(self):
+        '''
+        return the dict based on the wms object
+
+        title
+        abstract
+        tags
+        contact
+        rights
+
+        version
+        language(?)
+
+        endpoints
+        '''
+        services = {
+            "title": self.reader.identification.title,
+            "abstract": self.reader.identification.abstract,
+            "tags": self.reader.identification.keywords,
+            "rights": self.reader.identification.accessconstraints,
+            "contact": self.reader.provider.contact.name,
+            "version": self.version
+        }
+
+        # generate the endpoint info from what's listed and
+        # the config for this service + version
+        endpoints = {}
+        for op in self.reader.operations:
+            endpoints[op.name] = self._generate_endpoint(op.name)
+
+        services['endpoints'] = endpoints
+
+        return services
+
+    def return_everything_else(self):
+        '''
+        i expect this to not be used in these parsers
+        '''
+        pass
+
+    def _generate_endpoint(self, method):
+        '''
+        still a tuple:
+            type
+            url
+            parameters as list of tuples
+                tuple: (parameter name, namespace(s), param
+                        namespace prefix, param type, format, enumerations)
+        '''
+        operation = self.reader.getOperationByName(method)
+
+        links = operation.methods
+        formats = operation.formatOptions
+
+        endpoints = [
+            (
+                link['type'],
+                link['url'],
+                self._get_parameters(method.lower(), formats)
+            )
+            for link in links
+        ]
+
+        return endpoints
+
+    def _get_parameters(self, method, formats):
+        _vocabs = {
+            "XMLSCHEMA": "application/xml"
+        }
+
+        def _check_controlled_vocabs(term):
+            if term in _vocabs:
+                return _vocabs[term]
+            return term
+
+        # TODO: add required!
+        # TODO: revise for actually being 1.1.1 (based on 1.3.0)
+        if method == 'getcapabilities':
+            return [
+                (
+                    "Version",
+                    "http://www.opengis.net/csw",
+                    "csw",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Request",
+                    "http://www.opengis.net/csw",
+                    "csw",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Service",
+                    "http://www.opengis.net/csw",
+                    "csw",
+                    "string",
+                    "",
+                    []
+                )
+            ]

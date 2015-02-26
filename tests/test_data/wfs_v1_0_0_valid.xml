@@ -15,10 +15,7 @@
         <Title>Podiform_chromite_deposits</Title>
         <Abstract>some text for making it a valid response</Abstract>
         <Keywords>Water</Keywords>
-        <Keywords>Soils</Keywords>
-
         <OnlineResource>http://mrdata.usgs.gov/</OnlineResource>
-        
         <Fees>none</Fees>
         <AccessConstraints>none</AccessConstraints>
     </Service>
