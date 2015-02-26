@@ -107,7 +107,7 @@ protocols:
       ors:
         - type: simple
           object: content
-          value: 'http://a9.com/-/spec/opensearch/1.1/'
+          value: 'xmlns="http://a9.com/-/spec/opensearch/1.1/"'
     services: 
       - name: 'OpenSearchDescription'
         filters: 
@@ -118,7 +118,7 @@ protocols:
     errors:
       filters:
         ors:
-            # these are baed on the cwic best practices and may 
+            # these are based on the cwic best practices and may 
             # not be in widespread use
           - type: simple
             object: content
