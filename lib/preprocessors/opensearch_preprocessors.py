@@ -69,7 +69,7 @@ class OpenSearchReader(BaseReader):
 
         note: not always emitted correctly as param={thing?}. could also be param=thing
               except the param=thing is probably a hardcoded term SO HOW DO WE MANAGE THAT?
-              TODO: manage that
+              TODO: manage that (ex: ?product=MOD021QA&amp;collection={mp:collection?})
 
         tuple: (parameter name, namespace(s), param namespace prefix, param type, format)
         '''

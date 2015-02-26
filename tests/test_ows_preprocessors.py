@@ -2,6 +2,7 @@ import unittest
 from lib.preprocessors.ows_preprocessors import OwsWmsPreprocessor
 from lib.preprocessors.ows_preprocessors import OwsWcsPreprocessor
 from lib.preprocessors.ows_preprocessors import OwsWfsPreprocessor
+from lib.preprocessors.ows_preprocessors import OwsCswPreprocessor
 
 
 class TestOwsWmsPreprocessor(unittest.TestCase):
@@ -44,7 +45,7 @@ class TestOwsWfsPreprocessor100(unittest.TestCase):
 
         descriptors = self.reader.return_service_descriptors()
 
-        self.assertTrue('GMU LAITS Web Coverage Server' in descriptors['title'])
+        self.assertTrue('Podiform_chromite_deposits' in descriptors['title'])
         self.assertFalse(descriptors['version'] == "1.0.2")
 
 
@@ -59,5 +60,22 @@ class TestOwsWfsPreprocessor110(unittest.TestCase):
 
         descriptors = self.reader.return_service_descriptors()
 
-        self.assertTrue('GMU LAITS Web Coverage Server' in descriptors['title'])
+        self.assertTrue('1998 Assessment of Undiscovered Deposits of Gold, Silver,' +
+                        ' Copper, Lead, and Zinc in the United States' in descriptors['title'])
         self.assertFalse(descriptors['version'] == "1.0.2")
+
+
+class TestOwsCswPreprocessor(unittest.TestCase):
+    # this can only fail - the csw init only supports url access
+    def setUp(self):
+        with open('tests/test_data/cwic_csw_v2_0_2.xml', 'r') as f:
+            text = f.read()
+        self.reader = OwsCswPreprocessor(text, '2.0.2')
+
+    def test_return_descriptors(self):
+        # self.assertTrue(self.reader.reader)
+
+        descriptors = self.reader.return_service_descriptors()
+
+        self.assertTrue('CEOS WGISS Integrated Catalog (CWIC)' in descriptors['title'])
+        self.assertFalse(descriptors['version'] == "2.0.2")

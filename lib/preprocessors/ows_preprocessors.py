@@ -1,6 +1,7 @@
 from owslib.wms import WebMapService
 from owslib.wcs import WebCoverageService
 from owslib.wfs import WebFeatureService
+from owslib.csw import CatalogueServiceWeb
 
 '''
 unmodified module supports:
@@ -838,9 +839,7 @@ class OwsCswPreprocessor():
     '''
     getcapabilities parsing for 2.0.2
 
-    TODO: handle multiple versions later
-    TODO: check on how well owslib handles the third party
-          namespaces (maybe it doesn't?)
+    TODO: CatalogueServiceWeb does not support the XML init param!
     '''
 
     def __init__(self, xml_as_string, version):
@@ -853,7 +852,7 @@ class OwsCswPreprocessor():
         self._get_reader()
 
     def _get_reader(self):
-        self.reader = WebMapService('', xml=self.xml_as_string, version=self.version)
+        self.reader = CatalogueServiceWeb('', xml=self.xml_as_string, version=self.version)
 
     def parse_reader(self):
         '''
@@ -931,9 +930,7 @@ class OwsCswPreprocessor():
         return endpoints
 
     def _get_parameters(self, method, formats):
-        _vocabs = {
-            "XMLSCHEMA": "application/xml"
-        }
+        _vocabs = {}
 
         def _check_controlled_vocabs(term):
             if term in _vocabs:
@@ -941,7 +938,6 @@ class OwsCswPreprocessor():
             return term
 
         # TODO: add required!
-        # TODO: revise for actually being 1.1.1 (based on 1.3.0)
         if method == 'getcapabilities':
             return [
                 (
