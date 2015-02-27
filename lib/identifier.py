@@ -123,6 +123,14 @@ class Identify():
         '''
         return False
 
+    def _identify_if_metadata_service(self, protocol):
+        '''
+        TODO: sort out if this needs to be a named
+              response or just the boolean (prob a named
+              response to handle oai-pmh:dc situations)
+        '''
+        return False
+
     def _is_protocol_error(self, protocol):
         '''
         check to see if this is an error response for a protocol

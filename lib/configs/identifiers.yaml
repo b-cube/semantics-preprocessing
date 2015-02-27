@@ -26,6 +26,9 @@ protocols:
         - type: simple
           object: content
           value: 'http://schemas.opengis.net/ows'
+        - type: simple
+          object: content
+          value: 'http://www.opengis.net/cat/csw/'
     services: 
       - name: WMS
         filters:
@@ -48,6 +51,15 @@ protocols:
               - type: simple
                 object: content
                 value: '<GetCapabilities>'
+            - type: complex
+              operator: ands
+              filters:
+              - type: simple
+                object: content
+                value: 'http://www.opengis.net/wms'
+              - type: simple
+                object: content
+                value: 'name="GetCapabilities"'
       - name: WFS
         filters:
           ors:
@@ -69,6 +81,15 @@ protocols:
               - type: simple
                 object: content
                 value: '<GetCapabilities>'
+            - type: complex
+              operator: ands
+              filters:
+              - type: simple
+                object: content
+                value: 'http://www.opengis.net/wms'
+              - type: simple
+                object: content
+                value: 'name="GetCapabilities"'
       - name: WCS
         filters:
           ors:
@@ -90,6 +111,45 @@ protocols:
               - type: simple
                 object: content
                 value: '<GetCapabilities>'
+            - type: complex
+              operator: ands
+              filters:
+              - type: simple
+                object: content
+                value: 'http://www.opengis.net/wms'
+              - type: simple
+                object: content
+                value: 'name="GetCapabilities"'
+      - name: CSW
+        filters:
+          ors:
+            - type: complex
+              operator: ands
+              filters:
+              - type: simple
+                object: url
+                value: 'SERVICE=CSW'
+              - type: simple
+                object: url
+                value: 'REQUEST=GETCAPABILITIES'
+            - type: complex
+              operator: ands
+              filters:
+              - type: simple
+                object: content
+                value: 'http://www.opengis.net/cat/csw'
+              - type: simple
+                object: content
+                value: '<GetCapabilities>'
+            - type: complex
+              operator: ands
+              filters:
+              - type: simple
+                object: content
+                value: 'http://www.opengis.net/wms'
+              - type: simple
+                object: content
+                value: 'name="GetCapabilities"'
     versions: 
       checks:
         ors:
@@ -146,24 +206,25 @@ protocols:
           object: content
           value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
     services:
-      - name: Catalog
+      - name: THREDDS-Catalog
         filters: 
           ors:
             - type: simple
               object: content
               value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
     versions:
+      # unfortunately, order matters
+      checks:
+        ors: 
+          - type: xpath
+            object: content
+            value: '@version'
       defaults:
         ors:
           - type: simple
             object: content
             value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
             text: '1.0'
-      checks:
-        ors: 
-          - type: xpath
-            object: content
-            value: '@version'
   - name: www # this is a catchall so how to handle the filtering
     filters:
       ors:

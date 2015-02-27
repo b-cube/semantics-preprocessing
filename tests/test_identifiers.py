@@ -156,3 +156,28 @@ class TestVersionDefaults(unittest.TestCase):
 
         self.assertTrue(returned_version)
         self.assertTrue(expected_version == returned_version)
+
+
+class TestVersionCombined(unittest.TestCase):
+    def setUp(self):
+        yaml_file = 'tests/test_data/combined_version_identifier_test.yaml'
+
+        content = '''<catalog xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0 http://www.unidata.ucar.edu/schemas/thredds/InvCatalog.1.0.2.xsd" 
+    version="1.0.2" name="Actinic Flux measurements during OASIS Barrow field intensive Spring 2009"></catalog>'''
+        url = 'http://www.unidata.com/hyrax/thredds'
+
+        self.parser = Parser(content)
+
+        self.identifier = Identify(yaml_file, content, url)
+        self.identifier.identify()
+
+    def test_default_version(self):
+        expected_version = '1.0.2'
+
+        returned_version = self.identifier._identify_version('UNIDATA', self.parser)
+
+        self.assertTrue(returned_version)
+        self.assertTrue(expected_version == returned_version)
