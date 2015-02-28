@@ -1,7 +1,7 @@
 from lib.base_preprocessors import BaseReader
 
 
-class XmlPreprocessor(BaseReader):
+class XmlReader(BaseReader):
     '''
     a very basic processor for any valid xml
     response that is not identified (or not identified

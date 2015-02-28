@@ -2,6 +2,7 @@ import unittest
 from lib.preprocessors.thredds_preprocessors import ThreddsReader
 from lib.preprocessors.oaipmh_preprocessors import OaiPmhReader
 from lib.preprocessors.opensearch_preprocessors import OpenSearchReader
+from lib.preprocessors.xml_preprocessors import XmlReader
 
 
 class TestBaseReader(unittest.TestCase):
@@ -116,10 +117,23 @@ class TestOpenSearchReaderWithEndpoints(unittest.TestCase):
         self.assertTrue(params[6][4] == 'west, south, east, north')
 
 
+class TestXmlReader(unittest.TestCase):
+    def setUp(self):
+        with open('tests/test_data/random_bit_of_xml.xml', 'r') as f:
+            text = f.read()
+        text = text.replace('\\n', ' ')
+        self.reader = XmlReader(text)
+        self.reader._load_xml()
 
+    def test_return_service(self):
+        service = self.reader.parse_service()
 
+        fourth_tuple = ('/namma/report/smart_commit',
+               '{http://archipelago.phrasewise.com/rsd}rsd/{http://archipelago.phrasewise.com/rsd}service/{http://archipelago.phrasewise.com/rsd}homePageLink',
+               None)
 
+        self.assertTrue('remainder' in service)
+        self.assertTrue(len(service['remainder']) == 9)
+        self.assertTrue('service' not in service)
 
-
-
-
+        self.assertTrue(service['remainder'][3] == fourth_tuple)
