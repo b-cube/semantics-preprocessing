@@ -162,6 +162,12 @@ protocols:
           - type: simple
             object: content
             value: 'ServiceExceptionReport'
+          - type: simple
+            object: content
+            value: 'ExceptionReport'
+          - type: simple
+            object: content
+            value: 'http://schemas.opengis.net/ows/1.0.0/owsExceptionReport.xsd'
   - name: OpenSearch
     filters:
       ors:
@@ -266,6 +272,7 @@ protocols:
       checks:
         ors:
           - type: xpath
+            object: content
             value: '/{http://www.openarchives.org/OAI/2.0/}OAI-PMH/{http://www.openarchives.org/OAI/2.0/}Identify/{http://www.openarchives.org/OAI/2.0/}protocolVersion'  
 
 

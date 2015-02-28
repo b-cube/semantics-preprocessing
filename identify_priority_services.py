@@ -13,7 +13,7 @@ process against a local file store of solr responses
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-YAML_FILE = 'lib/configs/all_identifiers.yaml'
+YAML_FILE = 'lib/configs/identifiers.yaml'
 
 # responses = glob.glob('testdata/docs/response_60de9ec6341a2116ff4bb2739c307739.json')
 responses = glob.glob('testdata/docs/response_*.json')
@@ -22,7 +22,7 @@ responses = glob.glob('testdata/docs/response_*.json')
 #     digests = f.readlines()
 # responses = ['testdata/docs/response_%s.json' % d.strip() for d in digests]
 
-with open('all_identification.csv', 'w') as f:
+with open('priority_identification.csv', 'w') as f:
     f.write('digest|url|protocol|service|is dataset|version|is error\n')
 
 for response in responses:
@@ -47,10 +47,13 @@ for response in responses:
     identifier.identify()
     protocol = identifier.protocol
     service = identifier.service
-    is_dataset = identifier.service
-    version = identifier.is_dataset
+    is_dataset = identifier.is_dataset
+    version = identifier.version
     is_error = identifier.is_error
 
-    with open('all_identification.csv', 'a') as f:
+    # if not protocol:
+    #     continue
+
+    with open('priority_identification.csv', 'a') as f:
         f.write('|'.join([digest, url.replace(',', ';').replace('|', ';'), protocol, service,
                 str(is_dataset), str(version), str(is_error)]) + '\n')
