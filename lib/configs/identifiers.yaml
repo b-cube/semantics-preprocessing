@@ -1,278 +1,240 @@
-protocols:
-  - name: OGC
+- name: OpenSearch
+  subtype: service
+  filters:
+    - ors: 
+      - type: simple
+        object: content
+        value: 'xmlns="http://a9.com/-/spec/opensearch/1.1/"'
+  service_description:
+    - name: 'OpenSearchDescription'
+      filters: 
+        - ors:
+          - type: simple
+            object: content
+            value: 'OpenSearchDescription'
+  datasets:
+  metadatas:
+  errors:
     filters:
-      ors: 
-        # - type: complex
-        #   operator: ands
-        #   filters:
-        #     - type: simple
-        #       object: url
-        #       value: 'SERVICE=W[MFC]S'
-        #     - type: simple
-        #       object: content
-        #       value: 'http://mapserver.gis.umn.edu/mapserver'
+      - ors:
+          # these are based on the cwic best practices and may 
+          # not be in widespread use
         - type: simple
           object: content
-          value: 'http://www.opengis.net/ogc'
+          value: 'OpenSearch Exception'
         - type: simple
           object: content
-          value: 'http://www.opengis.net/wms'
+          value: 'REQUEST_EXCEPTION:'
+  versions:
+    defaults:
+      - ors:
         - type: simple
           object: content
-          value: 'http://www.opengis.net/wcs'
-        - type: simple
-          object: content
-          value: 'http://www.opengis.net/wfs'
-        - type: simple
-          object: content
-          value: 'http://schemas.opengis.net/ows'
-        - type: simple
-          object: content
-          value: 'http://www.opengis.net/cat/csw/'
-    services: 
-      - name: WMS
-        filters:
-          ors:
-            - type: complex
-              operator: ands
-              filters:
-              - type: simple
-                object: url
-                value: 'SERVICE=WMS'
-              - type: simple
-                object: url
-                value: 'REQUEST=GETCAPABILITIES'
-            - type: complex
-              operator: ands
-              filters:
-              - type: simple
-                object: content
-                value: 'http://www.opengis.net/wms'
-              - type: simple
-                object: content
-                value: '<GetCapabilities>'
-            - type: complex
-              operator: ands
-              filters:
-              - type: simple
-                object: content
-                value: 'http://www.opengis.net/wms'
-              - type: simple
-                object: content
-                value: 'name="GetCapabilities"'
-      - name: WFS
-        filters:
-          ors:
-            - type: complex
-              operator: ands
-              filters:
-              - type: simple
-                object: url
-                value: 'SERVICE=WFS'
-              - type: simple
-                object: url
-                value: 'REQUEST=GETCAPABILITIES'
-            - type: complex
-              operator: ands
-              filters:
-              - type: simple
-                object: content
-                value: 'http://www.opengis.net/wfs'
-              - type: simple
-                object: content
-                value: '<GetCapabilities>'
-            - type: complex
-              operator: ands
-              filters:
-              - type: simple
-                object: content
-                value: 'http://www.opengis.net/wms'
-              - type: simple
-                object: content
-                value: 'name="GetCapabilities"'
-      - name: WCS
-        filters:
-          ors:
-            - type: complex
-              operator: ands
-              filters:
-              - type: simple
-                object: url
-                value: 'SERVICE=WCS'
-              - type: simple
-                object: url
-                value: 'REQUEST=GETCAPABILITIES'
-            - type: complex
-              operator: ands
-              filters:
-              - type: simple
-                object: content
-                value: 'http://www.opengis.net/wcs'
-              - type: simple
-                object: content
-                value: '<GetCapabilities>'
-            - type: complex
-              operator: ands
-              filters:
-              - type: simple
-                object: content
-                value: 'http://www.opengis.net/wms'
-              - type: simple
-                object: content
-                value: 'name="GetCapabilities"'
-      - name: CSW
-        filters:
-          ors:
-            - type: complex
-              operator: ands
-              filters:
-              - type: simple
-                object: url
-                value: 'SERVICE=CSW'
-              - type: simple
-                object: url
-                value: 'REQUEST=GETCAPABILITIES'
-            - type: complex
-              operator: ands
-              filters:
-              - type: simple
-                object: content
-                value: 'http://www.opengis.net/cat/csw'
-              - type: simple
-                object: content
-                value: '<GetCapabilities>'
-            - type: complex
-              operator: ands
-              filters:
-              - type: simple
-                object: content
-                value: 'http://www.opengis.net/wms'
-              - type: simple
-                object: content
-                value: 'name="GetCapabilities"'
-    versions: 
-      checks:
-        ors:
-          - type: xpath
-            # fully qualified xpath which is lovely and short here
-            value: '@version'
-    errors:
+          value: 'http://a9.com/-/spec/opensearch/1.1/'
+          text: '1.1'
+- name: OGC:WMS
+  subtype: service
+  filters:
+    - ors:
+      - type: simple
+        object: content
+        value: 'http://www.opengis.net/ogc'
+      - type: simple
+        object: content
+        value: 'http://www.opengis.net/wms'
+  service_description:
+    - name: GetCapabilities
       filters:
-        ors:
-          - type: simple
-            object: content
-            value: 'ServiceExceptionReport'
-          - type: simple
-            object: content
-            value: 'ExceptionReport'
-          - type: simple
-            object: content
-            value: 'http://schemas.opengis.net/ows/1.0.0/owsExceptionReport.xsd'
-  - name: OpenSearch
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'xmlns="http://a9.com/-/spec/opensearch/1.1/"'
-    services: 
-      - name: 'OpenSearchDescription'
-        filters: 
-          ors:
+        - ors:
+          - type: complex
+            operator: ands
+            filters:
             - type: simple
-              object: content
-              value: 'OpenSearchDescription'
-    errors:
+              object: url
+              value: 'SERVICE=WMS'
+            - type: simple
+              object: url
+              value: 'REQUEST=GETCAPABILITIES'
+          - type: simple
+            object: content
+            value: '<GetCapabilities>'
+          - type: simple
+            object: content
+            value: 'name="GetCapabilities"'
+  datasets:
+  metadatas:
+  errors:
+  versions:
+- name: OGC:WFS
+  subtype: service
+  filters:
+  service_description:
+    - name: GetCapabilities
       filters:
-        ors:
-            # these are based on the cwic best practices and may 
-            # not be in widespread use
-          - type: simple
-            object: content
-            value: 'OpenSearch Exception'
-          - type: simple
-            object: content
-            value: 'REQUEST_EXCEPTION:'
-    versions:
-      defaults:
-        ors:
-          - type: simple
-            object: content
-            value: 'http://a9.com/-/spec/opensearch/1.1/'
-            text: '1.1'
-  - name: ISO-19115
-    filters:
-      ors:
-        - type: regex
-          object: content
-          value: 'xmlns=\"http://www.isotc211.org/2005/(gmi)|(gmd)'
-  - name: UNIDATA
-    filters: 
-      ors:
-        - type: simple
-          object: content
-          value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
-    services:
-      - name: THREDDS-Catalog
-        filters: 
-          ors:
+        - ors:
+          - type: complex
+            operator: ands
+            filters:
             - type: simple
-              object: content
-              value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
-    versions:
-      # unfortunately, order matters
-      checks:
-        ors: 
-          - type: xpath
+              object: url
+              value: 'SERVICE=WFS'
+            - type: simple
+              object: url
+              value: 'REQUEST=GETCAPABILITIES'
+          - type: simple
             object: content
-            value: '@version'
-      defaults:
-        ors:
+            value: '<GetCapabilities>'
+          - type: simple
+            object: content
+            value: 'name="GetCapabilities"'
+  datasets:
+  metadatas:
+  errors:
+  versions:
+- name: OGC:WCS
+  subtype: service
+  filters:
+  service_description:
+    - name: GetCapabilities
+      filters:
+        - ors:
+          - type: complex
+            operator: ands
+            filters:
+            - type: simple
+              object: url
+              value: 'SERVICE=WCS'
+            - type: simple
+              object: url
+              value: 'REQUEST=GETCAPABILITIES'
+          - type: simple
+            object: content
+            value: '<GetCapabilities>'
+          - type: simple
+            object: content
+            value: 'name="GetCapabilities"'
+  datasets:
+  metadatas:
+  errors:
+  versions:
+- name: OGC:CSW
+  subtype: service
+  filters:
+  service_description:
+    - name: GetCapabilities
+      filters:
+        - ors:
+          - type: complex
+            operator: ands
+            filters:
+            - type: simple
+              object: url
+              value: 'SERVICE=CSW'
+            - type: simple
+              object: url
+              value: 'REQUEST=GETCAPABILITIES'
+          - type: simple
+            object: content
+            value: '<GetCapabilities>'
+          - type: simple
+            object: content
+            value: 'name="GetCapabilities"'
+  datasets:
+  metadatas:
+  errors:
+  versions:
+- name: OAI-PMH
+  subtype: service
+  filters:
+    - ors:
+      - type: simple
+        object: content
+        value: 'http://www.openarchives.org/OAI/'
+  service_description:
+    - name: Identify
+      filters:
+        - ors:
+          - type: simple
+            object: url
+            value: 'VERB=IDENTIFY'
+          - type: simple
+            object: content
+            value: '<Identify>'
+  datasets:
+  metadatas:
+  errors:
+    filters:
+      - ors:
+        - type:  simple
+          object: content
+          # note that this should probably be an xpath search
+          # for the error element
+          value: '<error code="'
+  versions:
+    checks:
+      - ors:
+        - type: xpath
+          object: content
+          value: '/{http://www.openarchives.org/OAI/2.0/}OAI-PMH/{http://www.openarchives.org/OAI/2.0/}Identify/{http://www.openarchives.org/OAI/2.0/}protocolVersion'  
+
+- name: UNIDATA
+  subtype: service
+  filters:
+    - ors:
+      - type: simple
+        object: content
+        value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
+  service_description:
+    - name: THREDDS-Catalog
+      filters: 
+        - ors:
           - type: simple
             object: content
             value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
-            text: '1.0'
-  - name: www # this is a catchall so how to handle the filtering
-    filters:
-      ors:
+  datasets:
+  metadatas:
+  errors:
+  versions:
+    checks:
+      - ors: 
+        - type: xpath
+          object: content
+          value: '@version'
+    defaults:
+      - ors:
         - type: simple
           object: content
-          value: 'http://wadl.dev.java.net'
-    services:
-      - name: WADL
-        filters:
-          ors:
-            - type: simple
-              object: content
-              value: 'http://wadl.dev.java.net'
-  - name: OAI-PMH 
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://www.openarchives.org/OAI/'
-    services:
-      - name: Identify
-        filters:
-          ors:
-            - type: simple
-              object: url
-              value: 'VERB=IDENTIFY'
-            - type: simple
-              object: content
-              value: '<Identify>'
-    errors:
+          value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
+          text: '1.0'
+- name: WADL
+  subtype: service
+  filters:
+    - ors:
+      - type: simple
+        object: content
+        value: 'http://wadl.dev.java.net'
+  service_description:
+    - name: WADL
       filters:
-        ors:
-          - type:  simple
+        - ors:
+          - type: simple
             object: content
-            # note that this should probably be an xpath search
-            # for the error element
-            value: '<error code="'
-    versions:
-      checks:
-        ors:
-          - type: xpath
-            object: content
-            value: '/{http://www.openarchives.org/OAI/2.0/}OAI-PMH/{http://www.openarchives.org/OAI/2.0/}Identify/{http://www.openarchives.org/OAI/2.0/}protocolVersion'  
+            value: 'http://wadl.dev.java.net'
+  datasets:
+  metadatas:
+  errors:
+  versions:
 
+- name: ISO-19115
+  subtype: metadata
+  filters:
+    - ors:
+      - type: regex
+        object: content
+        value: 'xmlns=\"http://www.isotc211.org/2005/(gmi)|(gmd)'
+  service_description:  
+  datasets:
+  metadatas:
+  errors:
+  versions:
 
