@@ -83,6 +83,7 @@ class IsoReader(BaseReader):
         "{http://www.isotc211.org/2005/gmd}MD_Distribution/" +
         "{http://www.isotc211.org/2005/gmd}distributor/" +
         "{http://www.isotc211.org/2005/gmd}MD_Distributor/" +
+        "{http://www.isotc211.org/2005/gmd}distributorTransferOptions/" +
         "{http://www.isotc211.org/2005/gmd}MD_DigitalTransferOptions/" +
         "{http://www.isotc211.org/2005/gmd}onLine"
     ]

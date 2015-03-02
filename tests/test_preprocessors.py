@@ -156,3 +156,10 @@ class TestIsoReader(unittest.TestCase):
         self.assertTrue('Massachusetts Bay' in descriptors['subject'])
         self.assertTrue(len(descriptors['subject']) == 15)
         self.assertTrue(descriptors['language'] == 'eng')
+
+    def test_parse_endpoints(self):
+        endpoints = self.reader.parse_endpoints()
+
+        self.assertTrue(len(endpoints) == 4)
+        self.assertTrue(endpoints[2]['type'] == 'download')
+        self.assertTrue(endpoints[1]['url'] == 'http://surveys.ngdc.noaa.gov/mgg/NOS/coast/H08001-H10000/H08413/Smooth_Sheets/H08413.tif.gz')
