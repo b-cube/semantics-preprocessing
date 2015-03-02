@@ -3,6 +3,7 @@ from lib.preprocessors.thredds_preprocessors import ThreddsReader
 from lib.preprocessors.oaipmh_preprocessors import OaiPmhReader
 from lib.preprocessors.opensearch_preprocessors import OpenSearchReader
 from lib.preprocessors.xml_preprocessors import XmlReader
+from lib.preprocessors.iso_preprocessors import IsoReader
 
 
 class TestBaseReader(unittest.TestCase):
@@ -137,3 +138,21 @@ class TestXmlReader(unittest.TestCase):
         self.assertTrue('service' not in service)
 
         self.assertTrue(service['remainder'][3] == fourth_tuple)
+
+
+class TestIsoReader(unittest.TestCase):
+    def setUp(self):
+        with open('tests/test_data/iso-19115_mi.xml', 'r') as f:
+            text = f.read()
+        text = text.replace('\\n', ' ')
+        self.reader = IsoReader(text)
+        self.reader._load_xml()
+
+    def test_return_descriptors(self):
+        descriptors = self.reader.return_service_descriptors()
+
+        self.assertTrue('Survey, Massachusetts Bay, Massachusetts,' in descriptors['title'])
+        self.assertTrue('version' not in descriptors)
+        self.assertTrue('Massachusetts Bay' in descriptors['subject'])
+        self.assertTrue(len(descriptors['subject']) == 15)
+        self.assertTrue(descriptors['language'] == 'eng')
