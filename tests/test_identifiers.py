@@ -16,16 +16,18 @@ class TestBasicIdentifiers(unittest.TestCase):
         self.identifier.identify()
 
     def test_load_yaml(self):
-        self.assertTrue(self.identifier.yaml['protocols'][0]['name'] == 'OpenSearch')
-        self.assertTrue(self.identifier.protocols)
+        self.assertTrue(self.identifier.yaml)
+        self.assertTrue(len(self.identifier.yaml) == 1)
+        self.assertTrue(self.identifier.yaml[0]['name'] == 'OpenSearch')
 
-        names = [p['name'] for p in self.identifier.protocols]
+        names = [p['name'] for p in self.identifier.yaml]
         self.assertTrue(len(names) == 1)
 
     def test_identify_protocol(self):
         expected_protocol = 'OpenSearch'
-        returned_protocol = self.identifier._identify_protocol()
+        returned_protocol, returned_subtype = self.identifier._identify_protocol()
         self.assertTrue(expected_protocol == returned_protocol)
+        self.assertTrue('service' == returned_subtype)
 
     def test_identify_service_from_protocol(self):
         expected_service = 'OpenSearchDescription'
@@ -51,29 +53,29 @@ class TestComplexIdentifiers(unittest.TestCase):
         self.identifier.identify()
 
     def test_load_yaml(self):
-        self.assertTrue(self.identifier.yaml['protocols'][0]['name'] == 'OGC')
+        self.assertTrue(self.identifier.yaml[2]['name'] == 'OGC:WMS')
 
-        names = [p['name'] for p in self.identifier.protocols]
-        self.assertTrue(len(names) == 2)
+        names = [p['name'] for p in self.identifier.yaml]
+        self.assertTrue(len(names) == 6)
 
-        ogc_protocol = self.identifier.yaml['protocols'][0]
-        self.assertTrue('services' in ogc_protocol)
-        self.assertTrue(len(ogc_protocol['services']) == 3)
+        ogc_protocol = self.identifier.yaml[0]
+        self.assertTrue('service_description' in ogc_protocol)
+        self.assertTrue(len(ogc_protocol['service_description']) == 1)
 
     def test_identify_protocol(self):
-        expected_protocol = 'OGC'
-        returned_protocol = self.identifier._identify_protocol()
+        expected_protocol = 'OGC:WMS'
+        returned_protocol, returned_subtype = self.identifier._identify_protocol()
         self.assertTrue(expected_protocol == returned_protocol)
 
     def test_identify_service_from_protocol(self):
-        expected_service = 'WMS'
-        returned_service = self.identifier._identify_service_of_protocol('OGC')
+        expected_service = 'GetCapabilities'
+        returned_service = self.identifier._identify_service_of_protocol('OGC:WMS')
 
         self.assertTrue(returned_service)
         self.assertTrue(expected_service == returned_service)
 
     def test_is_error(self):
-        returned_error = self.identifier._is_protocol_error('OGC')
+        returned_error = self.identifier._is_protocol_error('OGC:WMS')
         self.assertFalse(returned_error)
 
     def test_identify(self):
@@ -82,13 +84,13 @@ class TestComplexIdentifiers(unittest.TestCase):
         self.identifier.identify()
 
         self.assertFalse(self.identifier.is_error)
-        self.assertTrue(self.identifier.protocol == 'OGC')
-        self.assertTrue(self.identifier.service == 'WMS')
+        self.assertTrue(self.identifier.protocol == 'OGC:WMS')
+        self.assertTrue(self.identifier.service == 'GetCapabilities')
         self.assertTrue(self.identifier.version)
         self.assertTrue(self.identifier.version == '1.3.0')
 
     def test_generate_urn(self):
-        expected_urn = 'urn:OGC:WMS:1.3.0'
+        expected_urn = 'urn:OGC:WMS:GetCapabilities:1.3.0'
         self.identifier.identify()
 
         urn = self.identifier.generate_urn()
@@ -108,7 +110,7 @@ class TestExceptionIdentification(unittest.TestCase):
         self.identifier.identify()
 
     def test_is_error(self):
-        returned_error = self.identifier._is_protocol_error('OGC')
+        returned_error = self.identifier._is_protocol_error('OGC:error')
         self.assertTrue(returned_error)
 
 
@@ -129,12 +131,12 @@ class TestVersionExtraction(unittest.TestCase):
     def test_identify_version(self):
         expected_version = '1.3.0'
 
-        returned_version = self.identifier._identify_version('OGC', self.parser)
+        returned_version = self.identifier._identify_version('OGC:WMS', self.parser)
 
         self.assertTrue(expected_version == returned_version)
 
     def test_no_parser(self):
-        returned_version = self.identifier._identify_version('OGC', None)
+        returned_version = self.identifier._identify_version('OGC:WMS', None)
         self.assertTrue(not returned_version)
 
 

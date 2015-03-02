@@ -88,25 +88,25 @@ class Identify():
         return sums
 
     def _identify_protocol(self):
-        for protocol in self.protocols:
+        for protocol in self.yaml:
             protocol_filters = protocol['filters']
 
             for k, v in protocol_filters.iteritems():
                 is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
                 if is_match:
-                    return protocol['name']
+                    return protocol['name'], protocol['subtype']
 
-        return ''
+        return '', ''
 
     def _identify_service_of_protocol(self, protocol):
-        protocol_data = next(p for p in self.protocols if p['name'] == protocol)
+        protocol_data = next(p for p in self.yaml if p['name'] == protocol)
         if not protocol_data:
             return ''
 
-        if 'services' not in protocol_data:
+        if 'service_description' not in protocol_data:
             return ''
 
-        for service in protocol_data['services']:
+        for service in protocol_data['service_description']:
             for k, v in service['filters'].iteritems():
                 is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
                 if is_match:
@@ -114,7 +114,20 @@ class Identify():
 
         return ''
 
-    def _identify_if_dataset_service(self, protocol):
+    def _identify_within(self, protocol, subtype='dataset'):
+        '''
+        for a service, identify if the response contains
+        a subtype (dataset, metadata, viz) structure
+
+        ex: ogc:wfs contains dataset information at the feature
+            level
+        ex: oai-pmh contains metadata information as dc.
+
+        return identifier for subtype if found
+        '''
+        pass
+
+    def _identify_dataset_service(self, protocol):
         '''
         TODO: sort out if this needs to be a named
               response or just the boolean
@@ -123,7 +136,7 @@ class Identify():
         '''
         return False
 
-    def _identify_if_metadata_service(self, protocol):
+    def _identify_metadata_service(self, protocol):
         '''
         TODO: sort out if this needs to be a named
               response or just the boolean (prob a named
@@ -135,12 +148,14 @@ class Identify():
         '''
         check to see if this is an error response for a protocol
         '''
-        protocol_data = next(p for p in self.protocols if p['name'] == protocol)
+        protocol_data = next(p for p in self.yaml if p['name'] == protocol)
         if not protocol_data:
             return False
 
         if 'errors' not in protocol_data:
             # we don't know how to determine error here
+            return False
+        if not protocol_data['errors']:
             return False
 
         filters = protocol_data['errors']['filters']
@@ -159,7 +174,7 @@ class Identify():
         and not using the _filter method - we need to return
         the value from the source, not just an existence flag
         '''
-        protocol_data = next(p for p in self.protocols if p['name'] == protocol)
+        protocol_data = next(p for p in self.yaml if p['name'] == protocol)
         if not protocol_data:
             return ''
 
@@ -234,10 +249,8 @@ class Identify():
         '''
         execute all of the identification options
         '''
-        self.protocols = self.yaml['protocols']
-
         # determine the protocol
-        protocol = self._identify_protocol()
+        protocol, subtype = self._identify_protocol()
 
         self.protocol = protocol
         self.service = ''
@@ -260,7 +273,7 @@ class Identify():
             return
 
         # determine if it contains dataset-level info
-        self.is_dataset = self._identify_if_dataset_service(protocol)
+        self.is_dataset = self._identify_dataset_service(protocol)
 
         # extract the version
         parser = self.options.get('parser', None)

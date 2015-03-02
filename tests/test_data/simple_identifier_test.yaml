@@ -1,21 +1,34 @@
-protocols:
-  - name: OpenSearch
+- name: OpenSearch
+  subtype: service
+  filters:
+    ors: 
+      - type: simple
+        object: content
+        value: 'xmlns="http://a9.com/-/spec/opensearch/1.1/"'
+  service_description:
+    - name: 'OpenSearchDescription'
+      filters: 
+        ors:
+          - type: simple
+            object: content
+            value: 'OpenSearchDescription'
+  datasets:
+  metadatas:
+  errors:
     filters:
+      ors:
+          # these are based on the cwic best practices and may 
+          # not be in widespread use
+        - type: simple
+          object: content
+          value: 'OpenSearch Exception'
+        - type: simple
+          object: content
+          value: 'REQUEST_EXCEPTION:'
+  versions:
+    defaults:
       ors:
         - type: simple
           object: content
           value: 'http://a9.com/-/spec/opensearch/1.1/'
-    services: 
-      - name: 'OpenSearchDescription'
-        filters: 
-          ors:
-            - type: simple
-              object: content
-              value: 'OpenSearchDescription'
-    versions:
-      defaults:
-        ors:
-          - type: simple
-            object: content
-            value: 'http://a9.com/-/spec/opensearch/1.1/'
-            text: '1.1'
+          text: '1.1'

@@ -1,79 +1,184 @@
-protocols:
-  - name: OGC
-    filters:
-      ors: 
-        - type: complex
-          operator: ands
-          filters:
-            - type: regex
-              object: content
-              value: '(http:\/\/www\.opengis\.net\/[o|w]][a-z]s)*'
-            - type: regex
-              object: url
-              value: '(SERVICE=W[a-z]S)*'
-        - type: complex
-          operator: ands
-          filters:
-            - type: regex
-              object: url
-              value: '(SERVICE=W[a-z]S)*'
-            - type: simple
-              object: content
-              value: 'http://mapserver.gis.umn.edu/mapserver'
-        - type: simple
-          object: content
-          # for the exception response
-          value: 'http://www.opengis.net/ogc'
-    services: 
-      - name: WMS
-        filters:
-          ands:
-            - type: simple
-              object: url
-              value: 'SERVICE=WMS'
-            - type: simple
-              object: url
-              value: 'REQUEST=GETCAPABILITIES'
-      - name: WFS
-        filters:
-          ands:
-            - type: simple
-              object: url
-              value: 'SERVICE=WFS'
-            - type: simple
-              object: url
-              value: 'REQUEST=GETCAPABILITIES'
-      - name: WCS
-        filters:
-          ands:
-            - type: simple
-              object: url
-              value: 'SERVICE=WCS'
-            - type: simple
-              object: url
-              value: 'REQUEST=GETCAPABILITIES'
-    versions: 
-      checks:
-        ors:
-          - type: xpath
-            # fully qualified xpath which is lovely and short here
-            value: '@version'
-    errors:
-      filters:
+- name: OpenSearch
+  subtype: service
+  filters:
+    ors: 
+      - type: simple
+        object: content
+        value: 'xmlns="http://a9.com/-/spec/opensearch/1.1/"'
+  service_description:
+    - name: 'OpenSearchDescription'
+      filters: 
         ors:
           - type: simple
             object: content
-            value: 'ServiceExceptionReport'
-  - name: OpenSearch
+            value: 'OpenSearchDescription'
+  datasets:
+  metadatas:
+  errors:
     filters:
+      ors:
+          # these are based on the cwic best practices and may 
+          # not be in widespread use
+        - type: simple
+          object: content
+          value: 'OpenSearch Exception'
+        - type: simple
+          object: content
+          value: 'REQUEST_EXCEPTION:'
+  versions:
+    defaults:
       ors:
         - type: simple
           object: content
           value: 'http://a9.com/-/spec/opensearch/1.1/'
-    services: 
-      - name: 'OpenSearchDescription'
-        filters: 
-          ors:
-            - type: simple
-              object: content
-              value: 'OpenSearchDescription'
+          text: '1.1'
+- name: OGC:error
+  subtype: service
+  filters:
+    # a variety of error options based on versions
+    ors: 
+      - type: simple
+        object: content
+        value: 'http://www.opengis.net/ogc'
+      - type: simple
+        object: content
+        value: 'ServiceExceptionReport'
+      - type: simple
+        object: content
+        value: 'ExceptionReport'
+      - type: simple
+        object: content
+        value: 'http://schemas.opengis.net/ows/1.0.0/owsExceptionReport.xsd'
+  errors:
+    filters:
+      ors:
+        # and this is ridiculous
+        - type: simple
+          object: content
+          value: 'ServiceExceptionReport'
+        - type: simple
+          object: content
+          value: 'ExceptionReport'
+        - type: simple
+          object: content
+          value: 'http://schemas.opengis.net/ows/1.0.0/owsExceptionReport.xsd'        
+  versions:
+    checks:
+      ors:
+        - type: xpath
+          # fully qualified xpath which is lovely and short here
+          value: '@version'
+- name: OGC:WMS
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.opengis.net/wms'
+  service_description:
+    - name: GetCapabilities
+      filters:
+        ors:
+            # we are assuming that we are starting with a 
+            # correctly identified wxs response
+          - type: simple
+            object: url
+            value: 'REQUEST=GETCAPABILITIES'
+          - type: simple
+            object: content
+            value: '<GetCapabilities>'
+          - type: simple
+            object: content
+            value: 'name="GetCapabilities"'
+  datasets:
+  metadatas:
+  versions:
+    checks:
+      ors:
+        - type: xpath
+          # fully qualified xpath which is lovely and short here
+          value: '@version'
+- name: OGC:WFS
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.opengis.net/wfs'
+  service_description:
+    - name: GetCapabilities
+      filters:
+        ors:
+          - type: simple
+            object: url
+            value: 'REQUEST=GETCAPABILITIES'
+          - type: simple
+            object: content
+            value: '<GetCapabilities>'
+          - type: simple
+            object: content
+            value: 'name="GetCapabilities"'
+  datasets:
+  metadatas:
+  versions:
+    checks:
+      ors:
+        - type: xpath
+          # fully qualified xpath which is lovely and short here
+          value: '@version'
+- name: OGC:WCS
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.opengis.net/wfs'
+  service_description:
+    - name: GetCapabilities
+      filters:
+        ors:
+          - type: simple
+            object: url
+            value: 'REQUEST=GETCAPABILITIES'
+          - type: simple
+            object: content
+            value: '<GetCapabilities>'
+          - type: simple
+            object: content
+            value: 'name="GetCapabilities"'
+  datasets:
+  metadatas:
+  versions:
+    checks:
+      ors:
+        - type: xpath
+          # fully qualified xpath which is lovely and short here
+          value: '@version'
+- name: OGC:CSW
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.opengis.net/cat/csw'
+  service_description:
+    - name: GetCapabilities
+      filters:
+        ors:
+          - type: simple
+            object: url
+            value: 'REQUEST=GETCAPABILITIES'
+          - type: simple
+            object: content
+            value: '<GetCapabilities>'
+          - type: simple
+            object: content
+            value: 'name="GetCapabilities"'
+  datasets:
+  metadatas:
+  versions:
+    checks:
+      ors:
+        - type: xpath
+          # fully qualified xpath which is lovely and short here
+          value: '@version'
