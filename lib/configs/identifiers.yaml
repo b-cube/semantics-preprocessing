@@ -106,7 +106,23 @@
             object: content
             value: 'name="GetCapabilities"'
   datasets:
+    - name: GetFeature
+      filters:
+        ands:
+          - type: simple
+            object: content
+            value: '<ows:Operation name="GetFeature">'
+          - type: simple
+            object: content
+            value: '<FeatureTypeList>'
   metadatas:
+    # contains a link to a metadata url (we don't care 
+    # about parentage at this point)
+    filters:
+      ors:
+        - type: xpath
+          value: '/*/{http://www.opengis.net/wfs}FeatureTypeList/{http://www.opengis.net/wfs}FeatureType/{http://www.opengis.net/wfs}MetadataURL'
+
   versions:
     checks:
       ors:

@@ -57,6 +57,18 @@ class Identify():
                 filter_object = self.source_content if f['object'] == 'content' else self.source_url
                 filter_value = f['value']
                 clauses.append(len(re.findall(filter_value, filter_object)) > 0)
+            elif filter_type == 'xpath':
+                # if the filter is xpath, we can only run against
+                # the provided xml (parser) and ONLY evaluate for existence
+                # ie the xpath returned some element, list, text value
+                # but we don't care what it returned
+                parser = self.options.get('parser', None)
+                xpath = f['value']
+                if not parser:
+                    # nothing to find, this is an incorrect filter
+                    clauses.append(False)
+
+                clauses.append(parser.find(xpath) is not None)
 
         return {operator: clauses}
 
@@ -99,14 +111,10 @@ class Identify():
         return '', ''
 
     def _identify_service_of_protocol(self, protocol):
-        protocol_data = next(p for p in self.yaml if p['name'] == protocol)
-        if not protocol_data:
+        if 'service_description' not in protocol:
             return ''
 
-        if 'service_description' not in protocol_data:
-            return ''
-
-        for service in protocol_data['service_description']:
+        for service in protocol['service_description']:
             for k, v in service['filters'].iteritems():
                 is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
                 if is_match:
@@ -134,6 +142,17 @@ class Identify():
 
         this will depend on the service type and version
         '''
+        if 'datasets' not in protocol:
+            return False
+        if not protocol['datasets']:
+            return False
+
+        for option in protocol['datasets']:
+            for k, v in option['filters'].iteritems():
+                is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
+                if is_match:
+                    return True
+
         return False
 
     def _identify_metadata_service(self, protocol):
@@ -142,23 +161,29 @@ class Identify():
               response or just the boolean (prob a named
               response to handle oai-pmh:dc situations)
         '''
+        if 'metadatas' not in protocol:
+            return False
+        if not protocol['metadatas']:
+            return False
+
+        for k, v in protocol['metadatas']['filters'].iteritems():
+            is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
+            if is_match:
+                return True
+
         return False
 
     def _is_protocol_error(self, protocol):
         '''
         check to see if this is an error response for a protocol
         '''
-        protocol_data = next(p for p in self.yaml if p['name'] == protocol)
-        if not protocol_data:
-            return False
-
-        if 'errors' not in protocol_data:
+        if 'errors' not in protocol:
             # we don't know how to determine error here
             return False
-        if not protocol_data['errors']:
+        if not protocol['errors']:
             return False
 
-        filters = protocol_data['errors']['filters']
+        filters = protocol['errors']['filters']
         for k, v in filters.iteritems():
             is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
             if is_match:
@@ -174,14 +199,10 @@ class Identify():
         and not using the _filter method - we need to return
         the value from the source, not just an existence flag
         '''
-        protocol_data = next(p for p in self.yaml if p['name'] == protocol)
-        if not protocol_data:
+        if 'versions' not in protocol:
             return ''
 
-        if 'versions' not in protocol_data:
-            return ''
-
-        versions = protocol_data['versions']
+        versions = protocol['versions']
 
         def _process_type(f):
             if f['type'] == 'simple':
@@ -261,20 +282,24 @@ class Identify():
         if not protocol:
             return
 
+        protocol_data = next(p for p in self.yaml if p['name'] == protocol)
+        if not protocol_data:
+            return
+
         # and if it's a service description (and which)
-        self.service = self._identify_service_of_protocol(protocol)
+        self.service = self._identify_service_of_protocol(protocol_data)
         if not self.service:
             return
 
         # make sure it's not an error response (we still
         #    like knowing which service)
-        self.is_error = self._is_protocol_error(protocol)
+        self.is_error = self._is_protocol_error(protocol_data)
         if self.is_error:
             return
 
         # determine if it contains dataset-level info
-        self.is_dataset = self._identify_dataset_service(protocol)
+        self.is_dataset = self._identify_dataset_service(protocol_data)
 
         # extract the version
         parser = self.options.get('parser', None)
-        self.version = self._identify_version(protocol, parser)
+        self.version = self._identify_version(protocol_data, parser)

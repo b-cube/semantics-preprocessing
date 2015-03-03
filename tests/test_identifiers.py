@@ -31,7 +31,8 @@ class TestBasicIdentifiers(unittest.TestCase):
 
     def test_identify_service_from_protocol(self):
         expected_service = 'OpenSearchDescription'
-        returned_service = self.identifier._identify_service_of_protocol('OpenSearch')
+        protocol_data = next(p for p in self.identifier.yaml if p['name'] == 'OpenSearch')
+        returned_service = self.identifier._identify_service_of_protocol(protocol_data)
 
         self.assertTrue(returned_service)
         self.assertTrue(expected_service == returned_service)
@@ -69,13 +70,15 @@ class TestComplexIdentifiers(unittest.TestCase):
 
     def test_identify_service_from_protocol(self):
         expected_service = 'GetCapabilities'
-        returned_service = self.identifier._identify_service_of_protocol('OGC:WMS')
+        protocol_data = next(p for p in self.identifier.yaml if p['name'] == 'OGC:WMS')
+        returned_service = self.identifier._identify_service_of_protocol(protocol_data)
 
         self.assertTrue(returned_service)
         self.assertTrue(expected_service == returned_service)
 
     def test_is_error(self):
-        returned_error = self.identifier._is_protocol_error('OGC:WMS')
+        protocol_data = next(p for p in self.identifier.yaml if p['name'] == 'OGC:WMS')
+        returned_error = self.identifier._is_protocol_error(protocol_data)
         self.assertFalse(returned_error)
 
     def test_identify(self):
@@ -110,7 +113,8 @@ class TestExceptionIdentification(unittest.TestCase):
         self.identifier.identify()
 
     def test_is_error(self):
-        returned_error = self.identifier._is_protocol_error('OGC:error')
+        protocol_data = next(p for p in self.identifier.yaml if p['name'] == 'OGC:error')
+        returned_error = self.identifier._is_protocol_error(protocol_data)
         self.assertTrue(returned_error)
 
 
@@ -131,12 +135,14 @@ class TestVersionExtraction(unittest.TestCase):
     def test_identify_version(self):
         expected_version = '1.3.0'
 
-        returned_version = self.identifier._identify_version('OGC:WMS', self.parser)
+        protocol_data = next(p for p in self.identifier.yaml if p['name'] == 'OGC:WMS')
+        returned_version = self.identifier._identify_version(protocol_data, self.parser)
 
         self.assertTrue(expected_version == returned_version)
 
     def test_no_parser(self):
-        returned_version = self.identifier._identify_version('OGC:WMS', None)
+        protocol_data = next(p for p in self.identifier.yaml if p['name'] == 'OGC:WMS')
+        returned_version = self.identifier._identify_version(protocol_data, None)
         self.assertTrue(not returned_version)
 
 
@@ -154,7 +160,9 @@ class TestVersionDefaults(unittest.TestCase):
     def test_default_version(self):
         expected_version = '1.1'
 
-        returned_version = self.identifier._identify_version('OpenSearch', None)
+        protocol_data = next(p for p in self.identifier.yaml if p['name'] == 'OpenSearch')
+
+        returned_version = self.identifier._identify_version(protocol_data, None)
 
         self.assertTrue(returned_version)
         self.assertTrue(expected_version == returned_version)
@@ -179,7 +187,63 @@ class TestVersionCombined(unittest.TestCase):
     def test_default_version(self):
         expected_version = '1.0.2'
 
-        returned_version = self.identifier._identify_version('UNIDATA', self.parser)
+        protocol_data = next(p for p in self.identifier.yaml if p['name'] == 'UNIDATA')
+
+        returned_version = self.identifier._identify_version(protocol_data, self.parser)
 
         self.assertTrue(returned_version)
         self.assertTrue(expected_version == returned_version)
+
+
+class TestWfsIdentification(unittest.TestCase):
+    def setUp(self):
+        yaml_file = 'tests/test_data/complex_identifier_test.yaml'
+
+        with open('tests/test_data/wfs_v1_1_0.xml', 'r') as f:
+            content = f.read()
+        url = 'http://www.mapserver.com/cgi?SERVICE=WFS&VERSION=1.1.0&REQUEST=GETCAPABILITIES'
+
+        content = content.replace('\\n', '')
+        parser = Parser(content)
+
+        self.identifier = Identify(yaml_file, content, url, **{'parser': parser})
+        # self.identifier.identify()
+
+    def test_identify_dataset(self):
+        protocol_data = next(p for p in self.identifier.yaml if p['name'] == 'OGC:WFS')
+        has_dataset = self.identifier._identify_dataset_service(protocol_data)
+
+        self.assertTrue(has_dataset)
+
+    def test_identify_metadata(self):
+        protocol_data = next(p for p in self.identifier.yaml if p['name'] == 'OGC:WFS')
+        has_metadata = self.identifier._identify_metadata_service(protocol_data)
+
+        self.assertTrue(has_metadata)
+
+
+class TestWmsIdentification(unittest.TestCase):
+    def setUp(self):
+        yaml_file = 'tests/test_data/complex_identifier_test.yaml'
+
+        with open('tests/test_data/esri_wms_35bd4e2ce8cd13e8697b03976ffe1ee6.txt', 'r') as f:
+            content = f.read()
+        url = 'http://www.mapserver.com/cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GETCAPABILITIES'
+
+        content = content.replace('\\n', '')
+        parser = Parser(content)
+
+        self.identifier = Identify(yaml_file, content, url, **{'parser': parser})
+        # self.identifier.identify()
+
+    def test_identify_dataset(self):
+        protocol_data = next(p for p in self.identifier.yaml if p['name'] == 'OGC:WMS')
+        has_dataset = self.identifier._identify_dataset_service(protocol_data)
+
+        self.assertFalse(has_dataset)
+
+    def test_identify_metadata(self):
+        protocol_data = next(p for p in self.identifier.yaml if p['name'] == 'OGC:WMS')
+        has_metadata = self.identifier._identify_metadata_service(protocol_data)
+
+        self.assertFalse(has_metadata)
