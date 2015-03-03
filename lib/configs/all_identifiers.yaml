@@ -1,454 +1,665 @@
-protocols:
-  - name: OGC
-    filters:
-      ors: 
-        # - type: complex
-        #   operator: ands
-        #   filters:
-        #     - type: simple
-        #       object: url
-        #       value: 'SERVICE=W[MFC]S'
-        #     - type: simple
-        #       object: content
-        #       value: 'http://mapserver.gis.umn.edu/mapserver'
-        - type: simple
-          object: content
-          value: 'http://www.opengis.net/ogc'
-        - type: simple
-          object: content
-          value: 'http://www.opengis.net/wms'
-        - type: simple
-          object: content
-          value: 'http://www.opengis.net/wcs'
-        - type: simple
-          object: content
-          value: 'http://www.opengis.net/wfs'
-        - type: simple
-          object: content
-          value: 'http://schemas.opengis.net/ows'
-        - type: simple
-          object: content
-          value: 'hhttp://www.opengis.net/swe'
-    services: 
-      - name: WMS
-        filters:
-          ors:
-            - type: complex
-              operator: ands
-              filters:
-              - type: simple
-                object: url
-                value: 'SERVICE=WMS'
-              - type: simple
-                object: url
-                value: 'REQUEST=GETCAPABILITIES'
-            - type: complex
-              operator: ands
-              filters:
-              - type: simple
-                object: content
-                value: 'http://www.opengis.net/wms'
-              - type: simple
-                object: content
-                value: '<GetCapabilities>'
-      - name: WFS
-        filters:
-          ors:
-            - type: complex
-              operator: ands
-              filters:
-              - type: simple
-                object: url
-                value: 'SERVICE=WFS'
-              - type: simple
-                object: url
-                value: 'REQUEST=GETCAPABILITIES'
-            - type: complex
-              operator: ands
-              filters:
-              - type: simple
-                object: content
-                value: 'http://www.opengis.net/wfs'
-              - type: simple
-                object: content
-                value: '<GetCapabilities>'
-      - name: WCS
-        filters:
-          ors:
-            - type: complex
-              operator: ands
-              filters:
-              - type: simple
-                object: url
-                value: 'SERVICE=WCS'
-              - type: simple
-                object: url
-                value: 'REQUEST=GETCAPABILITIES'
-            - type: complex
-              operator: ands
-              filters:
-              - type: simple
-                object: content
-                value: 'http://www.opengis.net/wcs'
-              - type: simple
-                object: content
-                value: '<GetCapabilities>'
-      - name: SWE
-        filters:
-          ors:
-            - type: complex
-              operator: ands
-              filters:
-              - type: simple
-                object: url
-                value: 'SERVICE=SWE'
-              - type: simple
-                object: url
-                value: 'REQUEST=GETCAPABILITIES'
-            - type: complex
-              operator: ands
-              filters:
-              - type: simple
-                object: content
-                value: 'http://www.opengis.net/swe'
-              - type: simple
-                object: content
-                value: '<GetCapabilities>'
-    versions: 
-      checks:
-        ors:
-          - type: xpath
-            # fully qualified xpath which is lovely and short here
-            value: '@version'
-    errors:
-      filters:
+- name: OpenSearch
+  subtype: service
+  filters:
+    ors: 
+      - type: simple
+        object: content
+        value: 'xmlns="http://a9.com/-/spec/opensearch/1.1/"'
+  service_description:
+    - name: 'OpenSearchDescription'
+      filters: 
         ors:
           - type: simple
             object: content
-            value: 'ServiceExceptionReport'
-  - name: OpenSearch
+            value: 'OpenSearchDescription'
+  datasets:
+  metadatas:
+  errors:
     filters:
+      ors:
+          # these are based on the cwic best practices and may 
+          # not be in widespread use
+        - type: simple
+          object: content
+          value: 'OpenSearch Exception'
+        - type: simple
+          object: content
+          value: 'REQUEST_EXCEPTION:'
+  versions:
+    defaults:
       ors:
         - type: simple
           object: content
           value: 'http://a9.com/-/spec/opensearch/1.1/'
-    services: 
-      - name: 'OpenSearchDescription'
-        filters: 
-          ors:
-            - type: simple
-              object: content
-              value: 'OpenSearchDescription'
-    errors:
+          text: '1.1'
+- name: OGC:error
+  subtype: service
+  filters:
+      # a variety of error options based on versions
+    ors: 
+      - type: simple
+        object: content
+        value: 'http://www.opengis.net/ogc'
+      - type: simple
+        object: content
+        value: 'ServiceExceptionReport'
+      - type: simple
+        object: content
+        value: 'ExceptionReport'
+      - type: simple
+        object: content
+        value: 'http://schemas.opengis.net/ows/1.0.0/owsExceptionReport.xsd'
+  versions:
+    checks:
+      ors:
+        - type: xpath
+          # fully qualified xpath which is lovely and short here
+          value: '@version'
+- name: OGC:WMS
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.opengis.net/wms'
+  service_description:
+    - name: GetCapabilities
       filters:
         ors:
-            # these are baed on the cwic best practices and may 
-            # not be in widespread use
+            # we are assuming that we are starting with a 
+            # correctly identified wxs response
+          - type: simple
+            object: url
+            value: 'REQUEST=GETCAPABILITIES'
           - type: simple
             object: content
-            value: 'OpenSearch Exception'
+            value: '<GetCapabilities>'
           - type: simple
             object: content
-            value: 'REQUEST_EXCEPTION:'
-    versions:
-      defaults:
+            value: 'name="GetCapabilities"'
+  datasets:
+  metadatas:
+  versions:
+    checks:
+      ors:
+        - type: xpath
+          # fully qualified xpath which is lovely and short here
+          value: '@version'
+- name: OGC:WFS
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.opengis.net/wfs'
+  service_description:
+    - name: GetCapabilities
+      filters:
         ors:
           - type: simple
+            object: url
+            value: 'REQUEST=GETCAPABILITIES'
+          - type: simple
             object: content
-            value: 'http://a9.com/-/spec/opensearch/1.1/'
-            text: '1.1'
-  - name: ISO-19115
+            value: '<GetCapabilities>'
+          - type: simple
+            object: content
+            value: 'name="GetCapabilities"'
+  datasets:
+    - name: GetFeature
+      filters:
+        ors:
+            # 1.0.0
+          - type: complex
+            operator: ands
+            filters:
+              - type: simple
+                object: content
+                value: '<GetFeature>'
+              - type: simple
+                object: content
+                value: '<FeatureTypeList>'
+            # 1.1.0
+          - type: complex
+            operator: ands
+            filters:
+              - type: simple
+                object: content
+                value: '<ows:Operation name="GetFeature">'
+              - type: simple
+                object: content
+                value: '<FeatureTypeList>'
+  metadatas:
+    # contains a link to a metadata url (we don't care 
+    # about parentage at this point)
     filters:
       ors:
-        - type: regex
-          object: content
-          value: 'xmlns=\"http://www.isotc211.org/2005/(gmi)|(gmd)'
-  - name: UNIDATA
-    filters: 
+        - type: xpath
+          value: '/*/{http://www.opengis.net/wfs}FeatureTypeList/{http://www.opengis.net/wfs}FeatureType/{http://www.opengis.net/wfs}MetadataURL'
+  versions:
+    checks:
       ors:
-        - type: simple
+        - type: xpath
+          # fully qualified xpath which is lovely and short here
+          value: '@version'
+- name: OGC:WCS
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.opengis.net/wcs'
+  service_description:
+    - name: GetCapabilities
+      filters:
+        ors:
+          - type: simple
+            object: url
+            value: 'REQUEST=GETCAPABILITIES'
+          - type: simple
+            object: content
+            value: '<GetCapabilities>'
+          - type: simple
+            object: content
+            value: 'name="GetCapabilities"'
+  datasets:
+    - name: GetCoverage
+      filters:
+        ors:
+            # 1.0.0
+          - type: complex
+            operator: ands
+            filters:
+              - type: simple
+                object: content
+                value: '<GetCoverage>'
+              - type: simple
+                object: content
+                value: '<CoverageOfferingBrief>'
+            # 1.1.2
+          - type: complex
+            operator: ands
+            filters:
+              - type: simple
+                object: content
+                value: '<ows:Operation name="GetCoverage">'
+              - type: simple
+                object: content
+                value: '<CoverageSummary>'
+  metadatas:
+    # wcs 1.0.0 has no metadata url
+    # filter for 1.1.2
+    filters:
+      ors:
+        - type: xpath
+          value: '/*/{http://www.opengis.net/wcs}Contents/{http://www.opengis.net/wcs}ContentSummary/{http://www.opengis.net/ows}Metadata'
+  versions:
+    checks:
+      ors:
+        - type: xpath
+          # fully qualified xpath which is lovely and short here
+          value: '@version'
+- name: OGC:CSW
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.opengis.net/cat/csw'
+  service_description:
+    - name: GetCapabilities
+      filters:
+        ors:
+          - type: simple
+            object: url
+            value: 'REQUEST=GETCAPABILITIES'
+          - type: simple
+            object: content
+            value: '<GetCapabilities>'
+          - type: simple
+            object: content
+            value: 'name="GetCapabilities"'
+  datasets:
+  metadatas:
+  versions:
+    checks:
+      ors:
+        - type: xpath
+          # fully qualified xpath which is lovely and short here
+          value: '@version'
+- name: OAI-PMH
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.openarchives.org/OAI/'
+  service_description:
+    - name: Identify
+      filters:
+        ors:
+          - type: simple
+            object: url
+            value: 'VERB=IDENTIFY'
+          - type: simple
+            object: content
+            value: '<Identify>'
+  datasets:
+  metadatas:
+  errors:
+    filters:
+      ors:
+        - type:  simple
           object: content
-          value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
-    services:
-      - name: Catalog
-        filters: 
-          ors:
-            - type: simple
-              object: content
-              value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
-    versions:
-      defaults:
+          # note that this should probably be an xpath search
+          # for the error element
+          value: '<error code="'
+  versions:
+    checks:
+      ors:
+        - type: xpath
+          object: content
+          value: '/{http://www.openarchives.org/OAI/2.0/}OAI-PMH/{http://www.openarchives.org/OAI/2.0/}Identify/{http://www.openarchives.org/OAI/2.0/}protocolVersion'  
+- name: UNIDATA
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
+  service_description:
+    - name: THREDDS-Catalog
+      filters: 
         ors:
           - type: simple
             object: content
             value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
-            text: '1.0'
-  - name: www # this is a catchall so how to handle the filtering
-    filters:
+  datasets:
+  metadatas:
+  errors:
+  versions:
+    checks:
+      ors: 
+        - type: xpath
+          object: content
+          value: '@version'
+    defaults:
       ors:
         - type: simple
           object: content
-          value: 'http://wadl.dev.java.net'
-        - type: simple
-          object: content
-          value: 'http://schemas.xmlsoap.org/wsdl/'
-    services:
-      - name: WADL
-        filters:
-          ors:
-            - type: simple
-              object: content
-              value: 'http://wadl.dev.java.net'
-      - name: WSDL
-        filters: 
-          ors:
-            - type: simple
-              object: content
-              value: 'http://schemas.xmlsoap.org/wsdl/'
-  - name: OAI-PMH 
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://www.openarchives.org/OAI/'
-    services:
-      - name: Identify
-        filters:
-          ors:
-            - type: simple
-              object: url
-              value: 'VERB=IDENTIFY'
-            - type: simple
-              object: content
-              value: '<Identify>'
-    errors:
+          value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
+          text: '1.0'
+- name: WADL
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://wadl.dev.java.net'
+  service_description:
+    - name: WADL
       filters:
         ors:
-          - type:  simple
+          - type: simple
             object: content
-            # note that this should probably be an xpath search
-            # for the error element
-            value: '<error code="'
-    versions:
-      checks:
+            value: 'http://wadl.dev.java.net'
+  datasets:
+  metadatas:
+  errors:
+  versions:
+- name: ISO-19115
+  subtype: metadata
+  filters:
+    ors:
+      - type: regex
+        object: content
+        value: 'xmlns=\"http://www.isotc211.org/2005/(gmi)|(gmd)'
+  service_description:  
+  datasets:
+  metadatas:
+  errors:
+  versions:
+    checks:
+      ors:
+        - type: xpath
+          object: content
+          # run against mi_metadata or md_metadata (or any iso root)
+          value: '/*/{http://www.isotc211.org/2005/gmd}metadataStandardVersion/{http://www.isotc211.org/2005/gco}CharacterString'
+- name: WSDL
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://schemas.xmlsoap.org/wsdl/'
+  service_description:
+    - name: WSDL
+      filters:
         ors:
-          - type: xpath
-            value: '/{http://www.openarchives.org/OAI/2.0/}OAI-PMH/{http://www.openarchives.org/OAI/2.0/}Identify/{http://www.openarchives.org/OAI/2.0/}protocolVersion/text()'  
-  - name: OPeNDAP
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://xml.opendap.org/ns/DAP2'
-    # services:
-    # versions:
-    # errors:
-
-  - name: ATOM
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://www.w3.org/2005/Atom'
-    # services:
-    # versions:
-    # errors:
-
-  - name: DIF
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/'
-  - name: FGDC-1998
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: '<metstdv>FGDC-STD-001-1998'
-  - name: FGDC-2002
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: '<metstdv>FGDC-STD-012-2002'
-
-  - name: PDS
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://pds.nasa.gov/pds4/pds/v1'
-
-  - name: CAP-ALERT
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://www.incident.com/cap/1.0'
-        - type: simple
-          object: content
-          value: 'urn:oasis:names:tc:emergency:cap:'
-
-  - name: MARC 21
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://www.loc.gov/MARC21/slim'
-  - name: KML
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://earth.google.com/kml'
-  - name: ArcGISExplorerDocument
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://www.esri.com/schemas/ArcGIS/9.2'
-  - name: Microsoft
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'urn:schemas-microsoft-com:office:office'
-  - name: NetCDF
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2'
-  - name: RSS
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: '<rss version="'
-        - type: simple
-          object: content
-          value: 'http://api.npr.org/nprml'
-  - name: WordPress
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://archipelago.phrasewise.com/rsd'
-        - type: simple
-          object: url
-          value: '?rsd'
-        - type: simple
-          object: url
-          value: 'rsd.xml'
-  - name: NetCDF
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2'
-  
-
-  - name: LOC-METS
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://www.loc.gov/METS_Profile/'
-
-  - name: DataCite
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://datacite.org/schema/'
-
-  - name: EML
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'eml://ecoinformatics.org/eml-'
-
-  - name: QuakeML
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://anss.org/xmlns/catalog'
-        - type: simple
-          object: content
-          value: 'http://anss.org/xmlns/tensor'
-        - type: simple
-          object: content
-          value: 'http://quakeml.org/xmlns/bed/'
-
-    #versions:
-
-  - name: Niem
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://niem.gov/'  
-
-  - name: Disco
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://schemas.xmlsoap.org/disco/'
-
-  - name: SOAP
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://schemas.xmlsoap.org/soap'
-
-  - name: Sitemap
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://www.google.com/geo/schemas/sitemap/'
-        - type: simple
-          object: content
-          value: 'http://www.sitemaps.org/schemas/sitemap/'
-  
-  - name: iTunes
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://www.itunes.com/dtds/podcast-1.0.dtd'
-
-  - name: waterML
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://www.cuahsi.org/waterML/'
-    #versions:
-
-  - name: ECHO
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://echo.nasa.gov/'
-
-  - name: MODAPS
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://modapsws.gsfc.nasa.gov/xsd'
-  - name: IOOS
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://www.noaa.gov/ioos/'
-
-
+          - type: simple
+            object: content
+            value: 'http://schemas.xmlsoap.org/wsdl/'
+  datasets:
+  metadatas:
+  errors:
+  versions:
+- name: OPeNDAP
+  subtype: dataset
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://xml.opendap.org/ns/DAP2'
+  service_description:
+  datasets:
+  metadatas:
+  errors:
+  versions:
+- name: ATOM
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.w3.org/2005/Atom'
+  service_description:
+  datasets:
+  metadatas:
+  errors:
+  versions:
+- name: DIF
+  subtype: metadata
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/'
+  datasets:
+  metadatas:
+  errors:
+  versions:
+- name: FGDC-1998
+  subtype: metadata
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: '<metstdv>FGDC-STD-001-1998'
+  datasets:
+  metadatas:
+  errors:
+  versions:
+- name: FGDC-2002
+  subtype: metadata
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: '<metstdv>FGDC-STD-012-2002'
+  datasets:
+  metadatas:
+  errors:
+  versions:
+- name: PDS
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://pds.nasa.gov/pds4/pds/v1'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: CAP-ALERT
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.incident.com/cap/1.0'
+      - type: simple
+        object: content
+        value: 'urn:oasis:names:tc:emergency:cap:'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: MARC 21
+  subtype: metadata
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.loc.gov/MARC21/slim'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: KML
+  subtype: dataset
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://earth.google.com/kml'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: ArcGISExplorerDocument
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.esri.com/schemas/ArcGIS/9.2'
+  datasets:
+  metadatas:
+  errors:
+  versions:   
+- name: Microsoft
+  subtype: dataset
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'urn:schemas-microsoft-com:office:office'
+  datasets:
+  metadatas:
+  errors:
+  versions:   
+- name: NetCDF
+  subtype: dataset
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2'
+  datasets:
+  metadatas:
+  errors:
+  versions:  
+- name: RSS
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: '<rss version="'
+      - type: simple
+        object: content
+        value: 'http://api.npr.org/nprml'
+  datasets:
+  metadatas:
+  errors:
+  versions:  
+- name: WordPress
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://archipelago.phrasewise.com/rsd'
+      - type: simple
+        object: url
+        value: '?rsd'
+      - type: simple
+        object: url
+        value: 'rsd.xml'
+  datasets:
+  metadatas:
+  errors:
+  versions:  
+- name: LOC-METS
+  subtype: metadata
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.loc.gov/METS_Profile/'
+  datasets:
+  metadatas:
+  errors:
+  versions:  
+- name: DataCite
+  subtype: metadata
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://datacite.org/schema/'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: EML
+  subtype: metadata
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'eml://ecoinformatics.org/eml-'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: QuakeML
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://anss.org/xmlns/catalog'
+      - type: simple
+        object: content
+        value: 'http://anss.org/xmlns/tensor'
+      - type: simple
+        object: content
+        value: 'http://quakeml.org/xmlns/bed/'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: NIEM
+  subtype: metadata
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://niem.gov/'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: Disco
+  subtype: metadata
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://schemas.xmlsoap.org/disco/'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: SOAP
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://schemas.xmlsoap.org/soap'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: Sitemap
+  subtype: metadata
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.google.com/geo/schemas/sitemap/'
+      - type: simple
+        object: content
+        value: 'http://www.sitemaps.org/schemas/sitemap/'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: iTunes
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.itunes.com/dtds/podcast-1.0.dtd'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: waterML
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.cuahsi.org/waterML/'
+  datasets:
+  metadatas:
+  errors:
+  versions:  
+- name: ECHO
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://echo.nasa.gov/'
+  datasets:
+  metadatas:
+  errors:
+  versions:  
+- name: MODAPS
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://modapsws.gsfc.nasa.gov/xsd'
+  datasets:
+  metadatas:
+  errors:
+  versions:  
+- name: IOOS
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.noaa.gov/ioos/'
+  datasets:
+  metadatas:
+  errors:
+  versions:    

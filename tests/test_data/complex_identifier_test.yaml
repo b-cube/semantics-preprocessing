@@ -121,13 +121,27 @@
   datasets:
     - name: GetFeature
       filters:
-        ands:
-          - type: simple
-            object: content
-            value: '<ows:Operation name="GetFeature">'
-          - type: simple
-            object: content
-            value: '<FeatureTypeList>'
+        ors:
+            # 1.0.0
+          - type: complex
+            operator: ands
+            filters:
+              - type: simple
+                object: content
+                value: '<GetFeature>'
+              - type: simple
+                object: content
+                value: '<FeatureTypeList>'
+            # 1.1.0
+          - type: complex
+            operator: ands
+            filters:
+              - type: simple
+                object: content
+                value: '<ows:Operation name="GetFeature">'
+              - type: simple
+                object: content
+                value: '<FeatureTypeList>'
   metadatas:
     # contains a link to a metadata url (we don't care 
     # about parentage at this point)
@@ -149,7 +163,7 @@
     ors:
       - type: simple
         object: content
-        value: 'http://www.opengis.net/wfs'
+        value: 'http://www.opengis.net/wcs'
   service_description:
     - name: GetCapabilities
       filters:
@@ -164,7 +178,36 @@
             object: content
             value: 'name="GetCapabilities"'
   datasets:
+    - name: GetCoverage
+      filters:
+        ors:
+            # 1.0.0
+          - type: complex
+            operator: ands
+            filters:
+              - type: simple
+                object: content
+                value: '<GetCoverage>'
+              - type: simple
+                object: content
+                value: '<CoverageOfferingBrief>'
+            # 1.1.2
+          - type: complex
+            operator: ands
+            filters:
+              - type: simple
+                object: content
+                value: '<ows:Operation name="GetCoverage">'
+              - type: simple
+                object: content
+                value: '<CoverageSummary>'
   metadatas:
+    # wcs 1.0.0 has no metadata url
+    # filter for 1.1.2
+    filters:
+      ors:
+        - type: xpath
+          value: '/*/{http://www.opengis.net/wcs}Contents/{http://www.opengis.net/wcs}ContentSummary/{http://www.opengis.net/ows}Metadata'
   versions:
     checks:
       ors:

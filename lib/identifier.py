@@ -88,11 +88,12 @@ class Identify():
             elif isinstance(v, list) and not all(isinstance(i, bool) for i in v):
                 # TODO: this is not a good assumption
                 for i in v:
-                    return sums + self._evaluate(i, 0)
-
+                    sums += self._evaluate(i, 0)
+                return sums
             if k == 'ands':
                 # everything must be true
                 sums += sum(v) == len(v)
+                print k, v, sums
             elif k == 'ors':
                 # any one must be true
                 sums += sum(v) > 0
@@ -149,6 +150,7 @@ class Identify():
 
         for option in protocol['datasets']:
             for k, v in option['filters'].iteritems():
+                print 'dataset', k, v
                 is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
                 if is_match:
                     return True
@@ -278,6 +280,7 @@ class Identify():
         self.version = ''
         self.is_dataset = False
         self.is_error = False
+        self.subtype = subtype
 
         if not protocol:
             return
