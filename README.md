@@ -16,7 +16,7 @@ XML and text parsing for the pipeline between Nutch/Solr and a triplestore or NL
 		"contact": "",
 		"rights": "", // access, usage rights (this is conflating a variety of "rights" concepts)
 		"language": "",
-		"subject": "", // keywords as string or list
+		"keywords": "", // keywords as normalized string
 		"endpoints": [
 			{
 				"type": "", 

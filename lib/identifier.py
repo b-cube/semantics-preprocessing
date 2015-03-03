@@ -93,7 +93,6 @@ class Identify():
             if k == 'ands':
                 # everything must be true
                 sums += sum(v) == len(v)
-                print k, v, sums
             elif k == 'ors':
                 # any one must be true
                 sums += sum(v) > 0
@@ -113,6 +112,8 @@ class Identify():
 
     def _identify_service_of_protocol(self, protocol):
         if 'service_description' not in protocol:
+            return ''
+        if not protocol['service_description']:
             return ''
 
         for service in protocol['service_description']:
@@ -150,7 +151,6 @@ class Identify():
 
         for option in protocol['datasets']:
             for k, v in option['filters'].iteritems():
-                print 'dataset', k, v
                 is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
                 if is_match:
                     return True
@@ -205,6 +205,8 @@ class Identify():
             return ''
 
         versions = protocol['versions']
+        if not versions:
+            return ''
 
         def _process_type(f):
             if f['type'] == 'simple':
@@ -247,7 +249,8 @@ class Identify():
             "service": self.service,
             "version": self.version,
             "is_dataset": self.is_dataset,
-            "is_error": self.is_error
+            "is_error": self.is_error,
+            "subtype": self.subtype
         }
 
     def generate_urn(self):

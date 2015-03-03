@@ -705,6 +705,70 @@ class OwsWfsPreprocessor():
                     "string",
                     "",
                     []
+                ),
+                (
+                    "TypeName",
+                    "http://www.opengis.net/wfs",
+                    "wfs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Format",
+                    "http://www.opengis.net/wfs",
+                    "wfs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "PropertyName",
+                    "http://www.opengis.net/wfs",
+                    "wfs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "BBOX",
+                    "http://www.opengis.net/wfs",
+                    "wcfs",
+                    "string",
+                    "minx,miny,maxx,maxy",
+                    []
+                ),
+                (
+                    "FeatureVersion",
+                    "http://www.opengis.net/wfs",
+                    "wfs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "FeatureID",
+                    "http://www.opengis.net/wfs",
+                    "wfs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "Filter",
+                    "http://www.opengis.net/wfs",
+                    "wfs",
+                    "string",
+                    "",
+                    []
+                ),
+                (
+                    "MaxFeatures",
+                    "http://www.opengis.net/wfs",
+                    "wfs",
+                    "string",
+                    "",
+                    []
                 )
             ]
         },
