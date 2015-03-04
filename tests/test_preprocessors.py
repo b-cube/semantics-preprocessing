@@ -32,8 +32,8 @@ class TestThreddsReader(unittest.TestCase):
     def test_return_descriptors(self):
         descriptors = self.reader.return_service_descriptors()
 
-        self.assertTrue('Actinic Flux' in descriptors['title'])
-        self.assertTrue(descriptors['version'] == "1.0.2")
+        self.assertTrue('Actinic Flux' in descriptors['title'][0])
+        self.assertTrue(descriptors['version'][0] == "1.0.2")
 
     def test_return_everything_else(self):
         excluded = self.reader.return_exclude_descriptors()
@@ -55,9 +55,9 @@ class TestOaiPmhReader(unittest.TestCase):
     def test_return_descriptors(self):
         descriptors = self.reader.return_service_descriptors()
 
-        self.assertTrue('Aberdeen' in descriptors['title'])
-        self.assertTrue(descriptors['version'] == "2.0")
-        self.assertTrue(descriptors['source'] == 'http://aura.abdn.ac.uk/dspace-oai/request')
+        self.assertTrue('Aberdeen' in descriptors['title'][0])
+        self.assertTrue(descriptors['version'][0] == "2.0")
+        self.assertTrue(descriptors['source'][0] == 'http://aura.abdn.ac.uk/dspace-oai/request')
 
 
 class TestOpenSearchReader(unittest.TestCase):
@@ -71,9 +71,9 @@ class TestOpenSearchReader(unittest.TestCase):
     def test_return_descriptors(self):
         descriptors = self.reader.return_service_descriptors()
 
-        self.assertTrue('CEOS' in descriptors['title'])
+        self.assertTrue('CEOS' in descriptors['title'][0])
         self.assertTrue('version' not in descriptors)
-        self.assertTrue(descriptors['description'] is None)
+        self.assertTrue(descriptors['description'][0] is None)
 
 
 class TestOpenSearchReaderWithEndpoints(unittest.TestCase):
@@ -151,11 +151,11 @@ class TestIsoReader(unittest.TestCase):
     def test_return_descriptors(self):
         descriptors = self.reader.return_service_descriptors()
 
-        self.assertTrue('Survey, Massachusetts Bay, Massachusetts,' in descriptors['title'])
+        self.assertTrue('Survey, Massachusetts Bay, Massachusetts,' in descriptors['title'][0])
         self.assertTrue('version' not in descriptors)
         self.assertTrue('Massachusetts Bay' in descriptors['subject'])
         self.assertTrue(len(descriptors['subject']) == 15)
-        self.assertTrue(descriptors['language'] == 'eng')
+        self.assertTrue(descriptors['language'][0] == 'eng')
 
     def test_parse_endpoints(self):
         endpoints = self.reader.parse_endpoints()
