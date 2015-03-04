@@ -235,13 +235,14 @@ class Identify():
         to_check = list(chain(versions.get('defaults', {}).items(),
                         versions.get('checks', {}).items()))
 
+        found_versions = []
         for c in to_check:
             for f in c[1]:
                 version = _process_type(f)
                 if version:
-                    return version
+                    found_versions.append(version)
 
-        return ''
+        return max(found_versions) if found_versions else ''
 
     def to_json(self):
         return {

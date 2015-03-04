@@ -8,6 +8,9 @@ XML and text parsing for the pipeline between Nutch/Solr and a triplestore or NL
 
 ```
 {
+	"identifier": "",
+	"date_harvested": "",
+	"date_modified": "",
 	"service": {
 		"title": [],
 		"abstract": [],
