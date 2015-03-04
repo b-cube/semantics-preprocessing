@@ -37,9 +37,9 @@
   filters:
       # a variety of error options based on versions
     ors: 
-      - type: simple
-        object: content
-        value: 'http://www.opengis.net/ogc'
+      # - type: simple
+      #   object: content
+      #   value: 'http://www.opengis.net/ogc'
       - type: simple
         object: content
         value: 'ServiceExceptionReport'
