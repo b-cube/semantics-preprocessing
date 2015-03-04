@@ -234,7 +234,7 @@
     ors:
       - type: simple
         object: content
-        value: 'http://www.openarchives.org/OAI/'
+        value: 'xmlns="http://www.openarchives.org/OAI/'
   service_description:
     - name: Identify
       filters:
@@ -260,7 +260,7 @@
       ors:
         - type: xpath
           object: content
-          value: '/{http://www.openarchives.org/OAI/2.0/}OAI-PMH/{http://www.openarchives.org/OAI/2.0/}Identify/{http://www.openarchives.org/OAI/2.0/}protocolVersion'  
+          value: '/{http://www.openarchives.org/OAI/2.0/}OAI-PMH/{http://www.openarchives.org/OAI/2.0/}Identify/{http://www.openarchives.org/OAI/2.0/}protocolVersion/text()'  
 - name: UNIDATA
   subtype: service
   filters:
