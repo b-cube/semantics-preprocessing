@@ -62,6 +62,11 @@ class Parser():
             t = elem.text.strip() if elem.text else ''
             tags = [elem.tag] + [e.tag for e in elem.iterancestors()]
             tags.reverse()
+
+            # check for an assumed comment object
+            if sum([isinstance(a, str) for a in tags]) != len(tags):
+                continue
+
             atts = self._parse_node_attributes(elem, exclude_descriptors)
 
             if '/'.join(tags) not in exclude_descriptors and (atts or t):
