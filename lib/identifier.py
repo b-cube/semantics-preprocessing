@@ -232,11 +232,11 @@ class Identify():
             return ''
 
         # check against either set of things (default vs check)
-        to_check = dict(chain(versions.get('defaults', {}).items(),
+        to_check = list(chain(versions.get('defaults', {}).items(),
                         versions.get('checks', {}).items()))
 
-        for k, v in to_check.iteritems():
-            for f in v:
+        for c in to_check:
+            for f in c[1]:
                 version = _process_type(f)
                 if version:
                     return version
