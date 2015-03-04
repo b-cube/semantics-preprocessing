@@ -37,6 +37,12 @@ class RawResponse():
 
         self.content = m.group(1)
 
+    def _strip_invalid_start(self):
+        '''
+        execute after CDATA extract
+        '''
+        self.content = self.content[self.content.index('<'):]
+
     def _strip_whitespace(self):
         self.content = self.content.replace('\\n', ' ').replace('\\t', ' ')
 
@@ -47,6 +53,7 @@ class RawResponse():
             newline, remove unicode cruft)
         '''
         self._extract_from_cdata()
+        self._strip_invalid_start()
         self._strip_whitespace()
 
         return self.content
