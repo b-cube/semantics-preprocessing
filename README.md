@@ -9,14 +9,13 @@ XML and text parsing for the pipeline between Nutch/Solr and a triplestore or NL
 ```
 {
 	"service": {
-		"title": "",
-		"abstract": "",
-		"description": "",
-		"source": "",
-		"contact": "",
-		"rights": "", // access, usage rights (this is conflating a variety of "rights" concepts)
-		"language": "",
-		"keywords": "", // keywords as normalized string
+		"title": [],
+		"abstract": [],
+		"source": [],
+		"contact": [],
+		"rights": [], // access, usage rights (this is conflating a variety of "rights" concepts)
+		"language": [],
+		"subject": [], // keywords as normalized string and then split
 		"endpoints": [
 			{
 				"type": "", 
@@ -73,7 +72,7 @@ This is contigent on those service types having service-level descriptions.
 
 ####Currently Supported Dataset Descriptions
 
-- [ ] ISO 19115
+- [x] ISO 19115
 - [ ] FGDC
 - [ ] Dif (?)
 

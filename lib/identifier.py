@@ -294,14 +294,10 @@ class Identify():
 
         # and if it's a service description (and which)
         self.service = self._identify_service_of_protocol(protocol_data)
-        if not self.service:
-            return
 
         # make sure it's not an error response (we still
         #    like knowing which service)
         self.is_error = self._is_protocol_error(protocol_data)
-        if self.is_error:
-            return
 
         # determine if it contains dataset-level info
         self.is_dataset = self._identify_dataset_service(protocol_data)

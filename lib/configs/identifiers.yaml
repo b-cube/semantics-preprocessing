@@ -325,7 +325,7 @@
         - type: xpath
           object: content
           # run against mi_metadata or md_metadata (or any iso root)
-          value: '/*/{http://www.isotc211.org/2005/gmd}metadataStandardVersion/{http://www.isotc211.org/2005/gco}CharacterString'
+          value: '/*/{http://www.isotc211.org/2005/gmd}metadataStandardVersion/{http://www.isotc211.org/2005/gco}CharacterString/text()'
 
 
 
