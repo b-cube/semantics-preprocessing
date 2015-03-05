@@ -9,8 +9,16 @@ XML and text parsing for the pipeline between Nutch/Solr and a triplestore or NL
 ```
 {
 	"identifier": "",
-	"date_harvested": "",
-	"date_modified": "",
+	"harvested_date": "",
+	"modified_date": "",
+	"identity": {
+		"protocol": "",  // base type of the response, ex OGC or OAI-PMH
+		"service": "", // service type, ex Catalog, WFS
+		"version": "", // version identifier
+		"subtype": "", // type of service (service | dataset | metadata)
+		"has_dataset": False, // response contains secondary dataset metadata
+		"has_metadata": False // response contains secondary metadata metadata
+	},
 	"service": {
 		"title": [],
 		"abstract": [],

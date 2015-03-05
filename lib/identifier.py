@@ -282,7 +282,8 @@ class Identify():
         self.protocol = protocol
         self.service = ''
         self.version = ''
-        self.is_dataset = False
+        self.has_dataset = False
+        self.has_metadata = False
         self.is_error = False
         self.subtype = subtype
 
@@ -301,7 +302,10 @@ class Identify():
         self.is_error = self._is_protocol_error(protocol_data)
 
         # determine if it contains dataset-level info
-        self.is_dataset = self._identify_dataset_service(protocol_data)
+        self.has_dataset = self._identify_dataset_service(protocol_data)
+
+        # determine if it contains metadata-level info
+        self.has_metadata = self._identify_metadata_service(protocol_data)
 
         # extract the version
         parser = self.options.get('parser', None)
