@@ -338,7 +338,8 @@
         - type: xpath
           object: content
           # run against mi_metadata or md_metadata (or any iso root)
-          value: '/*/{http://www.isotc211.org/2005/gmd}metadataStandardVersion/{http://www.isotc211.org/2005/gco}CharacterString/text()'
+          # and we are concatenating name and version (note, this does not manage whitespace issues!)
+          value: 'concat(/*/{http://www.isotc211.org/2005/gmd}metadataStandardName/{http://www.isotc211.org/2005/gco}CharacterString/text(), " (", /*/{http://www.isotc211.org/2005/gmd}metadataStandardVersion/{http://www.isotc211.org/2005/gco}CharacterString/text(), ")")'
 
 
 
