@@ -43,7 +43,13 @@ class BaseReader():
         '''
         service_elements = {}
         for k, v in self._service_descriptors.iteritems():
-            elems = self.parser.find(v)
+            # v can be a list of possible xpaths where we want
+            # to keep all returned values from any xpath within
+            elems = []
+            xpaths = v if isinstance(v, list) else [v]
+            for xp in xpaths:
+                elems += self.parser.find(xp)
+
             if elems:
                 # return everything as a list for the triplestore
                 service_elements[k] = [e.text if isinstance(e, etree._Element) else e for e in elems] if len(elems) > 1 \

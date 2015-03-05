@@ -73,7 +73,7 @@ class TestOpenSearchReader(unittest.TestCase):
 
         self.assertTrue('CEOS' in descriptors['title'][0])
         self.assertTrue('version' not in descriptors)
-        self.assertTrue(descriptors['description'][0] is None)
+        self.assertTrue(descriptors['abstract'][0] is None)
 
 
 class TestOpenSearchReaderWithEndpoints(unittest.TestCase):
