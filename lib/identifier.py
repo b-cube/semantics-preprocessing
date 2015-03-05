@@ -249,7 +249,8 @@ class Identify():
             "protocol": self.protocol,
             "service": self.service,
             "version": self.version,
-            "is_dataset": self.is_dataset,
+            "has_dataset": self.has_dataset,
+            "has_metadata": self.has_metadata,
             "is_error": self.is_error,
             "subtype": self.subtype
         }
