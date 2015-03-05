@@ -284,10 +284,10 @@
       ors:
         - type: simple
           object: content
-          value: '<property name="'
+          value: '<property name="requires_authorization"'
         - type: simple
           object: content
-          value: '<variables vocabulary="'
+          value: '<variables vocabulary='
   versions:
     checks:
       ors: 
