@@ -6,17 +6,26 @@ from lib.utils import parse_url
 
 class OpenSearchReader(BaseReader):
     _service_descriptors = {
-        "title": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}ShortName",
-        "abstract": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}LongName",
-        "description": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}Description",
-        "source": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}Attribution",
-        "contact": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}Developer",
-        "rights": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}SyndicationRight",
-        "language": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}Language",
-        "subject": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}Tags"
+        "title": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
+                 "{http://a9.com/-/spec/opensearch/1.1/}ShortName",
+        "abstract": ["/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
+                     "{http://a9.com/-/spec/opensearch/1.1/}LongName",
+                     "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
+                     "{http://a9.com/-/spec/opensearch/1.1/}Description"],
+        "source": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
+                  "{http://a9.com/-/spec/opensearch/1.1/}Attribution",
+        "contact": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
+                   "{http://a9.com/-/spec/opensearch/1.1/}Developer",
+        "rights": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
+                  "{http://a9.com/-/spec/opensearch/1.1/}SyndicationRight",
+        "language": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
+                    "{http://a9.com/-/spec/opensearch/1.1/}Language",
+        "subject": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
+                   "{http://a9.com/-/spec/opensearch/1.1/}Tags"
     }
     _to_exclude = [
-        '/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}Url'
+        "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
+        "{http://a9.com/-/spec/opensearch/1.1/}Url"
     ]
 
     _parameter_formats = {
@@ -33,7 +42,8 @@ class OpenSearchReader(BaseReader):
         '''
 
         '''
-        urls = self.parser.find('/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}Url')
+        urls = self.parser.find("/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
+                                "{http://a9.com/-/spec/opensearch/1.1/}Url")
 
         endpoints = [
             (
