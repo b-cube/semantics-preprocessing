@@ -98,14 +98,19 @@ class IsoReader(BaseReader):
 
         url, type (as download, etc, from codelist)
         '''
-        url_xpath = "gmd:CI_OnlineResource/" + \
-                    "gmd:linkage/" + \
-                    "gmd:URL"
+        url_xpath = "{http://www.isotc211.org/2005/gmd}CI_OnlineResource/" + \
+                    "{http://www.isotc211.org/2005/gmd}linkage/" + \
+                    "{http://www.isotc211.org/2005/gmd}URL"
 
-        code_xpath = "gmd:CI_OnlineResource/" + \
-                     "gmd:function/" + \
-                     "gmd:CI_OnLineFunctionCode/" + \
+        code_xpath = "{http://www.isotc211.org/2005/gmd}CI_OnlineResource/" + \
+                     "{http://www.isotc211.org/2005/gmd}function/" + \
+                     "{http://www.isotc211.org/2005/gmd}CI_OnLineFunctionCode/" + \
                      "@codeListValue"
+
+        # we need to remap these - cannot assume that the gmd will
+        # be a prefixed namespace. who knew.
+        url_xpath = self.parser._remap_namespaced_xpaths(url_xpath)
+        code_xpath = self.parser._remap_namespaced_xpaths(code_xpath)
 
         endpoints = []
         for parent_xpath in self._endpoints:
@@ -119,6 +124,6 @@ class IsoReader(BaseReader):
 
                 codes = parent.xpath(code_xpath, namespaces=self.parser._namespaces)
 
-                endpoints.append({"url": urls[0].text, "type": codes[0]})
+                endpoints.append({"url": urls[0].text, "type": codes[0] if codes else ''})
 
         return endpoints
