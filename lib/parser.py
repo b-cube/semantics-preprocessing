@@ -43,6 +43,8 @@ class Parser():
         '''
         if self._namespaces:
             xpath = self._remap_namespaced_xpaths(xpath)
+            if not xpath:
+                return None
             return self.xml.xpath(xpath, namespaces=self._namespaces)
         return self.xml.xpath(xpath)
 
@@ -134,12 +136,23 @@ class Parser():
 
         for the actual querying (replace the '{ns}' with 'prefix:')
 
+        we do care about whether the provided xpath contains
+        namespaces that aren't in the namespace list! (wcs 1.0.0 & ows)
+
         and we don't really care for storage -
             we care for this path, this query
         '''
+        # remap the fully qualified namespace to the prefix
         for prefix, ns in self._namespaces.iteritems():
             wrapped_ns = '{%s}' % ns
             xpath = xpath.replace(wrapped_ns, prefix + ':')
+
+        # if the xpath still contains {ns} then we have a problem
+        # with the xpath not being valid for the xml and we shouldn't
+        # try to use it (it will just raise an invalidpath exception)
+        if '{' in xpath and '}' in xpath:
+            return ''
+
         return xpath
 
     def _strip_html(self):

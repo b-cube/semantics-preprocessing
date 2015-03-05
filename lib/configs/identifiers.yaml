@@ -322,9 +322,12 @@
   subtype: metadata
   filters:
     ors:
-      - type: regex
+      - type: simple
         object: content
-        value: 'xmlns=\"http://www.isotc211.org/2005/(gmi)|(gmd)'
+        value: 'xmlns="http://www.isotc211.org/2005/gmi'
+      - type: simple
+        object: content
+        value: 'xmlns="http://www.isotc211.org/2005/gmd'
   service_description:  
   datasets:
   metadatas:
