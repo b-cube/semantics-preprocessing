@@ -1,5 +1,6 @@
 import re
 import urlparse
+import HTMLParser
 
 '''
 spatial handling:
@@ -61,10 +62,15 @@ def normalize_keyword_text(keyword_string):
     correctly using certain delimiters (they are not standard
     punctuation in those ways).
 
+    unescape any html bits (thanks gcmd!)
+
     delimiters: , ; > | + -
         (ignore space-delimited strings - let the tokenizers
             manage that)
         (we are also going to actually just ignore the commas as well)
     '''
+    hp = HTMLParser.HTMLParser()
+    keyword_string = hp.unescape(keyword_string)
+
     simple_pattern = r'[;|>+-]'
     return re.sub(simple_pattern, ',', keyword_string)
