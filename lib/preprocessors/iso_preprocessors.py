@@ -88,6 +88,42 @@ class IsoReader(BaseReader):
         "{http://www.isotc211.org/2005/gmd}onLine"
     ]
 
+    def _identify_format(self, name, version, description, url):
+        '''
+        from the set of things that might exist in an iso distribution,
+        get a mimetype(s)
+        '''
+        # TODO: finish this
+        return name
+
+    def _extract_format_info(self, format_element):
+        '''
+
+        '''
+        if format_element is None:
+            return '', '', ''
+
+        name_xpath = "{http://www.isotc211.org/2005/gmd}name/" + \
+                     "{http://www.isotc211.org/2005/gco}CharacterString/text()"
+        version_xpath = "{http://www.isotc211.org/2005/gmd}version/" + \
+                        "{http://www.isotc211.org/2005/gco}CharacterString/text()"
+        specification_xpath = "{http://www.isotc211.org/2005/gmd}specification/" + \
+                              "{http://www.isotc211.org/2005/gco}CharacterString/text()"
+        name_xpath = self.parser._remap_namespaced_xpaths(name_xpath)
+        version_xpath = self.parser._remap_namespaced_xpaths(version_xpath)
+        specification_xpath = self.parser._remap_namespaced_xpaths(specification_xpath)
+
+        name_elem = format_element.xpath(name_xpath, namespaces=self.parser._namespaces)
+        version_elem = format_element.xpath(version_xpath, namespaces=self.parser._namespaces)
+        specification_elem = format_element.xpath(specification_xpath,
+                                                  namespaces=self.parser._namespaces)
+
+        name = next(iter(name_elem), '') if name_elem is not None else ''
+        version = next(iter(version_elem), '') if version_elem is not None else ''
+        specification = next(iter(specification_elem), '') if specification_elem is not None else ''
+
+        return name, version, specification
+
     def return_exclude_descriptors(self):
         excluded = self._service_descriptors.values()
         return [e[1:] for e in excluded] + self._to_exclude
@@ -107,10 +143,14 @@ class IsoReader(BaseReader):
                      "{http://www.isotc211.org/2005/gmd}CI_OnLineFunctionCode/" + \
                      "@codeListValue"
 
+        # go back up to the distributor or the distribution (don't know which!)
+        format_xpath = "../../../*/{http://www.isotc211.org/2005/gmd}MD_Format"
+
         # we need to remap these - cannot assume that the gmd will
         # be a prefixed namespace. who knew.
         url_xpath = self.parser._remap_namespaced_xpaths(url_xpath)
         code_xpath = self.parser._remap_namespaced_xpaths(code_xpath)
+        format_xpath = self.parser._remap_namespaced_xpaths(format_xpath)
 
         endpoints = []
         for parent_xpath in self._endpoints:
@@ -122,8 +162,15 @@ class IsoReader(BaseReader):
                 if not urls:
                     continue
 
+                url = urls[0].text
+
                 codes = parent.xpath(code_xpath, namespaces=self.parser._namespaces)
 
-                endpoints.append({"url": urls[0].text, "type": codes[0] if codes else ''})
+                format_elem = next(iter(parent.xpath(format_xpath,
+                                        namespaces=self.parser._namespaces)), None)
+                format_name, format_version, format_desc = self._extract_format_info(format_elem)
+                format = self._identify_format(format_name, format_version, format_desc, url)
+
+                endpoints.append({"url": url, "type": codes[0] if codes else '', "format": format})
 
         return endpoints

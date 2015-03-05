@@ -86,11 +86,19 @@ class TestOpenSearchReaderWithEndpoints(unittest.TestCase):
     def test_parse_endpoints(self):
         endpoints = self.reader.parse_endpoints()
 
+        expected_endpoint = 'http://modwebsrv.modaps.eosdis.nasa.gov/axis2/' + \
+                            'services/MODAPSservices/getOpenSearch?' + \
+                            'products={MODAPSParameters:products}&' + \
+                            'collection={MODAPSParameters:collection?}' + \
+                            '&start={time:start}&stop={time:stop}&bbox={geo:box}' + \
+                            '&coordsOrTiles={MODAPSParameters:coordsOrTiles?}' + \
+                            '&dayNightBoth={MODAPSParameters:dayNightBoth?}'
+
         self.assertTrue(len(endpoints) == 2)
         self.assertTrue(len(endpoints[0][2][0]) == 5)
         self.assertTrue(isinstance(endpoints[0][2][0][1], dict))
         self.assertTrue(endpoints[0][2][0][2] == 'MODAPSParameters')
-        self.assertTrue(endpoints[0][1] == 'http://modwebsrv.modaps.eosdis.nasa.gov/axis2/services/MODAPSservices/getOpenSearch?products={MODAPSParameters:products}&collection={MODAPSParameters:collection?}&start={time:start}&stop={time:stop}&bbox={geo:box}&coordsOrTiles={MODAPSParameters:coordsOrTiles?}&dayNightBoth={MODAPSParameters:dayNightBoth?}')
+        self.assertTrue(endpoints[0][1] == expected_endpoint)
 
     def test_extract_parameter_type(self):
         with_brackets = '{geo:bbox}'
@@ -109,7 +117,9 @@ class TestOpenSearchReaderWithEndpoints(unittest.TestCase):
         self.assertTrue(test_tuple[1] == 'start')
 
     def test_extract_url_parameters(self):
-        url = self.reader.parser.find('/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}Url')
+        url_xpath = '/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/' +\
+                    '{http://a9.com/-/spec/opensearch/1.1/}Url'
+        url = self.reader.parser.find(url_xpath)
         url = url[0].get('template', '')
         params = self.reader._extract_url_parameters(url)
 
@@ -130,8 +140,11 @@ class TestXmlReader(unittest.TestCase):
         service = self.reader.parse_service()
 
         fourth_tuple = ('/namma/report/smart_commit',
-               '{http://archipelago.phrasewise.com/rsd}rsd/{http://archipelago.phrasewise.com/rsd}service/{http://archipelago.phrasewise.com/rsd}homePageLink',
-               None)
+                        '{http://archipelago.phrasewise.com/rsd}rsd/' +
+                        '{http://archipelago.phrasewise.com/rsd}service/' +
+                        '{http://archipelago.phrasewise.com/rsd}homePageLink',
+                        None
+                        )
 
         self.assertTrue('remainder' in service)
         self.assertTrue(len(service['remainder']) == 9)
@@ -160,6 +173,11 @@ class TestIsoReader(unittest.TestCase):
     def test_parse_endpoints(self):
         endpoints = self.reader.parse_endpoints()
 
+        expected_url = 'http://surveys.ngdc.noaa.gov/mgg/NOS/coast/' + \
+                       'H08001-H10000/H08413/Smooth_Sheets/H08413.tif.gz'
+        expected_format = 'SMOOTH_SHEET'
+
         self.assertTrue(len(endpoints) == 4)
         self.assertTrue(endpoints[2]['type'] == 'download')
-        self.assertTrue(endpoints[1]['url'] == 'http://surveys.ngdc.noaa.gov/mgg/NOS/coast/H08001-H10000/H08413/Smooth_Sheets/H08413.tif.gz')
+        self.assertTrue(endpoints[1]['url'] == expected_url)
+        self.assertTrue(endpoints[1]['format'] == expected_format)
