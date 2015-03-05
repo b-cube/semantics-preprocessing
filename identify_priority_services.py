@@ -23,7 +23,7 @@ responses = glob.glob('testdata/docs/response_*.json')
 # responses = ['testdata/docs/response_%s.json' % d.strip() for d in digests]
 
 with open('priority_identification.csv', 'w') as f:
-    f.write('digest|url|protocol|service|is dataset|version|is error\n')
+    f.write('digest|url|protocol|service|has dataset|has metadata|version|is error\n')
 
 for response in responses:
     with open(response, 'r') as f:
@@ -43,11 +43,14 @@ for response in responses:
         logger.debug('xml parsing error: %s' % digest, exc_info=1)
         continue
 
+    print digest
+
     identifier = Identify(YAML_FILE, cleaned_text, url, **{'parser': parser, 'ignore_case': True})
     identifier.identify()
     protocol = identifier.protocol
     service = identifier.service
-    is_dataset = identifier.is_dataset
+    has_dataset = identifier.has_dataset
+    has_metadata = identifier.has_metadata
     version = identifier.version
     is_error = identifier.is_error
 
@@ -56,4 +59,4 @@ for response in responses:
 
     with open('priority_identification.csv', 'a') as f:
         f.write('|'.join([digest, url.replace(',', ';').replace('|', ';'), protocol, service,
-                str(is_dataset), str(version), str(is_error)]) + '\n')
+                str(has_dataset), str(has_metadata), str(version), str(is_error)]) + '\n')

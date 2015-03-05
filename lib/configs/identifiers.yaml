@@ -278,6 +278,16 @@
   datasets:
   metadatas:
   errors:
+    # this is not technically an error but it is 
+    # an invalid service response
+    filters:
+      ors:
+        - type: simple
+          object: content
+          value: '<property name="'
+        - type: simple
+          object: content
+          value: '<variables vocabulary="'
   versions:
     checks:
       ors: 

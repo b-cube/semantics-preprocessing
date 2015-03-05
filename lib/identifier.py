@@ -68,7 +68,15 @@ class Identify():
                     # nothing to find, this is an incorrect filter
                     clauses.append(False)
 
-                clauses.append(parser.find(xpath) is not None)
+                # try the xpath but there could be namespace or
+                # other issues (also false negatives!)
+                try:
+                    clause = parser.find(xpath) is not None
+                except:
+                    clause = False
+                    print '\tfilter xpath: ', xpath
+
+                clauses.append(clause)
 
         return {operator: clauses}
 
@@ -225,7 +233,12 @@ class Identify():
                 if not source_as_parser:
                     # TODO: log this
                     return ''
-                value = source_as_parser.find(f['value'])
+                try:
+                    value = source_as_parser.find(f['value'])
+                except:
+                    # the xpath failed (namespace reasons or otherwise?)
+                    print '\tversion xpath: ', f['value']
+                    return ''
                 if value:
                     return value[0] if isinstance(value, list) else value
 
