@@ -40,12 +40,19 @@ class IsoReader(BaseReader):
         "language": "/*/{http://www.isotc211.org/2005/gmd}language/" +
                     "{http://www.isotc211.org/2005/gco}CharacterString",
 
-        "subject": "/*/{http://www.isotc211.org/2005/gmd}identificationInfo/" +
-                   "{http://www.isotc211.org/2005/gmd}MD_DataIdentification/" +
-                   "{http://www.isotc211.org/2005/gmd}descriptiveKeywords/" +
-                   "{http://www.isotc211.org/2005/gmd}MD_Keywords/" +
-                   "{http://www.isotc211.org/2005/gmd}keyword/" +
-                   "{http://www.isotc211.org/2005/gco}CharacterString/text()",
+        "subject": ["/*/{http://www.isotc211.org/2005/gmd}identificationInfo/" +
+                    "{http://www.isotc211.org/2005/gmd}MD_DataIdentification/" +
+                    "{http://www.isotc211.org/2005/gmd}descriptiveKeywords/" +
+                    "{http://www.isotc211.org/2005/gmd}MD_Keywords/" +
+                    "{http://www.isotc211.org/2005/gmd}keyword/" +
+                    "{http://www.isotc211.org/2005/gco}CharacterString/text()",
+                    "/*/{http://www.isotc211.org/2005/gmd}identificationInfo/" +
+                    "{http://www.isotc211.org/2005/gmd}MD_DataIdentification/" +
+                    "{http://www.isotc211.org/2005/gmd}descriptiveKeywords/" +
+                    "{http://www.isotc211.org/2005/gmd}MD_Keywords/" +
+                    "{http://www.isotc211.org/2005/gmd}keyword/" +
+                    "{http://www.isotc211.org/2005/gmx}Anchor/text()"
+                    ],
 
         "identifier": "(/*/{http://www.isotc211.org/2005/gmd}fileIdentifier/" +
                       "{http://www.isotc211.org/2005/gco}CharacterString | " +
