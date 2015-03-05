@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0" 
+    xmlns:xlink="http://www.w3.org/1999/xlink" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0 http://www.unidata.ucar.edu/schemas/thredds/InvCatalog.1.0.2.xsd" 
+    version="1.0.2" 
+    name="ARCSS: NSF Arctic System Science">
+<dataset authority="edu.ucar.eol.codiac" ID="ucar.ncar.eol.project.ARCSS" name="ARCSS: NSF Arctic System Science" harvest="true">
+<metadata xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.project.ARCSS.metadata.xml" metadataType="THREDDS" inherited="false"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_352.thredds.xml" xlink:title="14C Measurements in Large-Volume Ice Samples from Pakitsoq, West Greenland"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS130.thredds.xml" xlink:title="A Half-Century of Change in Arctic Alaskan Shrubs: A Photographic-Based Assessment"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_359.thredds.xml" xlink:title="Actinic Flux measurements during OASIS Barrow field intensive Spring 2009"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS033.thredds.xml" xlink:title="Active Layer Depth and Snow Depth, Kuparuk Basin, 1995"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_427.thredds.xml" xlink:title="Adaptive long-term fasting in land and ice-bound polar bears: Data Table"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_382.thredds.xml" xlink:title="Aerial Photographs from Columbia Glacier, 1976-2010"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_360.thredds.xml" xlink:title="Aerosol measurements during OASIS Barrow field intensive Spring 2009"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_223.thredds.xml" xlink:title="Agashashok Microclimate"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_224.thredds.xml" xlink:title="Agashashok White Spruce Branch Growth 2005-2008"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_225.thredds.xml" xlink:title="Agashashok White Spruce Needle Gas Exchange 2007-2008"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS001.thredds.xml" xlink:title="Air and Ground Surface Temperatures From the Kuparuk Basin, Alaska, 1994-1996"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS907.thredds.xml" xlink:title="Air and Soil Temperatures from Sites in Alaska 1995-2001"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS040.thredds.xml" xlink:title="Air Temperature and Thaw Depth, North Slope, Alaska: Field Measurements (1995-97) and Computed Values"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS002.thredds.xml" xlink:title="Alaska North Slope (Sagavanirktok River) Meteorological Data, 1994 and 1995"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS301.thredds.xml" xlink:title="Alaska North Slope 100 m Digital Elevation Model (DEM)"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS903.thredds.xml" xlink:title="Alaskan Air, Ground, Snow, and Soil Temperatures, 1998-2001"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_346.thredds.xml" xlink:title="Alaskan Lake Database Mapped from Landsat Images"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_334.thredds.xml" xlink:title="Albedo of ice types in northeast Greenland s ablation zone"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_295.thredds.xml" xlink:title="An Analysis of the Carbon Balance of the Arctic Basin from 1997 to 2006"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_332.thredds.xml" xlink:title="Analyses of Fe oxide detrital grains in Arctic sediment cores"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_308.thredds.xml" xlink:title="ARCSS Surface Air Temperature (ARCSS-SAT) Analysis"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS009.thredds.xml" xlink:title="ARCSS-LAII 1996 Aircraft Radiometric Data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS003.thredds.xml" xlink:title="Arctic Cyclone Track Data Set, 1966-1993"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS066.thredds.xml" xlink:title="Arctic Global Radiation (AGR) Data Set"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_396.thredds.xml" xlink:title="Arctic Infrared Satellite Composite Imagery"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_397.thredds.xml" xlink:title="Arctic Longwave Infrared Satellite Composite Imagery"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS102.thredds.xml" xlink:title="Arctic Ocean Barium Concentrations, 1993"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS029.thredds.xml" xlink:title="Arctic Ocean Section Porewater Chemistry Data, 1994"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_398.thredds.xml" xlink:title="Arctic Shortwave Infrared Satellite Composite Imagery"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_340.thredds.xml" xlink:title="Arctic snow black carbon concentrations, and absorption by other light-absorbing aerosol"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_413.thredds.xml" xlink:title="Arctic Visible Band Satellite Composite Imagery"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_399.thredds.xml" xlink:title="Arctic Water Vapor Channel Satellite Composite Imagery"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_257.thredds.xml" xlink:title="ArcticRIMS: 2m Air Temperature From ERA-40 Re-analysis"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_288.thredds.xml" xlink:title="ArcticRIMS: 2m Air Temperature From ERA-40 Re-Analysis , Aggregated by Administrative Regions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS161.thredds.xml" xlink:title="ArcticRIMS: A Regional, Integrated Hydrological Monitoring System for the Pan-Arctic Landmass"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_238.thredds.xml" xlink:title="ArcticRIMS: Daily Precipitation From Monthly Station Records And Disaggregation"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_239.thredds.xml" xlink:title="ArcticRIMS: Daily Precipitation From Statistical Reconstructions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_270.thredds.xml" xlink:title="ArcticRIMS: Daily Precipitation From Statistical Reconstructions , Aggregated by Administrative Regions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_269.thredds.xml" xlink:title="ArcticRIMS: Daily Precipitation, From Monthly Station Records And Disaggregation, Aggregated by Administrative Regions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_251.thredds.xml" xlink:title="ArcticRIMS: Daily Simulated runoff from Pan-Arctic Water Balance Model"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_282.thredds.xml" xlink:title="ArcticRIMS: Daily Simulated Runoff From Pan-Arctic Water Balance Model , Aggregated by Administrative Regions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_253.thredds.xml" xlink:title="ArcticRIMS: Daily Temperature, Topographically Adjusted"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_284.thredds.xml" xlink:title="ArcticRIMS: Daily Temperature, Topographically Adjusted, Aggregated by Administrative Regions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_258.thredds.xml" xlink:title="ArcticRIMS: Daily Thaw Depth and Frozen Ground Depth"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_289.thredds.xml" xlink:title="ArcticRIMS: Daily Thaw Depth And Frozen Ground Depth, Aggregated by Administrative Regions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_259.thredds.xml" xlink:title="ArcticRIMS: Daily Thaw Depth and Frozen Ground Depth, Based on ERA-40 2-meter"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_290.thredds.xml" xlink:title="ArcticRIMS: Daily Thaw Depth And Frozen Ground Depth, Based on ERA-40 2-meter, Aggregated by Administrative Regions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_248.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis LongWaveDown Radiation"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_279.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis LongWaveDown Radiation, Aggregated by Administrative Regions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_246.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis LongWaveNet Radiation"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_277.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis LongWaveNet Radiation, Aggregated by Administrative Regions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_250.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis LongWaveUp Radiation"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_281.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis LongWaveUp Radiation, Aggregated by Administrative Regions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_255.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis Maximum Temperature"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_286.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis Maximum Temperature, Aggregated by Administrative Regions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_256.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis Minimum Temperature"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_287.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis Minimum Temperature, Aggregated by Administrative Regions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_240.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis Precipitation"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_271.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis Precipitation, Aggregated by Administrative Regions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_249.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis ShortWaveDown Radiation"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_280.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis ShortWaveDown Radiation, Aggregated by Administrative Regions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_247.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis ShortWaveNet Radiation"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_278.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis ShortWaveNet Radiation, Aggregated by Administrative Regions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_243.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis ShortWaveUp Radiation"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_274.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis ShortWaveUp Radiation, Aggregated by Administrative Regions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_254.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis Temperature"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_285.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis Temperature, Aggregated by Administrative Regions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_242.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis Vapor Pressure"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_273.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis Vapor Pressure, Aggregated by Administrative Regions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_244.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis Wind Direction"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_275.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis Wind Direction, Aggregated by Administrative Regions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_245.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis Wind Speed"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_276.thredds.xml" xlink:title="ArcticRIMS: NCEP Reanalysis Wind Speed, Aggregated by Administrative Regions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_241.thredds.xml" xlink:title="ArcticRIMS: Precipitation From ERA-40 Re-analysis"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_272.thredds.xml" xlink:title="ArcticRIMS: Precipitation From ERA-40 Re-analysis , Aggregated by Administrative Regions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_252.thredds.xml" xlink:title="ArcticRIMS: Snow Water Equivalent"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_283.thredds.xml" xlink:title="ArcticRIMS: Snow Water Equivalent , Aggregated by Administrative Regions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_260.thredds.xml" xlink:title="ArcticRIMS: SSM/I Freeze Thaw 5-day Composites"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_291.thredds.xml" xlink:title="ArcticRIMS: SSM/I Freeze Thaw 5-day Composites , Aggregated by Administrative Regions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_233.thredds.xml" xlink:title="ART-Russia River Temperature"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_389.thredds.xml" xlink:title="At-sea density of foraging little auks (Alle alle) near Hornsund Fjord"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS005.thredds.xml" xlink:title="Automated Weather Station Data for Greenland Ice Core Locations"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_302.thredds.xml" xlink:title="BAID: NARL BAR flights Index by Quad (1948-49)"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_301.thredds.xml" xlink:title="BAID: RADARSAT and ERS satellite  SAR Images"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_204.thredds.xml" xlink:title="Banks Island July 2003 Field Report"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_205.thredds.xml" xlink:title="Banks Island July 2003 Field Report - Addendum"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS107.thredds.xml" xlink:title="Barium Concentrations and Salinity in Arctic River Estuaries, 1993-1996"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS400.thredds.xml" xlink:title="Barrow Area Information Database (BAID) Geospatial Data Sets, Barrow, AK, USA"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_328.thredds.xml" xlink:title="Barrow Area NonGis Data and Tramline Pictures"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_317.thredds.xml" xlink:title="Barrow Area Remote Sensing - BAID Be Research Sites"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_325.thredds.xml" xlink:title="Barrow Area Remote Sensing - BAID Power Poles"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_319.thredds.xml" xlink:title="Barrow Area Remote Sensing - Brw Be Board Walk"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_318.thredds.xml" xlink:title="Barrow Area Remote Sensing - Brw Be Catchment"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_320.thredds.xml" xlink:title="Barrow Area Remote Sensing - Brw Be Dikes"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_321.thredds.xml" xlink:title="Barrow Area Remote Sensing - Brw Be Drainage"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_313.thredds.xml" xlink:title="Barrow Area Remote Sensing - Brw Be Land Cover"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_324.thredds.xml" xlink:title="Barrow Area Remote Sensing - Brw Be Matted Trail"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_327.thredds.xml" xlink:title="Barrow Area Remote Sensing - Brw Be Treatment Areas"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_315.thredds.xml" xlink:title="Barrow Area Remote Sensing - Brw Peninsula Land Cover"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_316.thredds.xml" xlink:title="Barrow Area Remote Sensing - Digital Elevation Model"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_326.thredds.xml" xlink:title="Barrow Area Remote Sensing - Tramlines"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_444.thredds.xml" xlink:title="Barrow Area Remote Sensing- BE CH4 Fall 2009"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_445.thredds.xml" xlink:title="Barrow Area Remote Sensing- BE CO2 Flux Summer 2009"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_446.thredds.xml" xlink:title="Barrow Area Remote Sensing- BE Soil Data 2009"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_442.thredds.xml" xlink:title="Barrow Area Remote Sensing- MET Data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_443.thredds.xml" xlink:title="Barrow Area Remote Sensing- Soil Ecology Data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS115.thredds.xml" xlink:title="Benthos and Water Column Process Influences, Northeast Water Polynya Project, 1992"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_312.thredds.xml" xlink:title="Biocomplexity Associated with the Response of Tundra Carbon Balance to Warming and Drying"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_201.thredds.xml" xlink:title="Biocomplexity of Frost-boil Ecosystems Snow Data Report, Alaska North Slope"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_206.thredds.xml" xlink:title="Biocomplexity of Frost-boil Ecosystems: Banks Island"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_207.thredds.xml" xlink:title="Biocomplexity of Patterned Ground: Dalton Highway"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_203.thredds.xml" xlink:title="Biocomplexity of Patterned Ground: Isachsen Expedition"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_202.thredds.xml" xlink:title="Biocomplexity of Patterned Ground: Mould Bay Expedition"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_235.thredds.xml" xlink:title="Biocomplexity Project: Soil Pit Chemical and Physical Data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_294.thredds.xml" xlink:title="BIOMAS Model Results (a coupled sea ice/ocean/ecosystem model)"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_307.thredds.xml" xlink:title="Borehole Optical Stratigraphy measurements through 4 full years at Summit, Greenland"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS034.thredds.xml" xlink:title="Borehole Temperatures from the North Slope of Alaska, 1977-2002"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_310.thredds.xml" xlink:title="Bowhead Whale Subsistence Sensitivity Mapping"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_292.thredds.xml" xlink:title="Canadian Archipelago Throughflow Study (CATS)"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS019.thredds.xml" xlink:title="Canadian Rivers Data Set"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS081.thredds.xml" xlink:title="Canadian Transect of Soils and Vegetation for the Circumpolar Arctic Vegetation Map"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_362.thredds.xml" xlink:title="Canister sampling during OASIS Barrow field intensive Spring 2009"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS058.thredds.xml" xlink:title="Canopy Foliage Area Index, Toolik Lake, Alaska, 1995 and 1996"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_387.thredds.xml" xlink:title="CFL 2008 Dissolved Organic Matter Concentration (DOC) and Compositions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_341.thredds.xml" xlink:title="Characterization of Potentially Jurassic-Age Mummified Organic Material, Ellesmere Island, Canada"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS079.thredds.xml" xlink:title="Chemical and Isotopic Tracers from the Arctic Ocean"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_391.thredds.xml" xlink:title="Chick diets of little auks (Alle alle) in Hornsund Fjord, Spitsbergen"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_392.thredds.xml" xlink:title="Chick growth rates of little auks (alle alle) at Hornsund Fjord, Spitsbergen"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS011.thredds.xml" xlink:title="Chukchi Sea Hydrographic (CTD) Data from the R.V. Alpha Helix Cruise, September 1996"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS129.thredds.xml" xlink:title="Circulation in the Freshwater Switchyard of the Arctic Ocean: University of Washington CTD Profile Data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_371.thredds.xml" xlink:title="Circumpolar Flaw Lead (CFL) Photosynthesis-Irradiance Experiments"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS904.thredds.xml" xlink:title="Climate and Flux Data from Alaska Sites, 1998-2000"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS908.thredds.xml" xlink:title="Climate Data from Barrow and Atqasuk, Alaska, 1995-2001"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_402.thredds.xml" xlink:title="Climatic instability in interior Alaska from the isotopic record of Late Quaternary ground ice"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS140.thredds.xml" xlink:title="Cloud-Radiation Feedback: Boundary Layer Cloud Microphysical Properties and Processes"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS090.thredds.xml" xlink:title="Controls on Carbon Flux in Moist Acidic Versus Nonacidic Tundra, Arctic LTER Data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS143.thredds.xml" xlink:title="Coring Data from Drained Thaw-Lake Basins of the Arctic Coastal Plain, Alaska"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_388.thredds.xml" xlink:title="Corticosteroid hormone measurements for adult and chick little auks in Hornsund Fjord, 2005-2008"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_351.thredds.xml" xlink:title="Cosmogenic 14C in Shallow Firn at Summit, Greenland"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS106.thredds.xml" xlink:title="Daily Air and Active Layer Temperatures From Permafrost Observatories in Alaska, 1986-2001"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS113.thredds.xml" xlink:title="Data Correlating the Shallow GISP2 Dust Profile with the Wolf Sunspot Number Series"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS085.thredds.xml" xlink:title="Declassified Satellite Imagery Acquired Near Barrow Alaska"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_344.thredds.xml" xlink:title="DGPS Lake Shoreline Dataset from Field Survey"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_379.thredds.xml" xlink:title="Digital Elevation Models for Aerial Stereographic Flights, 2002-2010"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS073.thredds.xml" xlink:title="Distribution of Zooplankton in the Northeast Water Polynya Project, Summer 1992 and 1993"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_449.thredds.xml" xlink:title="Dune Lake, Alaska 12,000 Year Multiproxy Sediment Data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS902.thredds.xml" xlink:title="East Siberian Air, Ground Temperature, and Snow Depth Measurements, 1882-1994"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_404.thredds.xml" xlink:title="ECCO2 model Arctic Domain, 18km"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_405.thredds.xml" xlink:title="ECCO2 model Arctic Domain, 4km"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS006.thredds.xml" xlink:title="Ecosystem Carbon Fluxes, Toolik Lake, Alaska, 1995 and 1996"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_336.thredds.xml" xlink:title="Ecosystem metabolism for an arctic warm spring-stream"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS007.thredds.xml" xlink:title="Eddy Flux Data, Alaska North Slope, 1994-1996"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_331.thredds.xml" xlink:title="Effect of a warming climate on Arctic shelf and basin Calanus populations: implications for Pan-Arctic ecosystem dynamics"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS905.thredds.xml" xlink:title="Elevated Soil Temperature and Water Table Manipulation Data from Barrow, Alaska, 1999-2001"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS149.thredds.xml" xlink:title="Estimates of  Sea Ice Floe Velocities Characterizing Whaling Seasons Using Satellite Imagery of the Chukchi and Beaufort Seas, Spring 2000 and 2001"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS016.thredds.xml" xlink:title="ETOP05 Elevation Data for Areas Greater than 50 degrees North"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS092.thredds.xml" xlink:title="Eurasian River Historical Nutrient and Sediment Flux Data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_378.thredds.xml" xlink:title="Experimental freeze down of tundra soils"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_364.thredds.xml" xlink:title="Formaldehyde measurements during OASIS Barrow field intensive Spring 2009"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_401.thredds.xml" xlink:title="Geochemical analyses of Icelandic tephra preserved in lake sediments"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS017.thredds.xml" xlink:title="GIS Data from the Alaska North Slope"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS137.thredds.xml" xlink:title="GISP2 Stable Isotopes (Deuterium, Deuterium Excess, and Oxygen)"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS117.thredds.xml" xlink:title="Glacial Geology Map of the Toolik Lake and Upper Kuparuk River Region, Alaska"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_383.thredds.xml" xlink:title="Glacier Surface Velocity Fields from Columbia Glacier, 2004-2010"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS045.thredds.xml" xlink:title="Global Seasonal Snow Classification System"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS138.thredds.xml" xlink:title="Global Snow-Water-Equivalent Depth Coefficient-of-Variation Classification"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_395.thredds.xml" xlink:title="Greenland Ice Sheet Surface Elevation Changes From ICESat and ATM"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_412.thredds.xml" xlink:title="Greenland snow albedo from MODIS Terra and Aqua, 2000-2010, adjusted for solar zenith angle biases"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS008.thredds.xml" xlink:title="Greenland Summit Ice Cores"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS182.thredds.xml" xlink:title="Gridded ERA-40 Reanalysis Data for Western Arctic Linkage Experiment (WALE)"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS114.thredds.xml" xlink:title="Growing Season Energy and CO2 Fluxes over a Larch Forest Tundra Ecosystem in Siberia"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_264.thredds.xml" xlink:title="Halomethane and methane net fluxes in northern Alaskan tundra, Barrow and Toolik Lake"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS083.thredds.xml" xlink:title="Happy Valley Permanent Vegetation Plots"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS053.thredds.xml" xlink:title="Heterotrophic Bacteria and Protists in the Upper Water Column of the Central Arctic Ocean"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_381.thredds.xml" xlink:title="Hillshade Rasters for Digital Elevation Models, 2002-2010"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_267.thredds.xml" xlink:title="Historical Sea Ice Time Series from the Atlantic Arctic"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_268.thredds.xml" xlink:title="Historical Sea Temperature Time Series from the Atlantic Arctic"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_438.thredds.xml" xlink:title="History of the Arctic Flora in North America"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_361.thredds.xml" xlink:title="HO2 and RO2 measurements during OASIS Barrow field intensive Spring 2009"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_342.thredds.xml" xlink:title="HOTRAX 2005 sediment core HLY0503-8JPC"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_305.thredds.xml" xlink:title="Humans and Hydrology at High Latitudes: Community Information"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_306.thredds.xml" xlink:title="Humans and Hydrology at High Latitudes: Water Use Information"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS105.thredds.xml" xlink:title="Hydrographic Parameters from Fram Strait and Denmark Strait, 1998"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_400.thredds.xml" xlink:title="Iceberg Sightings in the North Atlantic"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS159.thredds.xml" xlink:title="Influence of Ocean Surface Conditions on the Regional Climate of the Northernmost Atlantic, 1988-2004"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_265.thredds.xml" xlink:title="Intersection of Climate Change, Water Resources and Humans in the Arctic"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS069.thredds.xml" xlink:title="Into the Arctic -- Information and Educational Activities for Studying Climate"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS126.thredds.xml" xlink:title="J-CAD Drifting Buoy Data, Arctic Ocean, 2000-2002"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS051.thredds.xml" xlink:title="LAII Alaska Landscape Flux Survey NOAA/ATDD Long-EZ Aircraft Data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_297.thredds.xml" xlink:title="Lake Sediment Thermal Properties for Emaiksoun Lake (Barrow, Alaska)"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_349.thredds.xml" xlink:title="Lake Water Level and Temperature from Pressure Sensors"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS020.thredds.xml" xlink:title="Land-Cover Map of the North Slope of Alaska"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_347.thredds.xml" xlink:title="Landsat Derived Historical Lake Extents"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_298.thredds.xml" xlink:title="Landsat Derived Historical Lake Extents for the Barrow Peninsula"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_262.thredds.xml" xlink:title="Landscape Age of the Arctic"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS022.thredds.xml" xlink:title="Large Area Estimates of Carbon Fluxes of Arctic Landscapes"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_311.thredds.xml" xlink:title="Large scale water manipulation experiment in the Arctic tundra"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_266.thredds.xml" xlink:title="Late Holocene Climatic and Environmental Change Inferred from Arctic Lake Sediments"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_229.thredds.xml" xlink:title="Lena River ADCP Transects"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_366.thredds.xml" xlink:title="Location information and pictures of the OASIS Barrow field intensive Spring 2009"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_415.thredds.xml" xlink:title="Low Arctic monitoring of plant community composition and dynamics"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_386.thredds.xml" xlink:title="MALINA 2009 Dissolved Organic Matter Concentration (DOC) and Compositions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_393.thredds.xml" xlink:title="Measurements of little auks (Alle alle) at Kap Hoegh, Greenland in 2007"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS015.thredds.xml" xlink:title="Meteorological and Hydrographic Data, Kuparuk River Watershed"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS173.thredds.xml" xlink:title="Meteorological and Radio Brightness Observations of Thawing Permafrost Near Toolik Lake, Alaska, 2004"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS901.thredds.xml" xlink:title="Meteorological, Radiation, Soil, and Snow Data from Alaska Sites, 1998-2008"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_370.thredds.xml" xlink:title="Meteorology measurements during OASIS Barrow field intensive Spring 2009"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS012.thredds.xml" xlink:title="Meteorology, Vegetation, Radiation, Microtopography, and Thaw Depth Data, Alaska, 1995-1996"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_414.thredds.xml" xlink:title="Methane ebullition flux data from thermokarst lakes, 2003-2010"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS013.thredds.xml" xlink:title="Methane Flux Data, Alaska North Slope, 1994-1996"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS108.thredds.xml" xlink:title="Methane Flux Measurements, Happy Valley, AK, 1994"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS162.thredds.xml" xlink:title="Model Output Assessing Net Carbon Exchange Across the Arctic Tundra-Boreal Forest Transition in Alaska, 1981-2000"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS096.thredds.xml" xlink:title="Model Output from MBL-GEM III for a Typical Tussock-Tundra Hill Slope, 1921-2100"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS097.thredds.xml" xlink:title="Model Output from MBL-GEM III for Typical Tussock Tundra in the Kuparuk River Basin, Alaska, 1921-2100"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS050.thredds.xml" xlink:title="Model Output From the  Frost Index  Permafrost Model: Variations in Circumpolar Frozen Ground Conditions and Modeled Future Conditions"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS030.thredds.xml" xlink:title="Model Output from the Arctic Region Climate System Model (ARCSyM)"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS052.thredds.xml" xlink:title="Model Output from the Marine Biology Laboratory General Ecosystem Model (MBL-GEM) for Toolik Lake, 1921-2144, and the Kuparuk River Basin, 1995"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS158.thredds.xml" xlink:title="Model Output of Active Layer Depth in the Arctic Drainage Basin, 1979-2001"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS075.thredds.xml" xlink:title="Modeled Carbon Responses of Tundra Ecosystems to Historical and Projected Climate"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS091.thredds.xml" xlink:title="Monitoring and Manipulation of Tundra Response to Climate Change, Arctic LTER, Toolik Lake, Alaska"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS165.thredds.xml" xlink:title="Mooring and Drifting Buoy Data: Beaufort Gyre Freshwater Experiment, 2003"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS087.thredds.xml" xlink:title="N-Factor Values and Air and Ground Surface Temperatures, Kuparuk River Basin, Alaska"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_358.thredds.xml" xlink:title="Nares Strait HLY03-05GC Holocene Sediment Data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS043.thredds.xml" xlink:title="National Solar Radiation Data Base Hourly Solar Data from Alaska, 1961-1990"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_348.thredds.xml" xlink:title="Near-shore Topography Transects of Barrow area Lakes"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS026.thredds.xml" xlink:title="Nitrate and Conductivity Data from the GISP H Core"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS014.thredds.xml" xlink:title="NOAA/CMDL World Climate Data, Global Historical Climatology Network for Alaska"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_416.thredds.xml" xlink:title="North American Tundra NEE modeled from MODIS data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_218.thredds.xml" xlink:title="North Pole Bottom Pressure Records"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS088.thredds.xml" xlink:title="North Pole Environmental Observatory (NPEO) Aerial CTD Survey"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_215.thredds.xml" xlink:title="North Pole Environmental Observatory (NPEO) Nutrient, Chlorophyll, and Hydrographic Profiles"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS156.thredds.xml" xlink:title="North Pole Environmental Observatory (NPEO) Oceanographic Mooring Data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS128.thredds.xml" xlink:title="North Pole Environmental Observatory (NPEO) PMEL/CRREL Ice Temperature and Mass Balance Buoy Data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS095.thredds.xml" xlink:title="North Pole Environmental Observatory (NPEO) Seawater Chemistry, 2000-2005"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS127.thredds.xml" xlink:title="North Pole Environmental Observatory (NPEO) Weather and Radiation Buoy Data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_357.thredds.xml" xlink:title="Observed and naturalized discharge data for large Siberian rivers"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_367.thredds.xml" xlink:title="OH reactivity measurements during OASIS Barrow field intensive Spring 2009"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_363.thredds.xml" xlink:title="OH, MSA, and H2SO4 measurements during OASIS Barrow field intensive Spring 2009"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_374.thredds.xml" xlink:title="Original Full Resolution Timelapse Images for Columbia Glacier"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_380.thredds.xml" xlink:title="Orthorectified Mosaics for Aerial Stereographic Flights, 2002-2009"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS157.thredds.xml" xlink:title="Oxygen and Deuterium Isotope Measurements from Siberia, 2002-2004"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_368.thredds.xml" xlink:title="Ozone, NOx, and NOy measurements during OASIS Barrow field intensive Spring 2009"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS176.thredds.xml" xlink:title="Paleoenvironment, Geomorphic Processes, and Carbon Stocks of Drained Thaw-lake Basins in the Arctic Coastal Plain, Alaska, USA, 2002-2005"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_231.thredds.xml" xlink:title="Pan-Arctic Land Surface (PALS) model drivers and outputs"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_437.thredds.xml" xlink:title="Passive acoustic recording data from the Alaskan Beaufort Sea"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_369.thredds.xml" xlink:title="Peroxy acetyl nitrate measurements during OASIS Barrow field intensive Spring 2009"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS077.thredds.xml" xlink:title="Physical and Chemical Properties from Selected Expeditions in the Arctic Ocean"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS031.thredds.xml" xlink:title="Point Barrow, Alaska and Vicinity Bathymetry"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_429.thredds.xml" xlink:title="Polar Bears: Adipose analyses"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_432.thredds.xml" xlink:title="Polar Bears: Blood analyses"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_436.thredds.xml" xlink:title="Polar Bears: Body temperature"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_434.thredds.xml" xlink:title="Polar Bears: Breath analyses"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_435.thredds.xml" xlink:title="Polar Bears: Location and movements"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_428.thredds.xml" xlink:title="Polar Bears: Morphological measurements and body condition at capture"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_433.thredds.xml" xlink:title="Polar Bears: Muscle analyses"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_237.thredds.xml" xlink:title="Polar Science Center Hydrographic Climatology (PHC)"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS089.thredds.xml" xlink:title="Preliminary Investigation of Paleoenvironment, Processes, and Carbon Stocks of Drained Thaw-Lake Basins, Arctic Coastal Plain, Alaska"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_293.thredds.xml" xlink:title="Proceedings of the International Conferences on Permafrost 1963-2008"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_338.thredds.xml" xlink:title="Provenance of Holocene sediment on the Chukchi-Alaskan margin"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_439.thredds.xml" xlink:title="Qalluuraq Lake, Alaska 12,000 Year Multiproxy Methane Sediment Data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_440.thredds.xml" xlink:title="Quartz Lake, Alaska 11,200 Year Chironomid and Stable Isotope Data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS062.thredds.xml" xlink:title="R-ArcticNet: A Regional, Electronic, Hydrographic Data Network for the Arctic Region"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_339.thredds.xml" xlink:title="Radar Profiles and GPS Surveys, Black Rapids Glacier, Alaska"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS093.thredds.xml" xlink:title="Radiation Measurements from the USCGC Polar Sea, 1994"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS136.thredds.xml" xlink:title="Radiocarbon Dates and Pollen Data, Peterson Erosional Remnant, Arctic Coastal Plain, Alaska"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_441.thredds.xml" xlink:title="Rantin Lake, Yukon 10,900 - 3,100 YrBP Multiproxy Sediment Data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_343.thredds.xml" xlink:title="Recovered Drained Thaw Lake Basins (DTLBs) on the Arctic Coastal Plain of Alaska using InSAR DEM and Remote Sensing Imagery"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS046.thredds.xml" xlink:title="Regional Survey of Greenland, 1988 - Snow Pit Data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS167.thredds.xml" xlink:title="Reindeer Herding in Transition: Feedbacks Between Climate, Caribou, and Local Communities in  Northwest Alaska"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS164.thredds.xml" xlink:title="Resource Allocation and Allometry of Plant Growth at Selected Sites in the Arctic: 2003-2005 Growing Seasons"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_208.thredds.xml" xlink:title="Resource Allocation and Allometry of Plant Growth in the Arctic"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_329.thredds.xml" xlink:title="Runoff, Snow, Soil Moisture, Soil Temperature, and Water Level Measurements from BEO"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_234.thredds.xml" xlink:title="Russian and Norwegian River Daily Discharge from ArcticRIMS"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS078.thredds.xml" xlink:title="Russian Historical Soil Temperature Data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS021.thredds.xml" xlink:title="Russian Rivers Data Set"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_406.thredds.xml" xlink:title="SBI Cruise HLY0201 merged bottle dataset"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_407.thredds.xml" xlink:title="SBI Cruise HLY0203 merged bottle dataset"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_408.thredds.xml" xlink:title="SBI Cruise HLY0402 merged bottle dataset"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_409.thredds.xml" xlink:title="SBI Cruise HLY0403 merged bottle dataset"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_410.thredds.xml" xlink:title="SBI Cruise NBP03-04a merged bottle dataset"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS070.thredds.xml" xlink:title="SCICEX Dissolved Barium Data, 1993-1997"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS072.thredds.xml" xlink:title="SCICEX Hydrographic Data, 1993"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS064.thredds.xml" xlink:title="SCICEX Hydrographic Data, 1997 and 1998"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_345.thredds.xml" xlink:title="Sea Ice Experiment: Dynamic Nature of the Arctic (SEDNA)"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_426.thredds.xml" xlink:title="Sea Ice Melt Pond Data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_418.thredds.xml" xlink:title="Sea Ice Melt Ponds: Aerial Photo Mosaic"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_420.thredds.xml" xlink:title="Sea Ice Melt Ponds: Core Temp, Salinity, and Isotope Data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_421.thredds.xml" xlink:title="Sea Ice Melt Ponds: Individual Line Photos"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_422.thredds.xml" xlink:title="Sea Ice Melt Ponds: Integrated Albedo"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_425.thredds.xml" xlink:title="Sea Ice Melt Ponds: LiDAR Scanning Data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_417.thredds.xml" xlink:title="Sea Ice Melt Ponds: Line Photo Composites"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_424.thredds.xml" xlink:title="Sea Ice Melt Ponds: Snow, SSL, and Pond Depths"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_419.thredds.xml" xlink:title="Sea Ice Melt Ponds: Spectral Albedo"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_423.thredds.xml" xlink:title="Sea Ice Melt Ponds: Surface Characterization"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_230.thredds.xml" xlink:title="Search Coil Magnetometer Array Data on Svalbard"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS060.thredds.xml" xlink:title="Sedimentary Denitrification Rates from the Bering, Chukchi, and Beaufort Seas"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.13_834.thredds.xml" xlink:title="SHEBA Composite Data Observations"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS142.thredds.xml" xlink:title="SHEBA Ocean Turbulence Mast Data Archive"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS151.thredds.xml" xlink:title="SHEBA Upper Ocean CTD and Thermal Microstructure, Western Arctic Ocean"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_210.thredds.xml" xlink:title="SNACS Atmospheric Model: source code and configuration files"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_212.thredds.xml" xlink:title="SNACS Atmospheric Model: Time Series Data - 3-hourly"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_211.thredds.xml" xlink:title="SNACS Atmospheric Model: Time Series Data - Daily averages"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_217.thredds.xml" xlink:title="SNACS: Environmental Variability, Bowhead Whale Distributions, and Inupiat Subsistence Whaling - biological data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_222.thredds.xml" xlink:title="SNACS: Environmental Variability, Bowhead Whale Distributions, and Inupiat Subsistence Whaling - CTD data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_221.thredds.xml" xlink:title="SNACS: Environmental Variability, Bowhead Whale Distributions, and Inupiat Subsistence Whaling - event log"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_220.thredds.xml" xlink:title="SNACS: Environmental Variability, Bowhead Whale Distributions, and Inupiat Subsistence Whaling - microzooplankton"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_219.thredds.xml" xlink:title="SNACS: Environmental Variability, Bowhead Whale Distributions, and Inupiat Subsistence Whaling - nutrients"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_216.thredds.xml" xlink:title="SNACS: Environmental Variability, Bowhead Whale Distributions, and Inupiat Subsistence Whaling - oceanographic data"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_299.thredds.xml" xlink:title="SNACS: Erosion Rates and Soil Physiochemical Properties in Northern Alaska Coastline (Data)"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_300.thredds.xml" xlink:title="SNACS: Erosion Rates and Soil Physiochemical Properties in Northern Alaska Coastline (Photos)"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_213.thredds.xml" xlink:title="SNACS: Snow and Ice Processes in the Deposition and Fate of Mercury in the Arctic"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS119.thredds.xml" xlink:title="Snow and Vegetation Measurements from Selected Sites Near Council, Alaska, USA, 2000-2002"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS037.thredds.xml" xlink:title="Snow Depth Measurements from Barrow, Alaska, 1994"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS910.thredds.xml" xlink:title="Snow Depth Yearly Measurements at Toolik Station 1995-2001"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_200.thredds.xml" xlink:title="Snow on the Alaska North Slope Grids"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS027.thredds.xml" xlink:title="Snow Pit and Ice Core Data from Southern Greenland, 1984"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS048.thredds.xml" xlink:title="Snow Pit Data from Greenland Summit, 1987"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS049.thredds.xml" xlink:title="Snow Pit Data from Greenland Summit, 1989 to 1993"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_309.thredds.xml" xlink:title="SnowModel Pan-Arctic Data 1979-2009"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_209.thredds.xml" xlink:title="Social Survey Data on Water Resources in Five Seward Peninsula Inupiaq Communities"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS074.thredds.xml" xlink:title="Soil Descriptions and Soil Chemistry for LAII/ATLAS Winter Carbon Flux Sites, Alaska, 1992 and 1998-2000"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_373.thredds.xml" xlink:title="Soil microbial parameters in Alaskan tundra soil through the winter"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS004.thredds.xml" xlink:title="Soil Properties of Carbon-Flux Monitoring Sites in Northwestern Alaska"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS056.thredds.xml" xlink:title="Soil Survey along the Dempster Highway, Yukon Territory, Canada"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS038.thredds.xml" xlink:title="Soil Temperatures for Happy Valley and Barrow, Alaska, USA"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS057.thredds.xml" xlink:title="Soil Temperatures, Toolik Lake, Alaska, 1995 and 1996"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_356.thredds.xml" xlink:title="Stable oxygen and hydrogen isotope values from surface water collected near Toolik Lake, Alaska"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS099.thredds.xml" xlink:title="Summer Surface Hydrographic Measurements in the Laptev Sea, 1980 to 2000"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_261.thredds.xml" xlink:title="Summer Warmth Index Average from 1982-2003"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_353.thredds.xml" xlink:title="Surface (sea floor) and near-surface (box cores) sediment mineralogy in Baffin Bay"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS150.thredds.xml" xlink:title="Svalbard Fjord Conductivity, Temperature, Depth Data, 2001-2004"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_232.thredds.xml" xlink:title="Synthesis and Scaling of Hydrologic and Biogeochemical Data on the North Slope and Coastal Zone of Alaska"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_394.thredds.xml" xlink:title="TDR results from Little Auks at Kap Hoegh colony 2007"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_403.thredds.xml" xlink:title="Temperature and Radiation Observation for Alaskan Shrub Tundra"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_350.thredds.xml" xlink:title="Temperature, discharge and light data for Ivishak Hot Spring, Alaska"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS112.thredds.xml" xlink:title="Terrain and Vegetation of Imnavait Creek, AK: Classification and Mapping"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS110.thredds.xml" xlink:title="Terrain and Vegetation of Imnavait Creek, AK: Permanent Plots"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS111.thredds.xml" xlink:title="Terrain and Vegetation of Imnavait Creek, AK: Toposequence Study"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS018.thredds.xml" xlink:title="Terrain and Vegetation of Toolik Lake, AK: Permanent Plots"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS103.thredds.xml" xlink:title="Thaw Depth and Vegetation Radiance Measurements, Happy Valley, AK, 1994"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS039.thredds.xml" xlink:title="Thaw Depth, Toolik Lake, Alaska, 1995 and 1996"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_354.thredds.xml" xlink:title="Thermistor data from surface soils and permafrost in the Imnavait Creek watershed"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS041.thredds.xml" xlink:title="Thickness, Salinity and Stable Isotope Composition of Sea Ice Samples from the Laptev Sea, 1999"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_228.thredds.xml" xlink:title="Thule Biocomplexity - Gross Ecosystem Photosynthesis"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_226.thredds.xml" xlink:title="Thule Fen CO2 Exchange 2004-2006"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_227.thredds.xml" xlink:title="Thule Leaf Gas Exchange Salix and Dryas 2005"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_385.thredds.xml" xlink:title="Time depth recorder (TDR) data from little auks, Hornsund Fjord, Spitsbergen"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS160.thredds.xml" xlink:title="Time Series of Active Layer Thickness in the Russian Arctic, 1930-1990"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS166.thredds.xml" xlink:title="Time Series of Seasonally Frozen Ground Depth in the Russian Arctic, 1930-1990"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_377.thredds.xml" xlink:title="Time-corrected High Resolution Timelapse Images for Columbia Glacier"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_376.thredds.xml" xlink:title="Time-corrected Low Resolution Timelapse Images for Columbia Glacier"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_375.thredds.xml" xlink:title="Time-corrected Low Resolution Timelapse Movies for Columbia Glacier"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS900.thredds.xml" xlink:title="Toolik Snowfence Experiment: 1994-2002 Active Layer Depth"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_337.thredds.xml" xlink:title="Total and tall shrub cover on the North Slope of Alaska"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_214.thredds.xml" xlink:title="TOVS Polar Pathfinder (Path-P) Derived Arctic Winds"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_411.thredds.xml" xlink:title="TOVS-Derived Downwelling Surface Longwave Radiation in the Arctic 1979-2005"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_304.thredds.xml" xlink:title="Toward Reanalysis of the Arctic Climate System - Sea Ice and Ocean Reconstruction with Data Assimilation"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_355.thredds.xml" xlink:title="Trace metal concentrations from surface water collected near Toolik Lake, Alaska"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_384.thredds.xml" xlink:title="Trophic Mismatch and Its Consequences for Dynamics of an Arctic Herbivore"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_448.thredds.xml" xlink:title="Understanding Climate-Driven Phenological Change - Observations, Adaptations and Cultural Implications in Northeastern Siberia and Labrador/Nunatsiavut (PHENARC)"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_372.thredds.xml" xlink:title="Underwater Acoustic Data from Yahtse Glacier, Icy Bay, Alaska"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS084.thredds.xml" xlink:title="Vegetation and Site Characterization, 1998-99 ATLAS Grid Transect, Northern Alaska"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS100.thredds.xml" xlink:title="Vertical Boundary Layer Profiles for Ozone and Meteorological Parameters at Summit, Greenland, 2000"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_365.thredds.xml" xlink:title="VOC measurements during OASIS Barrow field intensive Spring 2009"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_333.thredds.xml" xlink:title="Water quality data for lakes on the North Slope of Alaska"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_296.thredds.xml" xlink:title="Water Temperature and Bathymetric Depth Soundings for Lakes near Barrow"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_335.thredds.xml" xlink:title="Water temperature and bathymetric depth soundings for lakes on the North Slope of Alaska"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS131.thredds.xml" xlink:title="West Siberian Lowland Peatland GIS Data Collection"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS054.thredds.xml" xlink:title="Western Arctic Mooring CTD and ADCP Data, 1992-1995"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS122.thredds.xml" xlink:title="When the Weather is Uggianaqtuq: Inuit Observations of Environmental Change"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_236.thredds.xml" xlink:title="Winter Precipitation, Sublimation, and Snow-Depth in the Pan-Arctic"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_390.thredds.xml" xlink:title="Zooplankton densities and biomass near Hornsund Jjord, Spitsbergen"/>
+</dataset>
+</catalog>

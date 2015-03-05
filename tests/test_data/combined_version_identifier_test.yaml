@@ -1,0 +1,29 @@
+- name: UNIDATA
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
+  service_description:
+    - name: THREDDS-Catalog
+      filters: 
+        ors:
+          - type: simple
+            object: content
+            value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
+  datasets:
+  metadatas:
+  errors:
+  versions:
+    checks:
+      ors: 
+        - type: xpath
+          object: content
+          value: '@version'
+    defaults:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
+          text: '1.0'

@@ -1,0 +1,18 @@
+{
+    "id": "/service_description#",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Schema for the service description parsed response",
+    "type": "object",
+    "required": [ 
+        "identifier", 
+        "source_url",
+        "identity"
+    ],
+    "properties": {
+
+    },
+    "definitions": {
+
+    }
+
+}

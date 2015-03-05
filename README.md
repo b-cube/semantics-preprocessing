@@ -8,32 +8,42 @@ XML and text parsing for the pipeline between Nutch/Solr and a triplestore or NL
 
 ```
 {
+	"solr_identifier": "",
+	"source_url": "",
+	"harvested_date": "",
+	"modified_date": "",
+	"identity": {
+		"protocol": "",  // base type of the response, ex OGC or OAI-PMH
+		"service": "", // service type, ex Catalog, WFS
+		"version": "", // version identifier
+		"subtype": "", // type of service (service | dataset | metadata)
+		"has_dataset": False, // response contains secondary dataset metadata
+		"has_metadata": False // response contains secondary metadata metadata
+	},
 	"service": {
-		"title": "",
-		"abstract": "",
-		"description": "",
-		"source": "",
-		"contact": "",
-		"rights": "", // access, usage rights (this is conflating a variety of "rights" concepts)
-		"language": "",
-		"subject": "", // keywords as string or list
+		"title": [],
+		"abstract": [],
+		"source": [],
+		"contact": [],
+		"rights": [], // access, usage rights (this is conflating a variety of "rights" concepts)
+		"language": [],
+		"subject": [], // keywords as normalized string and then split
 		"endpoints": [
-			// it's a tuple
-			(
-				"type", 
-				"source url", 
-				[
-					// it's a list of tuples
+			{
+				"type": "", 
+				"url": "", 
+				"http_method": "", // get | post
+				"parameters": [
 					// for the parameter descriptions
-					(
-						"parameter name",
-						"namespaces",
-						"namespace prefix",
-						"parameter type",
-						"parameter format"
-					)
+					{
+						"name": "parameter name",
+						"namespace": {"uri": "", "prefix": ""},
+						"type",
+						"format",
+						"values": [""]
+					}
 				]
-			)
+			}
 		]
 	},
 	"remainder": [
@@ -74,7 +84,7 @@ This is contigent on those service types having service-level descriptions.
 
 ####Currently Supported Dataset Descriptions
 
-- [ ] ISO 19115
+- [x] ISO 19115
 - [ ] FGDC
 - [ ] Dif (?)
 

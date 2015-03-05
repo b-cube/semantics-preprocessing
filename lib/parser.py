@@ -1,5 +1,7 @@
 from lxml import etree
 from HTMLParser import HTMLParser
+import traceback
+import sys
 
 
 class Parser():
@@ -14,9 +16,7 @@ class Parser():
     '''
 
     def __init__(self, string_to_parse, encoding='utf-8'):
-        # there is some encoding issue somewhere around solr/nutch
-        # xthat should be handled better than this
-        self._string = string_to_parse.replace('\\n', ' ')
+        self._string = string_to_parse
         self._encoding = encoding
         self._parse()
 
@@ -29,7 +29,9 @@ class Parser():
         try:
             self.xml = etree.fromstring(self._string, parser)
         except Exception as ex:
+            print self._string[0:50]
             print ex
+            traceback.print_exc(file=sys.stdout)
             self.xml = None
 
         self._namespaces = self._get_document_namespaces()
@@ -60,6 +62,11 @@ class Parser():
             t = elem.text.strip() if elem.text else ''
             tags = [elem.tag] + [e.tag for e in elem.iterancestors()]
             tags.reverse()
+
+            # check for an assumed comment object
+            if sum([isinstance(a, str) for a in tags]) != len(tags):
+                continue
+
             atts = self._parse_node_attributes(elem, exclude_descriptors)
 
             if '/'.join(tags) not in exclude_descriptors and (atts or t):
@@ -100,6 +107,9 @@ class Parser():
         Pull all of the namespaces in the source document
         and generate a list of tuples (prefix, URI) to dict
         '''
+        if self.xml is None:
+            return {}
+
         document_namespaces = dict(self.xml.xpath('/*/namespace::*'))
         if None in document_namespaces:
             document_namespaces['default'] = document_namespaces[None]
@@ -124,7 +134,8 @@ class Parser():
 
         for the actual querying (replace the '{ns}' with 'prefix:')
 
-        and we don't really care for storage - we care for this path, this query
+        and we don't really care for storage -
+            we care for this path, this query
         '''
         for prefix, ns in self._namespaces.iteritems():
             wrapped_ns = '{%s}' % ns

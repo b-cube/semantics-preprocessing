@@ -1,7 +1,7 @@
 from lxml import etree
 
 # note: this is from b-cube/semantics
-from parser import Parser
+from lib.parser import Parser
 
 '''
 strip out some identified set of elements for the
@@ -16,8 +16,9 @@ class BaseReader():
     '''
 
     parameters:
-        _service_descriptors: dict containing the "generic" key and the xpath for
-            that element in the specific xml structure, ie abstract: idinfo/descript/abstract
+        _service_descriptors: dict containing the "generic" key
+            and the xpath for that element in the specific xml
+            structure, ie abstract: idinfo/descript/abstract
     '''
 
     _service_descriptors = {}
@@ -44,8 +45,9 @@ class BaseReader():
         for k, v in self._service_descriptors.iteritems():
             elems = self.parser.find(v)
             if elems:
+                # return everything as a list for the triplestore
                 service_elements[k] = [e.text if isinstance(e, etree._Element) else e for e in elems] if len(elems) > 1 \
-                    else (elems[0].text if isinstance(elems[0], etree._Element) else elems[0])
+                    else ([elems[0].text] if isinstance(elems[0], etree._Element) else elems)
 
         endpoints = self.parse_endpoints()
         if endpoints:
@@ -84,4 +86,7 @@ class BaseReader():
         note:
             this might have certain nested structures depending on the service
         '''
-        pass
+        return []
+
+    def parse_endpoints(self):
+        return []
