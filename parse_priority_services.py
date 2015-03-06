@@ -75,7 +75,7 @@ for response in responses:
     elif protocol == 'OAI-PMH':
         reader = OaiPmhReader(cleaned_text)
     elif 'OGC' in protocol and protocol != 'OGC:error':
-        pass
+        continue
 
     service_description = reader.parse_service()
     service_description['solr_identifier'] = digest
@@ -88,3 +88,5 @@ for response in responses:
     # this should be everything needed to generate the triples
     with open('testdata/service_descriptions/%s.json' % digest, 'w') as f:
         f.write(json.dumps(service_description, indent=4))
+
+    identifier = None

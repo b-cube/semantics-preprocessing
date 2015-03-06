@@ -51,3 +51,40 @@
           # run against mi_metadata or md_metadata (or any iso root)
           # and we are concatenating name and version (note, this does not manage whitespace issues!)
           value: 'concat(/*/{http://www.isotc211.org/2005/gmd}metadataStandardName/{http://www.isotc211.org/2005/gco}CharacterString/text(), " (", /*/{http://www.isotc211.org/2005/gmd}metadataStandardVersion/{http://www.isotc211.org/2005/gco}CharacterString/text(), ")")'
+- name: 'ISO-19115 DS'
+  subtype: metadata
+  filters:
+    ors:
+      - type: complex
+        operator: ands
+        filters:
+          - type: xpath
+            object: content
+            value: '/*[local-name() = "DS_Series"]'
+          - type: simple
+            object: content
+            value: 'xmlns="http://www.isotc211.org/2005/gmi"'
+      - type: complex
+        operator: ands
+        filters:
+          - type: xpath
+            object: content
+            value: '/*[local-name() = "DS_Series"]'
+          - type: simple
+            object: content
+            value: 'xmlns="http://www.isotc211.org/2005/gmd"'
+  service_description:
+  datasets:
+  metadatas:
+  errors:
+  versions:
+    checks:
+      ors:
+        - type: xpath
+          object: content
+          # and we are concatenating name and version (note, this does not manage whitespace issues!)
+          value: 'concat(/*/*[local-name()="seriesMetadata"]/*[local-name()="MD_Metadata" or local-name()="MI_Metadata"]/{http://www.isotc211.org/2005/gmd}metadataStandardName/{http://www.isotc211.org/2005/gco}CharacterString/text(), " (", /*/*[local-name()="seriesMetadata"]/*[local-name()="MD_Metadata" or local-name()="MI_Metadata"]/{http://www.isotc211.org/2005/gmd}metadataStandardVersion/{http://www.isotc211.org/2005/gco}CharacterString/text(), ")")'
+
+
+
+

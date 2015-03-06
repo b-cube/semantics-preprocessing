@@ -238,6 +238,20 @@ class TestIso(unittest.TestCase):
 
         self.assertTrue(identifier.protocol == 'ISO-19115')
 
+    def test_if_returning_iso_protocol_for_ds(self):
+        with open('tests/test_data/iso-19115_ds.xml', 'r') as f:
+            content = f.read()
+        url = 'http://www.mapserver.com/some_iso'
+
+        content = content.replace('\\n', '')
+        parser = Parser(content)
+
+        identifier = Identify(self.yaml_file, content, url, **{'parser': parser})
+        identifier.identify()
+
+        self.assertTrue(identifier.protocol == 'ISO-19115 DS')
+        self.assertTrue(identifier.version == 'ISO19115 (2003/Cor.1:2006)')
+
 
 class TestWfsIdentification(unittest.TestCase):
     def setUp(self):

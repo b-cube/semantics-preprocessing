@@ -88,6 +88,72 @@
         - type: xpath
           # fully qualified xpath which is lovely and short here
           value: '@version'
+- name: OGC:WMTS
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.opengis.net/wmts'
+      - type: simple
+        object: content
+        value: 'Operation name="GetTile"'
+  service_description:
+    - name: GetCapabilities
+      filters:
+        ors:
+            # we are assuming that we are starting with a 
+            # correctly identified wxs response
+          - type: simple
+            object: url
+            value: 'REQUEST=GETCAPABILITIES'
+          - type: simple
+            object: content
+            value: '<GetCapabilities>'
+          - type: simple
+            object: content
+            value: 'name="GetCapabilities"'
+  datasets:
+  metadatas:
+  versions:
+    checks:
+      ors:
+        - type: xpath
+          # fully qualified xpath which is lovely and short here
+          value: '@version'
+- name: OGC:SOS
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.opengis.net/sos'
+      - type: simple
+        object: content
+        value: 'Operation name="DescribeSensor"'
+  service_description:
+    - name: GetCapabilities
+      filters:
+        ors:
+            # we are assuming that we are starting with a 
+            # correctly identified wxs response
+          - type: simple
+            object: url
+            value: 'REQUEST=GETCAPABILITIES'
+          - type: simple
+            object: content
+            value: '<GetCapabilities>'
+          - type: simple
+            object: content
+            value: 'name="GetCapabilities"'
+  datasets:
+  metadatas:
+  versions:
+    checks:
+      ors:
+        - type: xpath
+          # fully qualified xpath which is lovely and short here
+          value: '@version'
 - name: OGC:WFS
   subtype: service
   filters:

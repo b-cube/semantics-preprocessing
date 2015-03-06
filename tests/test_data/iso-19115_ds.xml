@@ -1,0 +1,1551 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DS_Series xmlns="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gsr="http://www.isotc211.org/2005/gsr" xmlns:gss="http://www.isotc211.org/2005/gss" xmlns:gts="http://www.isotc211.org/2005/gts" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.isotc211.org/2005/gmd http://schemas.opengis.net/iso/19139/20070417/gmd/gmd.xsd">
+	<composedOf>
+		<DS_DataSet>
+			<has>
+				<MD_Metadata>
+					<parentIdentifier>
+						<gco:CharacterString>NOAA ENC Product Catalog MN State</gco:CharacterString>
+					</parentIdentifier>
+					<hierarchyLevel>
+						<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+					</hierarchyLevel>
+					<hierarchyLevelName>
+						<gco:CharacterString>NOAA ENC</gco:CharacterString>
+					</hierarchyLevelName>
+					<contact>
+						<CI_ResponsibleParty>
+							<organisationName>
+								<gco:CharacterString>National Oceanic and Atmospheric Administration (NOAA), National Ocean Service (NOS), Office of Coast Survey (OCS)</gco:CharacterString>
+							</organisationName>
+							<role>
+								<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="owner">owner</CI_RoleCode>
+							</role>
+						</CI_ResponsibleParty>
+					</contact>
+					<dateStamp>
+						<gco:DateTime>2015-02-27T07:03:55.253-05:00</gco:DateTime>
+					</dateStamp>
+					<identificationInfo>
+						<MD_DataIdentification>
+							<citation>
+								<CI_Citation>
+									<title>
+										<gco:CharacterString>US2MI79M</gco:CharacterString>
+									</title>
+									<alternateTitle>
+										<gco:CharacterString>Lake Superior</gco:CharacterString>
+									</alternateTitle>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>2013-02-21</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="revision">revision</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>2014-11-03</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication">publication</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<edition>
+										<gco:CharacterString>1.3</gco:CharacterString>
+									</edition>
+								</CI_Citation>
+							</citation>
+							<abstract>
+								<gco:CharacterString>ENC cell</gco:CharacterString>
+							</abstract>
+							<status>
+								<MD_ProgressCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ProgressCode" codeListValue="completed">completed</MD_ProgressCode>
+							</status>
+							<resourceMaintenance>
+								<MD_MaintenanceInformation>
+									<maintenanceAndUpdateFrequency>
+										<MD_MaintenanceFrequencyCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode" codeListValue="continual">continual</MD_MaintenanceFrequencyCode>
+									</maintenanceAndUpdateFrequency>
+									<updateScope>
+										<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+									</updateScope>
+									<updateScopeDescription>
+										<MD_ScopeDescription>
+											<other>
+												<gco:CharacterString>nm update agency: NGA; doc: 0615; date: 2015-02-07</gco:CharacterString>
+											</other>
+										</MD_ScopeDescription>
+									</updateScopeDescription>
+									<updateScopeDescription>
+										<MD_ScopeDescription>
+											<other>
+												<gco:CharacterString>lnm update agency: USCG09; doc: 4014; date: 2014-10-07</gco:CharacterString>
+											</other>
+										</MD_ScopeDescription>
+									</updateScopeDescription>
+								</MD_MaintenanceInformation>
+							</resourceMaintenance>
+							<descriptiveKeywords>
+								<MD_Keywords>
+									<keyword>
+										<gco:CharacterString>coast guard district: 9</gco:CharacterString>
+									</keyword>
+									<keyword>
+										<gco:CharacterString>state: MI</gco:CharacterString>
+									</keyword>
+									<keyword>
+										<gco:CharacterString>state: MN</gco:CharacterString>
+									</keyword>
+									<keyword>
+										<gco:CharacterString>state: WI</gco:CharacterString>
+									</keyword>
+									<keyword>
+										<gco:CharacterString>region: 22</gco:CharacterString>
+									</keyword>
+								</MD_Keywords>
+							</descriptiveKeywords>
+							<spatialResolution>
+								<MD_Resolution>
+									<equivalentScale>
+										<MD_RepresentativeFraction>
+											<denominator>
+												<gco:Integer>600000</gco:Integer>
+											</denominator>
+										</MD_RepresentativeFraction>
+									</equivalentScale>
+								</MD_Resolution>
+							</spatialResolution>
+							<language>
+								<gco:CharacterString>eng</gco:CharacterString>
+							</language>
+							<extent>
+								<EX_Extent>
+									<description>
+										<gco:CharacterString>panel number: 1; type: E</gco:CharacterString>
+									</description>
+									<geographicElement>
+										<EX_BoundingPolygon>
+											<polygon>
+												<gml:Polygon gml:id="US2MI79M_P1">
+													<gml:exterior>
+														<gml:LinearRing>
+															<gml:pos>46.33749 -84.22845</gml:pos>
+															<gml:pos>46.3128 -85.25576</gml:pos>
+															<gml:pos>46.1376 -85.24549</gml:pos>
+															<gml:pos>46.14213 -85.73922</gml:pos>
+															<gml:pos>46.14357 -86.07575</gml:pos>
+															<gml:pos>46.14447 -86.30105</gml:pos>
+															<gml:pos>46.14364 -86.9652</gml:pos>
+															<gml:pos>46.14187 -87.24092</gml:pos>
+															<gml:pos>46.13554 -87.93782</gml:pos>
+															<gml:pos>46.13361 -88.08726</gml:pos>
+															<gml:pos>45.99998 -88.08368</gml:pos>
+															<gml:pos>45.99998 -92.36664</gml:pos>
+															<gml:pos>49.22502 -92.36664</gml:pos>
+															<gml:pos>49.22502 -84.19997</gml:pos>
+															<gml:pos>46.33807 -84.19997</gml:pos>
+															<gml:pos>46.33775 -84.21508</gml:pos>
+															<gml:pos>46.3376 -84.22399</gml:pos>
+															<gml:pos>46.33749 -84.22845</gml:pos>
+														</gml:LinearRing>
+													</gml:exterior>
+												</gml:Polygon>
+											</polygon>
+										</EX_BoundingPolygon>
+									</geographicElement>
+								</EX_Extent>
+							</extent>
+						</MD_DataIdentification>
+					</identificationInfo>
+					<distributionInfo>
+						<MD_Distribution>
+							<transferOptions>
+								<MD_DigitalTransferOptions>
+									<unitsOfDistribution>
+										<gco:CharacterString>dataset</gco:CharacterString>
+									</unitsOfDistribution>
+									<transferSize>
+										<gco:Real>0.614721298217773</gco:Real>
+									</transferSize>
+									<onLine>
+										<CI_OnlineResource>
+											<linkage>
+												<URL>http://www.charts.noaa.gov/ENCs/US2MI79M.zip</URL>
+											</linkage>
+											<description>
+												<gco:CharacterString>zipfile date and time: 2014-11-04T12:02:56Z</gco:CharacterString>
+											</description>
+										</CI_OnlineResource>
+									</onLine>
+								</MD_DigitalTransferOptions>
+							</transferOptions>
+						</MD_Distribution>
+					</distributionInfo>
+					<dataQualityInfo>
+						<DQ_DataQuality>
+							<scope>
+								<DQ_Scope>
+									<level>
+										<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+									</level>
+								</DQ_Scope>
+							</scope>
+							<lineage>
+								<LI_Lineage>
+									<source>
+										<LI_Source>
+											<description>
+												<gco:CharacterString>NOAA paper chart</gco:CharacterString>
+											</description>
+											<sourceCitation>
+												<CI_Citation>
+													<title>
+														<gco:CharacterString>14961</gco:CharacterString>
+													</title>
+													<date gco:nilReason="Date uknown"/>
+												</CI_Citation>
+											</sourceCitation>
+										</LI_Source>
+									</source>
+								</LI_Lineage>
+							</lineage>
+						</DQ_DataQuality>
+					</dataQualityInfo>
+				</MD_Metadata>
+			</has>
+		</DS_DataSet>
+	</composedOf>
+	<composedOf>
+		<DS_DataSet>
+			<has>
+				<MD_Metadata>
+					<parentIdentifier>
+						<gco:CharacterString>NOAA ENC Product Catalog MN State</gco:CharacterString>
+					</parentIdentifier>
+					<hierarchyLevel>
+						<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+					</hierarchyLevel>
+					<hierarchyLevelName>
+						<gco:CharacterString>NOAA ENC</gco:CharacterString>
+					</hierarchyLevelName>
+					<contact>
+						<CI_ResponsibleParty>
+							<organisationName>
+								<gco:CharacterString>National Oceanic and Atmospheric Administration (NOAA), National Ocean Service (NOS), Office of Coast Survey (OCS)</gco:CharacterString>
+							</organisationName>
+							<role>
+								<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="owner">owner</CI_RoleCode>
+							</role>
+						</CI_ResponsibleParty>
+					</contact>
+					<dateStamp>
+						<gco:DateTime>2015-02-27T07:03:55.253-05:00</gco:DateTime>
+					</dateStamp>
+					<identificationInfo>
+						<MD_DataIdentification>
+							<citation>
+								<CI_Citation>
+									<title>
+										<gco:CharacterString>US4MN11M</gco:CharacterString>
+									</title>
+									<alternateTitle>
+										<gco:CharacterString>Little Girls Point to Silver Bay, including Duluth and Apostle Islands</gco:CharacterString>
+									</alternateTitle>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>2011-06-28</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="revision">revision</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>2013-09-24</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication">publication</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<edition>
+										<gco:CharacterString>18.3</gco:CharacterString>
+									</edition>
+								</CI_Citation>
+							</citation>
+							<abstract>
+								<gco:CharacterString>ENC cell</gco:CharacterString>
+							</abstract>
+							<status>
+								<MD_ProgressCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ProgressCode" codeListValue="completed">completed</MD_ProgressCode>
+							</status>
+							<resourceMaintenance>
+								<MD_MaintenanceInformation>
+									<maintenanceAndUpdateFrequency>
+										<MD_MaintenanceFrequencyCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode" codeListValue="continual">continual</MD_MaintenanceFrequencyCode>
+									</maintenanceAndUpdateFrequency>
+									<updateScope>
+										<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+									</updateScope>
+									<updateScopeDescription>
+										<MD_ScopeDescription>
+											<other>
+												<gco:CharacterString>nm update agency: NGA; doc: 0615; date: 2015-02-07</gco:CharacterString>
+											</other>
+										</MD_ScopeDescription>
+									</updateScopeDescription>
+									<updateScopeDescription>
+										<MD_ScopeDescription>
+											<other>
+												<gco:CharacterString>lnm update agency: USCG09; doc: 0615; date: 2015-02-10</gco:CharacterString>
+											</other>
+										</MD_ScopeDescription>
+									</updateScopeDescription>
+								</MD_MaintenanceInformation>
+							</resourceMaintenance>
+							<descriptiveKeywords>
+								<MD_Keywords>
+									<keyword>
+										<gco:CharacterString>coast guard district: 9</gco:CharacterString>
+									</keyword>
+									<keyword>
+										<gco:CharacterString>state: MI</gco:CharacterString>
+									</keyword>
+									<keyword>
+										<gco:CharacterString>state: MN</gco:CharacterString>
+									</keyword>
+									<keyword>
+										<gco:CharacterString>state: WI</gco:CharacterString>
+									</keyword>
+									<keyword>
+										<gco:CharacterString>region: 22</gco:CharacterString>
+									</keyword>
+								</MD_Keywords>
+							</descriptiveKeywords>
+							<spatialResolution>
+								<MD_Resolution>
+									<equivalentScale>
+										<MD_RepresentativeFraction>
+											<denominator>
+												<gco:Integer>120000</gco:Integer>
+											</denominator>
+										</MD_RepresentativeFraction>
+									</equivalentScale>
+								</MD_Resolution>
+							</spatialResolution>
+							<language>
+								<gco:CharacterString>eng</gco:CharacterString>
+							</language>
+							<extent>
+								<EX_Extent>
+									<description>
+										<gco:CharacterString>panel number: 1; type: E</gco:CharacterString>
+									</description>
+									<geographicElement>
+										<EX_BoundingPolygon>
+											<polygon>
+												<gml:Polygon gml:id="US4MN11M_P1">
+													<gml:exterior>
+														<gml:LinearRing>
+															<gml:pos>46.72266 -92.14137</gml:pos>
+															<gml:pos>46.81116 -92.14253</gml:pos>
+															<gml:pos>46.98863 -92.14491</gml:pos>
+															<gml:pos>46.99137 -91.76162</gml:pos>
+															<gml:pos>47.29019 -91.76558</gml:pos>
+															<gml:pos>47.29019 -91.31029</gml:pos>
+															<gml:pos>47.19826 -91.31029</gml:pos>
+															<gml:pos>47.19826 -90.32192</gml:pos>
+															<gml:pos>46.83317 -90.32775</gml:pos>
+															<gml:pos>46.61148 -90.33122</gml:pos>
+															<gml:pos>46.60687 -90.33129</gml:pos>
+															<gml:pos>46.60666 -90.33131</gml:pos>
+															<gml:pos>46.55341 -90.33212</gml:pos>
+															<gml:pos>46.40996 -90.33435</gml:pos>
+															<gml:pos>46.4127 -91.37681</gml:pos>
+															<gml:pos>46.61143 -91.37771</gml:pos>
+															<gml:pos>46.60705 -92.13984</gml:pos>
+															<gml:pos>46.72266 -92.14137</gml:pos>
+														</gml:LinearRing>
+													</gml:exterior>
+												</gml:Polygon>
+											</polygon>
+										</EX_BoundingPolygon>
+									</geographicElement>
+								</EX_Extent>
+							</extent>
+							<extent>
+								<EX_Extent>
+									<description>
+										<gco:CharacterString>panel number: 2; type: I</gco:CharacterString>
+									</description>
+									<geographicElement>
+										<EX_BoundingPolygon>
+											<polygon>
+												<gml:Polygon gml:id="US4MN11M_P2">
+													<gml:exterior>
+														<gml:LinearRing>
+															<gml:pos>46.58328 -90.38764</gml:pos>
+															<gml:pos>47.14655 -90.38361</gml:pos>
+															<gml:pos>47.14641 -91.05777</gml:pos>
+															<gml:pos>46.79331 -91.05639</gml:pos>
+															<gml:pos>46.57639 -91.05445</gml:pos>
+															<gml:pos>46.54976 -91.05445</gml:pos>
+															<gml:pos>46.54999 -90.9739</gml:pos>
+															<gml:pos>46.55017 -90.88377</gml:pos>
+															<gml:pos>46.54995 -90.40761</gml:pos>
+															<gml:pos>46.5499 -90.38787</gml:pos>
+															<gml:pos>46.58328 -90.38764</gml:pos>
+														</gml:LinearRing>
+													</gml:exterior>
+												</gml:Polygon>
+											</polygon>
+										</EX_BoundingPolygon>
+									</geographicElement>
+								</EX_Extent>
+							</extent>
+						</MD_DataIdentification>
+					</identificationInfo>
+					<distributionInfo>
+						<MD_Distribution>
+							<transferOptions>
+								<MD_DigitalTransferOptions>
+									<unitsOfDistribution>
+										<gco:CharacterString>dataset</gco:CharacterString>
+									</unitsOfDistribution>
+									<transferSize>
+										<gco:Real>0.303324699401855</gco:Real>
+									</transferSize>
+									<onLine>
+										<CI_OnlineResource>
+											<linkage>
+												<URL>http://www.charts.noaa.gov/ENCs/US4MN11M.zip</URL>
+											</linkage>
+											<description>
+												<gco:CharacterString>zipfile date and time: 2013-09-26T20:12:53Z</gco:CharacterString>
+											</description>
+										</CI_OnlineResource>
+									</onLine>
+								</MD_DigitalTransferOptions>
+							</transferOptions>
+						</MD_Distribution>
+					</distributionInfo>
+					<dataQualityInfo>
+						<DQ_DataQuality>
+							<scope>
+								<DQ_Scope>
+									<level>
+										<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+									</level>
+								</DQ_Scope>
+							</scope>
+							<lineage>
+								<LI_Lineage>
+									<source>
+										<LI_Source>
+											<description>
+												<gco:CharacterString>NOAA paper chart</gco:CharacterString>
+											</description>
+											<sourceCitation>
+												<CI_Citation>
+													<title>
+														<gco:CharacterString>14966</gco:CharacterString>
+													</title>
+													<date gco:nilReason="Date uknown"/>
+												</CI_Citation>
+											</sourceCitation>
+										</LI_Source>
+									</source>
+								</LI_Lineage>
+							</lineage>
+						</DQ_DataQuality>
+					</dataQualityInfo>
+				</MD_Metadata>
+			</has>
+		</DS_DataSet>
+	</composedOf>
+	<composedOf>
+		<DS_DataSet>
+			<has>
+				<MD_Metadata>
+					<parentIdentifier>
+						<gco:CharacterString>NOAA ENC Product Catalog MN State</gco:CharacterString>
+					</parentIdentifier>
+					<hierarchyLevel>
+						<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+					</hierarchyLevel>
+					<hierarchyLevelName>
+						<gco:CharacterString>NOAA ENC</gco:CharacterString>
+					</hierarchyLevelName>
+					<contact>
+						<CI_ResponsibleParty>
+							<organisationName>
+								<gco:CharacterString>National Oceanic and Atmospheric Administration (NOAA), National Ocean Service (NOS), Office of Coast Survey (OCS)</gco:CharacterString>
+							</organisationName>
+							<role>
+								<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="owner">owner</CI_RoleCode>
+							</role>
+						</CI_ResponsibleParty>
+					</contact>
+					<dateStamp>
+						<gco:DateTime>2015-02-27T07:03:55.253-05:00</gco:DateTime>
+					</dateStamp>
+					<identificationInfo>
+						<MD_DataIdentification>
+							<citation>
+								<CI_Citation>
+									<title>
+										<gco:CharacterString>US4MN21M</gco:CharacterString>
+									</title>
+									<alternateTitle>
+										<gco:CharacterString>Lake Superior - Beaver Bay To Pigeon Point Minn</gco:CharacterString>
+									</alternateTitle>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>2012-09-13</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="revision">revision</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>2015-02-18</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication">publication</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<edition>
+										<gco:CharacterString>6.1</gco:CharacterString>
+									</edition>
+								</CI_Citation>
+							</citation>
+							<abstract>
+								<gco:CharacterString>ENC cell</gco:CharacterString>
+							</abstract>
+							<status>
+								<MD_ProgressCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ProgressCode" codeListValue="completed">completed</MD_ProgressCode>
+							</status>
+							<resourceMaintenance>
+								<MD_MaintenanceInformation>
+									<maintenanceAndUpdateFrequency>
+										<MD_MaintenanceFrequencyCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode" codeListValue="continual">continual</MD_MaintenanceFrequencyCode>
+									</maintenanceAndUpdateFrequency>
+									<updateScope>
+										<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+									</updateScope>
+									<updateScopeDescription>
+										<MD_ScopeDescription>
+											<other>
+												<gco:CharacterString>nm update agency: NGA; doc: 0615; date: 2015-02-07</gco:CharacterString>
+											</other>
+										</MD_ScopeDescription>
+									</updateScopeDescription>
+									<updateScopeDescription>
+										<MD_ScopeDescription>
+											<other>
+												<gco:CharacterString>lnm update agency: USCG09; doc: 0615; date: 2015-02-10</gco:CharacterString>
+											</other>
+										</MD_ScopeDescription>
+									</updateScopeDescription>
+								</MD_MaintenanceInformation>
+							</resourceMaintenance>
+							<descriptiveKeywords>
+								<MD_Keywords>
+									<keyword>
+										<gco:CharacterString>coast guard district: 9</gco:CharacterString>
+									</keyword>
+									<keyword>
+										<gco:CharacterString>state: MN</gco:CharacterString>
+									</keyword>
+									<keyword>
+										<gco:CharacterString>region: 22</gco:CharacterString>
+									</keyword>
+								</MD_Keywords>
+							</descriptiveKeywords>
+							<spatialResolution>
+								<MD_Resolution>
+									<equivalentScale>
+										<MD_RepresentativeFraction>
+											<denominator>
+												<gco:Integer>120000</gco:Integer>
+											</denominator>
+										</MD_RepresentativeFraction>
+									</equivalentScale>
+								</MD_Resolution>
+							</spatialResolution>
+							<language>
+								<gco:CharacterString>eng</gco:CharacterString>
+							</language>
+							<extent>
+								<EX_Extent>
+									<description>
+										<gco:CharacterString>panel number: 1; type: E</gco:CharacterString>
+									</description>
+									<geographicElement>
+										<EX_BoundingPolygon>
+											<polygon>
+												<gml:Polygon gml:id="US4MN21M_P1">
+													<gml:exterior>
+														<gml:LinearRing>
+															<gml:pos>47.75058 -89.69073</gml:pos>
+															<gml:pos>47.7086 -89.69001</gml:pos>
+															<gml:pos>47.70854 -89.48737</gml:pos>
+															<gml:pos>47.55711 -89.49028</gml:pos>
+															<gml:pos>47.48423 -89.49166</gml:pos>
+															<gml:pos>47.19826 -89.49464</gml:pos>
+															<gml:pos>47.19826 -91.31029</gml:pos>
+															<gml:pos>47.29019 -91.31029</gml:pos>
+															<gml:pos>47.2902 -91.30885</gml:pos>
+															<gml:pos>48.00196 -91.31998</gml:pos>
+															<gml:pos>48.08044 -91.32125</gml:pos>
+															<gml:pos>48.08185 -89.84356</gml:pos>
+															<gml:pos>48.08084 -89.69638</gml:pos>
+															<gml:pos>47.75058 -89.69073</gml:pos>
+														</gml:LinearRing>
+													</gml:exterior>
+												</gml:Polygon>
+											</polygon>
+										</EX_BoundingPolygon>
+									</geographicElement>
+								</EX_Extent>
+							</extent>
+						</MD_DataIdentification>
+					</identificationInfo>
+					<distributionInfo>
+						<MD_Distribution>
+							<transferOptions>
+								<MD_DigitalTransferOptions>
+									<unitsOfDistribution>
+										<gco:CharacterString>dataset</gco:CharacterString>
+									</unitsOfDistribution>
+									<transferSize>
+										<gco:Real>0.288120269775391</gco:Real>
+									</transferSize>
+									<onLine>
+										<CI_OnlineResource>
+											<linkage>
+												<URL>http://www.charts.noaa.gov/ENCs/US4MN21M.zip</URL>
+											</linkage>
+											<description>
+												<gco:CharacterString>zipfile date and time: 2015-02-20T21:16:35Z</gco:CharacterString>
+											</description>
+										</CI_OnlineResource>
+									</onLine>
+								</MD_DigitalTransferOptions>
+							</transferOptions>
+						</MD_Distribution>
+					</distributionInfo>
+					<dataQualityInfo>
+						<DQ_DataQuality>
+							<scope>
+								<DQ_Scope>
+									<level>
+										<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+									</level>
+								</DQ_Scope>
+							</scope>
+							<lineage>
+								<LI_Lineage>
+									<source>
+										<LI_Source>
+											<description>
+												<gco:CharacterString>NOAA paper chart</gco:CharacterString>
+											</description>
+											<sourceCitation>
+												<CI_Citation>
+													<title>
+														<gco:CharacterString>14967</gco:CharacterString>
+													</title>
+													<date gco:nilReason="Date uknown"/>
+												</CI_Citation>
+											</sourceCitation>
+										</LI_Source>
+									</source>
+								</LI_Lineage>
+							</lineage>
+						</DQ_DataQuality>
+					</dataQualityInfo>
+				</MD_Metadata>
+			</has>
+		</DS_DataSet>
+	</composedOf>
+	<composedOf>
+		<DS_DataSet>
+			<has>
+				<MD_Metadata>
+					<parentIdentifier>
+						<gco:CharacterString>NOAA ENC Product Catalog MN State</gco:CharacterString>
+					</parentIdentifier>
+					<hierarchyLevel>
+						<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+					</hierarchyLevel>
+					<hierarchyLevelName>
+						<gco:CharacterString>NOAA ENC</gco:CharacterString>
+					</hierarchyLevelName>
+					<contact>
+						<CI_ResponsibleParty>
+							<organisationName>
+								<gco:CharacterString>National Oceanic and Atmospheric Administration (NOAA), National Ocean Service (NOS), Office of Coast Survey (OCS)</gco:CharacterString>
+							</organisationName>
+							<role>
+								<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="owner">owner</CI_RoleCode>
+							</role>
+						</CI_ResponsibleParty>
+					</contact>
+					<dateStamp>
+						<gco:DateTime>2015-02-27T07:03:55.253-05:00</gco:DateTime>
+					</dateStamp>
+					<identificationInfo>
+						<MD_DataIdentification>
+							<citation>
+								<CI_Citation>
+									<title>
+										<gco:CharacterString>US4MN22M</gco:CharacterString>
+									</title>
+									<alternateTitle>
+										<gco:CharacterString>Grand Portage Bay, Minn. to Shesbeeb Point, Ont.</gco:CharacterString>
+									</alternateTitle>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>2013-11-07</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="revision">revision</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>2013-11-07</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication">publication</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<edition>
+										<gco:CharacterString>4.0</gco:CharacterString>
+									</edition>
+								</CI_Citation>
+							</citation>
+							<abstract>
+								<gco:CharacterString>ENC cell</gco:CharacterString>
+							</abstract>
+							<status>
+								<MD_ProgressCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ProgressCode" codeListValue="completed">completed</MD_ProgressCode>
+							</status>
+							<resourceMaintenance>
+								<MD_MaintenanceInformation>
+									<maintenanceAndUpdateFrequency>
+										<MD_MaintenanceFrequencyCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode" codeListValue="continual">continual</MD_MaintenanceFrequencyCode>
+									</maintenanceAndUpdateFrequency>
+									<updateScope>
+										<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+									</updateScope>
+									<updateScopeDescription>
+										<MD_ScopeDescription>
+											<other>
+												<gco:CharacterString>nm update agency: NGA; doc: 0615; date: 2015-02-07</gco:CharacterString>
+											</other>
+										</MD_ScopeDescription>
+									</updateScopeDescription>
+									<updateScopeDescription>
+										<MD_ScopeDescription>
+											<other>
+												<gco:CharacterString>lnm update agency: USCG09; doc: 0615; date: 2015-02-10</gco:CharacterString>
+											</other>
+										</MD_ScopeDescription>
+									</updateScopeDescription>
+								</MD_MaintenanceInformation>
+							</resourceMaintenance>
+							<descriptiveKeywords>
+								<MD_Keywords>
+									<keyword>
+										<gco:CharacterString>coast guard district: 9</gco:CharacterString>
+									</keyword>
+									<keyword>
+										<gco:CharacterString>state: MN</gco:CharacterString>
+									</keyword>
+									<keyword>
+										<gco:CharacterString>region: 22</gco:CharacterString>
+									</keyword>
+								</MD_Keywords>
+							</descriptiveKeywords>
+							<spatialResolution>
+								<MD_Resolution>
+									<equivalentScale>
+										<MD_RepresentativeFraction>
+											<denominator>
+												<gco:Integer>120000</gco:Integer>
+											</denominator>
+										</MD_RepresentativeFraction>
+									</equivalentScale>
+								</MD_Resolution>
+							</spatialResolution>
+							<language>
+								<gco:CharacterString>eng</gco:CharacterString>
+							</language>
+							<extent>
+								<EX_Extent>
+									<description>
+										<gco:CharacterString>panel number: 1; type: E</gco:CharacterString>
+									</description>
+									<geographicElement>
+										<EX_BoundingPolygon>
+											<polygon>
+												<gml:Polygon gml:id="US4MN22M_P1">
+													<gml:exterior>
+														<gml:LinearRing>
+															<gml:pos>48.1316 -87.91186</gml:pos>
+															<gml:pos>47.7616 -87.91837</gml:pos>
+															<gml:pos>47.7629 -88.83428</gml:pos>
+															<gml:pos>47.7083 -88.83386</gml:pos>
+															<gml:pos>47.7083 -88.92099</gml:pos>
+															<gml:pos>47.7472 -88.96433</gml:pos>
+															<gml:pos>47.747 -89.21504</gml:pos>
+															<gml:pos>47.7084 -89.25074</gml:pos>
+															<gml:pos>47.7086 -89.69001</gml:pos>
+															<gml:pos>48.5855 -89.70501</gml:pos>
+															<gml:pos>48.588 -88.62404</gml:pos>
+															<gml:pos>48.588 -88.6093</gml:pos>
+															<gml:pos>48.588 -88.60719</gml:pos>
+															<gml:pos>48.588 -88.59732</gml:pos>
+															<gml:pos>48.588 -88.57953</gml:pos>
+															<gml:pos>48.588 -88.46853</gml:pos>
+															<gml:pos>48.5871 -88.33139</gml:pos>
+															<gml:pos>48.5871 -88.258</gml:pos>
+															<gml:pos>48.587 -88.25533</gml:pos>
+															<gml:pos>48.5871 -88.24979</gml:pos>
+															<gml:pos>48.5871 -88.2247</gml:pos>
+															<gml:pos>48.5851 -87.90386</gml:pos>
+															<gml:pos>48.4251 -87.90669</gml:pos>
+															<gml:pos>48.3902 -87.95929</gml:pos>
+															<gml:pos>48.2233 -87.95946</gml:pos>
+															<gml:pos>48.1976 -87.9107</gml:pos>
+															<gml:pos>48.1316 -87.91186</gml:pos>
+														</gml:LinearRing>
+													</gml:exterior>
+												</gml:Polygon>
+											</polygon>
+										</EX_BoundingPolygon>
+									</geographicElement>
+								</EX_Extent>
+							</extent>
+							<extent>
+								<EX_Extent>
+									<description>
+										<gco:CharacterString>panel number: 2; type: E</gco:CharacterString>
+									</description>
+									<geographicElement>
+										<EX_BoundingPolygon>
+											<polygon>
+												<gml:Polygon gml:id="US4MN22M_P2">
+													<gml:exterior>
+														<gml:LinearRing>
+															<gml:pos>48.207 -88.41879</gml:pos>
+															<gml:pos>48.207 -88.74768</gml:pos>
+															<gml:pos>48.1081 -88.74739</gml:pos>
+															<gml:pos>48.1083 -88.92001</gml:pos>
+															<gml:pos>48.0604 -88.92014</gml:pos>
+															<gml:pos>47.9034 -89.26179</gml:pos>
+															<gml:pos>47.8691 -89.33604</gml:pos>
+															<gml:pos>47.8155 -89.33604</gml:pos>
+															<gml:pos>47.8155 -88.72595</gml:pos>
+															<gml:pos>47.9795 -88.72499</gml:pos>
+															<gml:pos>48.0522 -88.56656</gml:pos>
+															<gml:pos>48.1216 -88.41453</gml:pos>
+															<gml:pos>48.1596 -88.33088</gml:pos>
+															<gml:pos>48.207 -88.33088</gml:pos>
+															<gml:pos>48.207 -88.41879</gml:pos>
+														</gml:LinearRing>
+													</gml:exterior>
+												</gml:Polygon>
+											</polygon>
+										</EX_BoundingPolygon>
+									</geographicElement>
+								</EX_Extent>
+							</extent>
+						</MD_DataIdentification>
+					</identificationInfo>
+					<distributionInfo>
+						<MD_Distribution>
+							<transferOptions>
+								<MD_DigitalTransferOptions>
+									<unitsOfDistribution>
+										<gco:CharacterString>dataset</gco:CharacterString>
+									</unitsOfDistribution>
+									<transferSize>
+										<gco:Real>0.517860412597656</gco:Real>
+									</transferSize>
+									<onLine>
+										<CI_OnlineResource>
+											<linkage>
+												<URL>http://www.charts.noaa.gov/ENCs/US4MN22M.zip</URL>
+											</linkage>
+											<description>
+												<gco:CharacterString>zipfile date and time: 2013-11-12T18:07:00Z</gco:CharacterString>
+											</description>
+										</CI_OnlineResource>
+									</onLine>
+								</MD_DigitalTransferOptions>
+							</transferOptions>
+						</MD_Distribution>
+					</distributionInfo>
+					<dataQualityInfo>
+						<DQ_DataQuality>
+							<scope>
+								<DQ_Scope>
+									<level>
+										<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+									</level>
+								</DQ_Scope>
+							</scope>
+							<lineage>
+								<LI_Lineage>
+									<source>
+										<LI_Source>
+											<description>
+												<gco:CharacterString>NOAA paper chart</gco:CharacterString>
+											</description>
+											<sourceCitation>
+												<CI_Citation>
+													<title>
+														<gco:CharacterString>14968</gco:CharacterString>
+													</title>
+													<date gco:nilReason="Date uknown"/>
+												</CI_Citation>
+											</sourceCitation>
+										</LI_Source>
+									</source>
+								</LI_Lineage>
+							</lineage>
+						</DQ_DataQuality>
+					</dataQualityInfo>
+				</MD_Metadata>
+			</has>
+		</DS_DataSet>
+	</composedOf>
+	<composedOf>
+		<DS_DataSet>
+			<has>
+				<MD_Metadata>
+					<parentIdentifier>
+						<gco:CharacterString>NOAA ENC Product Catalog MN State</gco:CharacterString>
+					</parentIdentifier>
+					<hierarchyLevel>
+						<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+					</hierarchyLevel>
+					<hierarchyLevelName>
+						<gco:CharacterString>NOAA ENC</gco:CharacterString>
+					</hierarchyLevelName>
+					<contact>
+						<CI_ResponsibleParty>
+							<organisationName>
+								<gco:CharacterString>National Oceanic and Atmospheric Administration (NOAA), National Ocean Service (NOS), Office of Coast Survey (OCS)</gco:CharacterString>
+							</organisationName>
+							<role>
+								<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="owner">owner</CI_RoleCode>
+							</role>
+						</CI_ResponsibleParty>
+					</contact>
+					<dateStamp>
+						<gco:DateTime>2015-02-27T07:03:55.253-05:00</gco:DateTime>
+					</dateStamp>
+					<identificationInfo>
+						<MD_DataIdentification>
+							<citation>
+								<CI_Citation>
+									<title>
+										<gco:CharacterString>US5MN11M</gco:CharacterString>
+									</title>
+									<alternateTitle>
+										<gco:CharacterString>Cornucopia Harbor;Port Wing Harbor;Knife River Harbor;Two Harbors</gco:CharacterString>
+									</alternateTitle>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>2011-06-30</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="revision">revision</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>2014-12-12</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication">publication</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<edition>
+										<gco:CharacterString>2.9</gco:CharacterString>
+									</edition>
+								</CI_Citation>
+							</citation>
+							<abstract>
+								<gco:CharacterString>ENC cell</gco:CharacterString>
+							</abstract>
+							<status>
+								<MD_ProgressCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ProgressCode" codeListValue="completed">completed</MD_ProgressCode>
+							</status>
+							<resourceMaintenance>
+								<MD_MaintenanceInformation>
+									<maintenanceAndUpdateFrequency>
+										<MD_MaintenanceFrequencyCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode" codeListValue="continual">continual</MD_MaintenanceFrequencyCode>
+									</maintenanceAndUpdateFrequency>
+									<updateScope>
+										<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+									</updateScope>
+									<updateScopeDescription>
+										<MD_ScopeDescription>
+											<other>
+												<gco:CharacterString>nm update agency: NGA; doc: 0615; date: 2015-02-07</gco:CharacterString>
+											</other>
+										</MD_ScopeDescription>
+									</updateScopeDescription>
+									<updateScopeDescription>
+										<MD_ScopeDescription>
+											<other>
+												<gco:CharacterString>lnm update agency: USCG09; doc: 0615; date: 2015-02-10</gco:CharacterString>
+											</other>
+										</MD_ScopeDescription>
+									</updateScopeDescription>
+								</MD_MaintenanceInformation>
+							</resourceMaintenance>
+							<descriptiveKeywords>
+								<MD_Keywords>
+									<keyword>
+										<gco:CharacterString>coast guard district: 9</gco:CharacterString>
+									</keyword>
+									<keyword>
+										<gco:CharacterString>state: MI</gco:CharacterString>
+									</keyword>
+									<keyword>
+										<gco:CharacterString>state: MN</gco:CharacterString>
+									</keyword>
+									<keyword>
+										<gco:CharacterString>state: WI</gco:CharacterString>
+									</keyword>
+									<keyword>
+										<gco:CharacterString>region: 22</gco:CharacterString>
+									</keyword>
+								</MD_Keywords>
+							</descriptiveKeywords>
+							<spatialResolution>
+								<MD_Resolution>
+									<equivalentScale>
+										<MD_RepresentativeFraction>
+											<denominator>
+												<gco:Integer>10000</gco:Integer>
+											</denominator>
+										</MD_RepresentativeFraction>
+									</equivalentScale>
+								</MD_Resolution>
+							</spatialResolution>
+							<language>
+								<gco:CharacterString>eng</gco:CharacterString>
+							</language>
+							<extent>
+								<EX_Extent>
+									<description>
+										<gco:CharacterString>panel number: 1; type: E</gco:CharacterString>
+									</description>
+									<geographicElement>
+										<EX_BoundingPolygon>
+											<polygon>
+												<gml:Polygon gml:id="US5MN11M_P1">
+													<gml:exterior>
+														<gml:LinearRing>
+															<gml:pos>47.00755 -91.68114</gml:pos>
+															<gml:pos>47.01931 -91.68114</gml:pos>
+															<gml:pos>47.01932 -91.65189</gml:pos>
+															<gml:pos>46.99654 -91.6519</gml:pos>
+															<gml:pos>46.99653 -91.68115</gml:pos>
+															<gml:pos>47.00755 -91.68114</gml:pos>
+														</gml:LinearRing>
+													</gml:exterior>
+												</gml:Polygon>
+											</polygon>
+										</EX_BoundingPolygon>
+									</geographicElement>
+								</EX_Extent>
+							</extent>
+							<extent>
+								<EX_Extent>
+									<description>
+										<gco:CharacterString>panel number: 2; type: E</gco:CharacterString>
+									</description>
+									<geographicElement>
+										<EX_BoundingPolygon>
+											<polygon>
+												<gml:Polygon gml:id="US5MN11M_P2">
+													<gml:exterior>
+														<gml:LinearRing>
+															<gml:pos>46.79384 -91.38064</gml:pos>
+															<gml:pos>46.78761 -91.38064</gml:pos>
+															<gml:pos>46.78763 -91.38781</gml:pos>
+															<gml:pos>46.79559 -91.38778</gml:pos>
+															<gml:pos>46.7956 -91.38064</gml:pos>
+															<gml:pos>46.79384 -91.38064</gml:pos>
+														</gml:LinearRing>
+													</gml:exterior>
+												</gml:Polygon>
+											</polygon>
+										</EX_BoundingPolygon>
+									</geographicElement>
+								</EX_Extent>
+							</extent>
+							<extent>
+								<EX_Extent>
+									<description>
+										<gco:CharacterString>panel number: 3; type: E</gco:CharacterString>
+									</description>
+									<geographicElement>
+										<EX_BoundingPolygon>
+											<polygon>
+												<gml:Polygon gml:id="US5MN11M_P3">
+													<gml:exterior>
+														<gml:LinearRing>
+															<gml:pos>46.94199 -91.78283</gml:pos>
+															<gml:pos>46.94199 -91.78536</gml:pos>
+															<gml:pos>46.95001 -91.78536</gml:pos>
+															<gml:pos>46.95001 -91.76978</gml:pos>
+															<gml:pos>46.942 -91.76978</gml:pos>
+															<gml:pos>46.94199 -91.78283</gml:pos>
+														</gml:LinearRing>
+													</gml:exterior>
+												</gml:Polygon>
+											</polygon>
+										</EX_BoundingPolygon>
+									</geographicElement>
+								</EX_Extent>
+							</extent>
+							<extent>
+								<EX_Extent>
+									<description>
+										<gco:CharacterString>panel number: 4; type: E</gco:CharacterString>
+									</description>
+									<geographicElement>
+										<EX_BoundingPolygon>
+											<polygon>
+												<gml:Polygon gml:id="US5MN11M_P4">
+													<gml:exterior>
+														<gml:LinearRing>
+															<gml:pos>46.85684 -91.10657</gml:pos>
+															<gml:pos>46.86086 -91.10656</gml:pos>
+															<gml:pos>46.86085 -91.09818</gml:pos>
+															<gml:pos>46.85288 -91.09818</gml:pos>
+															<gml:pos>46.85285 -91.10656</gml:pos>
+															<gml:pos>46.85684 -91.10657</gml:pos>
+														</gml:LinearRing>
+													</gml:exterior>
+												</gml:Polygon>
+											</polygon>
+										</EX_BoundingPolygon>
+									</geographicElement>
+								</EX_Extent>
+							</extent>
+						</MD_DataIdentification>
+					</identificationInfo>
+					<distributionInfo>
+						<MD_Distribution>
+							<transferOptions>
+								<MD_DigitalTransferOptions>
+									<unitsOfDistribution>
+										<gco:CharacterString>dataset</gco:CharacterString>
+									</unitsOfDistribution>
+									<transferSize>
+										<gco:Real>0.1383171081542969</gco:Real>
+									</transferSize>
+									<onLine>
+										<CI_OnlineResource>
+											<linkage>
+												<URL>http://www.charts.noaa.gov/ENCs/US5MN11M.zip</URL>
+											</linkage>
+											<description>
+												<gco:CharacterString>zipfile date and time: 2014-12-15T22:08:33Z</gco:CharacterString>
+											</description>
+										</CI_OnlineResource>
+									</onLine>
+								</MD_DigitalTransferOptions>
+							</transferOptions>
+						</MD_Distribution>
+					</distributionInfo>
+					<dataQualityInfo>
+						<DQ_DataQuality>
+							<scope>
+								<DQ_Scope>
+									<level>
+										<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+									</level>
+								</DQ_Scope>
+							</scope>
+							<lineage>
+								<LI_Lineage>
+									<source>
+										<LI_Source>
+											<description>
+												<gco:CharacterString>NOAA paper chart</gco:CharacterString>
+											</description>
+											<sourceCitation>
+												<CI_Citation>
+													<title>
+														<gco:CharacterString>14966</gco:CharacterString>
+													</title>
+													<date gco:nilReason="Date uknown"/>
+												</CI_Citation>
+											</sourceCitation>
+										</LI_Source>
+									</source>
+								</LI_Lineage>
+							</lineage>
+						</DQ_DataQuality>
+					</dataQualityInfo>
+				</MD_Metadata>
+			</has>
+		</DS_DataSet>
+	</composedOf>
+	<composedOf>
+		<DS_DataSet>
+			<has>
+				<MD_Metadata>
+					<parentIdentifier>
+						<gco:CharacterString>NOAA ENC Product Catalog MN State</gco:CharacterString>
+					</parentIdentifier>
+					<hierarchyLevel>
+						<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+					</hierarchyLevel>
+					<hierarchyLevelName>
+						<gco:CharacterString>NOAA ENC</gco:CharacterString>
+					</hierarchyLevelName>
+					<contact>
+						<CI_ResponsibleParty>
+							<organisationName>
+								<gco:CharacterString>National Oceanic and Atmospheric Administration (NOAA), National Ocean Service (NOS), Office of Coast Survey (OCS)</gco:CharacterString>
+							</organisationName>
+							<role>
+								<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="owner">owner</CI_RoleCode>
+							</role>
+						</CI_ResponsibleParty>
+					</contact>
+					<dateStamp>
+						<gco:DateTime>2015-02-27T07:03:55.253-05:00</gco:DateTime>
+					</dateStamp>
+					<identificationInfo>
+						<MD_DataIdentification>
+							<citation>
+								<CI_Citation>
+									<title>
+										<gco:CharacterString>US5WI11M</gco:CharacterString>
+									</title>
+									<alternateTitle>
+										<gco:CharacterString>Duluth-Superior Harbor;Upper St. Louis River</gco:CharacterString>
+									</alternateTitle>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>2011-01-11</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="revision">revision</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>2014-11-04</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication">publication</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<edition>
+										<gco:CharacterString>21.11</gco:CharacterString>
+									</edition>
+								</CI_Citation>
+							</citation>
+							<abstract>
+								<gco:CharacterString>ENC cell</gco:CharacterString>
+							</abstract>
+							<status>
+								<MD_ProgressCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ProgressCode" codeListValue="completed">completed</MD_ProgressCode>
+							</status>
+							<resourceMaintenance>
+								<MD_MaintenanceInformation>
+									<maintenanceAndUpdateFrequency>
+										<MD_MaintenanceFrequencyCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode" codeListValue="continual">continual</MD_MaintenanceFrequencyCode>
+									</maintenanceAndUpdateFrequency>
+									<updateScope>
+										<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+									</updateScope>
+									<updateScopeDescription>
+										<MD_ScopeDescription>
+											<other>
+												<gco:CharacterString>nm update agency: NGA; doc: 0615; date: 2015-02-07</gco:CharacterString>
+											</other>
+										</MD_ScopeDescription>
+									</updateScopeDescription>
+									<updateScopeDescription>
+										<MD_ScopeDescription>
+											<other>
+												<gco:CharacterString>lnm update agency: USCG09; doc: 0615; date: 2015-02-10</gco:CharacterString>
+											</other>
+										</MD_ScopeDescription>
+									</updateScopeDescription>
+								</MD_MaintenanceInformation>
+							</resourceMaintenance>
+							<descriptiveKeywords>
+								<MD_Keywords>
+									<keyword>
+										<gco:CharacterString>coast guard district: 9</gco:CharacterString>
+									</keyword>
+									<keyword>
+										<gco:CharacterString>state: MN</gco:CharacterString>
+									</keyword>
+									<keyword>
+										<gco:CharacterString>state: WI</gco:CharacterString>
+									</keyword>
+									<keyword>
+										<gco:CharacterString>region: 22</gco:CharacterString>
+									</keyword>
+								</MD_Keywords>
+							</descriptiveKeywords>
+							<spatialResolution>
+								<MD_Resolution>
+									<equivalentScale>
+										<MD_RepresentativeFraction>
+											<denominator>
+												<gco:Integer>15000</gco:Integer>
+											</denominator>
+										</MD_RepresentativeFraction>
+									</equivalentScale>
+								</MD_Resolution>
+							</spatialResolution>
+							<language>
+								<gco:CharacterString>eng</gco:CharacterString>
+							</language>
+							<extent>
+								<EX_Extent>
+									<description>
+										<gco:CharacterString>panel number: 1; type: E</gco:CharacterString>
+									</description>
+									<geographicElement>
+										<EX_BoundingPolygon>
+											<polygon>
+												<gml:Polygon gml:id="US5WI11M_P1">
+													<gml:exterior>
+														<gml:LinearRing>
+															<gml:pos>46.68835 -92.20765</gml:pos>
+															<gml:pos>46.79144 -92.20765</gml:pos>
+															<gml:pos>46.79144 -91.98526</gml:pos>
+															<gml:pos>46.68278 -91.98526</gml:pos>
+															<gml:pos>46.68278 -92.17454</gml:pos>
+															<gml:pos>46.64491 -92.17458</gml:pos>
+															<gml:pos>46.64495 -92.23904</gml:pos>
+															<gml:pos>46.64496 -92.30108</gml:pos>
+															<gml:pos>46.68819 -92.30123</gml:pos>
+															<gml:pos>46.68833 -92.22546</gml:pos>
+															<gml:pos>46.68835 -92.20765</gml:pos>
+														</gml:LinearRing>
+													</gml:exterior>
+												</gml:Polygon>
+											</polygon>
+										</EX_BoundingPolygon>
+									</geographicElement>
+								</EX_Extent>
+							</extent>
+						</MD_DataIdentification>
+					</identificationInfo>
+					<distributionInfo>
+						<MD_Distribution>
+							<transferOptions>
+								<MD_DigitalTransferOptions>
+									<unitsOfDistribution>
+										<gco:CharacterString>dataset</gco:CharacterString>
+									</unitsOfDistribution>
+									<transferSize>
+										<gco:Real>1.20157527923584</gco:Real>
+									</transferSize>
+									<onLine>
+										<CI_OnlineResource>
+											<linkage>
+												<URL>http://www.charts.noaa.gov/ENCs/US5WI11M.zip</URL>
+											</linkage>
+											<description>
+												<gco:CharacterString>zipfile date and time: 2014-11-05T13:40:36Z</gco:CharacterString>
+											</description>
+										</CI_OnlineResource>
+									</onLine>
+								</MD_DigitalTransferOptions>
+							</transferOptions>
+						</MD_Distribution>
+					</distributionInfo>
+					<dataQualityInfo>
+						<DQ_DataQuality>
+							<scope>
+								<DQ_Scope>
+									<level>
+										<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+									</level>
+								</DQ_Scope>
+							</scope>
+							<lineage>
+								<LI_Lineage>
+									<source>
+										<LI_Source>
+											<description>
+												<gco:CharacterString>NOAA paper chart</gco:CharacterString>
+											</description>
+											<sourceCitation>
+												<CI_Citation>
+													<title>
+														<gco:CharacterString>14975</gco:CharacterString>
+													</title>
+													<date gco:nilReason="Date uknown"/>
+												</CI_Citation>
+											</sourceCitation>
+										</LI_Source>
+									</source>
+								</LI_Lineage>
+							</lineage>
+						</DQ_DataQuality>
+					</dataQualityInfo>
+				</MD_Metadata>
+			</has>
+		</DS_DataSet>
+	</composedOf>
+	<seriesMetadata>
+		<MD_Metadata>
+			<fileIdentifier>
+				<gco:CharacterString>NOAA ENC Product Catalog MN State</gco:CharacterString>
+			</fileIdentifier>
+			<language>
+				<gco:CharacterString>eng</gco:CharacterString>
+			</language>
+			<characterSet>
+				<MD_CharacterSetCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode" codeListValue="utf8">utf8</MD_CharacterSetCode>
+			</characterSet>
+			<hierarchyLevel>
+				<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="series">series</MD_ScopeCode>
+			</hierarchyLevel>
+			<hierarchyLevelName>
+				<gco:CharacterString>NOAA ENC product series</gco:CharacterString>
+			</hierarchyLevelName>
+			<contact>
+				<CI_ResponsibleParty>
+					<organisationName>
+						<gco:CharacterString>National Oceanic and Atmospheric Administration (NOAA), National Ocean Service (NOS), Office of Coast Survey (OCS)</gco:CharacterString>
+					</organisationName>
+					<contactInfo>
+						<CI_Contact>
+							<onlineResource>
+								<CI_OnlineResource>
+									<linkage>
+										<URL>http://ocsdata.ncd.noaa.gov/idrs/inquiry.aspx</URL>
+									</linkage>
+									<description>
+										<gco:CharacterString>NOAA's Nautical Inquiry Webpage</gco:CharacterString>
+									</description>
+								</CI_OnlineResource>
+							</onlineResource>
+						</CI_Contact>
+					</contactInfo>
+					<role>
+						<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="publisher">publisher</CI_RoleCode>
+					</role>
+				</CI_ResponsibleParty>
+			</contact>
+			<dateStamp>
+				<gco:DateTime>2015-02-27T07:03:55.253-05:00</gco:DateTime>
+			</dateStamp>
+			<metadataStandardName>
+				<gco:CharacterString>ISO19115</gco:CharacterString>
+			</metadataStandardName>
+			<metadataStandardVersion>
+				<gco:CharacterString>2003/Cor.1:2006</gco:CharacterString>
+			</metadataStandardVersion>
+			<identificationInfo>
+				<MD_DataIdentification>
+					<citation>
+						<CI_Citation>
+							<title>
+								<gco:CharacterString>ENC Product Catalog</gco:CharacterString>
+							</title>
+							<date>
+								<CI_Date>
+									<date>
+										<gco:DateTime>2015-02-27T11:59:33Z</gco:DateTime>
+									</date>
+									<dateType>
+										<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication">publication</CI_DateTypeCode>
+									</dateType>
+								</CI_Date>
+							</date>
+						</CI_Citation>
+					</citation>
+					<abstract>
+						<gco:CharacterString>NOAA's Electronic Navigational Charts (NOAA ENCs) have been developed to support the marine transportation infrastructure and coastal management. The NOAA ENCs are in S-57, a data standard developed by the International Hydrographic Organization (IHO) to be used for the exchange of digital hydrographic data. Nautical chart features contained within an NOAA ENC provide a detailed representation of the U.S. coastal and marine environment. This data includes coastal topography, bathymetry, landmarks, geographic place names and marine boundaries.For each ENC there is information that includes the tags &lt;name&gt;, &lt;lname&gt; (title), &lt;src_chart&gt; (equivalent raster chart number), &lt;cscale&gt; (equivalent raster chart scale), &lt;coast_guard_districts&gt;  and  &lt;states&gt;. Each ENC dataset is available for download as a .ZIP file. The &lt;zipfile_location&gt; tag includes the URL of download location, and the &lt;zipfile_datetime&gt; tag includes the date and time that the .ZIP file was created. ENCs have edition numbers and dates. The &lt;edtn&gt; tag is the Edition Number, the &lt;updn&gt; tag is the Update Number, the &lt;uadt&gt; tag is the Update Application date and the &lt;isdt&gt; tag is the Issue Date. The Update Application Date is the date that a Base Cell (000 file extension) is created. The Issue Date is the date that an Update Patch (001, 002, etc., file extension) is created. Other information for each ENC includes the &lt;nm_agency&gt; tag which designates either the National Geospatial-Intelligence Agency (NGA) or U.S. Coast Guard, and the tags &lt;doc&gt; and &lt;date&gt; which represent the latest published document through which the ENC is cleared. The &lt;cov&gt; tag includes information describing the geographic coverage of the ENC.</gco:CharacterString>
+					</abstract>
+					<pointOfContact>
+						<CI_ResponsibleParty>
+							<organisationName>
+								<gco:CharacterString>National Oceanic and Atmospheric Administration (NOAA), National Ocean Service (NOS), Office of Coast Survey (OCS)</gco:CharacterString>
+							</organisationName>
+							<role>
+								<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="owner">owner</CI_RoleCode>
+							</role>
+						</CI_ResponsibleParty>
+					</pointOfContact>
+					<spatialRepresentationType>
+						<MD_SpatialRepresentationTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_SpatialRepresentationTypeCode" codeListValue="vector">vector</MD_SpatialRepresentationTypeCode>
+					</spatialRepresentationType>
+					<language>
+						<gco:CharacterString>eng</gco:CharacterString>
+					</language>
+					<topicCategory>
+						<MD_TopicCategoryCode>oceans</MD_TopicCategoryCode>
+					</topicCategory>
+				</MD_DataIdentification>
+			</identificationInfo>
+			<distributionInfo>
+				<MD_Distribution>
+					<distributionFormat>
+						<MD_Format>
+							<name>
+								<gco:CharacterString>S57 - IHO Transfer Standard for Digital Hydrographic Data</gco:CharacterString>
+							</name>
+							<version>
+								<gco:CharacterString>3.1</gco:CharacterString>
+							</version>
+							<specification>
+								<gco:CharacterString>ENC - Electronic Navigational Chart Product Specification</gco:CharacterString>
+							</specification>
+						</MD_Format>
+					</distributionFormat>
+				</MD_Distribution>
+			</distributionInfo>
+		</MD_Metadata>
+	</seriesMetadata>
+</DS_Series>
