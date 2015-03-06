@@ -62,6 +62,9 @@
       - type: simple
         object: content
         value: 'http://www.opengis.net/wms'
+      - type: simple
+        object: content
+        value: '<!DOCTYPE WMT_MS_Capabilities SYSTEM "http://schemas.opengis.net/wms/1.1.1/WMS_MS_Capabilities.dtd"'
   service_description:
     - name: GetCapabilities
       filters:
@@ -328,6 +331,24 @@
       - type: simple
         object: content
         value: 'xmlns="http://www.isotc211.org/2005/gmd'
+      - type: complex
+        operator: ands
+        filters:
+          - type: simple
+            object: content
+            value: '<gmi:MI_Metadata'
+          - type: simple
+            object: content
+            value: 'xmlns:gmi="http://www.isotc211.org/2005/gmi"'
+      - type: complex
+        operator: ands
+        filters:
+          - type: simple
+            object: content
+            value: '<gmd:MD_Metadata'
+          - type: simple
+            object: content
+            value: 'xmlns:gmd="http://www.isotc211.org/2005/gmd"'
   service_description:  
   datasets:
   metadatas:

@@ -59,5 +59,6 @@ for response in responses:
     #     continue
 
     with open('priority_identification_all.csv', 'a') as f:
-        f.write('|'.join([digest, url.replace(',', ';').replace('|', ';'), protocol, subtype, service,
-                str(has_dataset), str(has_metadata), str(version), str(is_error)]) + '\n')
+        f.write('|'.join([digest, url.replace(',', ';').replace('|', ';'), protocol,
+                str(subtype), service, str(has_dataset), str(has_metadata),
+                str(version), str(is_error)]) + '\n')

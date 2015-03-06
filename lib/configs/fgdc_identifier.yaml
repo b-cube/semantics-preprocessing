@@ -1,0 +1,26 @@
+- name: FGDC
+  subtype: metadata
+  filters:
+    ors:
+      # these suffer from whitespace issues
+      - type: simple
+        object: content
+        value: '<metstdv>FGDC-STD-001-1998'
+      - type: simple
+        object: content
+        value: '<metstdv>FGDC-STD-012-2002'
+      - type: xpath
+        object: content
+        value: '//metstdv[text()="FGDC-STD-001-1998"]'
+      - type: xpath
+        object: content
+        value: '//metstdv[text()="FGDC-STD-012-2002"]'
+  datasets:
+  metadatas:
+  errors:
+  versions:
+    checks:
+      ors:
+        - type: xpath
+          object: content
+          value: '//metstdv/text()'

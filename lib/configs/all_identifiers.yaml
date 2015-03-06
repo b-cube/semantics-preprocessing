@@ -62,6 +62,9 @@
       - type: simple
         object: content
         value: 'http://www.opengis.net/wms'
+      - type: simple
+        object: content
+        value: '<!DOCTYPE WMT_MS_Capabilities SYSTEM "http://schemas.opengis.net/wms/1.1.1/WMS_MS_Capabilities.dtd"'
   service_description:
     - name: GetCapabilities
       filters:
@@ -328,6 +331,24 @@
       - type: simple
         object: content
         value: 'xmlns="http://www.isotc211.org/2005/gmd'
+      - type: complex
+        operator: ands
+        filters:
+          - type: simple
+            object: content
+            value: '<gmi:MI_Metadata'
+          - type: simple
+            object: content
+            value: 'xmlns:gmi="http://www.isotc211.org/2005/gmi"'
+      - type: complex
+        operator: ands
+        filters:
+          - type: simple
+            object: content
+            value: '<gmd:MD_Metadata'
+          - type: simple
+            object: content
+            value: 'xmlns:gmd="http://www.isotc211.org/2005/gmd"'
   service_description:  
   datasets:
   metadatas:
@@ -340,10 +361,6 @@
           # run against mi_metadata or md_metadata (or any iso root)
           # and we are concatenating name and version (note, this does not manage whitespace issues!)
           value: 'concat(/*/{http://www.isotc211.org/2005/gmd}metadataStandardName/{http://www.isotc211.org/2005/gco}CharacterString/text(), " (", /*/{http://www.isotc211.org/2005/gmd}metadataStandardVersion/{http://www.isotc211.org/2005/gco}CharacterString/text(), ")")'
-
-
-
-
 - name: WSDL
   subtype: service
   filters:
@@ -397,28 +414,32 @@
   metadatas:
   errors:
   versions:
-- name: FGDC-1998
+- name: FGDC
   subtype: metadata
   filters:
     ors:
+      # these suffer from whitespace issues
       - type: simple
         object: content
         value: '<metstdv>FGDC-STD-001-1998'
-  datasets:
-  metadatas:
-  errors:
-  versions:
-- name: FGDC-2002
-  subtype: metadata
-  filters:
-    ors:
       - type: simple
         object: content
         value: '<metstdv>FGDC-STD-012-2002'
+      - type: xpath
+        object: content
+        value: '/metadata/metainfo/metstdv[text()="FGDC-STD-001-1998"]'
+      - type: xpath
+        object: content
+        value: '/metadata/metainfo/metstdv[text()="FGDC-STD-012-2002"]'
   datasets:
   metadatas:
   errors:
   versions:
+    checks:
+      ors:
+        - type: xpath
+          object: content
+          value: '//metstdv/text()'
 - name: PDS
   subtype: service
   filters:
@@ -444,7 +465,7 @@
   metadatas:
   errors:
   versions: 
-- name: MARC 21
+- name: MARC:21
   subtype: metadata
   filters:
     ors:
@@ -473,6 +494,24 @@
       - type: simple
         object: content
         value: 'http://www.esri.com/schemas/ArcGIS/9.2'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: ESRI MapServer Info
+  # i have no idea what this is particularly
+  subtype: service
+  filters:
+    ands:
+      - type: simple
+        object: content
+        value: 'EsriPropertyType='
+      - type: simple
+        object: content
+        value: 'ArcGISFormat'
+      - type: simple
+        object: content
+        value: '<Esri>'
   datasets:
   metadatas:
   errors:
@@ -682,3 +721,28 @@
   metadatas:
   errors:
   versions:    
+- name: Zenodo
+  # these have no internal structure to map effectively
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: url
+        value: 'zenodo.org/'
+  datasets:
+  metadatas:
+  errors:
+  versions:    
+- name: Ferret ToolsUi
+  # there are so many of these, may as well tag them.
+  subtype:
+  filters:
+    ors:
+      - type: simple
+        object: url
+        value: http://ferret.pmel.noaa.gov/thredds/view/ToolsUI.jnlp?
+
+
+
+
+

@@ -1,0 +1,40 @@
+- name: ISO-19115
+  subtype: metadata
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'xmlns="http://www.isotc211.org/2005/gmi'
+      - type: simple
+        object: content
+        value: 'xmlns="http://www.isotc211.org/2005/gmd'
+      - type: complex
+        operator: ands
+        filters:
+          - type: simple
+            object: content
+            value: '<gmi:MI_Metadata'
+          - type: simple
+            object: content
+            value: 'xmlns:gmi="http://www.isotc211.org/2005/gmi"'
+      - type: complex
+        operator: ands
+        filters:
+          - type: simple
+            object: content
+            value: '<gmd:MD_Metadata'
+          - type: simple
+            object: content
+            value: 'xmlns:gmd="http://www.isotc211.org/2005/gmd"'
+  service_description:  
+  datasets:
+  metadatas:
+  errors:
+  versions:
+    checks:
+      ors:
+        - type: xpath
+          object: content
+          # run against mi_metadata or md_metadata (or any iso root)
+          # and we are concatenating name and version (note, this does not manage whitespace issues!)
+          value: 'concat(/*/{http://www.isotc211.org/2005/gmd}metadataStandardName/{http://www.isotc211.org/2005/gco}CharacterString/text(), " (", /*/{http://www.isotc211.org/2005/gmd}metadataStandardVersion/{http://www.isotc211.org/2005/gco}CharacterString/text(), ")")'

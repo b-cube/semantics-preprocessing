@@ -44,7 +44,7 @@ class Parser():
         if self._namespaces:
             xpath = self._remap_namespaced_xpaths(xpath)
             if not xpath:
-                return None
+                return ''
             return self.xml.xpath(xpath, namespaces=self._namespaces)
         return self.xml.xpath(xpath)
 
