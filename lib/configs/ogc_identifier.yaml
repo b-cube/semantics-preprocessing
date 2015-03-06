@@ -1,37 +1,3 @@
-- name: OpenSearch
-  subtype: service
-  filters:
-    ors: 
-      - type: simple
-        object: content
-        value: 'xmlns="http://a9.com/-/spec/opensearch/1.1/"'
-  service_description:
-    - name: 'OpenSearchDescription'
-      filters: 
-        ors:
-          - type: simple
-            object: content
-            value: 'OpenSearchDescription'
-  datasets:
-  metadatas:
-  errors:
-    filters:
-      ors:
-          # these are based on the cwic best practices and may 
-          # not be in widespread use
-        - type: simple
-          object: content
-          value: 'OpenSearch Exception'
-        - type: simple
-          object: content
-          value: 'REQUEST_EXCEPTION:'
-  versions:
-    defaults:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://a9.com/-/spec/opensearch/1.1/'
-          text: '1.1'
 - name: OGC:error
   subtype: service
   filters:
@@ -81,7 +47,17 @@
             object: content
             value: 'name="GetCapabilities"'
   datasets:
+    filters:
+      ors:
+        - type: xpath
+          # for any layer at some depth, v 1.1.1, 1.3.0
+          value: '//Layer'
   metadatas:
+    filters:
+      ors:
+        - type: xpath
+          # for any layer at some depth, v 1.1.1, 1.3.0
+          value: '//Layer/MetadataURL'
   versions:
     checks:
       ors:
@@ -115,6 +91,10 @@
             value: 'name="GetCapabilities"'
   datasets:
   metadatas:
+    filters:
+      ors:
+        - type: xpath
+          value: '/*/{http://www.opengis.net/wmts/1.0}Contents/{http://www.opengis.net/wmts/1.0}Layer/{http://www.opengis.net/ows/1.1}Metadata'
   versions:
     checks:
       ors:
@@ -148,6 +128,7 @@
             value: 'name="GetCapabilities"'
   datasets:
   metadatas:
+    # no metadata url for sos
   versions:
     checks:
       ors:
@@ -297,193 +278,3 @@
         - type: xpath
           # fully qualified xpath which is lovely and short here
           value: '@version'
-- name: OAI-PMH
-  subtype: service
-  filters:
-    ors:
-      - type: simple
-        object: content
-        value: 'xmlns="http://www.openarchives.org/OAI/'
-  service_description:
-    - name: Identify
-      filters:
-        ors:
-          - type: simple
-            object: url
-            value: 'VERB=IDENTIFY'
-          - type: simple
-            object: content
-            value: '<Identify>'
-  datasets:
-  metadatas:
-  errors:
-    filters:
-      ors:
-        - type:  simple
-          object: content
-          # note that this should probably be an xpath search
-          # for the error element
-          value: '<error code="'
-  versions:
-    checks:
-      ors:
-        - type: xpath
-          object: content
-          value: '/{http://www.openarchives.org/OAI/2.0/}OAI-PMH/{http://www.openarchives.org/OAI/2.0/}Identify/{http://www.openarchives.org/OAI/2.0/}protocolVersion/text()'  
-- name: UNIDATA
-  subtype: service
-  filters:
-    ors:
-      - type: simple
-        object: content
-        value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
-  service_description:
-    - name: THREDDS-Catalog
-      filters: 
-        ors:
-          - type: simple
-            object: content
-            value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
-  datasets:
-  metadatas:
-  errors:
-    # this is not technically an error but it is 
-    # an invalid service response
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: '<property name="requires_authorization"'
-        - type: simple
-          object: content
-          value: '<variables vocabulary='
-  versions:
-    checks:
-      ors: 
-        - type: xpath
-          object: content
-          value: '@version'
-    defaults:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
-          text: '1.0'
-- name: WADL
-  subtype: service
-  filters:
-    ors:
-      - type: simple
-        object: content
-        value: 'http://wadl.dev.java.net'
-  service_description:
-    - name: WADL
-      filters:
-        ors:
-          - type: simple
-            object: content
-            value: 'http://wadl.dev.java.net'
-  datasets:
-  metadatas:
-  errors:
-  versions:
-- name: ISO-19115
-  subtype: metadata
-  filters:
-    ors:
-      # this is making kind of a lot of assumptions
-      - type: complex
-        operator: ands
-        filters:
-          - type: xpath
-            object: content
-            value: '/*[local-name() = "MI_Metadata"]'
-          - type: simple
-            object: content
-            value: 'xmlns="http://www.isotc211.org/2005/gmi'
-      - type: complex
-        operator: ands
-        filters:
-          - type: xpath
-            object: content
-            value: '/*[local-name() = "MD_Metadata"]'
-          - type: simple
-            object: content
-            value: 'xmlns="http://www.isotc211.org/2005/gmd'
-      - type: complex
-        operator: ands
-        filters:
-          - type: xpath
-            object: content
-            value: '/*[local-name() = "MI_Metadata"]'
-          - type: simple
-            object: content
-            value: 'xmlns:gmi="http://www.isotc211.org/2005/gmi"'
-      - type: complex
-        operator: ands
-        filters:
-          - type: xpath
-            object: content
-            value: '/*[local-name() = "MD_Metadata"]'
-          - type: simple
-            object: content
-            value: 'xmlns:gmd="http://www.isotc211.org/2005/gmd"'
-  service_description:  
-  datasets:
-  metadatas:
-    # tag an internal service metadata block as its own thing?
-    filters:
-      ors:
-        - type: xpath
-          value: '/*/{http://www.isotc211.org/2005/gmd}identificationInfo/{http://www.isotc211.org/2005/srv}SV_ServiceIdentification'
-  errors:
-  versions:
-    checks:
-      ors:
-        - type: xpath
-          object: content
-          # run against mi_metadata or md_metadata (or any iso root)
-          # and we are concatenating name and version (note, this does not manage whitespace issues!)
-          value: 'concat(/*/{http://www.isotc211.org/2005/gmd}metadataStandardName/{http://www.isotc211.org/2005/gco}CharacterString/text(), " (", /*/{http://www.isotc211.org/2005/gmd}metadataStandardVersion/{http://www.isotc211.org/2005/gco}CharacterString/text(), ")")'
-- name: 'ISO-19115 DS'
-  subtype: metadata
-  filters:
-    ors:
-      - type: complex
-        operator: ands
-        filters:
-          - type: xpath
-            object: content
-            value: '/*[local-name() = "DS_Series"]'
-          - type: simple
-            object: content
-            value: 'xmlns="http://www.isotc211.org/2005/gmi"'
-      - type: complex
-        operator: ands
-        filters:
-          - type: xpath
-            object: content
-            value: '/*[local-name() = "DS_Series"]'
-          - type: simple
-            object: content
-            value: 'xmlns="http://www.isotc211.org/2005/gmd"'
-  service_description:
-  datasets:
-  metadatas:
-    # tag it for having composedOf elements
-    filters:
-      ors:
-        - type: xpath
-          # not sure if you can have a nested MI
-          value: '/*/{http://www.isotc211.org/2005/gmd}composedOf/{http://www.isotc211.org/2005/gmd}DS_DataSet/{http://www.isotc211.org/2005/gmd}has/{http://www.isotc211.org/2005/gmd}MD_Metadata'
-  errors:
-  versions:
-    checks:
-      ors:
-        - type: xpath
-          object: content
-          # and we are concatenating name and version (note, this does not manage whitespace issues!)
-          value: 'concat(/*/*[local-name()="seriesMetadata"]/*[local-name()="MD_Metadata" or local-name()="MI_Metadata"]/{http://www.isotc211.org/2005/gmd}metadataStandardName/{http://www.isotc211.org/2005/gco}CharacterString/text(), " (", /*/*[local-name()="seriesMetadata"]/*[local-name()="MD_Metadata" or local-name()="MI_Metadata"]/{http://www.isotc211.org/2005/gmd}metadataStandardVersion/{http://www.isotc211.org/2005/gco}CharacterString/text(), ")")'
-
-
-

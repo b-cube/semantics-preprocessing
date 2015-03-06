@@ -251,6 +251,30 @@ class TestIso(unittest.TestCase):
 
         self.assertTrue(identifier.protocol == 'ISO-19115 DS')
         self.assertTrue(identifier.version == 'ISO19115 (2003/Cor.1:2006)')
+        self.assertTrue(identifier.has_metadata)
+
+
+class TestOgcIdentifiers(unittest.TestCase):
+    def setUp(self):
+        self.yaml_file = 'lib/configs/ogc_identifier.yaml'
+
+    def test_if_wmts100(self):
+        pass
+
+    def test_if_wms111(self):
+        pass
+
+    def test_if_wms130(self):
+        pass
+
+    def test_if_wcs100(self):
+        pass
+
+    def test_if_wcs112(self):
+        pass
+
+    def test_if_sos100(self):
+        pass
 
 
 class TestWfsIdentification(unittest.TestCase):
