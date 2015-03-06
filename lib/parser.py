@@ -72,7 +72,11 @@ class Parser():
             atts = self._parse_node_attributes(elem, exclude_descriptors)
 
             if '/'.join(tags) not in exclude_descriptors and (atts or t):
-                nodes.append((t, '/'.join(tags), atts))
+                nodes.append({
+                    "text": t,
+                    "xpath": '/'.join(tags),
+                    "attributes": atts
+                })
 
         return nodes
 
@@ -90,7 +94,7 @@ class Parser():
         for k, v in node.attrib.iteritems():
             attr_tag = '/'.join(tags) + '/@' + k
             if v.strip() and attr_tag not in exclude_descriptors:
-                attributes.append((v, attr_tag))
+                attributes.append({"text": v, "xpath": attr_tag})
 
         return attributes
 

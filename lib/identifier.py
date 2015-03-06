@@ -238,7 +238,7 @@ class Identify():
                     # the xpath failed (namespace reasons or otherwise?)
                     return ''
                 if value:
-                    return value[0] if isinstance(value, list) else value
+                    return value[0] if isinstance(value, list) else value.strip()
 
             return ''
 

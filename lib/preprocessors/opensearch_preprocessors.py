@@ -46,11 +46,11 @@ class OpenSearchReader(BaseReader):
                                 "{http://a9.com/-/spec/opensearch/1.1/}Url")
 
         endpoints = [
-            (
-                url.get('type', ''),
-                url.get('template', ''),
-                self._extract_url_parameters(url.get('template', ''))
-            ) for url in urls
+            {
+                "type": url.get('type', ''),
+                "url": url.get('template', ''),
+                "parameters": self._extract_url_parameters(url.get('template', ''))
+            } for url in urls
         ]
 
         return endpoints
@@ -91,12 +91,12 @@ class OpenSearchReader(BaseReader):
                         in query_params.iteritems()]
 
         return [
-            (
-                qp[0],
-                self.parser._namespaces,
-                qp[1],
-                qp[2],
-                self._parameter_formats.get(':'.join(qp[1:]))
-            )
+            {
+                "name": qp[0],
+                "namespaces": self.parser._namespaces,
+                "prefix": qp[1],
+                "type": qp[2],
+                "formats": self._parameter_formats.get(':'.join(qp[1:]))
+            }
             for qp in query_params
         ]
