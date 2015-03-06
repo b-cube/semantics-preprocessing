@@ -2,7 +2,7 @@ from lxml import etree
 
 # note: this is from b-cube/semantics
 from lib.parser import Parser
-from lib.utils import normalize_keyword_text
+from lib.nlp_utils import normalize_keyword_text
 
 '''
 strip out some identified set of elements for the
@@ -46,7 +46,7 @@ class BaseReader():
             normalized_subjects += [normalize_keyword_text(subject)]
 
         if normalized_subjects:
-            self.service['service_description']['subject'] = normalized_subjects
+            self.service['service']['subject'] = normalized_subjects
 
     def return_service_descriptors(self):
         '''
@@ -100,6 +100,8 @@ class BaseReader():
         excluded = self.return_exclude_descriptors()
         service['remainder'] = self.return_everything_else(excluded)
         self.service = service
+
+        self._normalize_subjects()
         return service
 
     def return_exclude_descriptors(self):

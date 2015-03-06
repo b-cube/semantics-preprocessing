@@ -195,6 +195,50 @@ class TestVersionCombined(unittest.TestCase):
         self.assertTrue(expected_version == returned_version)
 
 
+class TestIso(unittest.TestCase):
+    def setUp(self):
+        self.yaml_file = 'lib/configs/iso_identifier.yaml'
+
+    def test_if_returning_iso_protocol_for_chunk(self):
+        with open('tests/test_data/invalid_iso_chunk.xml', 'r') as f:
+            content = f.read()
+        url = 'http://www.mapserver.com/some_iso'
+
+        content = content.replace('\\n', '')
+        parser = Parser(content)
+
+        identifier = Identify(self.yaml_file, content, url, **{'parser': parser})
+        identifier.identify()
+
+        self.assertFalse(identifier.protocol == 'ISO-19115')
+
+    def test_if_returning_iso_protocol_for_mi(self):
+        with open('tests/test_data/iso-19115_mi.xml', 'r') as f:
+            content = f.read()
+        url = 'http://www.mapserver.com/some_iso'
+
+        content = content.replace('\\n', '')
+        parser = Parser(content)
+
+        identifier = Identify(self.yaml_file, content, url, **{'parser': parser})
+        identifier.identify()
+
+        self.assertTrue(identifier.protocol == 'ISO-19115')
+
+    def test_if_returning_iso_protocol_for_md(self):
+        with open('tests/test_data/iso-19115_md.xml', 'r') as f:
+            content = f.read()
+        url = 'http://www.mapserver.com/some_iso'
+
+        content = content.replace('\\n', '')
+        parser = Parser(content)
+
+        identifier = Identify(self.yaml_file, content, url, **{'parser': parser})
+        identifier.identify()
+
+        self.assertTrue(identifier.protocol == 'ISO-19115')
+
+
 class TestWfsIdentification(unittest.TestCase):
     def setUp(self):
         yaml_file = 'tests/test_data/complex_identifier_test.yaml'

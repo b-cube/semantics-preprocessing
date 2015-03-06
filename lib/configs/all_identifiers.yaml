@@ -325,27 +325,40 @@
   subtype: metadata
   filters:
     ors:
-      - type: simple
-        object: content
-        value: 'xmlns="http://www.isotc211.org/2005/gmi'
-      - type: simple
-        object: content
-        value: 'xmlns="http://www.isotc211.org/2005/gmd'
+      # this is making kind of a lot of assumptions
       - type: complex
         operator: ands
         filters:
+          - type: xpath
+            object: content
+            value: '/*[local-name() = "MI_Metadata"]'
           - type: simple
             object: content
-            value: '<gmi:MI_Metadata'
+            value: 'xmlns="http://www.isotc211.org/2005/gmi'
+      - type: complex
+        operator: ands
+        filters:
+          - type: xpath
+            object: content
+            value: '/*[local-name() = "MD_Metadata"]'
+          - type: simple
+            object: content
+            value: 'xmlns="http://www.isotc211.org/2005/gmd'
+      - type: complex
+        operator: ands
+        filters:
+          - type: xpath
+            object: content
+            value: '/*[local-name() = "MI_Metadata"]'
           - type: simple
             object: content
             value: 'xmlns:gmi="http://www.isotc211.org/2005/gmi"'
       - type: complex
         operator: ands
         filters:
-          - type: simple
+          - type: xpath
             object: content
-            value: '<gmd:MD_Metadata'
+            value: '/*[local-name() = "MD_Metadata"]'
           - type: simple
             object: content
             value: 'xmlns:gmd="http://www.isotc211.org/2005/gmd"'

@@ -71,7 +71,7 @@ class Identify():
                 # try the xpath but there could be namespace or
                 # other issues (also false negatives!)
                 try:
-                    clause = parser.find(xpath) is not None
+                    clause = parser.find(xpath) not in [None, '', []]
                 except:
                     clause = False
 

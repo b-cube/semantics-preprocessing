@@ -1,6 +1,5 @@
-import re
 import urlparse
-import HTMLParser
+
 
 '''
 spatial handling:
@@ -47,30 +46,3 @@ def parse_url(url):
         return ''
     parsed_url = urlparse.urlparse(url)
     return urlparse.parse_qs(parsed_url.query)
-
-'''
-nlp prep methods
-'''
-
-
-def normalize_keyword_text(keyword_string):
-    '''
-    this is the very basic regex-based normalization. we
-    know that keywords are handled in a variety of ways even
-    in standards that support multiple term elements. we also
-    know that the nlp tokenizers, etc, won't parse strings
-    correctly using certain delimiters (they are not standard
-    punctuation in those ways).
-
-    unescape any html bits (thanks gcmd!)
-
-    delimiters: , ; > | +
-        (ignore space-delimited strings - let the tokenizers
-            manage that)
-        (we are also going to actually just ignore the commas as well)
-    '''
-    hp = HTMLParser.HTMLParser()
-    keyword_string = hp.unescape(keyword_string)
-
-    simple_pattern = r'[;|>+]'
-    return re.sub(simple_pattern, ',', keyword_string)

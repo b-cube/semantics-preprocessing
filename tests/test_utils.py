@@ -1,5 +1,5 @@
 import unittest
-from lib.utils import normalize_keyword_text
+from lib.nlp_utils import normalize_keyword_text
 
 
 class TestKeywords(unittest.TestCase):
