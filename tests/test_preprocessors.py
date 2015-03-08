@@ -89,6 +89,22 @@ class TestOpenSearchReaderWithEndpoints(unittest.TestCase):
         self.reader = OpenSearchReader(text)
         self.reader._load_xml()
 
+    def test_parse_service(self):
+        '''
+        just the remainders right now
+        '''
+
+        should_not_have = '{http://a9.com/-/spec/opensearch/1.1/}' + \
+                          'OpenSearchDescription/' + \
+                          '{http://a9.com/-/spec/opensearch/1.1/}Url'
+        service = self.reader.parse_service()
+
+        self.assertTrue('remainder' in service)
+
+        remainder = service['remainder']
+
+        self.assertTrue(should_not_have in remainder)
+
     def test_parse_endpoints(self):
         endpoints = self.reader.parse_endpoints()
 

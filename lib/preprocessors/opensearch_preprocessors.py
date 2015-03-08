@@ -1,7 +1,7 @@
 import re
 
 from lib.base_preprocessors import BaseReader
-from lib.utils import parse_url
+from lib.utils import parse_url, flatten
 
 
 class OpenSearchReader(BaseReader):
@@ -35,8 +35,7 @@ class OpenSearchReader(BaseReader):
     }
 
     def return_exclude_descriptors(self):
-        excluded = self._service_descriptors.values()
-        return [e[1:] for e in excluded] + self._to_exclude
+        return [e[1:] for e in (flatten(self._service_descriptors.values()) + self._to_exclude)]
 
     def parse_endpoints(self):
         '''

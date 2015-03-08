@@ -29,9 +29,9 @@ class Parser():
         try:
             self.xml = etree.fromstring(self._string, parser)
         except Exception as ex:
-            print self._string[0:50]
+            # print self._string[0:50]
             print ex
-            traceback.print_exc(file=sys.stdout)
+            # traceback.print_exc(file=sys.stdout)
             self.xml = None
 
         self._namespaces = self._get_document_namespaces()
@@ -80,9 +80,12 @@ class Parser():
 
         return nodes
 
-    def _parse_node_attributes(self, node, exclude_descriptors=[]):
+    def _parse_node_attributes(self, node, exclude_descriptors=[], ignore_root_defs=True):
         '''
         return any attributes for a node
+
+        if ignore_root_defs, skip any schema definitions, other
+            xml-specific definitions
         '''
         if not node.attrib:
             return None

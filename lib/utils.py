@@ -1,4 +1,5 @@
 import urlparse
+import collections
 
 
 '''
@@ -46,3 +47,41 @@ def parse_url(url):
         return ''
     parsed_url = urlparse.urlparse(url)
     return urlparse.parse_qs(parsed_url.query)
+
+
+'''
+general utils
+'''
+
+
+def flatten(items, excluded_keys=[]):
+    '''
+    flatten a list of irregular lists/singletons
+    or some dict of singletons, lists, dicts
+
+    basically just get a list of terminal strings
+    '''
+    def _flatten(item):
+        if isinstance(item, dict):
+            for k, v in item.iteritems():
+                if k in excluded_keys:
+                    continue
+                # TODO: this introduces nested lists again!
+                yield list(flatten(v))
+        elif isinstance(item, list):
+            for i in item:
+                if isinstance(i, collections.Iterable) and not isinstance(i, basestring):
+                    for subitem in flatten(i):
+                        yield subitem
+                else:
+                    yield i
+        elif isinstance(item, str):
+            yield item
+
+    arr = list(_flatten(items))
+    if len([isinstance(a, collections.Iterable) and
+            not isinstance(a, basestring) for a in arr]) > 0:
+        # ick, flatten the dict issue again.
+        return list(_flatten(arr))
+
+    return arr

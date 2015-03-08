@@ -1,5 +1,6 @@
 import re
 import HTMLParser
+from lib.utils import flatten
 
 '''
 nlp prep methods
@@ -32,9 +33,17 @@ def normalize_keyword_text(keyword_string):
     return re.sub(simple_pattern, ',', keyword_string)
 
 
-def collapse_to_bag(data_blob):
+def collapse_to_bag(data_blob, exclude_urls=True):
     '''
     for our * description dicts, create a basic
     text blob
+
+    if exclude_urls: ignore endpoint urls
     '''
-    return ''
+    _url_keys = ['url']
+    excludes = _url_keys if exclude_urls else []
+
+    # TODO: run the generator
+    bag_of_words = flatten(data_blob, excludes)
+
+    return ' '.join(bag_of_words)
