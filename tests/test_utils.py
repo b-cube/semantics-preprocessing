@@ -1,5 +1,6 @@
 import unittest
 from lib.nlp_utils import normalize_keyword_text
+from lib.yaml_configs import import_yaml_configs
 
 
 class TestKeywords(unittest.TestCase):
@@ -28,3 +29,21 @@ class TestKeywords(unittest.TestCase):
         self.assertTrue(tests is not None)
         self.assertTrue(len(set(tests)) == 1)
         self.assertTrue('+' not in next(iter(set(tests))))
+
+
+class TestYamlImport(unittest.TestCase):
+    def setUp(self):
+        '''
+        nothing to set up
+        '''
+        pass
+
+    def test_import(self):
+        paths = [
+            'lib/configs/fgdc_identifier.yaml',
+            'lib/configs/thredds_identifier.yaml'
+        ]
+
+        config = import_yaml_configs(paths)
+
+        self.assertTrue(len(config) == 2)
