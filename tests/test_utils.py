@@ -1,5 +1,9 @@
+# -*- coding: utf-8 -*-
+
 import unittest
-from lib.nlp_utils import normalize_keyword_text, collapse_to_bag
+from lib.nlp_utils import normalize_keyword_text
+from lib.nlp_utils import collapse_to_bag
+from lib.nlp_utils import is_english
 from lib.yaml_configs import import_yaml_configs
 from lib.utils import flatten
 
@@ -54,7 +58,7 @@ class TestNlpUtils(unittest.TestCase):
         '''
         strings = [
             'soil+clay+pedon+loam+sandy loam',
-            'soil-clay-pedon-loam-sandy loam',
+            # 'soil-clay-pedon-loam-sandy loam', # removed from regex
             'soil;clay;pedon;loam;sandy loam',
             'soil|clay|pedon|loam|sandy loam',
             'soil>clay>pedon>loam>sandy loam'
@@ -66,7 +70,7 @@ class TestNlpUtils(unittest.TestCase):
 
         self.assertTrue(tests is not None)
         self.assertTrue(len(set(tests)) == 1)
-        self.assertTrue('+' not in next(iter(set(tests))))    
+        self.assertTrue('+' not in next(iter(set(tests))))
 
     def test_collapse_to_bag(self):
         '''
@@ -79,6 +83,30 @@ class TestNlpUtils(unittest.TestCase):
         self.assertTrue(simple_bag)
         self.assertTrue(simple_bag == "This is just a sentence.")
 
-        complex_bag = {
-            "first": ""
+        complex_source = {
+            "first": "This is just a sentence.",
+            "second": ["Likely an abstract", "or possibly a description"],
+            "third": {
+                "type": "irony?",
+                "url": "http://www.irony.com"
+            }
         }
+        complex_bag = collapse_to_bag(complex_source, False)
+        expected_bag = '''Likely an abstract or possibly a description http://www.irony.com irony? This is just a sentence.'''
+        self.assertTrue(complex_bag == expected_bag)
+
+        # without the url
+        complex_bag = collapse_to_bag(complex_source)
+        expected_bag = '''Likely an abstract or possibly a description irony? This is just a sentence.'''
+        self.assertTrue(complex_bag == expected_bag)
+
+    def test_language_detection(self):
+        expected_english = '''we know that keywords are handled in
+            a variety of ways even in standards'''
+        expected_german = u'''Landesamt für innere Verwaltung Mecklenburg-Vorpommern;
+            Amt für Geoinformation, Vermessung und Katasterwesen'''
+        expected_romance = 'Vada dritto! e poi giri a destra'
+
+        self.assertTrue(is_english(expected_english))
+        self.assertFalse(is_english(expected_german))
+        self.assertFalse(is_english(expected_romance))

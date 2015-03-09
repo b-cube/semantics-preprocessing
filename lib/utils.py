@@ -61,17 +61,18 @@ def flatten(items, excluded_keys=[]):
 
     basically just get a list of terminal strings
     '''
+
     def _flatten(item):
         if isinstance(item, dict):
             for k, v in item.iteritems():
                 if k in excluded_keys:
                     continue
                 # TODO: this introduces nested lists again!
-                yield list(flatten(v))
+                yield list(flatten(v, excluded_keys))
         elif isinstance(item, list):
             for i in item:
                 if isinstance(i, collections.Iterable) and not isinstance(i, basestring):
-                    for subitem in flatten(i):
+                    for subitem in flatten(i, excluded_keys):
                         yield subitem
                 else:
                     yield i

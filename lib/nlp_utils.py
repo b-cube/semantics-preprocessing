@@ -1,6 +1,7 @@
 import re
 import HTMLParser
 from lib.utils import flatten
+import langid
 
 '''
 nlp prep methods
@@ -47,3 +48,16 @@ def collapse_to_bag(data_blob, exclude_urls=True):
     bag_of_words = flatten(data_blob, excludes)
 
     return ' '.join(bag_of_words)
+
+
+def is_english(test_string):
+    '''
+    using langid.py, check if the detected lang is 'en'
+
+    note: currently no clear bar for the confidence value
+    returned, we are simply going with 'en' regardless
+    and we are going to leave the stopwords in just to
+    give the classifier more text to use
+    '''
+    language, confidence = langid.classify(test_string)
+    return language == 'en'
