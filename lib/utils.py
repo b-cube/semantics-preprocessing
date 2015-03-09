@@ -68,11 +68,11 @@ def flatten(items, excluded_keys=[]):
                 if k in excluded_keys:
                     continue
                 # TODO: this introduces nested lists again!
-                yield list(flatten(v, excluded_keys))
+                yield list(_flatten(v))
         elif isinstance(item, list):
             for i in item:
                 if isinstance(i, collections.Iterable) and not isinstance(i, basestring):
-                    for subitem in flatten(i, excluded_keys):
+                    for subitem in _flatten(i):
                         yield subitem
                 else:
                     yield i
