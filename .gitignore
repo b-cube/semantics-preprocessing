@@ -4,3 +4,4 @@ test.txt
 testdata/
 we_hate_xml*
 notebooks/.ipynb_checkpoints/*
+local/stanford*
