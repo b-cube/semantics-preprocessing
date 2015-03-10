@@ -179,6 +179,15 @@
               - type: simple
                 object: content
                 value: '<FeatureTypeList>'
+          - type: complex
+            operator: ands
+            filters:
+              - type: simple
+                object: content
+                value: '<ows:Operation name="GetFeature">'
+              - type: simple
+                object: content
+                value: '<wfs:FeatureTypeList>'
   metadatas:
     # contains a link to a metadata url (we don't care 
     # about parentage at this point)

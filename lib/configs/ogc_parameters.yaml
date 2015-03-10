@@ -1,0 +1,213 @@
+- name: WMS111
+  common: 
+    - name: service
+      type: string
+      format: 
+    - name: request
+      type: string
+      format:
+    - name: version
+      type: string
+      format:    
+  methods:
+    - name: GETCAPABILITIES
+      params:
+        - name:
+          type:
+          format:
+    - name: GETMAP
+      params:
+        - name: format
+          type: string
+          format:
+        - name: layers
+          type: string
+          format: comma-delimtied string
+        - name: bbox
+          type: string
+          format: 'minx,miny,maxx,maxy'
+        - name: height
+          type: int
+          format:
+        - name: width
+          type: int
+          format:
+        - name: styles
+          type: string
+          format:
+        - name: srs
+          type: string
+          format:
+        - name: transparent
+          type: string
+          format:
+        - name: bgcolor
+          type: hexadecimal
+          format:
+        - name: elevation
+          type: string
+          format:
+        - name: time
+          type: string
+          format:
+    - name: GETFEATUREINFO
+      params:
+        - name: info_format
+          type: string
+          format:
+        - name: feature_count
+          type: int
+          format: 
+- name: WMS130
+
+- name: WFS100
+  common: 
+    - name: service
+      type: string
+      format: 
+    - name: request
+      type: string
+      format:
+    - name: version
+      type: string
+      format:    
+  methods:
+    - name: GETCAPABILITIES
+      params:
+    - name: DESCRIBEFEATURETYPE
+      params:
+        - name: typename
+          type: string
+          format:
+        - name: format
+          type: string
+          format:
+    - name: GETFEATURE
+      params:
+        - name: typename
+          type: string
+          format:
+        - name: format
+          type: string
+          format:
+        - name: bbox
+          type: string
+          format: 'minx,miny,maxx,maxy'
+        - name: propertyname
+          type: string
+          format:
+        - name: featureversion
+          type: string
+          format:
+        - name: featureid
+          type: string
+          format:
+        - name: filter
+          type: string
+          format:
+        - name: maxfeatures
+          type: int
+          format:
+
+- name: WFS110
+  common: 
+    - name: service
+      type: string
+      format: 
+    - name: request
+      type: string
+      format:
+    - name: version
+      type: string
+      format:    
+  smethods:
+    - name: GETCAPABILITIES
+
+- name: WCS100
+  common: 
+    - name: service
+      type: string
+      format: 
+    - name: request
+      type: string
+      format:
+    - name: version
+      type: string
+      format:    
+  methods:
+    - name: GETCAPABILITIES
+
+    - name: DESCRIBECOVERAGE
+      params:
+        - name: coverage
+          type: string
+          format:
+    - name: GETCOVERAGE
+      params:
+        - name: coverage
+          type: string
+          format:
+        - name: format
+          type: string
+          format:
+        - name: bbox
+          type: string
+          format: 'minx,miny,maxx,maxy'
+        - name: height
+          type: int
+          format:
+        - name: width
+          type: int
+          format:
+        - name: featureid
+          type: string
+          format:
+        - name: crs
+          type: string
+          format:
+        - name: response_crs
+          type: string
+          format:  
+        - name: resx
+          type: int
+          format:
+        - name: resy
+          type: int
+          format:
+        - name: time
+          type: string
+          format:
+        - name: parameter
+          type: string
+          format:
+        - name: interpolation
+          type: string
+          format:   
+
+- name: WCS110
+  common: 
+    - name: service
+      type: string
+      format: 
+    - name: request
+      type: string
+      format:
+    - name: version
+      type: string
+      format:    
+  methods:
+    - name: GETCAPABILITIES
+
+- name: CSW202
+  common: 
+    - name: service
+      type: string
+      format: 
+    - name: request
+      type: string
+      format:
+    - name: version
+      type: string
+      format:    
+  methods:
+    - name: GETCAPABILITIES
