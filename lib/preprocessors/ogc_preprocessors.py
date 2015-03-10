@@ -57,7 +57,8 @@ class OgcPreprocessor():
         parameters = {name: {values: list}}
         '''
         _vocabs = {
-            "XMLSCHEMA": "application/xml"
+            "XMLSCHEMA": "application/xml",
+            "GML2": "text/xml; subtype=gml/2.1.2"
         }
 
         def _check_controlled_vocabs(term):
@@ -76,8 +77,9 @@ class OgcPreprocessor():
 
             '''
             # TODO: how to handle aliases (if necessary)
-            defaults = self.config.get('common', []) + [d for d in self.config['methods']
-                                                        if d['name'] == op_name.lower()]
+            defaults = self.config.get('common', []) + next(iter([d for d in self.config['methods']
+                                                                  if d['name'] == op_name.upper()])
+                                                            ).get('params', [])
 
             if not found_params:
                 return defaults
@@ -97,12 +99,21 @@ class OgcPreprocessor():
         for o in self.reader.operations:
             # TODO: handle the differing formatOptions
 
-            # get the parameter values supported by the service
-            params = o.parameters
+            # get the parameter values if supported by the service
+            try:
+                params = o.parameters
+            except AttributeError:
+                params = []
 
             # merge with defaults (where it can be add the whole element
             #   OR parts of the element)
             params = _merge_params(o.name, params)
+
+            # get the formatOptions
+            try:
+                formats = [_check_controlled_vocabs(fo) for fo in o.formatOptions]
+            except AttributeError:
+                formats = []
 
             endpoint = [
                 {
@@ -110,6 +121,7 @@ class OgcPreprocessor():
                     "type": m.get('type', ''),
                     "url": m.get('url', ''),
                     "constraints": m.get('constraints', []),
+                    "formats": formats,
                     "parameters": [{
                         "name": p.get('name', ''),
                         "type": p.get('type', ''),
@@ -134,11 +146,20 @@ class OgcPreprocessor():
         return service
 
     def return_service_descriptors(self):
+        try:
+            rights = self.reader.identification.accessconstraints
+        except AttributeError:
+            rights = ''
+        try:
+            contact = self.reader.provider.contact.name
+        except AttributeError:
+            contact = ''
+
         return {
             "title": self.reader.identification.title,
             "abstract": self.reader.identification.abstract,
             "tags": self.reader.identification.keywords,
-            "rights": self.reader.identification.accessconstraints,
-            "contact": self.reader.provider.contact.name,
+            "rights": rights,
+            "contact": contact,
             "endpoints": self._get_operations()
         }
