@@ -77,21 +77,26 @@ class OgcPreprocessor():
 
             '''
             # TODO: how to handle aliases (if necessary)
-            defaults = self.config.get('common', []) + next(iter([d for d in self.config['methods']
-                                                                  if d['name'] == op_name.upper()])
-                                                            ).get('params', [])
+            req_methods = self.config['methods']
+            req_params = next(
+                iter(
+                    [d for d in req_methods if d['name'] == op_name.upper()]
+                ), {}
+            ).get('params', [])
+            defaults = self.config.get('common', []) + req_params
 
             if not found_params:
                 return defaults
 
+            # where found_params is a list of dicts
             for k, v in found_params.iteritems():
-                found_param = next(d for d in defaults if d['name'] == k.lower())
-                if not found_param:
+                param = next(iter(d for d in defaults if d['name'] == k.lower()), [])
+                if not param:
                     continue
 
-                found_index = defaults.index(found_param)
-                found_param['values'] = v['values']
-                defaults[found_index] = found_param
+                found_index = defaults.index(param)
+                param['values'] = [_check_controlled_vocabs(a) for a in v['values']]
+                defaults[found_index] = param
 
             return defaults
 

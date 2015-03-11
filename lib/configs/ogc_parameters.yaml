@@ -197,6 +197,33 @@
       format:    
   methods:
     - name: GETCAPABILITIES
+- name: WCS111
+  common: 
+    - name: service
+      type: string
+      format: 
+    - name: request
+      type: string
+      format:
+    - name: version
+      type: string
+      format:    
+  methods:
+    - name: GETCAPABILITIES
+    
+- name: WCS112
+  common: 
+    - name: service
+      type: string
+      format: 
+    - name: request
+      type: string
+      format:
+    - name: version
+      type: string
+      format:    
+  methods:
+    - name: GETCAPABILITIES
 
 - name: CSW202
   common: 
