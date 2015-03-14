@@ -1016,3 +1016,8 @@ class OwsCswPreprocessor():
                     []
                 )
             ]
+
+
+class OwsSosPreprocessor():
+    def __init__(self):
+        pass
