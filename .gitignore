@@ -5,3 +5,4 @@ testdata/
 we_hate_xml*
 notebooks/.ipynb_checkpoints/*
 local/stanford*
+notebooks/lda/dictionaries/
