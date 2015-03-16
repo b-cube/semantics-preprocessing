@@ -16,13 +16,13 @@ logger = logging.getLogger(__name__)
 YAML_FILE = 'lib/configs/all_identifiers.yaml'
 
 # responses = glob.glob('testdata/docs/response_60de9ec6341a2116ff4bb2739c307739.json')
-responses = glob.glob('testdata/docs/response_*.json')
+responses = glob.glob('testdata/second_harvest/docs/*.json')
 
 # with open('testdata/probable_ogc.txt', 'r') as f:
 #     digests = f.readlines()
 # responses = ['testdata/docs/response_%s.json' % d.strip() for d in digests]
 
-with open('priority_identification_all.csv', 'w') as f:
+with open('testdata/second_harvest/priority_identification_all.csv', 'w') as f:
     f.write('digest|url|protocol|subtype|service|has dataset|has metadata|version|is error\n')
 
 for response in responses:
@@ -58,7 +58,7 @@ for response in responses:
     # if not protocol:
     #     continue
 
-    with open('priority_identification_all.csv', 'a') as f:
+    with open('testdata/second_harvest/priority_identification_all.csv', 'a') as f:
         f.write('|'.join([digest, url.replace(',', ';').replace('|', ';'), protocol,
                 str(subtype), service, str(has_dataset), str(has_metadata),
                 str(version), str(is_error)]) + '\n')

@@ -29,11 +29,17 @@ class RawResponse():
         pttn = u'^<!\[CDATA\[(.*?)\]\]>$'
 
         # unicode escape for solr (cdata pattern matching fails without)
+        if not self.response.startswith('<![CDATA['):
+            # and encode it for the xml parser (xml encode set, must be
+            # encoded to match)
+            self.content = self.response.encode('unicode_escape')
+            return
+
         raw_content = self.response.encode('unicode_escape')
 
         m = re.search(pttn, raw_content)
 
-        assert m, 'Failed to extract from CDATA'
+        assert m, 'Failed to extract from CDATA (%s)' % self.identifier
 
         self.content = m.group(1)
 

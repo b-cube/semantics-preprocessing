@@ -7,6 +7,7 @@ from lib.preprocessors.opensearch_preprocessors import OpenSearchReader
 from lib.preprocessors.iso_preprocessors import IsoReader
 from lib.preprocessors.oaipmh_preprocessors import OaiPmhReader
 from lib.preprocessors.thredds_preprocessors import ThreddsReader
+from lib.preprocessors.ows_preprocessors import OwsWmsPreprocessor
 
 import logging
 
@@ -74,6 +75,9 @@ for response in responses:
         reader = IsoReader(cleaned_text)
     elif protocol == 'OAI-PMH':
         reader = OaiPmhReader(cleaned_text)
+    elif protocol == 'OGC:WMS' and version == '1.1.1':
+        print 'WMS'
+        reader = OwsWmsPreprocessor(cleaned_text, version)
     elif 'OGC' in protocol and protocol != 'OGC:error':
         continue
 
