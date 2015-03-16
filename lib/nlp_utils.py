@@ -8,6 +8,29 @@ nlp prep methods
 '''
 
 
+def normalize_subjects(subjects, do_split=False):
+    '''
+    for some set of extracted keyword/tag/subject strings,
+    normalize the strings to split on delimiters, handle some
+    phrase definitions, clean up a bit of whitespace
+
+    subjects is extracted from the service description generally
+    '''
+    if not subjects:
+        return
+
+    normalized_subjects = []
+    for subject in subjects:
+        if not subject:
+            # skip any empty tag
+            continue
+        normalized = normalize_keyword_text(subject)
+        normalized_subjects += [n.strip() for n in normalized.split(',')] \
+            if do_split else [normalized]
+
+    return normalized_subjects
+
+
 def normalize_keyword_text(keyword_string):
     '''
     this is the very basic regex-based normalization. we
@@ -27,11 +50,17 @@ def normalize_keyword_text(keyword_string):
     if not keyword_string:
         return
 
+    # unescape
     hp = HTMLParser.HTMLParser()
     keyword_string = hp.unescape(keyword_string)
 
-    simple_pattern = r'[;|>+:]'
-    return re.sub(simple_pattern, ',', keyword_string)
+    # replace underscores (assume these are NOT delimiters
+    #    but phrase concatenators)
+    underscore_pattern = r'[_]'
+    keyword_string = re.sub(underscore_pattern, ' ', keyword_string)
+
+    punctuation_pattern = r'[;|>+:=+]'
+    return re.sub(punctuation_pattern, ',', keyword_string)
 
 
 def collapse_to_bag(data_blob, exclude_urls=True):

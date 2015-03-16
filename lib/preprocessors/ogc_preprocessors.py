@@ -3,6 +3,7 @@ from owslib.wcs import WebCoverageService
 from owslib.wfs import WebFeatureService
 from owslib.csw import CatalogueServiceWeb
 from lib.yaml_configs import import_yaml_configs
+from lib.nlp_utils import normalize_keyword_text
 
 
 class OgcPreprocessor():
@@ -25,21 +26,41 @@ class OgcPreprocessor():
         self.reader = self._get_reader()
 
     def _get_reader(self):
-        if self.service == 'WMS' and self.version in ['1.1.1']:
+        if self.service == 'WMS' and self.version in ['1.1.1', '1.3.0']:
             reader = WebMapService('', xml=self.response, version=self.version)
         elif self.service == 'WFS' and self.version in ['1.0.0', '1.1.0']:
             reader = WebFeatureService('', xml=self.response, version=self.version)
-        elif self.service == 'WCS' and self.version in ['1.0.0', '1.1.0']:
+        elif self.service == 'WCS' and self.version in ['1.0.0', '1.1.0', '1.1.1', '1.1.2']:
             reader = WebCoverageService('', xml=self.response, version=self.version)
         elif self.service == 'CSW' and self.version in ['2.0.2']:
             reader = CatalogueServiceWeb('', xml=self.response, version=self.version)
-
+        else:
+            return None
         return reader
 
     def _get_config(self):
         data = import_yaml_configs(['lib/configs/ogc_parameters.yaml'])
         self.config = next(d for d in data if d['name'] == self.service.upper() +
                            self.version.replace('.', ''))
+
+    def _normalize_subjects(self, do_split=False):
+        '''
+        for a given set of subject strings, run the keyword
+        normalizer ()
+        '''
+        service_description = self.service.get('service', {})
+        if not service_description:
+            return
+
+        normalized_subjects = []
+        subjects = service_description.get('subject', [])
+        for subject in subjects:
+            normalized = normalize_keyword_text(subject)
+            normalized_subjects += [n.strip() for n in normalized.split(',')] \
+                if do_split else [normalized]
+
+        if normalized_subjects:
+            self.service['service']['subject'] = normalized_subjects
 
     def _get_operations(self):
         '''
@@ -88,7 +109,6 @@ class OgcPreprocessor():
             if not found_params:
                 return defaults
 
-            # where found_params is a list of dicts
             for k, v in found_params.iteritems():
                 param = next(iter(d for d in defaults if d['name'] == k.lower()), [])
                 if not param:
@@ -108,7 +128,7 @@ class OgcPreprocessor():
             try:
                 params = o.parameters
             except AttributeError:
-                params = []
+                params = {}
 
             # merge with defaults (where it can be add the whole element
             #   OR parts of the element)
@@ -148,6 +168,7 @@ class OgcPreprocessor():
             "service": self.return_service_descriptors(),
             "remainder": []
         }
+        self._normalize_subjects(True)
         return service
 
     def return_service_descriptors(self):
