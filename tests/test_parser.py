@@ -42,8 +42,8 @@ class TestParser(unittest.TestCase):
         nodes = self.parser.find_nodes()
 
         self.assertTrue(len(nodes) == 5)
-        self.assertTrue(len(nodes[2][2]) == 3)
-        self.assertTrue(nodes[1][0] == 'UTF-8')
+        self.assertTrue(len(nodes[2]) == 3)
+        self.assertTrue(nodes[1]['text'] == 'UTF-8')
 
         # run with excludes
         excludes = [
@@ -52,10 +52,10 @@ class TestParser(unittest.TestCase):
         ]
         nodes = self.parser.find_nodes(excludes)
         self.assertTrue(len(nodes) == 4)
-        self.assertTrue(len(nodes[1][2]) == 2)
-        self.assertTrue(nodes[0][0] == 'CEOS')
-        self.assertTrue(nodes[1][2][1][0] == '16')
-        self.assertTrue(nodes[1][2][0][1] == '{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}Image/@type')
+        self.assertTrue(len(nodes[1]) == 3)
+        self.assertTrue(nodes[0]['text'] == 'CEOS')
+        self.assertTrue(nodes[1]['attributes'][1]['text'] == '16')
+        self.assertTrue(nodes[1]['attributes'][0]['xpath'] == '{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}Image/@type')
 
 
 class TestHtmlParsing(unittest.TestCase):
@@ -68,7 +68,7 @@ class TestHtmlParsing(unittest.TestCase):
         self.parser = Parser(data)
 
     def test_did_it_parse_the_html(self):
-        test_node = etree.fromstring('<node>Does it parse?   It should!</node>')
+        test_node = etree.fromstring('<node>Does it parse? It should!</node>')
         check_node = self.parser.xml.find('node')
 
         self.assertTrue(check_node is not None)

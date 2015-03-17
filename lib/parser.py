@@ -36,6 +36,7 @@ class Parser():
 
         self._namespaces = self._get_document_namespaces()
         self._strip_html()
+        self._strip_whitespace()
 
     def find(self, xpath):
         '''
@@ -178,6 +179,13 @@ class Parser():
             hparser = TextParser()
             hparser.feed(t)
             elem.text = hparser.get_data()
+
+    def _strip_whitespace(self):
+        for elem in self.xml.iter():
+            t = elem.text.strip() if elem.text else ''
+            if not t:
+                continue
+            elem.text = ' '.join(t.split())
 
 
 class TextParser(HTMLParser):
