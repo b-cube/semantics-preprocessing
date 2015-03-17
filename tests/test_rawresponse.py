@@ -30,3 +30,22 @@ class TestRawResponse(unittest.TestCase):
         returned_string = rr.content
 
         self.assertTrue(expected_string == returned_string)
+
+    def test_strip_unicode_replace(self):
+        test_string = '''Test the Web Forward\\ufffd\\ufffdParis,\\ufffd\\ufffdBeijing\\ufffd\\ufffdand\\ufffd\\ufffd San Francisco'''
+        expected_string = 'Test the Web Forward  Paris,  Beijing  and   San Francisco'
+
+        rr = RawResponse('', test_string, '', **{})
+        rr._extract_from_cdata()
+        rr._strip_unicode_replace()
+
+        self.assertTrue(rr.content == expected_string)
+
+        test_string = 'Con\\ufffd\\ufffdfu\\ufffd\\ufffdcius Insti\\ufffd\\ufffdtute'
+        expected_string = 'Con  fu  cius Insti  tute'
+
+        rr = RawResponse('', test_string, '', **{})
+        rr._extract_from_cdata()
+        rr._strip_unicode_replace()
+
+        self.assertTrue(rr.content == expected_string)

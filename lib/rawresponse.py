@@ -52,6 +52,14 @@ class RawResponse():
     def _strip_whitespace(self):
         self.content = self.content.replace('\\n', ' ').replace('\\t', ' ')
 
+    def _strip_unicode_replace(self):
+        '''
+        remove the unicode replacement char and replace with a space
+        if this generates multiple spaces, we should be okay with
+        the parser.
+        '''
+        self.content = self.content.replace(u'\\\\ufffd', ' ')
+
     def clean_raw_content(self):
         '''
         other than _extract_from_cdata, execute
@@ -61,5 +69,6 @@ class RawResponse():
         self._extract_from_cdata()
         self._strip_invalid_start()
         self._strip_whitespace()
+        self._strip_unicode_replace()
 
         return self.content
