@@ -60,7 +60,7 @@ def generate_short_uuid():
     this is not a proper uuid and should not be used as such
     it is the first chunk of the hash
     '''
-    return uuid4().split('-')[0]
+    return str(uuid4()).split('-')[0]
 
 
 def extract_element_tag(tag):

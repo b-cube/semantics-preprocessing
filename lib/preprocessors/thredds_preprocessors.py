@@ -39,13 +39,12 @@ class ThreddsReader(BaseReader):
             return any structure not part of the
             current element's attributes
             '''
-            if tag == 'catalogRef':
-                return {}
-            elif tag == 'metadata':
-                metadata_description = {"ID": generate_short_uuid()}
+            description = {}
+
+            if tag == 'metadata':
                 service_elem = next(iter(elem.xpath('*[local-name()="serviceName"]')), None)
                 if service_elem is not None:
-                    metadata_description['service'] = service_elem.text.strip()
+                    description['service'] = service_elem.text.strip()
 
                 publisher_elem = next(iter(elem.xpath('*[local-name()="publisher"]')), None)
                 if publisher_elem is not None:
@@ -54,22 +53,21 @@ class ThreddsReader(BaseReader):
                                         None)
 
                     if name_elem is not None:
-                        metadata_description['publisher']['name'] = name_elem.text.strip()
-                        metadata_description['publisher']['name_vocabulary'] = name_elem.attrib.get('vocabulary', '')
+                        description['publisher'] = {
+                            'name': name_elem.text.strip(),
+                            'name_vocabulary': name_elem.attrib.get('vocabulary', '')
+                        }
 
                     if contact_elem is not None:
-                        metadata_description['publisher']['contact'] = contact_elem.attrib
-
-                return metadata_description
+                        description['publisher']['contact'] = contact_elem.attrib
             elif tag == 'dataset':
-                dataset_description = {}
                 datasize_elem = next(iter(elem.xpath('*[local-name()="dataSize"]')), None)
                 if datasize_elem is not None:
                     datasize = {
                         "units": datasize_elem.attrib.get('units', ''),
                         "size": datasize_elem.text.strip()
                     }
-                    dataset_description['datasize'] = datasize
+                    description['datasize'] = datasize
 
                 date_elem = next(iter(elem.xpath('*[local-name()="date"]')), None)
                 if date_elem is not None:
@@ -77,7 +75,7 @@ class ThreddsReader(BaseReader):
                         "type": date_elem.attrib.get('type', ''),
                         "date": date_elem.text.strip()
                     }
-                    dataset_description['date'] = date
+                    description['date'] = date
 
                 access_elem = next(iter(elem.xpath('*[local-name()="access"]')), None)
                 if access_elem is not None:
@@ -85,15 +83,23 @@ class ThreddsReader(BaseReader):
                         "serviceName": access_elem.attrib.get('serviceName', ''),
                         "url": access_elem.attrib.get('urlPath', '')
                     }
-                    dataset_description['access'] = access
+                    description['access'] = access
 
-                return dataset_description
-            else:
-                return {}
+            if 'ID' not in description:
+                description.update({"ID": generate_short_uuid()})
+
+            return description
 
         def _handle_elem(elem, child_tags):
-            description = dict(elem.attrib.items())
+            description = {extract_element_tag(k): v for k, v in elem.attrib.iteritems()}
             description['source'] = extract_element_tag(elem.tag)
+
+            description = dict(
+                chain(
+                    description.items(),
+                    _get_items(extract_element_tag(elem.tag), elem).items()
+                )
+            )
 
             endpoints = []
 
@@ -104,7 +110,9 @@ class ThreddsReader(BaseReader):
                     endpoints += [
                         dict(
                             chain(
-                                e.attrib.items(),
+                                {
+                                    extract_element_tag(k): v for k, v in e.attrib.iteritems()
+                                }.items(),
                                 _get_items(extract_element_tag(e.tag), e).items(),
                                 {
                                     "childOf": description.get('ID', ''),
@@ -115,7 +123,7 @@ class ThreddsReader(BaseReader):
                     ]
 
                     parents = description.get('parentOf', [])
-                    parents += [e.attrib.get('ID', '-9999') for e in elems]
+                    parents += [e['ID'] for e in endpoints if 'childOf' in e]
                     description['parentOf'] = parents
 
             return description, endpoints
