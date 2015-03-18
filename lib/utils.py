@@ -1,5 +1,6 @@
 import urlparse
 import collections
+from uuid import uuid4
 
 
 '''
@@ -52,6 +53,24 @@ def parse_url(url):
 '''
 general utils
 '''
+
+
+def generate_short_uuid():
+    '''
+    this is not a proper uuid and should not be used as such
+    it is the first chunk of the hash
+    '''
+    return uuid4().split('-')[0]
+
+
+def extract_element_tag(tag):
+    '''
+    drop the fully qualified namespace
+    '''
+    if not tag:
+        return
+
+    return tag.split('}')[-1]
 
 
 def flatten(items, excluded_keys=[]):
