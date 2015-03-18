@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><catalog xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0 http://www.unidata.ucar.edu/schemas/thredds/InvCatalog.1.0.2.xsd" version="1.0.2" name="ARCSS: NSF Arctic System Science">
+<dataset authority="edu.ucar.eol.codiac" ID="ucar.ncar.eol.project.ARCSS" name="ARCSS: NSF Arctic System Science" harvest="true">
+<metadata xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.project.ARCSS.metadata.xml" metadataType="THREDDS" inherited="false"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_352.thredds.xml" xlink:title="14C Measurements in Large-Volume Ice Samples from Pakitsoq, West Greenland"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS130.thredds.xml" xlink:title="A Half-Century of Change in Arctic Alaskan Shrubs: A Photographic-Based Assessment"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_359.thredds.xml" xlink:title="Actinic Flux measurements during OASIS Barrow field intensive Spring 2009"/>
+<catalogRef xlink:href="http://data.eol.ucar.edu/jedi/catalog/ucar.ncar.eol.dataset.106_ARCSS033.thredds.xml" xlink:title="Active Layer Depth and Snow Depth, Kuparuk Basin, 1995"/>
+</dataset>
+</catalog>

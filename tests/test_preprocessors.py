@@ -21,32 +21,153 @@ class TestBaseReader(unittest.TestCase):
         pass
 
 
-class TestThreddsReader(unittest.TestCase):
+class TestThreddsReaderAcdisc(unittest.TestCase):
     def setUp(self):
-        # this response doesn't come from nay harvest
-        with open('tests/test_data/thredds_catalog_eol.xml', 'r') as f:
+        # this response doesn't come from any harvest
+        with open('tests/test_data/mod_acdisc.xml', 'r') as f:
             text = f.read()
         self.reader = ThreddsReader(text)
         self.reader._load_xml()
 
-    def test_return_descriptors(self):
-        descriptors = self.reader.return_service_descriptors()
+    def test_parse_endpoints(self):
+        endpoints = self.reader.parse_endpoints()
 
-        self.assertTrue('Actinic Flux' in descriptors['title'][0])
-        self.assertTrue(descriptors['version'][0] == "1.0.2")
+        self.assertTrue(endpoints)
+        self.assertTrue(len(endpoints) == 5)
+
+        # get the parent dataset
+        parent = next(iter([e for e in endpoints if e['source'] == 'dataset' and
+                           'parentOf' in e]), [])
+        self.assertTrue(parent)
+
+        parent_id = parent['ID']
+        children_ids = parent['parentOf']
+        children = [e for e in endpoints if e['ID'] in children_ids]
+        self.assertTrue(len(children) == 2)
+        self.assertTrue(children[0]['childOf'] == parent_id)
+        self.assertTrue('datasize' in children[0])
+        self.assertTrue('access' in children[0])
+        self.assertTrue(children[0]['access']['serviceName'] == 'file')
+        self.assertTrue(children[0]['datasize']['units'] == 'bytes')
 
     def test_return_everything_else(self):
-        '''
-        TODO: Revise the dataset handling and update this test!
-        '''
-        excluded = self.reader.return_exclude_descriptors()
-        remainder = self.reader.return_everything_else(excluded)
+        pass
 
-        # expected_xpath = '{http://www.unidata.ucar.edu/namespaces/thredds' + \
-        #                  '/InvCatalog/v1.0}catalog/{http://www.unidata.ucar.edu/' + \
-        #                  'namespaces/thredds/InvCatalog/v1.0}dataset'
 
-        self.assertTrue(len(remainder) > 0)
+class TestThreddsReaderEol(unittest.TestCase):
+    def setUp(self):
+        # this response doesn't come from any harvest
+        with open('tests/test_data/mod_eol_arcss.xml', 'r') as f:
+            text = f.read()
+        self.reader = ThreddsReader(text)
+        self.reader._load_xml()
+
+    def test_parse_endpoints(self):
+        endpoints = self.reader.parse_endpoints()
+
+        self.assertTrue(endpoints)
+        self.assertTrue(len(endpoints) == 6)
+
+        # get the parent dataset
+        parent = next(iter([e for e in endpoints if e['source'] == 'dataset' and
+                           'parentOf' in e]), [])
+        self.assertTrue(parent)
+
+        parent_id = parent['ID']
+        children_ids = parent['parentOf']
+        children = [e for e in endpoints if e['ID'] in children_ids]
+        self.assertTrue(len(children) == 5)
+        self.assertTrue(children[0]['childOf'] == parent_id)
+
+        self.assertTrue(len([c for c in children if c['source'] == 'metadata']) == 1)
+        self.assertTrue(len([c for c in children if c['source'] == 'catalogRef']) == 4)
+        self.assertTrue('href' in children[2])
+        self.assertTrue(parent['name'] == 'ARCSS: NSF Arctic System Science')
+
+    def test_return_everything_else(self):
+        pass
+
+
+class TestThreddsReaderLadsweb(unittest.TestCase):
+    def setUp(self):
+        # this response doesn't come from any harvest
+        with open('tests/test_data/mod_ladsweb.xml', 'r') as f:
+            text = f.read()
+        self.reader = ThreddsReader(text)
+        self.reader._load_xml()
+
+    def test_parse_endpoints(self):
+        endpoints = self.reader.parse_endpoints()
+
+        self.assertTrue(endpoints)
+        self.assertTrue(len(endpoints) == 7)
+
+        services = [c for c in endpoints if c['source'] == 'service']
+        self.assertTrue(len(services) == 2)
+        self.assertTrue(services[0]['name'] == 'dap')
+        self.assertTrue(services[1]['serviceType'] == 'HTTPServer')
+
+        # get the parent dataset
+        parent = next(iter([e for e in endpoints if e['source'] == 'dataset' and
+                           'parentOf' in e]), [])
+        self.assertTrue(parent)
+
+        parent_id = parent['ID']
+        children_ids = parent['parentOf']
+        children = [e for e in endpoints if e['ID'] in children_ids]
+
+        self.assertTrue(len(children) == 4)
+        self.assertTrue(children[0]['childOf'] == parent_id)
+
+        self.assertTrue(len([c for c in children if c['source'] == 'dataset']) == 1)
+        self.assertTrue(len([c for c in children if c['source'] == 'dataset' and
+                             c['access']['serviceName'] == 'file']) == 1)
+        self.assertTrue(len([c for c in children if c['source'] == 'catalogRef']) == 3)
+        self.assertTrue('href' in children[2])
+        self.assertTrue([c for c in children if c['source'] == 'catalogRef' and
+                         c['ID'] == '/opendap/hyrax/allData/55/MOD17A3/2001/'])
+
+        self.assertTrue(parent['name'] == '/allData/55/MOD17A3')
+
+    def test_return_everything_else(self):
+        pass
+
+
+class TestThreddsReaderStellwagen(unittest.TestCase):
+    def setUp(self):
+        # this response doesn't come from any harvest
+        with open('tests/test_data/mod_stellwagen.xml', 'r') as f:
+            text = f.read()
+        self.reader = ThreddsReader(text)
+        self.reader._load_xml()
+
+    def test_parse_endpoints(self):
+        endpoints = self.reader.parse_endpoints()
+
+        self.assertTrue(endpoints)
+        self.assertTrue(len(endpoints) == 14)
+
+        # get the parent dataset
+        parent = next(iter([e for e in endpoints if e['source'] == 'dataset' and
+                           'parentOf' in e]), [])
+        self.assertTrue(parent)
+
+        parent_id = parent['ID']
+        children_ids = parent['parentOf']
+        children = [e for e in endpoints if e['ID'] in children_ids]
+        self.assertTrue(len(children) == 4)
+        self.assertTrue(children[0]['childOf'] == parent_id)
+
+        metadata = [c for c in children if c['source'] == 'metadata']
+        self.assertTrue(len(metadata) == 1)
+        self.assertTrue(metadata[0]['service'] == 'allServices')
+        # no catalogRefs
+        self.assertFalse(len([c for c in children if c['source'] == 'catalogRef']) > 0)
+        self.assertTrue('urlPath' in children[2])
+        self.assertTrue(parent['name'] == 'PV_SHELF')
+
+    def test_return_everything_else(self):
+        pass
 
 
 class TestOaiPmhReader(unittest.TestCase):

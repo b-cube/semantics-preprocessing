@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0.1">
+  <service name="allServices" serviceType="Compound" base="">
+    <service name="ncdods" serviceType="OPENDAP" base="/thredds/dodsC/" />
+    <service name="HTTPServer" serviceType="HTTPServer" base="/thredds/fileServer/" />
+    <service name="wcs" serviceType="WCS" base="/thredds/wcs/" />
+    <service name="ncss" serviceType="NetcdfSubset" base="/thredds/ncss/grid/" />
+    <service name="wms" serviceType="WMS" base="/thredds/wms/" />
+    <service name="iso" serviceType="ISO" base="/thredds/iso/" />
+    <service name="ncml" serviceType="NCML" base="/thredds/ncml/" />
+    <service name="uddc" serviceType="UDDC" base="/thredds/uddc/" />
+  </service>
+  <dataset name="PV_SHELF" ID="TSdata/PV_SHELF">
+    <metadata inherited="true">
+      <serviceName>allServices</serviceName>
+      <publisher>
+        <name vocabulary="DIF">USGS/ER/WHCMSC/Ellyn Montgomery</name>
+        <contact url="http://www.usgs.gov/" email="emontgomery@usgs.gov" />
+      </publisher>
+    </metadata>
+    <dataset name="3981-a.nc" ID="TSdata/PV_SHELF/3981-a.nc" urlPath="TSdata/PV_SHELF/3981-a.nc">
+      <dataSize units="Mbytes">1.051</dataSize>
+      <date type="modified">2014-12-02T21:12:29Z</date>
+    </dataset>
+    <dataset name="3982-a.nc" ID="TSdata/PV_SHELF/3982-a.nc" urlPath="TSdata/PV_SHELF/3982-a.nc">
+      <dataSize units="Mbytes">1.350</dataSize>
+      <date type="modified">2014-12-02T21:12:29Z</date>
+    </dataset>
+    <dataset name="3982cs-a.nc" ID="TSdata/PV_SHELF/3982cs-a.nc" urlPath="TSdata/PV_SHELF/3982cs-a.nc">
+      <dataSize units="Kbytes">600.8</dataSize>
+      <date type="modified">2014-12-02T21:12:29Z</date>
+    </dataset>
+  </dataset>
+</catalog>

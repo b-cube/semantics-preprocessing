@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thredds:catalog xmlns:thredds="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+    xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:bes="http://xml.opendap.org/ns/bes/1.0#">
+    <thredds:service name="dap" serviceType="OPeNDAP" base="/opendap/hyrax"/>
+    <thredds:service name="file" serviceType="HTTPServer" base="/opendap/hyrax"/>
+    <thredds:dataset name="/allData/55/MOD17A3" ID="/opendap/hyrax/allData/55/MOD17A3/">
+        <thredds:catalogRef name="2000" xlink:href="2000/catalog.xml" xlink:title="2000"
+            xlink:type="simple" ID="/opendap/hyrax/allData/55/MOD17A3/2000/"/>
+        <thredds:catalogRef name="2001" xlink:href="2001/catalog.xml" xlink:title="2001"
+            xlink:type="simple" ID="/opendap/hyrax/allData/55/MOD17A3/2001/"/>
+        <thredds:catalogRef name="2002" xlink:href="2002/catalog.xml" xlink:title="2002"
+            xlink:type="simple" ID="/opendap/hyrax/allData/55/MOD17A3/2002/"/>
+        <thredds:dataset name="NOTICE" ID="/opendap/hyrax/allData/55/MOD17A3/NOTICE">
+            <thredds:dataSize units="bytes">1409</thredds:dataSize>
+            <thredds:date type="modified">2014-08-04T15:22:14</thredds:date>
+            <thredds:access serviceName="file" urlPath="/allData/55/MOD17A3/NOTICE"/>
+        </thredds:dataset>
+    </thredds:dataset>
+</thredds:catalog>

@@ -39,7 +39,7 @@ class ThreddsReader(BaseReader):
             return any structure not part of the
             current element's attributes
             '''
-            description = {}
+            description = {extract_element_tag(k): v for k, v in elem.attrib.iteritems()}
 
             if tag == 'metadata':
                 service_elem = next(iter(elem.xpath('*[local-name()="serviceName"]')), None)
@@ -91,15 +91,8 @@ class ThreddsReader(BaseReader):
             return description
 
         def _handle_elem(elem, child_tags):
-            description = {extract_element_tag(k): v for k, v in elem.attrib.iteritems()}
+            description = _get_items(extract_element_tag(elem.tag), elem)
             description['source'] = extract_element_tag(elem.tag)
-
-            description = dict(
-                chain(
-                    description.items(),
-                    _get_items(extract_element_tag(elem.tag), elem).items()
-                )
-            )
 
             endpoints = []
 
@@ -110,9 +103,6 @@ class ThreddsReader(BaseReader):
                     endpoints += [
                         dict(
                             chain(
-                                {
-                                    extract_element_tag(k): v for k, v in e.attrib.iteritems()
-                                }.items(),
                                 _get_items(extract_element_tag(e.tag), e).items(),
                                 {
                                     "childOf": description.get('ID', ''),
