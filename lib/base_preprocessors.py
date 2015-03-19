@@ -60,6 +60,18 @@ class BaseReader():
             service_elements['endpoints'] = endpoints
         return service_elements
 
+    def return_dataset_descriptors(self):
+        '''
+        no generic handling for this unfortunately.
+        '''
+        pass
+
+    def return_metadata_descriptors(self):
+        '''
+        no generic handling for this unfortunately.
+        '''
+        pass
+
     def return_everything_else(self, excluded_elements):
         '''
         return any text value/attribute that wasn't extracted
@@ -77,7 +89,9 @@ class BaseReader():
             dict {service: 'anything ontology-driven', remainder: 'any other text/attribute value'}
         '''
         service = {
-            "service": self.return_service_descriptors()
+            "service": self.return_service_descriptors(),
+            "dataset": self.return_dataset_descriptors(),
+            "metadata": self.return_metadata_descriptors()
         }
         excluded = self.return_exclude_descriptors()
         service['remainder'] = self.return_everything_else(excluded)
