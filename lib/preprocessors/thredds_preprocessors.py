@@ -39,36 +39,28 @@ class ThreddsReader(BaseReader):
                     self._to_exclude.append(
                         generate_qualified_xpath(name_elem, True) + "/@vocabulary"
                     )
-                    description['publisher'] = {
-                        'name': name_elem.text.strip(),
-                        'name_vocabulary': name_elem.attrib.get('vocabulary', '')
-                    }
+                    description['publisher_name'] = name_elem.text.strip()
+                    description['publisher_vocab'] = name_elem.attrib.get('vocabulary', '')
 
                 if contact_elem is not None:
                     contact_xpath = generate_qualified_xpath(contact_elem, True)
                     self._to_exclude += [contact_xpath] + \
                         [contact_xpath + '/@' + k for k in contact_elem.attrib.keys()]
-                    description['publisher']['contact'] = contact_elem.attrib
+                    description['publisher_contact'] = contact_elem.attrib
         elif tag == 'dataset':
             datasize_elem = next(iter(elem.xpath('*[local-name()="dataSize"]')), None)
             if datasize_elem is not None:
                 self._to_exclude.append(generate_qualified_xpath(datasize_elem, True))
                 self._to_exclude.append(generate_qualified_xpath(datasize_elem, True) + "/@units")
-                datasize = {
-                    "units": datasize_elem.attrib.get('units', ''),
-                    "size": datasize_elem.text.strip()
-                }
-                description['datasize'] = datasize
+                description['datasize_units'] = datasize_elem.attrib.get('units', '')
+                description['datasize_size'] = datasize_elem.text.strip()
 
             date_elem = next(iter(elem.xpath('*[local-name()="date"]')), None)
             if date_elem is not None:
                 self._to_exclude.append(generate_qualified_xpath(date_elem, True))
                 self._to_exclude.append(generate_qualified_xpath(date_elem, True) + "/@type")
-                date = {
-                    "type": date_elem.attrib.get('type', ''),
-                    "date": date_elem.text.strip()
-                }
-                description['date'] = date
+                description['date_type'] = date_elem.attrib.get('type', '')
+                description['date'] = date_elem.text.strip()
 
             access_elem = next(iter(elem.xpath('*[local-name()="access"]')), None)
             if access_elem is not None:
@@ -78,11 +70,8 @@ class ThreddsReader(BaseReader):
                 self._to_exclude.append(
                     generate_qualified_xpath(access_elem, True) + "/@urlPath"
                 )
-                access = {
-                    "serviceName": access_elem.attrib.get('serviceName', ''),
-                    "url": access_elem.attrib.get('urlPath', '')
-                }
-                description['access'] = access
+                description["serviceName"] = access_elem.attrib.get('serviceName', '')
+                description["url"] = access_elem.attrib.get('urlPath', '')
 
         if 'ID' not in description:
             description.update({"ID": generate_short_uuid()})
@@ -125,8 +114,26 @@ class ThreddsReader(BaseReader):
         but that is less than ideal for the triples (we want
             to minimize the special flower handling at that
             end as much as possible)
+
+        minor flattening
         '''
-        pass
+
+        # as source key: endpoint key
+        remaps = {
+            "serviceType": "type",
+            "href": "url",
+            "base": "url",
+            "urlPath": "url",
+            "serviceName": "type"
+        }
+
+        new_endpoints = []
+        for endpoint in endpoints:
+            # remap things
+            new_endpoints.append({remaps[k] if k in remaps else k: v
+                                  for k, v in endpoint.iteritems()})
+
+        return new_endpoints
 
     def return_dataset_descriptors(self):
         dataset_xpath = "/{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/" + \
@@ -145,7 +152,7 @@ class ThreddsReader(BaseReader):
                 )
                 endpoints += [description] + child_endpoints
 
-        return {"endpoints": endpoints}
+        return {"endpoints": self._normalize_endpoints(endpoints)}
 
     def return_metadata_descriptors(self):
         metadata_xpath = "/{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/" + \
@@ -162,7 +169,7 @@ class ThreddsReader(BaseReader):
                 description, child_endpoints = self._handle_elem(metadata, [])
                 endpoints += [description] + child_endpoints
 
-        return {"endpoints": endpoints}
+        return {"endpoints": self._normalize_endpoints(endpoints)}
 
     def return_exclude_descriptors(self):
         '''
@@ -209,4 +216,4 @@ class ThreddsReader(BaseReader):
                 description, child_endpoints = self._handle_elem(catref, ['catalogRef', 'metadata'])
                 endpoints += [description] + child_endpoints
 
-        return endpoints
+        return self._normalize_endpoints(endpoints)
