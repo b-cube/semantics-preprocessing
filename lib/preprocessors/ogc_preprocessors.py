@@ -6,7 +6,7 @@ from lib.yaml_configs import import_yaml_configs
 from lib.nlp_utils import normalize_keyword_text
 
 
-class OgcPreprocessor():
+class OgcReader():
     '''
     base class to handle OWSLib responses
 
