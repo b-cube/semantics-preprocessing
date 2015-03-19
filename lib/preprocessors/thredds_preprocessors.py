@@ -1,6 +1,8 @@
 from lib.base_preprocessors import BaseReader
 from itertools import chain
-from lib.utils import extract_element_tag, generate_short_uuid
+from lib.utils import extract_element_tag
+from lib.utils import generate_short_uuid
+from lib.utils import generate_qualified_xpath
 
 
 class ThreddsReader(BaseReader):
@@ -17,9 +19,13 @@ class ThreddsReader(BaseReader):
         '''
         description = {extract_element_tag(k): v for k, v in elem.attrib.iteritems()}
 
+        elem_xpath = generate_qualified_xpath(elem, True)
+        self._to_exclude += [elem_xpath] + [elem_xpath + '/@' + k for k in elem.attrib.keys()]
+
         if tag == 'metadata':
             service_elem = next(iter(elem.xpath('*[local-name()="serviceName"]')), None)
             if service_elem is not None:
+                self._to_exclude.append(generate_qualified_xpath(service_elem, True))
                 description['service'] = service_elem.text.strip()
 
             publisher_elem = next(iter(elem.xpath('*[local-name()="publisher"]')), None)
@@ -29,16 +35,25 @@ class ThreddsReader(BaseReader):
                                     None)
 
                 if name_elem is not None:
+                    self._to_exclude.append(generate_qualified_xpath(name_elem, True))
+                    self._to_exclude.append(
+                        generate_qualified_xpath(name_elem, True) + "/@vocabulary"
+                    )
                     description['publisher'] = {
                         'name': name_elem.text.strip(),
                         'name_vocabulary': name_elem.attrib.get('vocabulary', '')
                     }
 
                 if contact_elem is not None:
+                    contact_xpath = generate_qualified_xpath(contact_elem, True)
+                    self._to_exclude += [contact_xpath] + \
+                        [contact_xpath + '/@' + k for k in contact_elem.attrib.keys()]
                     description['publisher']['contact'] = contact_elem.attrib
         elif tag == 'dataset':
             datasize_elem = next(iter(elem.xpath('*[local-name()="dataSize"]')), None)
             if datasize_elem is not None:
+                self._to_exclude.append(generate_qualified_xpath(datasize_elem, True))
+                self._to_exclude.append(generate_qualified_xpath(datasize_elem, True) + "/@units")
                 datasize = {
                     "units": datasize_elem.attrib.get('units', ''),
                     "size": datasize_elem.text.strip()
@@ -47,6 +62,8 @@ class ThreddsReader(BaseReader):
 
             date_elem = next(iter(elem.xpath('*[local-name()="date"]')), None)
             if date_elem is not None:
+                self._to_exclude.append(generate_qualified_xpath(date_elem, True))
+                self._to_exclude.append(generate_qualified_xpath(date_elem, True) + "/@type")
                 date = {
                     "type": date_elem.attrib.get('type', ''),
                     "date": date_elem.text.strip()
@@ -55,6 +72,12 @@ class ThreddsReader(BaseReader):
 
             access_elem = next(iter(elem.xpath('*[local-name()="access"]')), None)
             if access_elem is not None:
+                self._to_exclude.append(
+                    generate_qualified_xpath(access_elem, True) + "/@serviceName"
+                )
+                self._to_exclude.append(
+                    generate_qualified_xpath(access_elem, True) + "/@urlPath"
+                )
                 access = {
                     "serviceName": access_elem.attrib.get('serviceName', ''),
                     "url": access_elem.attrib.get('urlPath', '')
@@ -87,6 +110,8 @@ class ThreddsReader(BaseReader):
                         )
                     ) for e in elems
                 ]
+
+                self._to_exclude += [generate_qualified_xpath(e, True) for e in elems]
 
                 parents = description.get('parentOf', [])
                 parents += [e['ID'] for e in endpoints if 'childOf' in e]
@@ -146,7 +171,7 @@ class ThreddsReader(BaseReader):
         '''
         excluded = self._service_descriptors.values()
         return ['{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/' + e
-                for e in excluded] + self._to_exclude
+                for e in excluded] + list(set(self._to_exclude))
 
     def parse_endpoints(self):
         '''

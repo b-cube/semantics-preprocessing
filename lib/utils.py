@@ -73,6 +73,23 @@ def extract_element_tag(tag):
     return tag.split('}')[-1]
 
 
+def generate_qualified_xpath(elem, do_join=True):
+    '''
+    from some element, iterate through the parents
+    and generate the xpath back to it (without specific
+        text values, ie no [text()= "thing"])
+    '''
+    tags = [elem.tag] + [e.tag for e in elem.iterancestors()]
+    tags.reverse()
+
+    # TODO: handle the comments
+    # check for an assumed comment object
+    # if sum([isinstance(a, str) for a in tags]) != len(tags):
+    #     continue
+
+    return '/'.join(tags) if do_join else tags
+
+
 def flatten(items, excluded_keys=[]):
     '''
     flatten a list of irregular lists/singletons
