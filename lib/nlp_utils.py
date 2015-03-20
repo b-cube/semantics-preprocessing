@@ -8,7 +8,7 @@ nlp prep methods
 '''
 
 
-def normalize_subjects(subjects, do_split=False):
+def normalize_subjects(subjects, do_split=False, return_unique=True):
     '''
     for some set of extracted keyword/tag/subject strings,
     normalize the strings to split on delimiters, handle some
@@ -28,7 +28,7 @@ def normalize_subjects(subjects, do_split=False):
         normalized_subjects += [n.strip() for n in normalized.split(',')] \
             if do_split else [normalized]
 
-    return normalized_subjects
+    return list(set(normalized_subjects)) if return_unique else normalized_subjects
 
 
 def normalize_keyword_text(keyword_string):
