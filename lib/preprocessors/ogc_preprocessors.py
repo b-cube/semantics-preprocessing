@@ -185,7 +185,6 @@ class OgcReader():
 
     def return_metadata_descriptors(self):
         '''
-        for any content element, get the metadata url (if there is one)
-        and make it an endpoint? with a parent?
+        children of the content widget
         '''
         pass

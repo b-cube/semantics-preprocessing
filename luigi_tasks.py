@@ -23,25 +23,6 @@ class ParseWorkflow(luigi.Task):
 
 
 if __name__ == '__main__':
-    # luigi.run(["--local-scheduler"], main_task_cls=ResponseTask)
-    # luigi.run()
-
-    # rt = ResponseTask(
-    #     input_path='testdata/docs/response_0a80f182ed59a834572e2c594aacfe29.json',
-    #     output_path='testdata/luigi/0a80f182ed59a834572e2c594aacfe29_cleaned.json'
-    # )
-    # it = IdentifyTask(
-    #     upstream_task=rt,
-    #     # input_path='testdata/luigi/0a80f182ed59a834572e2c594aacfe29_cleaned.json',
-    #     output_path='testdata/luigi/0a80f182ed59a834572e2c594aacfe29_identify.json',
-    #     yaml_file='lib/configs/identifiers.yaml'
-    # )
-    # pt = ParseTask(
-    #     upstream_task=it,
-    #     # input_path='testdata/luigi/0a80f182ed59a834572e2c594aacfe29_identify.json',
-    #     output_path='testdata/luigi/0a80f182ed59a834572e2c594aacfe29_parse.json'
-    # )
-
     # this is quite unfortunate
     w = ParseWorkflow(doc_dir='testdata/docs/', yaml_file='lib/configs/identifiers.yaml')
 
