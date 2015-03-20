@@ -1,9 +1,9 @@
-from owslib.wms import WebMapService
-from owslib.wcs import WebCoverageService
-from owslib.wfs import WebFeatureService
-from owslib.csw import CatalogueServiceWeb
+from bcube_owslib.wms import WebMapService
+from bcube_owslib.wcs import WebCoverageService
+from bcube_owslib.wfs import WebFeatureService
+from bcube_owslib.csw import CatalogueServiceWeb
+from bcube_owslib.sos import SensorObservationService
 from lib.yaml_configs import import_yaml_configs
-from lib.nlp_utils import normalize_keyword_text
 
 
 class OgcReader():
@@ -11,11 +11,15 @@ class OgcReader():
     base class to handle OWSLib responses
 
     support for: WMS 1.1.1
+                 WMS 1.3.0
                  WFS 1.0.0
                  WFS 1.1.0
                  WCS 1.0.0
                  WCS 1.1.0
+                 WCS 1.1.1
+                 WCS 1.1.2
                  CSW 2.0.2
+                 SOS 1.0.0
     '''
     def __init__(self, service, version, response_as_string):
         self.service = service
@@ -34,6 +38,8 @@ class OgcReader():
             reader = WebCoverageService('', xml=self.response, version=self.version)
         elif self.service == 'CSW' and self.version in ['2.0.2']:
             reader = CatalogueServiceWeb('', xml=self.response, version=self.version)
+        elif self.service == 'SOS' and self.version in ['1.0.0']:
+            reader = SensorObservationService('', xml=self.response, version=self.version)
         else:
             return None
         return reader
@@ -42,25 +48,6 @@ class OgcReader():
         data = import_yaml_configs(['lib/configs/ogc_parameters.yaml'])
         self.config = next(d for d in data if d['name'] == self.service.upper() +
                            self.version.replace('.', ''))
-
-    def _normalize_subjects(self, do_split=False):
-        '''
-        for a given set of subject strings, run the keyword
-        normalizer ()
-        '''
-        service_description = self.service.get('service', {})
-        if not service_description:
-            return
-
-        normalized_subjects = []
-        subjects = service_description.get('subject', [])
-        for subject in subjects:
-            normalized = normalize_keyword_text(subject)
-            normalized_subjects += [n.strip() for n in normalized.split(',')] \
-                if do_split else [normalized]
-
-        if normalized_subjects:
-            self.service['service']['subject'] = normalized_subjects
 
     def _get_operations(self):
         '''
@@ -168,7 +155,6 @@ class OgcReader():
             "service": self.return_service_descriptors(),
             "remainder": []
         }
-        self._normalize_subjects(True)
         return service
 
     def return_service_descriptors(self):
@@ -184,8 +170,22 @@ class OgcReader():
         return {
             "title": self.reader.identification.title,
             "abstract": self.reader.identification.abstract,
-            "tags": self.reader.identification.keywords,
+            "subject": self.reader.identification.keywords,
             "rights": rights,
             "contact": contact,
             "endpoints": self._get_operations()
         }
+
+    def return_dataset_descriptors(self):
+        '''
+        from some content metadata object, get all of the
+        layers/features/coverages
+        '''
+        pass
+
+    def return_metadata_descriptors(self):
+        '''
+        for any content element, get the metadata url (if there is one)
+        and make it an endpoint? with a parent?
+        '''
+        pass

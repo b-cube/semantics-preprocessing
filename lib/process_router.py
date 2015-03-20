@@ -26,6 +26,9 @@ class Processor():
         protocol = self.identity['protocol']
         version = self.identity['version']
 
+        if not protocol:
+            return None
+
         if protocol == 'OpenSearch':
             self.reader = OpenSearchReader(response)
         elif protocol == 'OAI-PMH':
