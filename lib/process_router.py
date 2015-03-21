@@ -15,11 +15,12 @@ class Processor():
     not great but let's hide all of the options away
     and not give the processors more than they need
     '''
-    def __init__(self, identification, response):
+    def __init__(self, identification, response, source_url):
         self.identity = identification
-        self._instantiate(response)
+        self.source_url = source_url
+        self._instantiate(response, source_url)
 
-    def _instantiate(self, response):
+    def _instantiate(self, response, url):
         '''
         set up the router
         '''
@@ -30,16 +31,16 @@ class Processor():
             return None
 
         if protocol == 'OpenSearch':
-            self.reader = OpenSearchReader(response)
+            self.reader = OpenSearchReader(response, url)
         elif protocol == 'OAI-PMH':
-            self.reader = OaiPmhReader(response)
+            self.reader = OaiPmhReader(response, url)
         elif protocol == 'UNIDATA':
-            self.reader = ThreddsReader(response)
+            self.reader = ThreddsReader(response, url)
         elif protocol in ['ISO-19115']:
             # TODO: update this for the data series and service metadata
-            self.reader = IsoReader(response)
+            self.reader = IsoReader(response, url)
         elif protocol.startswith('OGC:') and 'error' not in protocol:
-            self.reader = OgcReader(response, version)
+            self.reader = OgcReader(protocol.split(':')[-1], version, response, url)
         else:
             # we will try a generic xml parser
-            self.reader = XmlReader(response)
+            self.reader = XmlReader(response, url)

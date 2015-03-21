@@ -18,15 +18,13 @@ def write_data(path, data):
 
 class ResponseTask(luigi.Task):
     input_path = luigi.Parameter()
+    yaml_file = luigi.Parameter()
 
     def requires(self):
-        pass
+        return []
 
     def output(self):
         return luigi.LocalTarget(self.input_path + '.cleaned')
-
-    def parameters(self):
-        return self.cleaned
 
     def run(self):
         '''  '''
@@ -54,12 +52,11 @@ class ResponseTask(luigi.Task):
 
 
 class IdentifyTask(luigi.Task):
-    yaml_file = luigi.Parameter()
     input_path = luigi.Parameter()
+    yaml_file = luigi.Parameter()
 
     def requires(self):
-        # return self.upstream_task
-        return ResponseTask(self.input_path)
+        return ResponseTask(input_file=self.input_path, yaml_file=self.yaml_file)
 
     def output(self):
         return luigi.LocalTarget(self.input_path + '.identified')

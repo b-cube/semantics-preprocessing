@@ -23,8 +23,9 @@ class BaseReader():
 
     _service_descriptors = {}
 
-    def __init__(self, response):
+    def __init__(self, response, url):
         self._response = response
+        self._url = url
         self._load_xml()
 
     def _load_xml(self):

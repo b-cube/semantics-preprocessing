@@ -21,10 +21,11 @@ class OgcReader():
                  CSW 2.0.2
                  SOS 1.0.0
     '''
-    def __init__(self, service, version, response_as_string):
+    def __init__(self, service, version, response_as_string, url):
         self.service = service
         self.version = version
         self.response = response_as_string
+        self.url = url
 
         # get the owslib object
         self.reader = self._get_reader()

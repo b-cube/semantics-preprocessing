@@ -3,6 +3,7 @@ from itertools import chain
 from lib.utils import extract_element_tag
 from lib.utils import generate_short_uuid
 from lib.utils import generate_qualified_xpath
+from lib.utils import split_url
 
 
 class ThreddsReader(BaseReader):
@@ -107,6 +108,20 @@ class ThreddsReader(BaseReader):
                 description['parentOf'] = parents
 
         return description, endpoints
+
+    def _href_munging(self, tail_url):
+        '''
+        so. this is amazing.
+
+        remove the http:// whatever (but keep track, obv.)
+        split the source url, split the tail_url (any relative path)
+        find the index of the first intersection in the source, append
+        the tail bits
+        '''
+
+        source_parts = split_url(self._url)
+
+
 
     def _normalize_endpoints(self, endpoints):
         '''
