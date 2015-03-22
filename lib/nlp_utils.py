@@ -2,6 +2,11 @@ import re
 import HTMLParser
 from lib.utils import flatten
 import langid
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem.wordnet import WordNetLemmatizer
+
 
 '''
 nlp prep methods
@@ -61,6 +66,60 @@ def normalize_keyword_text(keyword_string):
 
     punctuation_pattern = r'[;|>+:=+]'
     return re.sub(punctuation_pattern, ',', keyword_string)
+
+
+def remove_punctuation(text):
+    '''
+    remove any punctuation from the text (for
+        bag of words to be just words)
+    '''
+    simple_pattern = r'[;|>+:=.,()/?!]'
+    return re.sub(simple_pattern, ' ', text)
+
+
+def split_words(text):
+    ''' '''
+    simple_pattern = r'[/:.]'
+    return re.split(simple_pattern, text)
+
+
+def remove_stopwords(text):
+    '''
+    remove any known english stopwords from a
+    piece of text (bag of words or otherwise)
+    '''
+    _stopwords = set(stopwords.words('english'))
+    words = word_tokenize(text)
+    return ' '.join([w for w in words if w not in _stopwords and w])
+
+
+def tokenize_text(text, resplit=True):
+    '''
+    tokenize to words
+    if resplit, split words (we find things like
+        Profiles/Sounders so maybe those should
+        be separated)
+    tag with parts of speech
+    '''
+    # TODO: note this might not always be the required step!
+    # tokenize [(u'used', 'VBN'), (u'navigation', 'NN')]
+    words = word_tokenize(text)
+    words = flatten([split_words(w) for w in words]) if resplit else words
+    return nltk.pos_tag(words)
+
+
+def extract_by_pos(tokenized_text, parts_of_speech):
+    '''
+    sneetches on beaches...
+    '''
+    # pull out the parts of speech if subsetting else return the terms
+    return [t[0] for t in tokenized_text if t[1] in parts_of_speech] \
+        if parts_of_speech else [t[0] for t in tokenized_text]
+
+
+def lemmatize_words(words):
+    lem = WordNetLemmatizer()
+    return [lem.lemmatize(w) for w in words]
 
 
 def collapse_to_bag(data_blob, exclude_urls=True):
