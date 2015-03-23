@@ -21,16 +21,26 @@
             value: '//*[local-name()="dataset"]'
   metadatas:
     filters:
+      # one of the service endpoints plus the right dataset endpoint
       ors:
         - type: xpath
           object: content
-          value: '//*[local-name()="service" and @serviceType="ISO"]'
+          value: '//*[local-name()="service" and @serviceType="ISO"] and //*[local-name()="dataset" and @urlPath]'
         - type: xpath
           object: content
-          value: '//*[local-name()="service" and @serviceType="NCML"]'
+          value: '//*[local-name()="service" and @serviceType="ISO"] and //*[local-name()="dataset"]/*[local-name()="access" and @urlPath]'
         - type: xpath
           object: content
-          value: '//*[local-name()="service" and @serviceType="UDDC"]'
+          value: '//*[local-name()="service" and @serviceType="NCML"] and //*[local-name()="dataset" and @urlPath]'
+        - type: xpath
+          object: content
+          value: '//*[local-name()="service" and @serviceType="NCML"] and //*[local-name()="dataset"]/*[local-name()="access" and @urlPath]'
+        - type: xpath
+          object: content
+          value: '//*[local-name()="service" and @serviceType="UDDC"] and //*[local-name()="dataset" and @urlPath]'
+        - type: xpath
+          object: content
+          value: '//*[local-name()="service" and @serviceType="UDDC"] and //*[local-name()="dataset"]/*[local-name()="access" and @urlPath]'
   errors:
     # this is not technically an error but it is 
     # an invalid service response
