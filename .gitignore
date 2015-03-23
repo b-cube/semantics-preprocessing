@@ -6,4 +6,6 @@ we_hate_xml*
 notebooks/.ipynb_checkpoints/*
 local/stanford*
 notebooks/lda/dictionaries/
-*.ipynb
+
+
+.ipynb_checkpoints/Untitled0-checkpoint.ipynb
