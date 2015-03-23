@@ -1,6 +1,7 @@
-import yaml
+# import yaml
 import re
 from itertools import chain
+from lib.yaml_configs import import_yaml_configs
 
 
 class Identify():
@@ -14,24 +15,24 @@ class Identify():
                  of a protocol, identify if it's a dataset service
                  for a protocol
     '''
-    def __init__(self, yaml_file, source_content, source_url, **options):
+    def __init__(self, yaml_files, source_content, source_url, **options):
         '''
         **options:
             parser: Parser from source_content
             ignore_case: bool
         '''
-        self.yaml_file = yaml_file
+        self.yaml_files = yaml_files
         self.source_content = source_content
         self.source_url = source_url
         self.options = options
-        self.yaml = self._parse_yaml()
+        self.yaml = import_yaml_configs(self.yaml_files)
 
         self.ignore_case = options['ignore_case'] if 'ignore_case' in options else False
 
-    def _parse_yaml(self):
-        with open(self.yaml_file, 'r') as f:
-            text = f.read()
-        return yaml.load(text)
+    # def _parse_yaml(self):
+    #     with open(self.yaml_file, 'r') as f:
+    #         text = f.read()
+    #     return yaml.load(text)
 
     def _filter(self, operator, filters, clauses):
         '''

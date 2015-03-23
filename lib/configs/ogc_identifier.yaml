@@ -47,17 +47,7 @@
             object: content
             value: 'name="GetCapabilities"'
   datasets:
-    filters:
-      ors:
-        - type: xpath
-          # for any layer at some depth, v 1.1.1, 1.3.0
-          value: '//Layer'
   metadatas:
-    filters:
-      ors:
-        - type: xpath
-          # for any layer at some depth, v 1.1.1, 1.3.0
-          value: '//Layer/MetadataURL'
   versions:
     checks:
       ors:
@@ -91,10 +81,6 @@
             value: 'name="GetCapabilities"'
   datasets:
   metadatas:
-    filters:
-      ors:
-        - type: xpath
-          value: '/*/{http://www.opengis.net/wmts/1.0}Contents/{http://www.opengis.net/wmts/1.0}Layer/{http://www.opengis.net/ows/1.1}Metadata'
   versions:
     checks:
       ors:
@@ -128,7 +114,6 @@
             value: 'name="GetCapabilities"'
   datasets:
   metadatas:
-    # no metadata url for sos
   versions:
     checks:
       ors:
@@ -179,15 +164,6 @@
               - type: simple
                 object: content
                 value: '<FeatureTypeList>'
-          - type: complex
-            operator: ands
-            filters:
-              - type: simple
-                object: content
-                value: '<ows:Operation name="GetFeature">'
-              - type: simple
-                object: content
-                value: '<wfs:FeatureTypeList>'
   metadatas:
     # contains a link to a metadata url (we don't care 
     # about parentage at this point)

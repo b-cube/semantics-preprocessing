@@ -1,0 +1,11 @@
+- name: DIF
+  subtype: metadata
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/'
+  datasets:
+  metadatas:
+  errors:
+  versions:

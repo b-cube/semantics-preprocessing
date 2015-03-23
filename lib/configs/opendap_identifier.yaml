@@ -1,0 +1,12 @@
+- name: OPeNDAP
+  subtype: dataset
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://xml.opendap.org/ns/DAP2'
+  service_description:
+  datasets:
+  metadatas:
+  errors:
+  versions:

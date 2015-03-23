@@ -1,0 +1,18 @@
+- name: RDF
+  subtype: dataset
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: '<rdf:RDF'
+      - type: simple
+        object: content
+        value: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
+      - type: simple
+        object: content
+        value: '<dcat:Dataset rdf:about='
+  service_description:
+  datasets:
+  metadatas:
+  errors:
+  versions:

@@ -13,7 +13,24 @@
             object: content
             value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
   datasets:
+    - name: Dataset
+      filters:
+        ors:
+          - type: xpath
+            object: content
+            value: '//*[local-name()="dataset"]'
   metadatas:
+    filters:
+      ors:
+        - type: xpath
+          object: content
+          value: '//*[local-name()="service" and serviceType="ISO"]'
+        - type: xpath
+          object: content
+          value: '//*[local-name()="service" and serviceType="NCML"]'
+        - type: xpath
+          object: content
+          value: '//*[local-name()="service" and serviceType="UDDC"]'
   errors:
     # this is not technically an error but it is 
     # an invalid service response

@@ -1,0 +1,306 @@
+- name: PDS
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://pds.nasa.gov/pds4/pds/v1'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: CAP-ALERT
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.incident.com/cap/1.0'
+      - type: simple
+        object: content
+        value: 'urn:oasis:names:tc:emergency:cap:'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: MARC:21
+  subtype: metadata
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.loc.gov/MARC21/slim'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: KML
+  subtype: dataset
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://earth.google.com/kml'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: ArcGISExplorerDocument
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.esri.com/schemas/ArcGIS/9.2'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: ESRI MapServer Info
+  # i have no idea what this is particularly
+  subtype: service
+  filters:
+    ands:
+      - type: simple
+        object: content
+        value: 'EsriPropertyType='
+      - type: simple
+        object: content
+        value: 'ArcGISFormat'
+      - type: simple
+        object: content
+        value: '<Esri>'
+  datasets:
+  metadatas:
+  errors:
+  versions:   
+- name: Microsoft
+  subtype: dataset
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'urn:schemas-microsoft-com:office:office'
+  datasets:
+  metadatas:
+  errors:
+  versions:   
+- name: NetCDF
+  subtype: dataset
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2'
+  datasets:
+  metadatas:
+  errors:
+  versions:  
+- name: RSS
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: '<rss version="'
+      - type: simple
+        object: content
+        value: 'http://api.npr.org/nprml'
+  datasets:
+  metadatas:
+  errors:
+  versions:  
+- name: WordPress
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://archipelago.phrasewise.com/rsd'
+      - type: simple
+        object: url
+        value: '?rsd'
+      - type: simple
+        object: url
+        value: 'rsd.xml'
+  datasets:
+  metadatas:
+  errors:
+  versions:  
+- name: LOC-METS
+  subtype: metadata
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.loc.gov/METS_Profile/'
+  datasets:
+  metadatas:
+  errors:
+  versions:  
+- name: DataCite
+  subtype: metadata
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://datacite.org/schema/'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: EML
+  subtype: metadata
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'eml://ecoinformatics.org/eml-'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: QuakeML
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://anss.org/xmlns/catalog'
+      - type: simple
+        object: content
+        value: 'http://anss.org/xmlns/tensor'
+      - type: simple
+        object: content
+        value: 'http://quakeml.org/xmlns/bed/'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: NIEM
+  subtype: metadata
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://niem.gov/'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: Disco
+  subtype: metadata
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://schemas.xmlsoap.org/disco/'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: SOAP
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://schemas.xmlsoap.org/soap'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: Sitemap
+  subtype: metadata
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.google.com/geo/schemas/sitemap/'
+      - type: simple
+        object: content
+        value: 'http://www.sitemaps.org/schemas/sitemap/'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: iTunes
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.itunes.com/dtds/podcast-1.0.dtd'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: waterML
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.cuahsi.org/waterML/'
+  datasets:
+  metadatas:
+  errors:
+  versions:  
+- name: ECHO
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://echo.nasa.gov/'
+  datasets:
+  metadatas:
+  errors:
+  versions:  
+- name: MODAPS
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://modapsws.gsfc.nasa.gov/xsd'
+  datasets:
+  metadatas:
+  errors:
+  versions:  
+- name: IOOS
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.noaa.gov/ioos/'
+  datasets:
+  metadatas:
+  errors:
+  versions:    
+- name: Zenodo
+  # these have no internal structure to map effectively
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: url
+        value: 'zenodo.org/'
+  datasets:
+  metadatas:
+  errors:
+  versions:    
+- name: Ferret ToolsUi
+  # there are so many of these, may as well tag them.
+  subtype:
+  filters:
+    ors:
+      - type: simple
+        object: url
+        value: http://ferret.pmel.noaa.gov/thredds/view/ToolsUI.jnlp?
+
+
+
+
+

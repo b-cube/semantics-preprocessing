@@ -11,10 +11,10 @@
         value: '<metstdv>FGDC-STD-012-2002'
       - type: xpath
         object: content
-        value: '//metstdv[text()="FGDC-STD-001-1998"]'
+        value: '/metadata/metainfo/metstdv[text()="FGDC-STD-001-1998"]'
       - type: xpath
         object: content
-        value: '//metstdv[text()="FGDC-STD-012-2002"]'
+        value: '/metadata/metainfo/metstdv[text()="FGDC-STD-012-2002"]'
   datasets:
   metadatas:
   errors:
