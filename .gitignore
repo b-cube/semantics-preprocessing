@@ -1,5 +1,6 @@
 *.csv
 *.pyc
+*.xlsx
 test.txt
 testdata/
 we_hate_xml*
@@ -9,3 +10,5 @@ notebooks/lda/dictionaries/
 
 
 .ipynb_checkpoints/Untitled0-checkpoint.ipynb
+
+notebooks/Untitled0.ipynb
