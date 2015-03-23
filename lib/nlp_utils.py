@@ -5,7 +5,12 @@ import langid
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
+from nltk.corpus import WordListCorpusReader
 from nltk.stem.wordnet import WordNetLemmatizer
+from itertools import chain
+
+
+_corpus_root = 'lib/corpus'
 
 
 '''
@@ -93,6 +98,36 @@ def remove_stopwords(text):
     return ' '.join([w for w in words if w not in _stopwords and w])
 
 
+def remove_mimetypes(text):
+    '''
+    do this before something like tokenize or the
+    resplit option will split the mimetypes to not
+    be recognizable as such anymore
+    '''
+    mimetypes = WordListCorpusReader(_corpus_root, 'mimetypes.txt')
+    words = [w.replace('+', '\+') for w in mimetypes.words()]
+
+    pttn = re.compile('|'.join(words))
+    return pttn.sub('', text)
+
+
+def extract_mimetypes(text, do_replace=True):
+    '''
+    pull a list of mimetypes from some text feature
+
+    return a list of mimetypes in the text block and
+    the text, without mimetypes or unmodified
+    '''
+    mimetypes = WordListCorpusReader(_corpus_root, 'mimetypes.txt')
+
+    found_mimetypes = [w for w in mimetypes.words() if w in text]
+
+    if do_replace:
+        text = remove_mimetypes(text)
+
+    return found_mimetypes, text
+
+
 def tokenize_text(text, resplit=True):
     '''
     tokenize to words
@@ -104,7 +139,11 @@ def tokenize_text(text, resplit=True):
     # TODO: note this might not always be the required step!
     # tokenize [(u'used', 'VBN'), (u'navigation', 'NN')]
     words = word_tokenize(text)
-    words = flatten([split_words(w) for w in words]) if resplit else words
+    words = list(
+        chain.from_iterable(
+            [split_words(w) for w in words]
+        )
+    ) if resplit else words
     return nltk.pos_tag(words)
 
 
