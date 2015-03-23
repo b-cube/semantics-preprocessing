@@ -24,13 +24,13 @@
       ors:
         - type: xpath
           object: content
-          value: '//*[local-name()="service" and serviceType="ISO"]'
+          value: '//*[local-name()="service" and @serviceType="ISO"]'
         - type: xpath
           object: content
-          value: '//*[local-name()="service" and serviceType="NCML"]'
+          value: '//*[local-name()="service" and @serviceType="NCML"]'
         - type: xpath
           object: content
-          value: '//*[local-name()="service" and serviceType="UDDC"]'
+          value: '//*[local-name()="service" and @serviceType="UDDC"]'
   errors:
     # this is not technically an error but it is 
     # an invalid service response

@@ -410,4 +410,4 @@ class TestThreddsIdentification(unittest.TestCase):
 
         self.assertTrue(self.identifier.protocol == 'UNIDATA')
         self.assertTrue(self.identifier.has_metadata)
-        self.assertFalse(self.identifier.has_dataset)
+        self.assertTrue(self.identifier.has_dataset)
