@@ -273,9 +273,18 @@
   subtype: service
   filters:
     ors:
-      - type: simple
-        object: content
-        value: 'http://www.opengis.net/cat/csw'
+      # - type: simple
+      #   object: content
+      #   value: 'http://www.opengis.net/cat/csw'
+      - type: complex
+        operator: ands
+        filters:
+          - type: simple
+            object: content
+            value: 'http://www.opengis.net/cat/csw'
+          - type: simple
+            object: content
+            value: '<csw:Capabilities'
   service_description:
     - name: GetCapabilities
       filters:
@@ -485,5 +494,22 @@
           # and we are concatenating name and version (note, this does not manage whitespace issues!)
           value: 'concat(/*/*[local-name()="seriesMetadata"]/*[local-name()="MD_Metadata" or local-name()="MI_Metadata"]/{http://www.isotc211.org/2005/gmd}metadataStandardName/{http://www.isotc211.org/2005/gco}CharacterString/text(), " ", /*/*[local-name()="seriesMetadata"]/*[local-name()="MD_Metadata" or local-name()="MI_Metadata"]/{http://www.isotc211.org/2005/gmd}metadataStandardVersion/{http://www.isotc211.org/2005/gco}CharacterString/text())'
 
-
+- name: RDF
+  subtype: dataset
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: '<rdf:RDF'
+      - type: simple
+        object: content
+        value: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
+      - type: simple
+        object: content
+        value: '<dcat:Dataset rdf:about='
+  service_description:
+  datasets:
+  metadatas:
+  errors:
+  versions:
 

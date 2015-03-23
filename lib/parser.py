@@ -24,7 +24,13 @@ class Parser():
         '''
         parse the xml, optional encoding
         '''
-        parser = etree.XMLParser(encoding=self._encoding)
+        parser = etree.XMLParser(
+            encoding=self._encoding,
+            ns_clean=True,
+            remove_blank_text=True,
+            remove_comments=True,
+            recover=True
+        )
 
         try:
             self.xml = etree.fromstring(self._string, parser)

@@ -1,0 +1,429 @@
+<gmd:MD_Metadata xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gml="http://www.opengis.net/gml" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:geonet="http://www.fao.org/geonetwork" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2">
+<gmd:fileIdentifier xmlns:gmx="http://www.isotc211.org/2005/gmx" xmlns:srv="http://www.isotc211.org/2005/srv">
+<gco:CharacterString>fb93a8ba-13e2-4c8f-83fe-699decbb8453</gco:CharacterString>
+</gmd:fileIdentifier>
+<gmd:language>
+<gco:CharacterString>eng</gco:CharacterString>
+</gmd:language>
+<gmd:hierarchyLevel>
+<gmd:MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_ScopeCode" codeListValue="dataset"/>
+</gmd:hierarchyLevel>
+<gmd:contact>
+<gmd:CI_ResponsibleParty>
+<gmd:individualName>
+<gco:CharacterString>Brian Bieber</gco:CharacterString>
+</gmd:individualName>
+<gmd:organisationName>
+<gco:CharacterString>ND Department of Transportation</gco:CharacterString>
+</gmd:organisationName>
+<gmd:contactInfo>
+<gmd:CI_Contact>
+<gmd:phone>
+<gmd:CI_Telephone>
+<gmd:voice>
+<gco:CharacterString>701-328-2649</gco:CharacterString>
+</gmd:voice>
+</gmd:CI_Telephone>
+</gmd:phone>
+<gmd:address>
+<gmd:CI_Address>
+<gmd:city>
+<gco:CharacterString>608 East Boulevard</gco:CharacterString>
+</gmd:city>
+<gmd:administrativeArea>
+<gco:CharacterString>ND</gco:CharacterString>
+</gmd:administrativeArea>
+<gmd:postalCode>
+<gco:CharacterString>58505-0700</gco:CharacterString>
+</gmd:postalCode>
+<gmd:country>
+<gco:CharacterString>USA</gco:CharacterString>
+</gmd:country>
+<gmd:electronicMailAddress>
+<gco:CharacterString>bbieber@nd.gov</gco:CharacterString>
+</gmd:electronicMailAddress>
+</gmd:CI_Address>
+</gmd:address>
+</gmd:CI_Contact>
+</gmd:contactInfo>
+<gmd:role>
+<gmd:CI_RoleCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_RoleCode" codeListValue="pointOfContact" codeSpace="ISOTC211/19115"/>
+</gmd:role>
+</gmd:CI_ResponsibleParty>
+</gmd:contact>
+<gmd:dateStamp>
+<gco:DateTime xmlns:gmx="http://www.isotc211.org/2005/gmx" xmlns:srv="http://www.isotc211.org/2005/srv">2014-11-03T11:40:41</gco:DateTime>
+</gmd:dateStamp>
+<gmd:metadataStandardName>
+<gco:CharacterString xmlns:srv="http://www.isotc211.org/2005/srv" xmlns:gmx="http://www.isotc211.org/2005/gmx">ISO 19115:2003/19139</gco:CharacterString>
+</gmd:metadataStandardName>
+<gmd:metadataStandardVersion>
+<gco:CharacterString xmlns:srv="http://www.isotc211.org/2005/srv" xmlns:gmx="http://www.isotc211.org/2005/gmx">1.0</gco:CharacterString>
+</gmd:metadataStandardVersion>
+<gmd:spatialRepresentationInfo>
+<gmd:MD_VectorSpatialRepresentation>
+<gmd:geometricObjects>
+<gmd:MD_GeometricObjects>
+<gmd:geometricObjectType>
+<gmd:MD_GeometricObjectTypeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_GeometricObjectTypeCode" codeListValue="complex" codeSpace="ISOTC211/19115"/>
+</gmd:geometricObjectType>
+<gmd:geometricObjectCount>
+<gco:Integer>982</gco:Integer>
+</gmd:geometricObjectCount>
+</gmd:MD_GeometricObjects>
+</gmd:geometricObjects>
+</gmd:MD_VectorSpatialRepresentation>
+</gmd:spatialRepresentationInfo>
+<gmd:identificationInfo>
+<gmd:MD_DataIdentification>
+<gmd:citation>
+<gmd:CI_Citation>
+<gmd:title>
+<gco:CharacterString>Incorporated City Boundaries</gco:CharacterString>
+</gmd:title>
+<gmd:date>
+<gmd:CI_Date>
+<gmd:date>
+<gco:Date>2014-11-03</gco:Date>
+</gmd:date>
+<gmd:dateType>
+<gmd:CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_DateTypeCode" codeListValue="publication" codeSpace="ISOTC211/19115"/>
+</gmd:dateType>
+</gmd:CI_Date>
+</gmd:date>
+<gmd:citedResponsibleParty>
+<gmd:CI_ResponsibleParty>
+<gmd:organisationName>
+<gco:CharacterString>ND Department of Transportation</gco:CharacterString>
+</gmd:organisationName>
+<gmd:role>
+<gmd:CI_RoleCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_RoleCode" codeListValue="originator" codeSpace="ISOTC211/19115"/>
+</gmd:role>
+</gmd:CI_ResponsibleParty>
+</gmd:citedResponsibleParty>
+<gmd:presentationForm>
+<gmd:CI_PresentationFormCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_PresentationFormCode" codeListValue="mapDigital" codeSpace="ISOTC211/19115"/>
+</gmd:presentationForm>
+</gmd:CI_Citation>
+</gmd:citation>
+<gmd:abstract>
+<gco:CharacterString>
+11/3/2014 - Updated Bismarck, Mandan, Minot, Stanley, and Watford City 7/16/14 - Corporate limits updated include: Mandan, Towner, Fargo, West Fargo, Grand Forks, Bismarck, Bowman, Watford City, Stanley, Tioga, Kenmare, Casselton, Minot, Carrington, Kindred, and Killdeer. The corporate limit updates consisted of receiving from the cities, shape files, CADD files, scanned images of annexations or by converting pdf files into images, rectifying them within ArcGIS, then heads-up digitizing. 7/29/13 - updated Stanley, Williston, Minot, and Bismarck 4/30/13 - updated Williston, Hazen, Minot, Dickinson, Valley City, Velva, Rugby, Bismarck, and Lincoln 1/28/13 - updated Valley City, Grand Forks, Bismarck, Williston, Jamestown, Harvey, Mohall, Park River, Ray, Rugby, Stanley, Tioga, Mayville and Glenfield 10/9/12 - updated Williston and Dickinson 6/20/12 - updated Williston via shapefile from city 3/20/12 - updated Bismarck and Minot 10/3/2011 - Edited corporate limits for Bottineau, Grand Forks, Bismarck, Grafton, Fargo, West Fargo, Horace, Dickinson, Williston, Valley City and Devils Lake. 2/4/11 - Removed urban areas so only corporate boundaries remain. Removed boolean field named URBAN_AREA. Updated corporate limist in Dickinson and cities with Cass county. 6/24/10 - Stanley, Lincoln, Oakes, Hankinson, Enderlin, Ellendale, Linton, Carrington, Minot, and Kulm corportate limits were changed 6/18/09 - Stanley, Wahpeton, Center, Watford City, Williston, Grand Forks, Killdeer, Beulah, Beach, Hazen, Garrison, Washburn, Bismarck and Lincoln corporate limits were changed 3/24/08 - Added Milton, Drayton, and Cavalier Boudaries updated: Park River 1/16/08 - Boundaries updated: Devils Lake, Glen Ullin, Langdon, Minnewaukan, Northwood, Thompson 2/13/07 - Boundaries updated: Amenia, Arthur, Bismarck, Bottineau, Buffalo, Casstleton, Davenport, Dickinson, Enderlin, Gardner, Grand Forks, Grandin, Harvey, Harvey, Hillsboro, Horace, Hunter, Jamestown, Kindred, Mapleton, Mayville, New Rockford, Oxbox, Page, Prairie Rose, Relies Acres, Tappen, Towner City 1/10/06 - Boundaries updated: Wishek, Fargo, Lincoln, Bottineau, Williston, Grand Forks, Granville, Velva, Stanley, urban areas in Fargo, West Fargo, Bismarck and Mandan. Deleted Larson This data came from the NDDOT's Mapping Section. The original data was digitized from hand scribed maps and registered to the 1:24000 USGS PLSS data. It was converted from a projection (NAD 1983 UTM Zone 14N) to a Geographic coordinate system.
+</gco:CharacterString>
+</gmd:abstract>
+<gmd:purpose>
+<gco:CharacterString>
+These are the incorporated or municipal areas within North Dakota.
+</gco:CharacterString>
+</gmd:purpose>
+<gmd:status>
+<gmd:MD_ProgressCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_ProgressCode" codeListValue="completed" codeSpace="ISOTC211/19115"/>
+</gmd:status>
+<gmd:pointOfContact>
+<gmd:CI_ResponsibleParty>
+<gmd:individualName>
+<gco:CharacterString>Steve M. Nelson</gco:CharacterString>
+</gmd:individualName>
+<gmd:organisationName>
+<gco:CharacterString>ND Department of Transportation</gco:CharacterString>
+</gmd:organisationName>
+<gmd:contactInfo>
+<gmd:CI_Contact>
+<gmd:phone>
+<gmd:CI_Telephone>
+<gmd:voice>
+<gco:CharacterString>701-328-4363</gco:CharacterString>
+</gmd:voice>
+</gmd:CI_Telephone>
+</gmd:phone>
+<gmd:address>
+<gmd:CI_Address>
+<gmd:deliveryPoint>
+<gco:CharacterString>608 East Boulevard</gco:CharacterString>
+</gmd:deliveryPoint>
+<gmd:city>
+<gco:CharacterString>Bismarck</gco:CharacterString>
+</gmd:city>
+<gmd:administrativeArea>
+<gco:CharacterString>ND</gco:CharacterString>
+</gmd:administrativeArea>
+<gmd:postalCode>
+<gco:CharacterString>58505-0700</gco:CharacterString>
+</gmd:postalCode>
+<gmd:country>
+<gco:CharacterString>USA</gco:CharacterString>
+</gmd:country>
+<gmd:electronicMailAddress>
+<gco:CharacterString>smnelson@nd.gov</gco:CharacterString>
+</gmd:electronicMailAddress>
+</gmd:CI_Address>
+</gmd:address>
+</gmd:CI_Contact>
+</gmd:contactInfo>
+<gmd:role>
+<gmd:CI_RoleCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_RoleCode" codeListValue="pointOfContact" codeSpace="ISOTC211/19115"/>
+</gmd:role>
+</gmd:CI_ResponsibleParty>
+</gmd:pointOfContact>
+<gmd:resourceMaintenance>
+<gmd:MD_MaintenanceInformation>
+<gmd:maintenanceAndUpdateFrequency>
+<gmd:MD_MaintenanceFrequencyCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_MaintenanceFrequencyCode" codeListValue="irregular" codeSpace="ISOTC211/19115"/>
+</gmd:maintenanceAndUpdateFrequency>
+</gmd:MD_MaintenanceInformation>
+</gmd:resourceMaintenance>
+<gmd:graphicOverview>
+<gmd:MD_BrowseGraphic>
+<gmd:fileName>
+<gco:CharacterString>corporate_s.png</gco:CharacterString>
+</gmd:fileName>
+<gmd:fileDescription>
+<gco:CharacterString>thumbnail</gco:CharacterString>
+</gmd:fileDescription>
+<gmd:fileType>
+<gco:CharacterString>png</gco:CharacterString>
+</gmd:fileType>
+</gmd:MD_BrowseGraphic>
+</gmd:graphicOverview>
+<gmd:graphicOverview>
+<gmd:MD_BrowseGraphic>
+<gmd:fileName>
+<gco:CharacterString>corporate.png</gco:CharacterString>
+</gmd:fileName>
+<gmd:fileDescription>
+<gco:CharacterString>large_thumbnail</gco:CharacterString>
+</gmd:fileDescription>
+<gmd:fileType>
+<gco:CharacterString>png</gco:CharacterString>
+</gmd:fileType>
+</gmd:MD_BrowseGraphic>
+</gmd:graphicOverview>
+<gmd:descriptiveKeywords>
+<gmd:MD_Keywords>
+<gmd:keyword>
+<gco:CharacterString>Limits</gco:CharacterString>
+</gmd:keyword>
+<gmd:keyword>
+<gco:CharacterString>City</gco:CharacterString>
+</gmd:keyword>
+<gmd:keyword>
+<gco:CharacterString>boundaries</gco:CharacterString>
+</gmd:keyword>
+<gmd:keyword>
+<gco:CharacterString>Cities</gco:CharacterString>
+</gmd:keyword>
+<gmd:keyword>
+<gco:CharacterString>Boundary</gco:CharacterString>
+</gmd:keyword>
+<gmd:keyword>
+<gco:CharacterString>Corporate</gco:CharacterString>
+</gmd:keyword>
+<gmd:type>
+<gmd:MD_KeywordTypeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_KeywordTypeCode" codeListValue="theme" codeSpace="ISOTC211/19115"/>
+</gmd:type>
+</gmd:MD_Keywords>
+</gmd:descriptiveKeywords>
+<gmd:descriptiveKeywords>
+<gmd:MD_Keywords>
+<gmd:keyword>
+<gco:CharacterString>North Dakota</gco:CharacterString>
+</gmd:keyword>
+<gmd:type>
+<gmd:MD_KeywordTypeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_KeywordTypeCode" codeListValue="place" codeSpace="ISOTC211/19115"/>
+</gmd:type>
+</gmd:MD_Keywords>
+</gmd:descriptiveKeywords>
+<gmd:resourceConstraints>
+<gmd:MD_LegalConstraints>
+<gmd:otherConstraints>
+<gco:CharacterString>
+The State of North Dakota has compiled this data according to conventional cartographic standards, using what is thought to be the most reliable information available. This data is intended to make results of research available at the earliest possible date, but is not intended to constitute final or formal publication. The State of North Dakota makes every effort to provide virus-free files but does not guarantee uncorrupted files. The State of North Dakota does not guarantee this data to be free from errors, inaccuracies, or viruses, and disclaims any responsibility or liability for interpretations or decisions based on this data.
+</gco:CharacterString>
+</gmd:otherConstraints>
+</gmd:MD_LegalConstraints>
+</gmd:resourceConstraints>
+<gmd:language>
+<gco:CharacterString>eng</gco:CharacterString>
+</gmd:language>
+<gmd:topicCategory>
+<gmd:MD_TopicCategoryCode>boundaries</gmd:MD_TopicCategoryCode>
+</gmd:topicCategory>
+<gmd:extent>
+<gmd:EX_Extent>
+<gmd:geographicElement>
+<gmd:EX_GeographicBoundingBox>
+<gmd:westBoundLongitude>
+<gco:Decimal>-104.028687</gco:Decimal>
+</gmd:westBoundLongitude>
+<gmd:eastBoundLongitude>
+<gco:Decimal>-96.583384</gco:Decimal>
+</gmd:eastBoundLongitude>
+<gmd:southBoundLatitude>
+<gco:Decimal>45.938845</gco:Decimal>
+</gmd:southBoundLatitude>
+<gmd:northBoundLatitude>
+<gco:Decimal>48.999041</gco:Decimal>
+</gmd:northBoundLatitude>
+</gmd:EX_GeographicBoundingBox>
+</gmd:geographicElement>
+</gmd:EX_Extent>
+</gmd:extent>
+</gmd:MD_DataIdentification>
+</gmd:identificationInfo>
+<gmd:distributionInfo>
+<gmd:MD_Distribution>
+<gmd:distributionFormat>
+<gmd:MD_Format>
+<gmd:name>
+<gco:CharacterString>User selects download format</gco:CharacterString>
+</gmd:name>
+<gmd:version>
+<gco:CharacterString>n/a</gco:CharacterString>
+</gmd:version>
+</gmd:MD_Format>
+</gmd:distributionFormat>
+<gmd:distributor>
+<gmd:MD_Distributor>
+<gmd:distributorContact>
+<gmd:CI_ResponsibleParty>
+<gmd:individualName>
+<gco:CharacterString>Brian Bieber</gco:CharacterString>
+</gmd:individualName>
+<gmd:organisationName>
+<gco:CharacterString>ND Department of Transportation</gco:CharacterString>
+</gmd:organisationName>
+<gmd:contactInfo>
+<gmd:CI_Contact>
+<gmd:phone>
+<gmd:CI_Telephone>
+<gmd:voice>
+<gco:CharacterString>701-328-2649</gco:CharacterString>
+</gmd:voice>
+</gmd:CI_Telephone>
+</gmd:phone>
+<gmd:address>
+<gmd:CI_Address>
+<gmd:deliveryPoint>
+<gco:CharacterString>608 East Boulevard</gco:CharacterString>
+</gmd:deliveryPoint>
+<gmd:city>
+<gco:CharacterString>Bismarck</gco:CharacterString>
+</gmd:city>
+<gmd:administrativeArea>
+<gco:CharacterString>ND</gco:CharacterString>
+</gmd:administrativeArea>
+<gmd:postalCode>
+<gco:CharacterString>58505-0700</gco:CharacterString>
+</gmd:postalCode>
+<gmd:country>
+<gco:CharacterString>USA</gco:CharacterString>
+</gmd:country>
+<gmd:electronicMailAddress>
+<gco:CharacterString>bbieber@nd.gov</gco:CharacterString>
+</gmd:electronicMailAddress>
+</gmd:CI_Address>
+</gmd:address>
+</gmd:CI_Contact>
+</gmd:contactInfo>
+<gmd:role>
+<gmd:CI_RoleCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_RoleCode" codeListValue="pointOfContact" codeSpace="ISOTC211/19115"/>
+</gmd:role>
+</gmd:CI_ResponsibleParty>
+</gmd:distributorContact>
+</gmd:MD_Distributor>
+</gmd:distributor>
+<gmd:transferOptions>
+<gmd:MD_DigitalTransferOptions>
+<gmd:onLine>
+<gmd:CI_OnlineResource>
+<gmd:linkage>
+<gmd:URL>http://www.nd.gov/gis</gmd:URL>
+</gmd:linkage>
+<gmd:protocol>
+<gco:CharacterString>WWW:LINK-1.0-http--link</gco:CharacterString>
+</gmd:protocol>
+<gmd:name>
+<gco:CharacterString>NDGIS web site</gco:CharacterString>
+</gmd:name>
+<gmd:description>
+<gco:CharacterString>NDGIS web site</gco:CharacterString>
+</gmd:description>
+</gmd:CI_OnlineResource>
+</gmd:onLine>
+<gmd:onLine>
+<gmd:CI_OnlineResource>
+<gmd:linkage>
+<gmd:URL>
+http://www.nd.gov/gis/apps/DataDownload/?clipping=Full&coord=ND83-SF&format=SHAPE&layers=NDHUB.CITY_POLY
+</gmd:URL>
+</gmd:linkage>
+<gmd:protocol>
+<gco:CharacterString>WWW:LINK-1.0-http--related</gco:CharacterString>
+</gmd:protocol>
+<gmd:name>
+<gco:CharacterString>Download Incorporated City Boundaries</gco:CharacterString>
+</gmd:name>
+<gmd:description>
+<gco:CharacterString>Download Incorporated City Boundaries</gco:CharacterString>
+</gmd:description>
+</gmd:CI_OnlineResource>
+</gmd:onLine>
+<gmd:onLine>
+<gmd:CI_OnlineResource>
+<gmd:linkage>
+<gmd:URL>
+http://ndgishub.nd.gov/arcgis/services/All_GovtBoundaries/MapServer/WMSServer?
+</gmd:URL>
+</gmd:linkage>
+<gmd:protocol>
+<gco:CharacterString>OGC:WMS-1.1.1-http-get-map</gco:CharacterString>
+</gmd:protocol>
+<gmd:name>
+<gco:CharacterString>City Boundaries</gco:CharacterString>
+</gmd:name>
+<gmd:description>
+<gco:CharacterString>Incorporated City Boundaries</gco:CharacterString>
+</gmd:description>
+</gmd:CI_OnlineResource>
+</gmd:onLine>
+<gmd:onLine>
+<gmd:CI_OnlineResource>
+<gmd:linkage>
+<gmd:URL>
+http://ndgishub.nd.gov/ArcGIS/rest/services/All_GovtBoundaries/MapServer
+</gmd:URL>
+</gmd:linkage>
+<gmd:protocol>
+<gco:CharacterString>WWW:LINK-1.0-http--related</gco:CharacterString>
+</gmd:protocol>
+<gmd:name>
+<gco:CharacterString>Esri REST including WMS</gco:CharacterString>
+</gmd:name>
+<gmd:description>
+<gco:CharacterString>Esri REST including WMS</gco:CharacterString>
+</gmd:description>
+</gmd:CI_OnlineResource>
+</gmd:onLine>
+<gmd:onLine>
+<gmd:CI_OnlineResource>
+<gmd:linkage>
+<gmd:URL>
+http://ndgishub.nd.gov/ArcGIS/rest/services/Features/GovtBoundaries/MapServer
+</gmd:URL>
+</gmd:linkage>
+<gmd:protocol>
+<gco:CharacterString>WWW:LINK-1.0-http--related</gco:CharacterString>
+</gmd:protocol>
+<gmd:name>
+<gco:CharacterString>Esri REST including WFS and KML</gco:CharacterString>
+</gmd:name>
+<gmd:description>
+<gco:CharacterString>Esri REST including WFS and KML</gco:CharacterString>
+</gmd:description>
+</gmd:CI_OnlineResource>
+</gmd:onLine>
+</gmd:MD_DigitalTransferOptions>
+</gmd:transferOptions>
+</gmd:MD_Distribution>
+</gmd:distributionInfo>
+</gmd:MD_Metadata>

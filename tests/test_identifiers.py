@@ -249,8 +249,10 @@ class TestIso(unittest.TestCase):
         identifier = Identify(self.yaml_file, content, url, **{'parser': parser})
         identifier.identify()
 
+        print identifier.to_json()
+
         self.assertTrue(identifier.protocol == 'ISO-19115 DS')
-        self.assertTrue(identifier.version == 'ISO19115 (2003/Cor.1:2006)')
+        self.assertTrue(identifier.version == 'ISO19115 2003/Cor.1:2006')
         self.assertTrue(identifier.has_metadata)
 
 
@@ -329,3 +331,60 @@ class TestWmsIdentification(unittest.TestCase):
         has_metadata = self.identifier._identify_metadata_service(protocol_data)
 
         self.assertFalse(has_metadata)
+
+
+class TestCswIdentification(unittest.TestCase):
+    def setUp(self):
+        yaml_file = 'lib/configs/identifiers.yaml'
+
+        # set up for the known csw getcapabilities
+        with open('tests/test_data/cwic_csw_v2_0_2.xml', 'r') as f:
+            csw_content = f.read()
+        csw_url = 'http://www.mapserver.com/cgi?SERVICE=WCS&VERSION=2.0.2&REQUEST=GETCAPABILITIES'
+
+        csw_content = csw_content.replace('\\n', '')
+        csw_parser = Parser(csw_content)
+
+        self.csw_identifier = Identify(yaml_file, csw_content, csw_url, **{'parser': csw_parser})
+
+        # set up for the geonetwork mismatched namespacing iso issue
+        with open('tests/test_data/geonetwork_iso_NOT_csw.xml', 'r') as f:
+            iso_content = f.read()
+        iso_url = 'http://catalog.data.gov/harvest/object/d5de6dde-3042-4daf-b4ba-95e21e3ab343'
+
+        iso_content = iso_content.replace('\\n', '')
+        iso_parser = Parser(iso_content)
+
+        self.iso_identifier = Identify(yaml_file, iso_content, iso_url, **{'parser': iso_parser})
+
+    def test_identifies_csw(self):
+        self.csw_identifier.identify()
+
+        self.assertTrue(self.csw_identifier.protocol == 'OGC:CSW')
+
+    def test_identifies_not_as_csw(self):
+        # that is a terrible name, but a test for something that
+        # looks like csw from the namespaces but isn't
+
+        self.iso_identifier.identify()
+
+        self.assertTrue(self.iso_identifier.protocol == 'ISO-19115')
+
+
+class TestRdfDataset(unittest.TestCase):
+    def setUp(self):
+        yaml_file = 'lib/configs/identifiers.yaml'
+
+        with open('tests/test_data/datagov_9bcffa1c-6164-4635-bc2c-6c98cce59d7b.rdf', 'r') as f:
+            content = f.read()
+        url = 'http://catalog.data.gov/9bcffa1c-6164-4635-bc2c-6c98cce59d7b.rdf'
+
+        content = content.replace('\\n', '')
+        parser = Parser(content)
+
+        self.identifier = Identify(yaml_file, content, url, **{'parser': parser})
+
+    def test_rdf_identification(self):
+        self.identifier.identify()
+
+        self.assertTrue(self.identifier.protocol == 'RDF')
