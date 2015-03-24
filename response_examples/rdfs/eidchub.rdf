@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+  
+    xmlns:dcterms="http://purl.org/dc/terms/"
+  
+    xmlns:documentcontainer="http://eidchub.ceh.ac.uk/portal_types/documentContainer#"
+  
+    xmlns:file="http://eidchub.ceh.ac.uk/portal_types/File#"
+  
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+>
+    <file:File rdf:about="http://eidchub.ceh.ac.uk/metadata/aa82fa99-d38c-47a7-9405-f0773edcd7a8/water-chemistry-data-for-the-river-frome-dorset-uk-from-1965-2009-methodology">
+        <file:id xml:lang="en">water-chemistry-data-for-the-river-frome-dorset-uk-from-1965-2009-methodology</file:id>
+        <dcterms:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2012-04-10T13:55:57Z</dcterms:modified>
+        <dcterms:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2012-04-10T13:55:56Z</dcterms:created>
+        <dcterms:description xml:lang="en">Description of sampling and analysis methodology</dcterms:description>
+        <dcterms:isPartOf>
+            <documentcontainer:documentContainer rdf:about="http://eidchub.ceh.ac.uk/metadata/aa82fa99-d38c-47a7-9405-f0773edcd7a8">
+                <dcterms:title xml:lang="en">Water chemistry data for the River Frome, Dorset, UK, from 1965-2009</dcterms:title>
+                <documentcontainer:id xml:lang="en">aa82fa99-d38c-47a7-9405-f0773edcd7a8</documentcontainer:id>
+                <documentcontainer:location xml:lang="en">East Stoke, Dorset</documentcontainer:location>
+                <documentcontainer:fileIdentifier xml:lang="en">aa82fa99-d38c-47a7-9405-f0773edcd7a8</documentcontainer:fileIdentifier>
+                <documentcontainer:catalogLink>http://data.ceh.ac.uk/metadata/aa82fa99-d38c-47a7-9405-f0773edcd7a8</documentcontainer:catalogLink>
+                <dcterms:subject>CEH Project C00010</dcterms:subject>
+                <dcterms:subject>Frome</dcterms:subject>
+                <dcterms:subject>CEH Water Programme</dcterms:subject>
+                <dcterms:subject>Long-term</dcterms:subject>
+                <dcterms:subject>NERC_DDC</dcterms:subject>
+                <dcterms:subject>Southern England</dcterms:subject>
+                <dcterms:subject>Inland water</dcterms:subject>
+                <dcterms:subject>Dorset</dcterms:subject>
+                <dcterms:subject>Environmental monitoring facilities</dcterms:subject>
+                <dcterms:subject>Chemistry</dcterms:subject>
+                <dcterms:hasPart rdf:resource="http://eidchub.ceh.ac.uk/metadata/aa82fa99-d38c-47a7-9405-f0773edcd7a8/water-chemistry-data-for-the-river-frome-dorset-uk-from-1965-2009-methodology"/>
+                <dcterms:hasPart rdf:resource="http://eidchub.ceh.ac.uk/metadata/aa82fa99-d38c-47a7-9405-f0773edcd7a8/water-chemistry-data-for-the-river-frome-dorset-uk-from-1965-2009-controlled-vocabulary"/>
+                <dcterms:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2012-03-06T13:53:06Z</dcterms:created>
+                <dcterms:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2012-08-07T13:35:35Z</dcterms:issued>
+                <dcterms:description xml:lang="en">Weekly water quality monitoring of the River Frome at East Stoke, Dorset (National Grid Reference SY 867868).  The dataset consists of  nitrate, soluble reactive phosphorus, dissolved silicon, pH, alkalinity, potassium, sodium, calcium and magnesium concentrations for the entire 44-year monitoring period, with total phosphorus, total dissolved phosphorus, electrical conductivity, water temperature, chloride, sulphate and ammonium concentration data for periods within the monitoring period.  Daily average river flow on the day of sampling (extracted from the National River Flow Archive) is included.
+
+Users of these data must ensure that the conditions of the licence agreement are complied with and the 'Principal Citation Reference' element of this metadata record is cited in full.
+
+(c) Database Right/Copyright NERC - Centre for Ecology &amp; Hydrology and FBA (Freshwater Biological Association). All rights reserved.  </dcterms:description>
+                <dcterms:isPartOf rdf:resource="http://eidchub.ceh.ac.uk/metadata"/>
+                <dcterms:creator>cdavies</dcterms:creator>
+                <dcterms:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2013-10-03T15:12:57Z</dcterms:modified>
+            </documentcontainer:documentContainer>
+        </dcterms:isPartOf>
+        <dcterms:title xml:lang="en">Water chemistry data for the River Frome, Dorset, UK, from 1965-2009   Methodology</dcterms:title>
+        <dcterms:creator>cdavies</dcterms:creator>
+    </file:File>
+    <file:File rdf:about="http://eidchub.ceh.ac.uk/metadata/aa82fa99-d38c-47a7-9405-f0773edcd7a8/water-chemistry-data-for-the-river-frome-dorset-uk-from-1965-2009-controlled-vocabulary">
+        <file:id xml:lang="en">water-chemistry-data-for-the-river-frome-dorset-uk-from-1965-2009-controlled-vocabulary</file:id>
+        <dcterms:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2012-04-11T08:19:13Z</dcterms:modified>
+        <dcterms:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2012-04-11T08:19:13Z</dcterms:created>
+        <dcterms:description xml:lang="en">Data header links to controlled vocabulary CAST</dcterms:description>
+        <dcterms:isPartOf rdf:resource="http://eidchub.ceh.ac.uk/metadata/aa82fa99-d38c-47a7-9405-f0773edcd7a8"/>
+        <dcterms:title xml:lang="en">Water chemistry data for the River Frome, Dorset, UK, from 1965-2009   Controlled vocabulary</dcterms:title>
+        <dcterms:creator>cdavies</dcterms:creator>
+    </file:File>
+</rdf:RDF>

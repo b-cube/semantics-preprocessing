@@ -1,11 +1,7 @@
 init:
 
-IdentityCollect:
-  input_directory: 'testdata/solr_20150320/identify'
-  output_directory: 'testdata/solr_20150320'
-  delimiter: '|'
-
 IdentityEDA:
+  input_directory: 'testdata/solr_20150320/identify'
   output_directory: 'testdata/solr_20150320'
   delimiter: '|'
   identifier_pattern: lib/configs/*_identifier.yaml

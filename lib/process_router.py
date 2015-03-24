@@ -4,6 +4,7 @@ from lib.preprocessors.oaipmh_preprocessors import OaiPmhReader
 from lib.preprocessors.thredds_preprocessors import ThreddsReader
 from lib.preprocessors.xml_preprocessors import XmlReader
 from lib.preprocessors.ogc_preprocessors import OgcReader
+from lib.preprocessors.rdf_preprocessors import RdfReader
 
 
 class Processor():
@@ -42,3 +43,5 @@ class Processor():
             self.reader = IsoReader(response, url)
         elif protocol.startswith('OGC:') and 'error' not in protocol:
             self.reader = OgcReader(protocol.split(':')[-1], version, response, url)
+        elif protocol == 'RDF':
+            self.reader = RdfReader(response, url)

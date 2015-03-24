@@ -1,0 +1,40 @@
+<rdf:RDF 
+    xmlns:foaf="http://xmlns.com/foaf/0.1/" 
+    xmlns:owl="http://www.w3.org/2002/07/owl#" 
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" 
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+    xmlns:dcat="http://www.w3.org/ns/dcat#" 
+    xmlns:dct="http://purl.org/dc/terms/">
+    <dcat:Dataset rdf:about="http://catalog.data.gov/dataset/us-international-trade-in-goods-and-services">
+        <owl:sameAs rdf:resource="urn:uuid:DOC-4782"></owl:sameAs>
+        <dct:description>Monthly report that provides national trade data including imports, exports, and balance of payments for goods and services. Statistics are also reported on a year-to-date basis. Data are continuously compiled and processed. Documents are collected as shipments arrive and depart, and are processed on a flow basis. The BEA uses the data to update U.S. balance of payments, gross domestic product, and national accounts. Other federal agencies use them for economic, financial, and trade policy analysis (such as import/export promotion studies and import/export price indexes). Private businesses and trade associations use them for domestic and overseas market analysis, and industry-, product-, and area-based business planning. Major print and electronic news media use them for general and business news reports.</dct:description>
+        <foaf:homepage rdf:resource="http://catalog.data.gov/dataset/us-international-trade-in-goods-and-services"></foaf:homepage>
+        <rdfs:label>us-international-trade-in-goods-and-services</rdfs:label>
+        <dct:identifier>us-international-trade-in-goods-and-services</dct:identifier>
+        <dct:title>U.S. International Trade in Goods and Services</dct:title>
+        <dcat:distribution>
+            <dcat:Distribution>
+                <dcat:accessURL rdf:resource="http://www.census.gov/foreign-trade/statistics/historical/"></dcat:accessURL>
+                <dct:format>
+                    <dct:IMT>
+                        <rdf:value>xls, txt</rdf:value>
+                        <rdfs:label>xls, txt</rdfs:label>
+                    </dct:IMT>
+                </dct:format>
+                <dct:title>Web Page</dct:title>
+            </dcat:Distribution>
+        </dcat:distribution>
+        <dct:relation>
+            <rdf:Description>
+                <rdfs:label>__category_tag_3b4e71c5-3c3c-43af-a3ff-81694225e453</rdfs:label>
+                <rdf:value>["Housing and Community"]</rdf:value>
+            </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+            <rdf:Description>
+                <rdfs:label>__category_tag_b6db7c5a-d306-4da5-a0cd-b4128e1322ce</rdfs:label>
+                <rdf:value>["Total Energy"]</rdf:value>
+            </rdf:Description>
+        </dct:relation>
+    </dcat:Dataset>
+</rdf:RDF>

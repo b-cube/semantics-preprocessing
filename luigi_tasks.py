@@ -100,7 +100,7 @@ class IdentifyWorkflow(luigi.Task):
         run_init(config)
 
     def _iterator(self):
-        for f in glob.glob(os.path.join(self.doc_dir, '*.json'))[0:2]:
+        for f in glob.glob(os.path.join(self.doc_dir, '*.json'))[2000:5000]:
             yield f
 
 
@@ -131,8 +131,8 @@ if __name__ == '__main__':
     # this is quite unfortunate
     # w = ParseWorkflow(doc_dir='testdata/docs/', yaml_file='tasks/test_config.yaml')
     # w = TripleWorkflow(doc_dir='testdata/docs/', yaml_file='tasks/test_config.yaml')
-    w = IdentifyEDAWorkflow(yaml_file='tasks/identity_eda.yaml')
-    # w = IdentifyWorkflow(doc_dir='testdata/solr_20150320/docs/', yaml_file='tasks/identity_20150320.yaml')
+    # w = IdentifyEDAWorkflow(yaml_file='tasks/identity_eda.yaml')
+    w = IdentifyWorkflow(doc_dir='testdata/solr_20150320/docs/', yaml_file='tasks/identity_20150320.yaml')
 
     luigi.build([w], local_scheduler=True)
 

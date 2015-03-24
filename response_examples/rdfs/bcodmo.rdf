@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF 
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  
+    xmlns:odo="http://ocean-data.org/schema/"
+  
+    xmlns:dc="http://purl.org/dc/terms/"
+  
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  
+    xmlns:void="http://rdfs.org/ns/void#"
+  
+    xmlns:time="http://www.w3.org/2006/time#">
+    <rdf:Description rdf:about="http://lod.bco-dmo.org/id/program/2014">
+        <rdf:type rdf:resource="http://ocean-data.org/schema/Program"/>
+        <odo:hasAcronym rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CoML</odo:hasAcronym>
+        <dc:description rdf:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML">&lt;div 
+            xmlns=&quot;http://www.w3.org/1999/xhtml&quot; lang=&quot;en&quot;&gt;&lt;p&gt;The Census of Marine Life is a global network of researchers in more than 80 nations engaged in a 10-year scientific initiative to assess and explain the diversity, distribution, and abundance of life in the oceans. The world's first comprehensive Census of Marine Life - past, present, and future - will be released in 2010.&lt;/p&gt;
+&lt;p&gt;
+The stated purpose of the Census of Marine Life is to assess and explain the diversity, distribution, and abundance of marine life. Each plays an important role in what is known, unknown, and may never be known about what lives in the global ocean.&lt;/p&gt;
+&lt;p&gt;
+First, diversity. The Census aims to make for the first time a comprehensive global list of all forms of life in the sea. No such unified list yet exists. Census scientists estimate that about 230,000 species of marine animals have been described and reside in jars in collections in museums of natural history and other repositories. Since the Census began in 2000, researchers have added more than 5600 species to the lists. They aim to add many thousands more by 2010. The database of the Census already includes records for more than 16 million records, old and new. By 2010, the goal is to have all the old and the new species in an on-line encyclopedia with a webpage for every species. In addition, we will estimate how many species remain unknown, that is, remain to be discovered. The number could be astonishingly large, perhaps a million or more, if all small animals and protists are included. For comparison, biologists have described about 1.5 million terrestrial plants and animals.&lt;/p&gt;
+&lt;p&gt;
+Second, distribution. The Census aims to produce maps where the animals have been observed or where they could live, that is, the territory or range of the species. Knowing the range matters a lot for people concerned about, for example, possible consequences of global climate change.&lt;/p&gt;
+&lt;p&gt;
+Third, abundance. No Census is complete without measures of abundance. We want to know not only that there is such a thing as a Madagascar crab but how many there are. For marine life, populations are being estimated either in numbers or in total kilos, called biomass.&lt;/p&gt;
+&lt;p&gt;
+To complete the context, it is important to understand the top motivations for the Census of Marine Life. Most importantly, much of the ocean is unexplored. Most of the records in its database are for observations near the surface, and down to 1000 meters. No observations have been made in most of the deep ocean, while most of the ocean is deep.&lt;/p&gt;
+&lt;p&gt;
+Another important issue is that diversity varies in space. Marine hot spots, like the rain forests of the land, exist off for large fish off the coasts of Brazil and Australia. The goal is to know much more about marine hot spots, to help conserve these large fish. Their abundance and thus their diversity is changing, especially for commercially important species. Between 1952 and 1976, for example, fishermen and their customers emptied many areas of the ocean of tuna.&lt;/p&gt;
+&lt;p&gt;
+The Census has evolved a strategy of 14 field projects to touch the major habitats and groups of species in the global ocean. Eleven field projects address habitats, such as seamounts or the Arctic Ocean. Three field projects look globally at animals that either traverse the seas or appear globally distributed: the top predators such as tuna and the plankton and the microbes. The projects employ a mix of technologies. These include acoustics or sound, optics or cameras, tags placed on individual animals that store or report data, and genetics, as well as some actual capture of animals. The technologies complement one another. Sound can survey large areas in the ocean, while light cannot. Light can capture detail and characters that sound cannot. And genetics can make identifications from fragments of specimens or larvae where pictures tell little.&lt;/p&gt;
+&lt;p&gt;
+This mix of curiosity, need to know, technology, and scientists willing to investigate the unexplored and undiscovered will result in a Census of Marine Life in 2010 that provides a much clearer picture of what lives below the surface around the globe. Several reasons make such a report timely, indeed urgent. Crises in the sea are reported regularly. One recent study predicted the end of commercial fishery globally by 2050, if current trends persist. Better information is needed to fashion the management that will sustain fisheries, conserve diversity, reverse losses of habitat, reduce impacts of pollution, and respond to global climate change. Hence, there are biological, economic, philosophical and political reasons to push for greater exploration and understanding of the ocean and its inhabitants. Indeed, the United Nations Convention on Biological Diversity requires signatories to collect information on living resources, but, as yet, no nation has a complete baseline of such information. The Census of Marine Life's global network of researchers will help to fill this knowledge gap, providing critical information to help guide decisions on how to manage global marine resources for the future.&lt;/p&gt;
+&lt;p&gt;
+[Text copied from the CoML web site, November 5, 2008]&lt;/p&gt;&lt;/div&gt;
+        </dc:description>
+        <rdfs:label xml:lang="en-US">Census of Marine Life</rdfs:label>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">http://www.coml.org/</rdfs:seeAlso>
+        <dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2014</dc:identifier>
+        <dc:title xml:lang="en-US">Census of Marine Life</dc:title>
+        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2008-11-05T16:16:45-05:00</dc:date>
+        <dc:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2008-11-05T16:16:45-05:00</dc:created>
+        <dc:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2008-11-05T16:16:45-05:00</dc:modified>
+        <void:inDataset rdf:resource="http://www.bco-dmo.org/"/>
+        <odo:osprey_page rdf:resource="http://www.bco-dmo.org/program/2014"/>
+        <dc:hasFormat rdf:resource="http://lod.bco-dmo.org/id/program/2014#html"/>
+        <dc:hasFormat rdf:resource="http://lod.bco-dmo.org/id/program/2014#rdf"/>
+        <dc:hasFormat rdf:resource="http://lod.bco-dmo.org/id/program/2014#json"/>
+        <dc:hasFormat rdf:resource="http://lod.bco-dmo.org/id/program/2014#ttl"/>
+        <dc:hasFormat rdf:resource="http://lod.bco-dmo.org/id/program/2014#nt"/>
+        <odo:hasAgentWithRole rdf:resource="http://lod.bco-dmo.org/id/person-role/53018"/>
+        <odo:hasProject rdf:resource="http://lod.bco-dmo.org/id/project/2040"/>
+        <odo:hasProject rdf:resource="http://lod.bco-dmo.org/id/project/2065"/>
+        <odo:hasProject rdf:resource="http://lod.bco-dmo.org/id/project/2130"/>
+        <odo:hasProject rdf:resource="http://lod.bco-dmo.org/id/project/2131"/>
+        <odo:hasProgramDates rdf:resource="http://lod.bco-dmo.org/id/program/2014#programDates"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://lod.bco-dmo.org/id/program/2014#html">
+        <rdf:type rdf:resource="http://purl.org/dc/terms/FileFormat"/>
+        <dc:format rdf:datatype="http://www.w3.org/2001/XMLSchema#string">text/html</dc:format>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">HTML for Census of Marine Life</rdfs:label>
+        <dc:type rdf:datatype="http://www.w3.org/2001/XMLSchema#string">HTML</dc:type>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">http://www.bco-dmo.org/program/2014</rdfs:seeAlso>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://lod.bco-dmo.org/id/program/2014#rdf">
+        <rdf:type rdf:resource="http://purl.org/dc/terms/FileFormat"/>
+        <dc:format rdf:datatype="http://www.w3.org/2001/XMLSchema#string">application/rdf+xml</dc:format>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RDF/XML for Census of Marine Life</rdfs:label>
+        <dc:type rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RDF/XML</dc:type>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">http://www.bco-dmo.org/program/2014.rdf</rdfs:seeAlso>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://lod.bco-dmo.org/id/program/2014#json">
+        <rdf:type rdf:resource="http://purl.org/dc/terms/FileFormat"/>
+        <dc:format rdf:datatype="http://www.w3.org/2001/XMLSchema#string">application/ld+json</dc:format>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">JSON-LD for Census of Marine Life</rdfs:label>
+        <dc:type rdf:datatype="http://www.w3.org/2001/XMLSchema#string">JSON-LD</dc:type>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">http://www.bco-dmo.org/program/2014.json</rdfs:seeAlso>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://lod.bco-dmo.org/id/program/2014#ttl">
+        <rdf:type rdf:resource="http://purl.org/dc/terms/FileFormat"/>
+        <dc:format rdf:datatype="http://www.w3.org/2001/XMLSchema#string">text/turtle</dc:format>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Turtle for Census of Marine Life</rdfs:label>
+        <dc:type rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Turtle</dc:type>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">http://www.bco-dmo.org/program/2014.ttl</rdfs:seeAlso>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://lod.bco-dmo.org/id/program/2014#nt">
+        <rdf:type rdf:resource="http://purl.org/dc/terms/FileFormat"/>
+        <dc:format rdf:datatype="http://www.w3.org/2001/XMLSchema#string">text/plain</dc:format>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">N-Triples for Census of Marine Life</rdfs:label>
+        <dc:type rdf:datatype="http://www.w3.org/2001/XMLSchema#string">N-Triples</dc:type>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">http://www.bco-dmo.org/program/2014.nt</rdfs:seeAlso>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://lod.bco-dmo.org/id/program/2014#programDates">
+        <rdf:type rdf:resource="http://www.w3.org/2006/time#Interval"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Start/End dates for Census of Marine Life</rdfs:label>
+        <time:hasBeginning rdf:resource="http://lod.bco-dmo.org/id/program/2014#programDatesStart"/>
+        <time:hasEnd rdf:resource="http://lod.bco-dmo.org/id/program/2014#programDatesEnd"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://lod.bco-dmo.org/id/program/2014#programDatesStart">
+        <rdf:type rdf:resource="http://www.w3.org/2006/time#Instant"/>
+        <time:inDateTime rdf:resource="http://lod.bco-dmo.org/id/program/2014#programDatesStartStartDescription"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2001</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://lod.bco-dmo.org/id/program/2014#programDatesStartStartDescription">
+        <rdf:type rdf:resource="http://www.w3.org/2006/time#DateTimeDescription"/>
+        <time:unitType rdf:resource="http://www.w3.org/2006/time#unitYear"/>
+        <time:year rdf:datatype="http://www.w3.org/2001/XMLSchema#gMonth">2001</time:year>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://lod.bco-dmo.org/id/program/2014#programDatesEnd">
+        <rdf:type rdf:resource="http://www.w3.org/2006/time#Instant"/>
+        <time:inDateTime rdf:resource="http://lod.bco-dmo.org/id/program/2014#programDatesEndEndDescription"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2010</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://lod.bco-dmo.org/id/program/2014#programDatesEndEndDescription">
+        <rdf:type rdf:resource="http://www.w3.org/2006/time#DateTimeDescription"/>
+        <time:unitType rdf:resource="http://www.w3.org/2006/time#unitYear"/>
+        <time:year rdf:datatype="http://www.w3.org/2001/XMLSchema#gMonth">2010</time:year>
+    </rdf:Description>
+</rdf:RDF>

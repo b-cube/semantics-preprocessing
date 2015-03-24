@@ -1,0 +1,673 @@
+<rdf:RDF 
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" 
+    xmlns:socrata="http://www.socrata.com/rdf/terms#" 
+    xmlns:dcat="http://www.w3.org/ns/dcat#" 
+    xmlns:ods="http://open-data-standards.github.com/2012/01/open-data-standards#" 
+    xmlns:dcterm="http://purl.org/dc/terms/" 
+    xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#" 
+    xmlns:foaf="http://xmlns.com/foaf/0.1/" 
+    xmlns:dsbase="http://data.baltimorecity.gov/resource/" 
+    xmlns:ds="http://data.baltimorecity.gov/resource/gsze-vqaj/">
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/1">
+        <socrata:rowID>1</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Allendale/Irvington/S. Hilton</ds:csa2010>
+        <ds:trav14m10>12.91</ds:trav14m10>
+        <ds:trav29m10>40.229999999999997</ds:trav29m10>
+        <ds:trav44m10>27.39</ds:trav44m10>
+        <ds:trav45m10>19.47</ds:trav45m10>
+        <ds:nocar10>24.17</ds:nocar10>
+        <ds:transit10>17.149999999999999</ds:transit10>
+        <ds:otherm10>7.02</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/2">
+        <socrata:rowID>2</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Beechfield/Ten Hills/West Hills</ds:csa2010>
+        <ds:trav14m10>13.54</ds:trav14m10>
+        <ds:trav29m10>43.52</ds:trav29m10>
+        <ds:trav44m10>27.19</ds:trav44m10>
+        <ds:trav45m10>15.75</ds:trav45m10>
+        <ds:nocar10>18.97</ds:nocar10>
+        <ds:transit10>14.03</ds:transit10>
+        <ds:otherm10>4.93</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/3">
+        <socrata:rowID>3</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Belair-Edison</ds:csa2010>
+        <ds:trav14m10>9.14</ds:trav14m10>
+        <ds:trav29m10>41.08</ds:trav29m10>
+        <ds:trav44m10>28.58</ds:trav44m10>
+        <ds:trav45m10>21.21</ds:trav45m10>
+        <ds:nocar10>27.6</ds:nocar10>
+        <ds:transit10>20.58</ds:transit10>
+        <ds:otherm10>7.02</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/4">
+        <socrata:rowID>4</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Brooklyn/Curtis Bay/Hawkins Point</ds:csa2010>
+        <ds:trav14m10>22.81</ds:trav14m10>
+        <ds:trav29m10>31.94</ds:trav29m10>
+        <ds:trav44m10>24.69</ds:trav44m10>
+        <ds:trav45m10>20.56</ds:trav45m10>
+        <ds:nocar10>19.829999999999998</ds:nocar10>
+        <ds:transit10>13.57</ds:transit10>
+        <ds:otherm10>6.27</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/5">
+        <socrata:rowID>5</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Canton</ds:csa2010>
+        <ds:trav14m10>22.18</ds:trav14m10>
+        <ds:trav29m10>45.07</ds:trav29m10>
+        <ds:trav44m10>22.62</ds:trav44m10>
+        <ds:trav45m10>10.14</ds:trav45m10>
+        <ds:nocar10>18.399999999999999</ds:nocar10>
+        <ds:transit10>7.5</ds:transit10>
+        <ds:otherm10>10.9</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/6">
+        <socrata:rowID>6</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Cedonia/Frankford</ds:csa2010>
+        <ds:trav14m10>12.04</ds:trav14m10>
+        <ds:trav29m10>39.159999999999997</ds:trav29m10>
+        <ds:trav44m10>28.24</ds:trav44m10>
+        <ds:trav45m10>20.57</ds:trav45m10>
+        <ds:nocar10>21.74</ds:nocar10>
+        <ds:transit10>16.98</ds:transit10>
+        <ds:otherm10>4.76</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/7">
+        <socrata:rowID>7</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Cherry Hill</ds:csa2010>
+        <ds:trav14m10>23.21</ds:trav14m10>
+        <ds:trav29m10>30.58</ds:trav29m10>
+        <ds:trav44m10>27.16</ds:trav44m10>
+        <ds:trav45m10>19.04</ds:trav45m10>
+        <ds:nocar10>37.229999999999997</ds:nocar10>
+        <ds:transit10>32.5</ds:transit10>
+        <ds:otherm10>4.7300000000000004</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/8">
+        <socrata:rowID>8</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Chinquapin Park/Belvedere</ds:csa2010>
+        <ds:trav14m10>17.97</ds:trav14m10>
+        <ds:trav29m10>40.69</ds:trav29m10>
+        <ds:trav44m10>25.5</ds:trav44m10>
+        <ds:trav45m10>15.84</ds:trav45m10>
+        <ds:nocar10>18.3</ds:nocar10>
+        <ds:transit10>8.3000000000000007</ds:transit10>
+        <ds:otherm10>10</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/9">
+        <socrata:rowID>9</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Claremont/Armistead</ds:csa2010>
+        <ds:trav14m10>13.35</ds:trav14m10>
+        <ds:trav29m10>32.49</ds:trav29m10>
+        <ds:trav44m10>31.09</ds:trav44m10>
+        <ds:trav45m10>23.07</ds:trav45m10>
+        <ds:nocar10>23.98</ds:nocar10>
+        <ds:transit10>17.05</ds:transit10>
+        <ds:otherm10>6.92</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/10">
+        <socrata:rowID>10</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Clifton-Berea</ds:csa2010>
+        <ds:trav14m10>15.56</ds:trav14m10>
+        <ds:trav29m10>32.82</ds:trav29m10>
+        <ds:trav44m10>25.09</ds:trav44m10>
+        <ds:trav45m10>26.53</ds:trav45m10>
+        <ds:nocar10>43.5</ds:nocar10>
+        <ds:transit10>35.24</ds:transit10>
+        <ds:otherm10>8.26</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/11">
+        <socrata:rowID>11</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Cross-Country/Cheswolde</ds:csa2010>
+        <ds:trav14m10>20.77</ds:trav14m10>
+        <ds:trav29m10>38.54</ds:trav29m10>
+        <ds:trav44m10>24.88</ds:trav44m10>
+        <ds:trav45m10>15.81</ds:trav45m10>
+        <ds:nocar10>15.47</ds:nocar10>
+        <ds:transit10>9.3699999999999992</ds:transit10>
+        <ds:otherm10>6.1</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/12">
+        <socrata:rowID>12</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Dickeyville/Franklintown</ds:csa2010>
+        <ds:trav14m10>19.11</ds:trav14m10>
+        <ds:trav29m10>39.200000000000003</ds:trav29m10>
+        <ds:trav44m10>19.63</ds:trav44m10>
+        <ds:trav45m10>22.07</ds:trav45m10>
+        <ds:nocar10>30.2</ds:nocar10>
+        <ds:transit10>24.5</ds:transit10>
+        <ds:otherm10>5.7</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/13">
+        <socrata:rowID>13</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Dorchester/Ashburton</ds:csa2010>
+        <ds:trav14m10>12.29</ds:trav14m10>
+        <ds:trav29m10>47.44</ds:trav29m10>
+        <ds:trav44m10>23</ds:trav44m10>
+        <ds:trav45m10>17.260000000000002</ds:trav45m10>
+        <ds:nocar10>26.9</ds:nocar10>
+        <ds:transit10>22.55</ds:transit10>
+        <ds:otherm10>4.3499999999999996</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/14">
+        <socrata:rowID>14</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Downtown/Seton Hill</ds:csa2010>
+        <ds:trav14m10>34.35</ds:trav14m10>
+        <ds:trav29m10>41.04</ds:trav29m10>
+        <ds:trav44m10>13.23</ds:trav44m10>
+        <ds:trav45m10>11.38</ds:trav45m10>
+        <ds:nocar10>53.57</ds:nocar10>
+        <ds:transit10>12.17</ds:transit10>
+        <ds:otherm10>41.4</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/15">
+        <socrata:rowID>15</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Edmondson Village</ds:csa2010>
+        <ds:trav14m10>17.940000000000001</ds:trav14m10>
+        <ds:trav29m10>46.01</ds:trav29m10>
+        <ds:trav44m10>19.14</ds:trav44m10>
+        <ds:trav45m10>16.91</ds:trav45m10>
+        <ds:nocar10>34.799999999999997</ds:nocar10>
+        <ds:transit10>31.07</ds:transit10>
+        <ds:otherm10>3.73</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/16">
+        <socrata:rowID>16</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Fells Point</ds:csa2010>
+        <ds:trav14m10>29.23</ds:trav14m10>
+        <ds:trav29m10>41.69</ds:trav29m10>
+        <ds:trav44m10>20.69</ds:trav44m10>
+        <ds:trav45m10>8.39</ds:trav45m10>
+        <ds:nocar10>30.85</ds:nocar10>
+        <ds:transit10>8.5299999999999994</ds:transit10>
+        <ds:otherm10>22.33</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/17">
+        <socrata:rowID>17</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Forest Park/Walbrook</ds:csa2010>
+        <ds:trav14m10>8.49</ds:trav14m10>
+        <ds:trav29m10>37.869999999999997</ds:trav29m10>
+        <ds:trav44m10>26.58</ds:trav44m10>
+        <ds:trav45m10>27.06</ds:trav45m10>
+        <ds:nocar10>32.17</ds:nocar10>
+        <ds:transit10>26.23</ds:transit10>
+        <ds:otherm10>5.93</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/18">
+        <socrata:rowID>18</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Glen-Falstaff</ds:csa2010>
+        <ds:trav14m10>16.149999999999999</ds:trav14m10>
+        <ds:trav29m10>36.89</ds:trav29m10>
+        <ds:trav44m10>24.23</ds:trav44m10>
+        <ds:trav45m10>22.73</ds:trav45m10>
+        <ds:nocar10>25.9</ds:nocar10>
+        <ds:transit10>18.23</ds:transit10>
+        <ds:otherm10>7.68</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/19">
+        <socrata:rowID>19</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Greater Charles Village/Barclay</ds:csa2010>
+        <ds:trav14m10>30.83</ds:trav14m10>
+        <ds:trav29m10>35.44</ds:trav29m10>
+        <ds:trav44m10>19.920000000000002</ds:trav44m10>
+        <ds:trav45m10>13.8</ds:trav45m10>
+        <ds:nocar10>51.46</ds:nocar10>
+        <ds:transit10>23.7</ds:transit10>
+        <ds:otherm10>27.76</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/20">
+        <socrata:rowID>20</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Greater Govans</ds:csa2010>
+        <ds:trav14m10>15.63</ds:trav14m10>
+        <ds:trav29m10>38.43</ds:trav29m10>
+        <ds:trav44m10>24.19</ds:trav44m10>
+        <ds:trav45m10>21.75</ds:trav45m10>
+        <ds:nocar10>35.130000000000003</ds:nocar10>
+        <ds:transit10>28.73</ds:transit10>
+        <ds:otherm10>6.4</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/21">
+        <socrata:rowID>21</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Greater Mondawmin</ds:csa2010>
+        <ds:trav14m10>11.39</ds:trav14m10>
+        <ds:trav29m10>39</ds:trav29m10>
+        <ds:trav44m10>27.86</ds:trav44m10>
+        <ds:trav45m10>21.74</ds:trav45m10>
+        <ds:nocar10>41.35</ds:nocar10>
+        <ds:transit10>30.38</ds:transit10>
+        <ds:otherm10>10.98</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/22">
+        <socrata:rowID>22</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Greater Roland Park/Poplar Hill</ds:csa2010>
+        <ds:trav14m10>27.75</ds:trav14m10>
+        <ds:trav29m10>49.16</ds:trav29m10>
+        <ds:trav44m10>9.9600000000000009</ds:trav44m10>
+        <ds:trav45m10>13.13</ds:trav45m10>
+        <ds:nocar10>19.8</ds:nocar10>
+        <ds:transit10>3.87</ds:transit10>
+        <ds:otherm10>15.93</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/23">
+        <socrata:rowID>23</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Greater Rosemont</ds:csa2010>
+        <ds:trav14m10>14.43</ds:trav14m10>
+        <ds:trav29m10>32.9</ds:trav29m10>
+        <ds:trav44m10>25.51</ds:trav44m10>
+        <ds:trav45m10>27.17</ds:trav45m10>
+        <ds:nocar10>40.72</ds:nocar10>
+        <ds:transit10>34.28</ds:transit10>
+        <ds:otherm10>6.44</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/24">
+        <socrata:rowID>24</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Greenmount East</ds:csa2010>
+        <ds:trav14m10>14.6</ds:trav14m10>
+        <ds:trav29m10>29.55</ds:trav29m10>
+        <ds:trav44m10>28.3</ds:trav44m10>
+        <ds:trav45m10>27.55</ds:trav45m10>
+        <ds:nocar10>55.5</ds:nocar10>
+        <ds:transit10>44.53</ds:transit10>
+        <ds:otherm10>10.98</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/25">
+        <socrata:rowID>25</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Hamilton</ds:csa2010>
+        <ds:trav14m10>12.46</ds:trav14m10>
+        <ds:trav29m10>39.36</ds:trav29m10>
+        <ds:trav44m10>31.89</ds:trav44m10>
+        <ds:trav45m10>16.29</ds:trav45m10>
+        <ds:nocar10>12</ds:nocar10>
+        <ds:transit10>8</ds:transit10>
+        <ds:otherm10>4</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/26">
+        <socrata:rowID>26</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Harbor East/Little Italy</ds:csa2010>
+        <ds:trav14m10>41.31</ds:trav14m10>
+        <ds:trav29m10>32.46</ds:trav29m10>
+        <ds:trav44m10>15.17</ds:trav44m10>
+        <ds:trav45m10>11.06</ds:trav45m10>
+        <ds:nocar10>66.3</ds:nocar10>
+        <ds:transit10>26.85</ds:transit10>
+        <ds:otherm10>39.450000000000003</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/27">
+        <socrata:rowID>27</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Harford/Echodale</ds:csa2010>
+        <ds:trav14m10>9.39</ds:trav14m10>
+        <ds:trav29m10>41.72</ds:trav29m10>
+        <ds:trav44m10>33.89</ds:trav44m10>
+        <ds:trav45m10>15</ds:trav45m10>
+        <ds:nocar10>14.9</ds:nocar10>
+        <ds:transit10>9.08</ds:transit10>
+        <ds:otherm10>5.82</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/28">
+        <socrata:rowID>28</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Highlandtown</ds:csa2010>
+        <ds:trav14m10>23.32</ds:trav14m10>
+        <ds:trav29m10>39.49</ds:trav29m10>
+        <ds:trav44m10>21.9</ds:trav44m10>
+        <ds:trav45m10>15.28</ds:trav45m10>
+        <ds:nocar10>16.3</ds:nocar10>
+        <ds:transit10>6.3</ds:transit10>
+        <ds:otherm10>10</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/29">
+        <socrata:rowID>29</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Howard Park/West Arlington</ds:csa2010>
+        <ds:trav14m10>10.54</ds:trav14m10>
+        <ds:trav29m10>38.93</ds:trav29m10>
+        <ds:trav44m10>24.58</ds:trav44m10>
+        <ds:trav45m10>25.95</ds:trav45m10>
+        <ds:nocar10>30.4</ds:nocar10>
+        <ds:transit10>24.05</ds:transit10>
+        <ds:otherm10>6.35</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/30">
+        <socrata:rowID>30</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Inner Harbor/Federal Hill</ds:csa2010>
+        <ds:trav14m10>21.97</ds:trav14m10>
+        <ds:trav29m10>43.01</ds:trav29m10>
+        <ds:trav44m10>21.6</ds:trav44m10>
+        <ds:trav45m10>13.42</ds:trav45m10>
+        <ds:nocar10>21.5</ds:nocar10>
+        <ds:transit10>5.5</ds:transit10>
+        <ds:otherm10>16</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/31">
+        <socrata:rowID>31</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Lauraville</ds:csa2010>
+        <ds:trav14m10>13.98</ds:trav14m10>
+        <ds:trav29m10>42.02</ds:trav29m10>
+        <ds:trav44m10>28.26</ds:trav44m10>
+        <ds:trav45m10>15.74</ds:trav45m10>
+        <ds:nocar10>14.94</ds:nocar10>
+        <ds:transit10>8.64</ds:transit10>
+        <ds:otherm10>6.3</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/32">
+        <socrata:rowID>32</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Loch Raven</ds:csa2010>
+        <ds:trav14m10>13.18</ds:trav14m10>
+        <ds:trav29m10>36.81</ds:trav29m10>
+        <ds:trav44m10>28.16</ds:trav44m10>
+        <ds:trav45m10>21.85</ds:trav45m10>
+        <ds:nocar10>15.67</ds:nocar10>
+        <ds:transit10>13.23</ds:transit10>
+        <ds:otherm10>2.4300000000000002</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/33">
+        <socrata:rowID>33</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Madison/East End</ds:csa2010>
+        <ds:trav14m10>10.52</ds:trav14m10>
+        <ds:trav29m10>35.44</ds:trav29m10>
+        <ds:trav44m10>22.69</ds:trav44m10>
+        <ds:trav45m10>31.34</ds:trav45m10>
+        <ds:nocar10>54.4</ds:nocar10>
+        <ds:transit10>41.4</ds:transit10>
+        <ds:otherm10>13</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/34">
+        <socrata:rowID>34</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Medfield/Hampden/Woodberry</ds:csa2010>
+        <ds:trav14m10>29.86</ds:trav14m10>
+        <ds:trav29m10>39.53</ds:trav29m10>
+        <ds:trav44m10>16.68</ds:trav44m10>
+        <ds:trav45m10>13.93</ds:trav45m10>
+        <ds:nocar10>28.37</ds:nocar10>
+        <ds:transit10>8.7799999999999994</ds:transit10>
+        <ds:otherm10>19.579999999999998</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/35">
+        <socrata:rowID>35</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Midtown</ds:csa2010>
+        <ds:trav14m10>31.97</ds:trav14m10>
+        <ds:trav29m10>37.159999999999997</ds:trav29m10>
+        <ds:trav44m10>14.67</ds:trav44m10>
+        <ds:trav45m10>16.190000000000001</ds:trav45m10>
+        <ds:nocar10>51.53</ds:nocar10>
+        <ds:transit10>21.6</ds:transit10>
+        <ds:otherm10>29.93</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/36">
+        <socrata:rowID>36</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Midway/Coldstream</ds:csa2010>
+        <ds:trav14m10>13.25</ds:trav14m10>
+        <ds:trav29m10>40.65</ds:trav29m10>
+        <ds:trav44m10>20</ds:trav44m10>
+        <ds:trav45m10>26.09</ds:trav45m10>
+        <ds:nocar10>32.1</ds:nocar10>
+        <ds:transit10>23.67</ds:transit10>
+        <ds:otherm10>8.43</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/37">
+        <socrata:rowID>37</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Morrell Park/Violetville</ds:csa2010>
+        <ds:trav14m10>23.22</ds:trav14m10>
+        <ds:trav29m10>42.23</ds:trav29m10>
+        <ds:trav44m10>22.49</ds:trav44m10>
+        <ds:trav45m10>12.06</ds:trav45m10>
+        <ds:nocar10>14.83</ds:nocar10>
+        <ds:transit10>6.03</ds:transit10>
+        <ds:otherm10>8.8000000000000007</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/38">
+        <socrata:rowID>38</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Mt. Washington/Coldspring</ds:csa2010>
+        <ds:trav14m10>18.690000000000001</ds:trav14m10>
+        <ds:trav29m10>47.15</ds:trav29m10>
+        <ds:trav44m10>21.33</ds:trav44m10>
+        <ds:trav45m10>12.83</ds:trav45m10>
+        <ds:nocar10>12.15</ds:nocar10>
+        <ds:transit10>5.95</ds:transit10>
+        <ds:otherm10>6.2</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/39">
+        <socrata:rowID>39</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>North Baltimore/Guilford/Homeland</ds:csa2010>
+        <ds:trav14m10>29.23</ds:trav14m10>
+        <ds:trav29m10>40.08</ds:trav29m10>
+        <ds:trav44m10>17.510000000000002</ds:trav44m10>
+        <ds:trav45m10>13.19</ds:trav45m10>
+        <ds:nocar10>38.35</ds:nocar10>
+        <ds:transit10>12.43</ds:transit10>
+        <ds:otherm10>25.93</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/40">
+        <socrata:rowID>40</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Northwood</ds:csa2010>
+        <ds:trav14m10>16.600000000000001</ds:trav14m10>
+        <ds:trav29m10>36.92</ds:trav29m10>
+        <ds:trav44m10>23.91</ds:trav44m10>
+        <ds:trav45m10>22.56</ds:trav45m10>
+        <ds:nocar10>26.03</ds:nocar10>
+        <ds:transit10>18.5</ds:transit10>
+        <ds:otherm10>7.53</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/41">
+        <socrata:rowID>41</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Oldtown/Middle East</ds:csa2010>
+        <ds:trav14m10>26.88</ds:trav14m10>
+        <ds:trav29m10>33.299999999999997</ds:trav29m10>
+        <ds:trav44m10>16.86</ds:trav44m10>
+        <ds:trav45m10>22.96</ds:trav45m10>
+        <ds:nocar10>51.04</ds:nocar10>
+        <ds:transit10>37.880000000000003</ds:transit10>
+        <ds:otherm10>13.16</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/42">
+        <socrata:rowID>42</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Orangeville/East Highlandtown</ds:csa2010>
+        <ds:trav14m10>15.59</ds:trav14m10>
+        <ds:trav29m10>37.67</ds:trav29m10>
+        <ds:trav44m10>27.54</ds:trav44m10>
+        <ds:trav45m10>19.2</ds:trav45m10>
+        <ds:nocar10>38.07</ds:nocar10>
+        <ds:transit10>20.67</ds:transit10>
+        <ds:otherm10>17.399999999999999</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/43">
+        <socrata:rowID>43</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Patterson Park North &amp; East</ds:csa2010>
+        <ds:trav14m10>22.31</ds:trav14m10>
+        <ds:trav29m10>39.659999999999997</ds:trav29m10>
+        <ds:trav44m10>22.97</ds:trav44m10>
+        <ds:trav45m10>15.05</ds:trav45m10>
+        <ds:nocar10>42.44</ds:nocar10>
+        <ds:transit10>26.36</ds:transit10>
+        <ds:otherm10>16.079999999999998</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/44">
+        <socrata:rowID>44</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Penn North/Reservoir Hill</ds:csa2010>
+        <ds:trav14m10>13.25</ds:trav14m10>
+        <ds:trav29m10>35.479999999999997</ds:trav29m10>
+        <ds:trav44m10>25.43</ds:trav44m10>
+        <ds:trav45m10>25.84</ds:trav45m10>
+        <ds:nocar10>38.18</ds:nocar10>
+        <ds:transit10>31.53</ds:transit10>
+        <ds:otherm10>6.65</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/45">
+        <socrata:rowID>45</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Pimlico/Arlington/Hilltop</ds:csa2010>
+        <ds:trav14m10>13.68</ds:trav14m10>
+        <ds:trav29m10>37.74</ds:trav29m10>
+        <ds:trav44m10>25.55</ds:trav44m10>
+        <ds:trav45m10>23.03</ds:trav45m10>
+        <ds:nocar10>35.17</ds:nocar10>
+        <ds:transit10>25</ds:transit10>
+        <ds:otherm10>10.17</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/46">
+        <socrata:rowID>46</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Poppleton/The Terraces/Hollins Market</ds:csa2010>
+        <ds:trav14m10>35.57</ds:trav14m10>
+        <ds:trav29m10>22.22</ds:trav29m10>
+        <ds:trav44m10>20.3</ds:trav44m10>
+        <ds:trav45m10>21.92</ds:trav45m10>
+        <ds:nocar10>50.67</ds:nocar10>
+        <ds:transit10>35.53</ds:transit10>
+        <ds:otherm10>15.13</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/47">
+        <socrata:rowID>47</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Sandtown-Winchester/Harlem Park</ds:csa2010>
+        <ds:trav14m10>11.24</ds:trav14m10>
+        <ds:trav29m10>34.22</ds:trav29m10>
+        <ds:trav44m10>24.41</ds:trav44m10>
+        <ds:trav45m10>30.13</ds:trav45m10>
+        <ds:nocar10>48.12</ds:nocar10>
+        <ds:transit10>39.43</ds:transit10>
+        <ds:otherm10>8.68</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/48">
+        <socrata:rowID>48</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>South Baltimore</ds:csa2010>
+        <ds:trav14m10>31.41</ds:trav14m10>
+        <ds:trav29m10>40.14</ds:trav29m10>
+        <ds:trav44m10>14.12</ds:trav44m10>
+        <ds:trav45m10>14.33</ds:trav45m10>
+        <ds:nocar10>19.97</ds:nocar10>
+        <ds:transit10>7.77</ds:transit10>
+        <ds:otherm10>12.2</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/49">
+        <socrata:rowID>49</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Southeastern</ds:csa2010>
+        <ds:trav14m10>17.87</ds:trav14m10>
+        <ds:trav29m10>39.94</ds:trav29m10>
+        <ds:trav44m10>18.079999999999998</ds:trav44m10>
+        <ds:trav45m10>24.1</ds:trav45m10>
+        <ds:nocar10>44.65</ds:nocar10>
+        <ds:transit10>33.85</ds:transit10>
+        <ds:otherm10>10.8</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/50">
+        <socrata:rowID>50</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Southern Park Heights</ds:csa2010>
+        <ds:trav14m10>19.260000000000002</ds:trav14m10>
+        <ds:trav29m10>26.22</ds:trav29m10>
+        <ds:trav44m10>28.21</ds:trav44m10>
+        <ds:trav45m10>26.31</ds:trav45m10>
+        <ds:nocar10>37.47</ds:nocar10>
+        <ds:transit10>30.87</ds:transit10>
+        <ds:otherm10>6.6</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/51">
+        <socrata:rowID>51</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Southwest Baltimore</ds:csa2010>
+        <ds:trav14m10>14.84</ds:trav14m10>
+        <ds:trav29m10>33.6</ds:trav29m10>
+        <ds:trav44m10>27.8</ds:trav44m10>
+        <ds:trav45m10>23.76</ds:trav45m10>
+        <ds:nocar10>42.49</ds:nocar10>
+        <ds:transit10>32.78</ds:transit10>
+        <ds:otherm10>9.7100000000000009</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/52">
+        <socrata:rowID>52</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>The Waverlies</ds:csa2010>
+        <ds:trav14m10>11.55</ds:trav14m10>
+        <ds:trav29m10>39.53</ds:trav29m10>
+        <ds:trav44m10>25.64</ds:trav44m10>
+        <ds:trav45m10>23.28</ds:trav45m10>
+        <ds:nocar10>39.200000000000003</ds:nocar10>
+        <ds:transit10>29.5</ds:transit10>
+        <ds:otherm10>9.6999999999999993</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/53">
+        <socrata:rowID>53</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Upton/Druid Heights</ds:csa2010>
+        <ds:trav14m10>18.309999999999999</ds:trav14m10>
+        <ds:trav29m10>31.42</ds:trav29m10>
+        <ds:trav44m10>20.97</ds:trav44m10>
+        <ds:trav45m10>29.3</ds:trav45m10>
+        <ds:nocar10>47.6</ds:nocar10>
+        <ds:transit10>36.299999999999997</ds:transit10>
+        <ds:otherm10>11.3</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/54">
+        <socrata:rowID>54</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Washington Village</ds:csa2010>
+        <ds:trav14m10>24.41</ds:trav14m10>
+        <ds:trav29m10>37.6</ds:trav29m10>
+        <ds:trav44m10>13.46</ds:trav44m10>
+        <ds:trav45m10>24.53</ds:trav45m10>
+        <ds:nocar10>38.35</ds:nocar10>
+        <ds:transit10>23.25</ds:transit10>
+        <ds:otherm10>15.1</ds:otherm10>
+    </dsbase:gsze-vqaj>
+    <dsbase:gsze-vqaj rdf:about="http://data.baltimorecity.gov/resource/gsze-vqaj/55">
+        <socrata:rowID>55</socrata:rowID>
+        <rdfs:member rdf:resource="http://data.baltimorecity.gov/resource/gsze-vqaj"/>
+        <ds:csa2010>Westport/Mt. Winans/Lakeland</ds:csa2010>
+        <ds:trav14m10>15.5</ds:trav14m10>
+        <ds:trav29m10>40.71</ds:trav29m10>
+        <ds:trav44m10>24.65</ds:trav44m10>
+        <ds:trav45m10>19.149999999999999</ds:trav45m10>
+        <ds:nocar10>25.55</ds:nocar10>
+        <ds:transit10>21</ds:transit10>
+        <ds:otherm10>4.55</ds:otherm10>
+    </dsbase:gsze-vqaj>
+</rdf:RDF>

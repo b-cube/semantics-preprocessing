@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+  
+    xmlns:foaf='http://xmlns.com/foaf/0.1/'
+  
+    xmlns:wf='http://intelleo.eu/ontologies/workflow/ns#'
+  
+    xmlns:soer='http://www.eea.europa.eu/soer/1.0#'
+  
+    xmlns:eea='http://www.eea.europa.eu/ontologies.rdf#'
+  
+    xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#'
+  
+    xmlns:prov='http://www.w3.org/ns/prov#'
+  
+    xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'
+  
+    xmlns:prv='http://purl.org/net/provenance/ns#'
+  
+    xmlns:_14='http://www.eea.europa.eu/portal_types/File#'
+  
+    xmlns:dcterms='http://purl.org/dc/terms/'
+  
+    xmlns:geo='http://www.w3.org/2003/01/geo/wgs84_pos#'
+>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/waste-drivers-and-pressures-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/waste-drivers-and-pressures-spain/change-in-gdp-and-waste"/>
+        <soer:question xml:lang="en">The key drivers and pressures</soer:question>
+    </soer:NationalStory>
+    <_14:File rdf:about="http://www.eea.europa.eu/soer/countries/es/the-environment-in-spain">
+        <_14:eeaManagementPlan xml:lang="en">2011 0.0.0</_14:eeaManagementPlan>
+        <_14:inheritedprovenance>False</_14:inheritedprovenance>
+        <dcterms:subject>video</dcterms:subject>
+        <dcterms:subject>SOER2010</dcterms:subject>
+        <_14:cloudUrl xml:lang="en">http://www.youtube.com/watch?v=Ch0-nVYfj9w</_14:cloudUrl>
+        <dcterms:isPartOf>
+            <soer:Channel rdf:about="http://www.eea.europa.eu/soer/countries/es">
+                <soer:license rdf:resource="http://creativecommons.org/licenses/by/2.5/"/>
+                <soer:organisationContactURL xml:lang="en">http://www.eea.europa.eu/address.html</soer:organisationContactURL>
+                <soer:organisationName xml:lang="en">EEA</soer:organisationName>
+                <soer:organisationURL xml:lang="en">http://www.eea.europa.eu/soer/</soer:organisationURL>
+                <soer:organisationLogoURL xml:lang="en">http://www.eea.europa.eu/about-us/documents/logos/eealogo.gif</soer:organisationLogoURL>
+            </soer:Channel>
+        </dcterms:isPartOf>
+        <dcterms:creator>jaeglmar</dcterms:creator>
+        <dcterms:title xml:lang="en">Video: the environment in Spain</dcterms:title>
+        <dcterms:abstract>the-environment-in-spain  Video: the environment in Spain  SOER2010 video  </dcterms:abstract>
+        <prov:wasDerivedFrom>
+            <prv:DataItem>
+                <dcterms:title>Video: the environment in Spain</dcterms:title>
+                <prov:wasAttributedTo rdf:resource=""/>
+                <foaf:isPrimaryTopicOf rdf:resource=""/>
+            </prv:DataItem>
+        </prov:wasDerivedFrom>
+        <dcterms:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2010-11-26T16:05:23Z</dcterms:issued>
+        <wf:currentStatus>
+            <wf:DetailedProgressStatus rdf:about="#workflow_state_progress">
+                <wf:progressLevel rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">100</wf:progressLevel>
+            </wf:DetailedProgressStatus>
+        </wf:currentStatus>
+        <eea:objectProvides>eea.pdf.subtypes.interfaces.IPDFAware</eea:objectProvides>
+        <eea:objectProvides>Products.Archetypes.interfaces.referenceable.IReferenceable</eea:objectProvides>
+        <eea:objectProvides>persistent.interfaces.IPersistent</eea:objectProvides>
+        <eea:objectProvides>eea.geotags.storage.interfaces.IGeoTaggable</eea:objectProvides>
+        <eea:objectProvides>eea.workflow.interfaces.IHasMandatoryWorkflowFields</eea:objectProvides>
+        <eea:objectProvides>eea.versions.interfaces.IVersionEnhanced</eea:objectProvides>
+        <eea:objectProvides>eea.annotator.subtypes.interfaces.IAnnotatorAware</eea:objectProvides>
+        <eea:objectProvides>Products.CMFCore.interfaces._content.IDynamicType</eea:objectProvides>
+        <eea:objectProvides>OFS.interfaces.ITraversable</eea:objectProvides>
+        <eea:objectProvides>Products.ATContentTypes.interfaces.file.IFileContent</eea:objectProvides>
+        <eea:objectProvides>Products.CMFDynamicViewFTI.interfaces.ISelectableBrowserDefault</eea:objectProvides>
+        <eea:objectProvides>plone.app.blob.interfaces.IATBlob</eea:objectProvides>
+        <eea:objectProvides>plone.portlets.interfaces.ILocalPortletAssignable</eea:objectProvides>
+        <eea:objectProvides>Products.CMFCore.interfaces._content.ICatalogAware</eea:objectProvides>
+        <eea:objectProvides>webdav.EtagSupport.EtagBaseInterface</eea:objectProvides>
+        <eea:objectProvides>AccessControl.interfaces.IPermissionMappingSupport</eea:objectProvides>
+        <eea:objectProvides>eea.epub.subtypes.interfaces.IEPUBAware</eea:objectProvides>
+        <eea:objectProvides>OFS.interfaces.ISimpleItem</eea:objectProvides>
+        <eea:objectProvides>Products.ATContentTypes.interfaces.interfaces.IATContentType</eea:objectProvides>
+        <eea:objectProvides>OFS.interfaces.IPropertyManager</eea:objectProvides>
+        <eea:objectProvides>plone.app.imaging.interfaces.IBaseObject</eea:objectProvides>
+        <eea:objectProvides>Products.Archetypes.interfaces.base.IBaseObject</eea:objectProvides>
+        <eea:objectProvides>archetypes.schemaextender.interfaces.IExtensible</eea:objectProvides>
+        <eea:objectProvides>webdav.interfaces.IWriteLock</eea:objectProvides>
+        <eea:objectProvides>AccessControl.interfaces.IRoleManager</eea:objectProvides>
+        <eea:objectProvides>Products.Archetypes.interfaces.base.IBaseContent</eea:objectProvides>
+        <eea:objectProvides>eea.workflow.interfaces.IObjectArchived</eea:objectProvides>
+        <eea:objectProvides>plone.uuid.interfaces.IUUIDAware</eea:objectProvides>
+        <eea:objectProvides>plone.locking.interfaces.ITTWLockable</eea:objectProvides>
+        <eea:objectProvides>eea.promotion.interfaces.IPromotable</eea:objectProvides>
+        <eea:objectProvides>OFS.interfaces.IItem</eea:objectProvides>
+        <eea:objectProvides>Acquisition.interfaces.IAcquirer</eea:objectProvides>
+        <eea:objectProvides>eea.app.visualization.subtypes.interfaces.IPossibleVisualization</eea:objectProvides>
+        <eea:objectProvides>Products.CMFCore.interfaces._content.IOpaqueItemManager</eea:objectProvides>
+        <eea:objectProvides>plone.app.iterate.interfaces.IIterateAware</eea:objectProvides>
+        <eea:objectProvides>Products.Archetypes.interfaces.metadata.IExtensibleMetadata</eea:objectProvides>
+        <eea:objectProvides>Products.CMFCore.interfaces._content.IContentish</eea:objectProvides>
+        <eea:objectProvides>Products.ATContentTypes.interfaces.file.IATFile</eea:objectProvides>
+        <eea:objectProvides>eea.mediacentre.interfaces.IVideo</eea:objectProvides>
+        <eea:objectProvides>App.interfaces.IPersistentExtra</eea:objectProvides>
+        <eea:objectProvides>eea.cache.subtypes.interfaces.ICacheAware</eea:objectProvides>
+        <eea:objectProvides>eea.progressbar.interfaces.IBaseObject</eea:objectProvides>
+        <eea:objectProvides>eea.relations.content.interfaces.IBaseObject</eea:objectProvides>
+        <eea:objectProvides>Products.CMFCore.interfaces._content.IWorkflowAware</eea:objectProvides>
+        <eea:objectProvides>plone.app.blob.interfaces.IATBlobFile</eea:objectProvides>
+        <eea:objectProvides>webdav.interfaces.IDAVResource</eea:objectProvides>
+        <eea:objectProvides>Products.LinguaPlone.interfaces.ITranslatable</eea:objectProvides>
+        <eea:objectProvides>OFS.interfaces.ICopySource</eea:objectProvides>
+        <eea:objectProvides>zope.annotation.interfaces.IAttributeAnnotatable</eea:objectProvides>
+        <eea:objectProvides>eea.geotags.storage.interfaces.IGeoTagged</eea:objectProvides>
+        <eea:objectProvides>Products.NavigationManager.sections.interfaces.INavigationSectionPositionable</eea:objectProvides>
+        <eea:objectProvides>AccessControl.interfaces.IOwned</eea:objectProvides>
+        <eea:objectProvides>eea.alchemy.interfaces.IAlchemyDiscoverable</eea:objectProvides>
+        <eea:objectProvides>App.interfaces.IUndoSupport</eea:objectProvides>
+        <eea:objectProvides>eea.themecentre.interfaces.IThemeTaggable</eea:objectProvides>
+        <_14:id xml:lang="en">the-environment-in-spain</_14:id>
+        <dcterms:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2015-03-21T16:46:19Z</dcterms:modified>
+        <dcterms:spatial>
+            <geo:SpatialThing rdf:about="#geotag0">
+                <geo:lat rdf:datatype="http://www.w3.org/2001/XMLSchema#float">40.463667</geo:lat>
+                <rdfs:label>Spain</rdfs:label>
+                <geo:long rdf:datatype="http://www.w3.org/2001/XMLSchema#float">-3.74922</geo:long>
+            </geo:SpatialThing>
+        </dcterms:spatial>
+        <dcterms:expires rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2015-03-21T16:46:19Z</dcterms:expires>
+        <dcterms:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2010-11-16T09:05:29Z</dcterms:created>
+        <eea:hasWorkflowState rdf:resource="http://www.eea.europa.eu/portal_workflow/eea_default_workflow/states/published"/>
+    </_14:File>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/nature-protection-and-biodiversity-drivers">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/nature-protection-and-biodiversity-drivers/transport-modal-split-2008"/>
+        <soer:question xml:lang="en">The key drivers and pressures</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/nature-protection-and-biodiversity-outlook">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:question xml:lang="en">The 2020 outlook</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/freshwater-national-responses-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:question xml:lang="en">Existing and planned responses</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/air-pollution-outlook-2020-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/air-pollution-outlook-2020-spain/ghg-projections-1"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/air-pollution-outlook-2020-spain/ghg-projections-table"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/air-pollution-outlook-2020-spain/pollutants-projections-table"/>
+        <soer:question xml:lang="en">The 2020 outlook</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/land-use-why-care-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:question xml:lang="en">Why should we care about this issue</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/country-introduction-spain-3">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/country-introduction-spain-3/population-projection-in-spain"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/country-introduction-spain-3/gdp"/>
+        <soer:question xml:lang="en">What are the foreseen developments?</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/nature-protection-and-biodiversity-why">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:question xml:lang="en">Why should we care about this issue</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/waste-national-responses-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:question xml:lang="en">Existing and planned responses</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/land-use-state-and-impacts-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/land-use-state-and-impacts-spain/changes-land-cover-2000-2006"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/land-use-state-and-impacts-spain/share-land-cover-2000-2006"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/land-use-state-and-impacts-spain/share-artificial-surface-2006"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/land-use-state-and-impacts-spain/changes-artificial-surfaces-2000-2006"/>
+        <soer:question xml:lang="en">The state and impacts</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/national-and-regional-story-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/national-and-regional-story-spain/ordesa-np"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/national-and-regional-story-spain/rolando-breach"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/national-and-regional-story-spain/lenght-variation"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/national-and-regional-story-spain/glaciers-location-1"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/national-and-regional-story-spain/evolution-of-glaciers"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/national-and-regional-story-spain/madaleta"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/national-and-regional-story-spain/monte-perdido"/>
+        <soer:question xml:lang="en">SPANISH GLACIERS:  THE SOUTHERNMOST SERIES OF GLACIOLOGICAL SPECIMENS IN EUROPE  </soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/air-pollution-state-and-impacts-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/air-pollution-state-and-impacts-spain/air-quality"/>
+        <soer:question xml:lang="en">The state and impacts</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/air-pollution-drivers-and-pressures-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/air-pollution-drivers-and-pressures-spain/emissions-acidifying-and-eutrophying"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/air-pollution-drivers-and-pressures-spain/particulate-matter-emissions"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/air-pollution-drivers-and-pressures-spain/ghg-emission-1"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/air-pollution-drivers-and-pressures-spain/transport-modal-split-2008"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/air-pollution-drivers-and-pressures-spain/acidifying-and-eutrophying"/>
+        <soer:question xml:lang="en">The key drivers and pressures</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/country-introduction-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/country-introduction-spain/spain-aa-cc"/>
+        <soer:question xml:lang="en">What distinguishes the country?</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/waste-state-and-impacts-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/waste-state-and-impacts-spain/urban-waste-generation"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/waste-state-and-impacts-spain/industrial-waste"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/waste-state-and-impacts-spain/urban-waste-treatment"/>
+        <soer:question xml:lang="en">The state and impacts</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/climate-change-mitigation-drivers-and">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/climate-change-mitigation-drivers-and/passenger-transport"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/climate-change-mitigation-drivers-and/ghg-emission-by-sector"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/climate-change-mitigation-drivers-and/electricity-generation"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/climate-change-mitigation-drivers-and/freight-transport"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/climate-change-mitigation-drivers-and/change-in-energy-consumption"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/climate-change-mitigation-drivers-and/ghg-emission-1"/>
+        <soer:question xml:lang="en">The key drivers and pressures</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/freshwater-drivers-and-pressures-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:question xml:lang="en">The key drivers and pressures</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/freshwater-outlook-2020-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:question xml:lang="en">The 2020 outlook</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/national-and-regional-story-spain-1">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/national-and-regional-story-spain-1/image028.gif"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/national-and-regional-story-spain-1/image001.png"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/national-and-regional-story-spain-1/image031.png"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/national-and-regional-story-spain-1/image003.png"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/national-and-regional-story-spain-1/image024.gif"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/national-and-regional-story-spain-1/image021.png"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/national-and-regional-story-spain-1/image030.gif"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/national-and-regional-story-spain-1/image026.gif"/>
+        <soer:question xml:lang="en">El Cachucho</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/waste-why-care-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:question xml:lang="en">Why should we care about this issue</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/freshwater-state-and-impacts-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/freshwater-state-and-impacts-spain/icg-caption"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/freshwater-state-and-impacts-spain/icg"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/freshwater-state-and-impacts-spain/rivers-in-spain"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/freshwater-state-and-impacts-spain/water-gdp"/>
+        <soer:question xml:lang="en">The state and impacts</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/land-use-drivers-and-pressures-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:question xml:lang="en">The key drivers and pressures</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/air-pollution-why-care-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:question xml:lang="en">Why should we care about this issue</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/waste-outlook-2020-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:question xml:lang="en">The 2020 outlook</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/climate-change-mitigation-national-responses-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:question xml:lang="en">Existing and planned responses</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/country-introduction-spain-2">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:question xml:lang="en">What are the main drivers of environmental pressures?</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/air-pollution-national-responses-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:question xml:lang="en">Existing and planned responses</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/climate-change-mitigation-why-care-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:question xml:lang="en">Why should we care about this issue</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/nature-protection-and-biodiversity-state">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/nature-protection-and-biodiversity-state/forest-fires-1"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/nature-protection-and-biodiversity-state/protected-area"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/nature-protection-and-biodiversity-state/protected-areas-2009"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/nature-protection-and-biodiversity-state/trends-in-bird-population"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/nature-protection-and-biodiversity-state/protected-area-map"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/nature-protection-and-biodiversity-state/forest-fires"/>
+        <soer:question xml:lang="en">The state and impacts</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/land-use-national-responses-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/land-use-national-responses-spain/demarcated-coastline"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/land-use-national-responses-spain/protected-coastline-2006"/>
+        <soer:question xml:lang="en">Existing and planned responses</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/land-use-outlook-2020-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/land-use-outlook-2020-spain/population-projections"/>
+        <soer:question xml:lang="en">The 2020 outlook</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/nature-protection-and-biodiversity-national">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:question xml:lang="en">Existing and planned responses</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/country-introduction-spain-1">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:question xml:lang="en">What have been the major societal developments?</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/freshwater-why-care-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/freshwater-why-care-spain/river-basin"/>
+        <soer:question xml:lang="en">Why should we care about this issue</soer:question>
+    </soer:NationalStory>
+    <soer:NationalStory rdf:about="http://www.eea.europa.eu/soer/countries/es/climate-change-mitigation-outlook-2020-spain">
+        <soer:geoCoverage rdf:resource="http://rdfdata.eionet.europa.eu/ramon/countries/ES"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/climate-change-mitigation-outlook-2020-spain/ghg-projections"/>
+        <soer:hasFigure rdf:resource="http://www.eea.europa.eu/soer/countries/es/climate-change-mitigation-outlook-2020-spain/ghg-projections-table"/>
+        <soer:question xml:lang="en">The 2020 outlook</soer:question>
+    </soer:NationalStory>
+</rdf:RDF>
