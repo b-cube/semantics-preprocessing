@@ -1,4 +1,5 @@
 import luigi
+from tasks.parse_tasks import ParseTask
 from lib.nlp_utils import normalize_subjects
 from lib.nlp_utils import is_english
 from lib.nlp_utils import collapse_to_bag
@@ -9,7 +10,22 @@ text processing tasks
 '''
 
 
+class TextPreprocessingTask(luigi.Task):
+    def requires(self):
+        return ParseTask(yaml_file=self.yaml_file)
+
+    def output(self):
+        return
+
+    def run(self):
+        return
+
+
 class LanguageIdentificationTask(luigi.Task):
+    '''
+    for each element (leaf text node), check
+    if english and tag if not
+    '''
     input_path = luigi.Parameter()
 
     def requires(self):
@@ -51,7 +67,7 @@ class KeywordTask(luigi.Task):
 
 
 class BagOfWordsTask(luigi.Task):
-    # gneerate a bag of words with all the cleanup
+    # generate a bag of words with all the cleanup
     def requires(self):
         return
 

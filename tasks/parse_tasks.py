@@ -4,35 +4,41 @@ from lib.parser import Parser
 from lib.identifier import Identify
 from lib.process_router import Processor
 import json
-
-
-def read_data(path):
-    with open(path, 'r') as f:
-        return json.loads(f.read())
-
-
-def write_data(path, data):
-    with open(path, 'w') as f:
-        f.write(json.dumps(data, indent=4))
+from task_helpers import parse_yaml, extract_task_config
+from task_helpers import read_data, generate_output_filename
 
 
 class ResponseTask(luigi.Task):
-    input_path = luigi.Parameter()
     yaml_file = luigi.Parameter()
+    input_file = luigi.Parameter()
+
+    output_path = ''
 
     def requires(self):
         return []
 
     def output(self):
-        return luigi.LocalTarget(self.input_path + '.cleaned')
+        return luigi.LocalTarget(
+            generate_output_filename(
+                self.input_file,
+                self.output_path,
+                'cleaned'
+            )
+        )
 
     def run(self):
         '''  '''
-        data = read_data(self.input_path)
+        self._configure()
+
+        data = read_data(self.input_file)
         self.cleaned = self.process_response(data)
-        # write_data(self.output_path, cleaned)
         with self.output().open('w') as out_file:
             out_file.write(json.dumps(self.cleaned, indent=4))
+
+    def _configure(self):
+        config = parse_yaml(self.yaml_file)
+        config = extract_task_config(config, 'Clean')
+        self.output_path = config.get('output_directory', '')
 
     def process_response(self, data):
         # do the response processing
@@ -52,17 +58,28 @@ class ResponseTask(luigi.Task):
 
 
 class IdentifyTask(luigi.Task):
-    input_path = luigi.Parameter()
     yaml_file = luigi.Parameter()
+    input_file = luigi.Parameter()
+
+    output_path = ''
+    identifiers = []
 
     def requires(self):
-        return ResponseTask(input_file=self.input_path, yaml_file=self.yaml_file)
+        return ResponseTask(input_file=self.input_file, yaml_file=self.yaml_file)
 
     def output(self):
-        return luigi.LocalTarget(self.input_path + '.identified')
+        return luigi.LocalTarget(
+            generate_output_filename(
+                self.input_file,
+                self.output_path,
+                'identified'
+            )
+        )
 
     def run(self):
         '''  '''
+        self._configure()
+
         f = self.input().open('r')
         data = json.loads(f.read())
 
@@ -71,12 +88,23 @@ class IdentifyTask(luigi.Task):
         with self.output().open('w') as out_file:
             out_file.write(json.dumps(identified, indent=4))
 
+    def _configure(self):
+        config = parse_yaml(self.yaml_file)
+        config = extract_task_config(config, 'Identify')
+        self.output_path = config.get('output_directory', '')
+        self.identifiers = config.get('identifiers', [])
+
     def process_response(self, data):
         content = data['content'].encode('unicode_escape')
         url = data['source_url']
         parser = Parser(content)
 
-        identify = Identify(self.yaml_file, content, url, **{'parser': parser, 'ignore_case': True})
+        identify = Identify(
+            self.identifiers,
+            content,
+            url,
+            **{'parser': parser, 'ignore_case': True}
+        )
         identify.identify()
         data['identity'] = identify.to_json()
         return data
@@ -84,16 +112,27 @@ class IdentifyTask(luigi.Task):
 
 class ParseTask(luigi.Task):
     yaml_file = luigi.Parameter()
-    input_path = luigi.Parameter()
+    input_file = luigi.Parameter()
+
+    output_path = ''
+    params = {}
 
     def requires(self):
-        return IdentifyTask(input_path=self.input_path, yaml_file=self.yaml_file)
+        return IdentifyTask(input_file=self.input_file, yaml_file=self.yaml_file)
 
     def output(self):
-        return luigi.LocalTarget(self.input_path + '.parsed')
+        return luigi.LocalTarget(
+            generate_output_filename(
+                self.input_file,
+                self.output_path,
+                'parsed'
+            )
+        )
 
     def run(self):
         '''  '''
+        self._configure()
+
         f = self.input().open('r')
         data = json.loads(f.read())
         parsed = self.process_response(data)
@@ -101,12 +140,22 @@ class ParseTask(luigi.Task):
             with self.output().open('w') as out_file:
                 out_file.write(json.dumps(parsed, indent=4))
 
+    def _configure(self):
+        config = parse_yaml(self.yaml_file)
+        config = extract_task_config(config, 'Parse')
+        self.output_path = config.get('output_directory', '')
+        self.params = config.get('params', {})
+
     def process_response(self, data):
         content = data['content'].encode('unicode_escape')
         url = data['source_url']
         identity = data['identity']
 
-        processor = Processor(identity, content)
+        if not self.params or not self.params.get('process_unidentified', False):
+            # do not generate the generic xml output if it's unknown
+            return {}
+
+        processor = Processor(identity, content, url)
         if not processor:
             return {}
 

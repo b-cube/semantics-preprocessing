@@ -157,8 +157,13 @@ def extract_by_pos(tokenized_text, parts_of_speech):
 
 
 def lemmatize_words(words):
+    ''' '''
     lem = WordNetLemmatizer()
     return [lem.lemmatize(w) for w in words]
+
+
+def stem_words(words):
+    pass
 
 
 def collapse_to_bag(data_blob, exclude_urls=True):

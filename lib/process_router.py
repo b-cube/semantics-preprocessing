@@ -28,7 +28,8 @@ class Processor():
         version = self.identity['version']
 
         if not protocol:
-            return None
+            # we will try a generic xml parser
+            self.reader = XmlReader(response, url)
 
         if protocol == 'OpenSearch':
             self.reader = OpenSearchReader(response, url)
@@ -41,6 +42,3 @@ class Processor():
             self.reader = IsoReader(response, url)
         elif protocol.startswith('OGC:') and 'error' not in protocol:
             self.reader = OgcReader(protocol.split(':')[-1], version, response, url)
-        else:
-            # we will try a generic xml parser
-            self.reader = XmlReader(response, url)
