@@ -48,9 +48,14 @@ class TripleWorkflow(luigi.Task):
     triplestore
     '''
     yaml_file = luigi.Parameter()
+    doc_dir = luigi.Parameter()
 
     def requires(self):
-        return [ParseTask(input_path=f, yaml_file=self.yaml_file) for f in self._iterator()]
+        return [
+            TextPreprocessingTask(
+                input_file=f, yaml_file=self.yaml_file
+            ) for f in self._iterator()
+        ]
 
     def output(self):
         return luigi.LocalTarget('log.txt')
@@ -66,8 +71,8 @@ if __name__ == '__main__':
     # yaml_file = the configuration yaml for all tasks
 
     # this is quite unfortunate
-    w = ParseWorkflow(doc_dir='testdata/docs/', yaml_file='tasks/test_config.yaml')
-    # w = TripleWorkflow(yaml_file='tasks/test_config.yaml')
+    # w = ParseWorkflow(doc_dir='testdata/docs/', yaml_file='tasks/test_config.yaml')
+    w = TripleWorkflow(doc_dir='testdata/docs/', yaml_file='tasks/test_config.yaml')
 
     luigi.build([w], local_scheduler=True)
 
