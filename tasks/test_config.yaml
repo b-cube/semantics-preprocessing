@@ -1,3 +1,6 @@
+init:
+  clear_output_directories: true
+
 Clean:
   output_directory: 'testdata/triples/clean'
     
@@ -19,7 +22,7 @@ Parse:
 TextPreprocessing:
   output_directory: 'testdata/triples/text'
   tasks: 
-    detect_language:
-      params:
-        keep_text: true
+    # detect_language:
+    #   params:
+    #     keep_text: true
     normalize_keywords:

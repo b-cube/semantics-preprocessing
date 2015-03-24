@@ -35,7 +35,7 @@ def normalize_subjects(subjects, do_split=False, return_unique=True):
             # skip any empty tag
             continue
         normalized = normalize_keyword_text(subject)
-        normalized_subjects += [n.strip() for n in normalized.split(',')] \
+        normalized_subjects += [n.strip() for n in normalized.split(',') if n] \
             if do_split else [normalized]
 
     return list(set(normalized_subjects)) if return_unique else normalized_subjects

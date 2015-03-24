@@ -6,6 +6,7 @@ from lib.process_router import Processor
 import json
 from task_helpers import parse_yaml, extract_task_config
 from task_helpers import read_data, generate_output_filename
+import os
 
 
 class ResponseTask(luigi.Task):
@@ -32,8 +33,12 @@ class ResponseTask(luigi.Task):
 
         data = read_data(self.input_file)
         self.cleaned = self.process_response(data)
+
+        print '############# CLEANED', self.cleaned is not None, self.output().path
         with self.output().open('w') as out_file:
             out_file.write(json.dumps(self.cleaned, indent=4))
+
+        print '#############', os.path.exists(self.output().path)
 
     def _configure(self):
         config = parse_yaml(self.yaml_file)
@@ -93,6 +98,8 @@ class IdentifyTask(luigi.Task):
         config = extract_task_config(config, 'Identify')
         self.output_path = config.get('output_directory', '')
         self.identifiers = config.get('identifiers', [])
+
+        print '############ IDENTIFIERS', len(self.identifiers)
 
     def process_response(self, data):
         content = data['content'].encode('unicode_escape')

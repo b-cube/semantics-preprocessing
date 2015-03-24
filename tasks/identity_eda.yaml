@@ -1,0 +1,18 @@
+init:
+
+IdentityCollect:
+  input_directory: 'testdata/solr_20150320/identify'
+  output_directory: 'testdata/solr_20150320'
+  delimiter: '|'
+
+IdentityEDA:
+  output_directory: 'testdata/solr_20150320'
+  delimiter: '|'
+  identifier_pattern: lib/configs/*_identifier.yaml
+  # identifiers:
+  #   - lib/configs/rdf_identifier.yaml
+  #   - lib/configs/ogc_identifier.yaml
+  #   - lib/configs/opensearch_identifier.yaml
+  #   - lib/configs/iso_identifier.yaml
+  #   - lib/configs/oaipmh_identifier.yaml
+  #   - lib/configs/thredds_identifier.yaml
