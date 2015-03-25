@@ -64,52 +64,62 @@ class TextPreprocessingTask(luigi.Task):
             # and we are often simply running based on
             # the key value as a basic trigger
             if k == 'detect_language':
-                service = service_description.get('service', {})
-                if not service:
-                    continue
-
-                # TODO: don't ignore the endpoints
-                for sk, sv in service.iteritems():
-                    if sk == 'endpoints':
-                        continue
-
-                    service[sk] = [s for s in sv if is_english(s)]
-
-                    if len(sv) != len(service[sk]):
-                        print 'NOT ENGLISH: ', sv, service[sk]
-
-                service_description['service'] = service
-
-                remainder = service_description.get('remainder', [])
-                if not remainder:
-                    continue
-
-                for r in remainder:
-                    text = r.get('text', '')
-                    if text:
-                        r['text'] = text if is_english(text) else ""
-                # TODO: also don't ignore the attributes (although
-                #       these might fall under text that isn't a word)
-                service_description['remainder'] = remainder
+                service_description = self._detect_language(service_description)
 
             if k == "normalize_keywords":
-                service = service_description.get('service', {})
-                if not service:
-                    continue
-                subjects = service.get('subject', [])
-                if not subjects:
-                    continue
-
-                # return split and as a unique list
-                service['subject'] = normalize_subjects(subjects, True, True)
-
-                if len(subjects) != len(service['subject']):
-                    print '########### UPDATED SUBJECTS: ', subjects, service['subject']
-
-                service_description['service'] = service
+                service_description = self._normalize_keywords(service_description)
 
         data['service_description'] = service_description
         return data
+
+    def _detect_language(self, service_description):
+        service = service_description.get('service', {})
+        if not service:
+            return service_description
+
+        # TODO: don't ignore the endpoints
+        for sk, sv in service.iteritems():
+            if sk == 'endpoints':
+                continue
+
+            service[sk] = [s for s in sv if is_english(s)]
+
+            if len(sv) != len(service[sk]):
+                print 'NOT ENGLISH: ', sv, service[sk]
+
+        service_description['service'] = service
+
+        remainder = service_description.get('remainder', [])
+        if not remainder:
+            return service_description
+
+        for r in remainder:
+            text = r.get('text', '')
+            if text:
+                r['text'] = text if is_english(text) else ""
+        # TODO: also don't ignore the attributes (although
+        #       these might fall under text that isn't a word)
+        service_description['remainder'] = remainder
+
+        return service_description
+
+    def _normalize_keywords(self, service_description):
+        service = service_description.get('service', {})
+        if not service:
+            return service_description
+        subjects = service.get('subject', [])
+        if not subjects:
+            return service_description
+
+        # return split and as a unique list
+        service['subject'] = normalize_subjects(subjects, True, True)
+
+        # if len(subjects) != len(service['subject']):
+        #     print '########### UPDATED SUBJECTS: ', subjects, service['subject']
+
+        service_description['service'] = service
+
+        return service_description
 
 
 class BagOfWordsTask(luigi.Task):

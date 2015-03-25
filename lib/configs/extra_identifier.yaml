@@ -23,7 +23,8 @@
   metadatas:
   errors:
   versions: 
-- name: MARC:21
+- name: '"MARC:21"'
+  # this name is just excel evil
   subtype: metadata
   filters:
     ors:

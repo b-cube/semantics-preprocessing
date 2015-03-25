@@ -251,6 +251,15 @@
           - type: simple
             object: content
             value: '<csw:Capabilities'
+      - type: complex
+        operator: ands
+        filters:
+          - type: simple
+            object: content
+            value: 'http://www.opengis.net/cat/csw'
+          - type: simple
+            object: url
+            value: 'SERVICE=CSW'
   service_description:
     - name: GetCapabilities
       filters:

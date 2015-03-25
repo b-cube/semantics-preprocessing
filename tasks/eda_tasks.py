@@ -94,13 +94,12 @@ class IdentityEDATask(luigi.Task):
                 subtype,
                 service,
                 version,
-                str(has_dataset),
-                str(has_metadata)
+                has_dataset,
+                has_metadata
             ]
-
             # append to the one csv? for testing at least
             with open(csv_file, 'a') as g:
-                g.write(self.delimiter.join(response) + '\n')
+                g.write(self.delimiter.join(map(str, response)) + '\n')
 
     def process_response(self, dataframe):
         # do the response processing

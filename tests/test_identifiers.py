@@ -225,6 +225,19 @@ class TestIso(unittest.TestCase):
 
         self.assertTrue(identifier.protocol == 'ISO-19115')
 
+        # and now make sure it's not csw or rdf or oai-pmh
+        identifier = Identify(
+            [
+                'lib/configs/iso_identifier.yaml',
+                'lib/configs/ogc_identifier.yaml',
+                'lib/configs/oaipmh_identifier.yaml',
+                'lib/configs/rdf_identifier.yaml'
+            ], content, url, **{'parser': parser}
+        )
+        identifier.identify()
+
+        self.assertTrue(identifier.protocol == 'ISO-19115')
+
     def test_if_returning_iso_protocol_for_md(self):
         with open('tests/test_data/iso-19115_md.xml', 'r') as f:
             content = f.read()
@@ -368,14 +381,12 @@ class TestCswIdentification(unittest.TestCase):
 
         self.iso_identifier.identify()
 
-        print self.iso_identifier.to_json()
-
         self.assertTrue(self.iso_identifier.protocol == 'ISO-19115')
 
 
 class TestRdfDataset(unittest.TestCase):
     def setUp(self):
-        yaml_file = 'lib/configs/rdf_identifier.yaml'
+        # yaml_file = 'lib/configs/rdf_identifier.yaml'
 
         with open('tests/test_data/datagov_9bcffa1c-6164-4635-bc2c-6c98cce59d7b.rdf', 'r') as f:
             content = f.read()
@@ -384,7 +395,14 @@ class TestRdfDataset(unittest.TestCase):
         content = content.replace('\\n', '')
         parser = Parser(content)
 
-        self.identifier = Identify([yaml_file], content, url, **{'parser': parser})
+        self.identifier = Identify(
+            [
+                'lib/configs/iso_identifier.yaml',
+                'lib/configs/ogc_identifier.yaml',
+                'lib/configs/oaipmh_identifier.yaml',
+                'lib/configs/rdf_identifier.yaml'
+            ], content, url, **{'parser': parser}
+        )
 
     def test_rdf_identification(self):
         self.identifier.identify()

@@ -85,6 +85,9 @@ class IdentifyWorkflow(luigi.Task):
     doc_dir = luigi.Parameter()
     yaml_file = luigi.Parameter()
 
+    start_index = luigi.Parameter(default=0)
+    end_index = luigi.Parameter(default=1000)
+
     def requires(self):
         return [IdentifyTask(input_file=f, yaml_file=self.yaml_file) for f in self._iterator()]
 
@@ -100,7 +103,7 @@ class IdentifyWorkflow(luigi.Task):
         run_init(config)
 
     def _iterator(self):
-        for f in glob.glob(os.path.join(self.doc_dir, '*.json'))[2000:5000]:
+        for f in glob.glob(os.path.join(self.doc_dir, '*.json'))[self.start_index:self.end_index]:
             yield f
 
 
@@ -131,10 +134,17 @@ if __name__ == '__main__':
     # this is quite unfortunate
     # w = ParseWorkflow(doc_dir='testdata/docs/', yaml_file='tasks/test_config.yaml')
     # w = TripleWorkflow(doc_dir='testdata/docs/', yaml_file='tasks/test_config.yaml')
-    # w = IdentifyEDAWorkflow(yaml_file='tasks/identity_eda.yaml')
-    w = IdentifyWorkflow(doc_dir='testdata/solr_20150320/docs/', yaml_file='tasks/identity_20150320.yaml')
-
+    w = IdentifyEDAWorkflow(yaml_file='tasks/identity_eda.yaml')
     luigi.build([w], local_scheduler=True)
+
+    # for i in xrange(200, 26000, 2000):
+    #     w = IdentifyWorkflow(
+    #         doc_dir='testdata/solr_20150320/docs/',
+    #         yaml_file='tasks/identity_20150320.yaml',
+    #         start_index=i,
+    #         end_index=(i + 2000)
+    #     )
+    #     luigi.build([w], local_scheduler=True)
 
     # for the response only: python luigi_tasks.py ResponseTask
     #       --input-path 'testdata/docs/response_0a80f182ed59a834572e2c594aacfe29.json'
