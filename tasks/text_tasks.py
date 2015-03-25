@@ -124,6 +124,13 @@ class TextPreprocessingTask(luigi.Task):
 
 class BagOfWordsTask(luigi.Task):
     # generate a bag of words with all the cleanup
+
+    yaml_file = luigi.Parameter()
+    input_file = luigi.Parameter()
+
+    output_path = ''
+    tasks = {}
+
     def requires(self):
         return
 
@@ -132,3 +139,12 @@ class BagOfWordsTask(luigi.Task):
 
     def run(self):
         return
+
+    def _configure(self):
+        config = parse_yaml(self.yaml_file)
+        config = extract_task_config(config, 'BagOfWords')
+        self.output_path = config.get('output_directory', '')
+        self.tasks = config.get('tasks', {})
+
+    def process_response(self):
+        pass
