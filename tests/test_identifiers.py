@@ -409,6 +409,27 @@ class TestRdfDataset(unittest.TestCase):
 
         self.assertTrue(self.identifier.protocol == 'RDF')
 
+    def test_rdf_language(self):
+        with open('tests/test_data/rdf_french_ed14b44e96042ad56c11cc0ca3768979.xml', 'r') as f:
+            content = f.read()
+        url = 'http://catalog.data.gov/9bcffa1c-6164-4635-bc2c-6c98cce59d7b.rdf'
+
+        content = content.replace('\\n', '')
+        parser = Parser(content)
+
+        identifier = Identify(
+            [
+                'lib/configs/iso_identifier.yaml',
+                'lib/configs/ogc_identifier.yaml',
+                'lib/configs/oaipmh_identifier.yaml',
+                'lib/configs/rdf_identifier.yaml'
+            ], content, url, **{'parser': parser}
+        )
+        identifier.identify()
+        print identifier.to_json()
+        self.assertTrue(identifier.protocol == 'RDF')
+        self.assertTrue(identifier.language == 'fr')
+
 
 class TestThreddsIdentification(unittest.TestCase):
     def setUp(self):

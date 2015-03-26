@@ -1,0 +1,22 @@
+{
+    "xml_namespaces": [
+        "xmlns:foaf=\"http://xmlns.com/foaf/0.1/\"", 
+        "xmlns.com/foaf/0.1/\" xmlns:dct=\"http://purl.org/dc/terms/\"", 
+        "xmlns:dct=\"http://purl.org/dc/terms/\"", 
+        "xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"", 
+        "xmlns:dcat=\"http://www.w3.org/ns/dcat#\""
+    ], 
+    "url": "http://data.angers.fr/?eID=smile_od_rdf&id=115", 
+    "segment": "20150318090828", 
+    "raw_content": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<rdf:RDF xmlns:foaf=\"http://xmlns.com/foaf/0.1/\" xmlns:dct=\"http://purl.org/dc/terms/\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcat=\"http://www.w3.org/ns/dcat#\" xml:lang=\"fr\">\n\t<dcat:Dataset rdf:about=\"http://data.angers.fr/?eID=smile_od_rdf&amp;id=115\">\n\t\t<dct:identifier/>\n\t\t<dct:title>H\ufffd\ufffdtels d'Angers Loire M\ufffd\ufffdtropole.</dct:title>\n\t\t<dct:description>Liste des h\ufffd\ufffdtels sur le territoire d'Angers Loire M\ufffd\ufffdtropole</dct:description>\n\t\t<dcat:landingPage>http://data.angers.fr/donnees/tourisme-hotels/</dcat:landingPage>\n\t\t<dcat:theme>Culture / Tourisme</dcat:theme>\n\t\t<dcat:keywords/>\n\t\t<dct:licence>Licence ODbL</dct:licence>\n\t\t<dct:issued>1360537200</dct:issued>\n\t\t<dct:modified>1390518000</dct:modified>\n\t\t<lastModificationDescription/>\n\t\t<dct:temporal>Annuelle</dct:temporal>\n\t\t<dct:created>1360571989</dct:created>\n\t\t<dct:creator>Angers Loire M\ufffd\ufffdtropole</dct:creator>\n\t\t<dct:contributor>Angers Loire M\ufffd\ufffdtropole</dct:contributor>\n\t\t<dct:publisher>Angers Loire Tourisme</dct:publisher>\n\t\t<dct:spatial/>\n\t\t<dct:language/>\n\t\t<dcat:dataQuality/>\n\t\t<dcat:granularity/>\n\t\t<dct:references/>\n\t\t<dcat:themeTaxonomy/>\n\t\t<dcat:distribution>\n\t\t\t<dcat:Distribution>\n\t\t\t\t<dcat:Download>fileadmin/datastore/data/Culture_Tourisme/alm_alt_hotel13.csv</dcat:Download>\n\t\t\t\t<dct:format>CSV</dct:format>\n\t\t\t\t<dcat:accessURL>http://data.angers.fr/fileadmin/datastore/data/Culture_Tourisme/alm_alt_hotel13.csv</dcat:accessURL>\n\t\t\t</dcat:Distribution>\n\t\t\t<dcat:Distribution>\n\t\t\t\t<dcat:Download>fileadmin/datastore/data/Culture_Tourisme/alm_alt_hotel13.xlsx</dcat:Download>\n\t\t\t\t<dct:format>XLS</dct:format>\n\t\t\t\t<dcat:accessURL>http://data.angers.fr/fileadmin/datastore/data/Culture_Tourisme/alm_alt_hotel13.xlsx</dcat:accessURL>\n\t\t\t</dcat:Distribution>\n\t\t</dcat:distribution>\n\t</dcat:Dataset>\n</rdf:RDF>\n", 
+    "content": "H\u00f4tels d'Angers Loire M\u00e9tropole. Liste des h\u00f4tels sur le territoire d'Angers Loire M\u00e9tropole http://data.angers.fr/donnees/tourisme-hotels/ Culture / Tourisme Licence ODbL 1360537200 1390518000 Annuelle 1360571989 Angers Loire M\u00e9tropole Angers Loire M\u00e9tropole Angers Loire Tourisme fileadmin/datastore/data/Culture_Tourisme/alm_alt_hotel13.csv CSV http://data.angers.fr/fileadmin/datastore/data/Culture_Tourisme/alm_alt_hotel13.csv fileadmin/datastore/data/Culture_Tourisme/alm_alt_hotel13.xlsx XLS http://data.angers.fr/fileadmin/datastore/data/Culture_Tourisme/alm_alt_hotel13.xlsx", 
+    "type": [
+        "application/rdf+xml"
+    ], 
+    "date": "2015-03-18T09:33:41.279Z", 
+    "_version_": 1495974710996893697, 
+    "tstamp": "2015-03-18T09:33:41.279Z", 
+    "boost": 0.00013982804, 
+    "id": "http://data.angers.fr/?eID=smile_od_rdf&id=115", 
+    "digest": "ed14b44e96042ad56c11cc0ca3768979"
+}

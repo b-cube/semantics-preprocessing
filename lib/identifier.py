@@ -290,7 +290,8 @@ class Identify():
 
             return ''
 
-        to_check = languages.get('checks', [])
+        to_check = list(chain(languages.get('defaults', {}).items(),
+                        languages.get('checks', {}).items()))
 
         for c in to_check:
             for f in c[1]:
