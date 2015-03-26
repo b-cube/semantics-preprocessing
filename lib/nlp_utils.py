@@ -128,6 +128,10 @@ def extract_mimetypes(text, do_replace=True):
     return found_mimetypes, text
 
 
+def tokenize(text):
+    return word_tokenize(text)
+
+
 def tokenize_text(text, resplit=True):
     '''
     tokenize to words

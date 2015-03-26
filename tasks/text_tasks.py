@@ -1,15 +1,16 @@
 import luigi
 import json
 import re
+import HTMLParser
 from tasks.parse_tasks import ParseTask
-from lib.parsers import Parser
+from lib.parser import Parser
 from lib.nlp_utils import normalize_subjects
 from lib.nlp_utils import is_english
 from lib.nlp_utils import collapse_to_bag
 from lib.nlp_utils import remove_punctuation
 from lib.nlp_utils import remove_stopwords
 from lib.nlp_utils import remove_mimetypes
-from lib.nlp_utils import tokenize_text
+from lib.nlp_utils import tokenize, tokenize_text
 from task_helpers import parse_yaml, extract_task_config
 from task_helpers import generate_output_filename
 from task_helpers import read_data
@@ -238,15 +239,14 @@ class BagOfWordsFromXML(luigi.Task):
 
     def process_response(self, data):
         '''
-        data here is just the raw_content from the cleaned result set
+        data here is just the content from the cleaned result set
 
         strip punctuation (modified version)
         tokenize
         strip stopwords
         '''
 
-        def _strip_punctuation(text):
-            simple_pattern = r'[;|>+:=.,<?(){}`\'"]'
+        def _strip_punctuation(text, simple_pattern=r'[;|>+:=#@%<?(){}`\'"]'):
             text = re.sub(simple_pattern, ' ', text)
             return text.replace("/", ' ')
 
@@ -256,8 +256,10 @@ class BagOfWordsFromXML(luigi.Task):
             # include the xml tags, etc
             # note: this uses a different punctuation set
             bow = _strip_punctuation(content)
-            words = tokenize_text(bow)
-            return ' '.join(remove_stopwords(words))
+            # so this runs without error in ipy but not here.
+            words = tokenize(bow)
+            words = remove_stopwords(words)
+            return words
         else:
             # pull out the text only
             parser = Parser(content)
@@ -272,4 +274,8 @@ class BagOfWordsFromXML(luigi.Task):
 
             bow = remove_punctuation(bow)
             words = tokenize_text(bow)
-            bow = ' '.join(remove_stopwords(words))
+            words = remove_stopwords(words)
+
+            if len(words) < self.minimum_wordcount:
+                return ''
+            return ' '.join(words)
