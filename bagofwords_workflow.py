@@ -1,7 +1,7 @@
 import luigi
 import glob
 import os
-from tasks.text_tasks import BagOfWordsTask
+from tasks.text_tasks import BagOfWordsFromParsedTask
 from tasks.task_helpers import parse_yaml
 from tasks.task_helpers import run_init
 
@@ -14,7 +14,12 @@ class BowWorkflow(luigi.Task):
     end_index = luigi.Parameter(default=1000)
 
     def requires(self):
-        return [BagOfWordsTask(input_path=f, yaml_file=self.yaml_file) for f in self._iterator()]
+        return [
+            BagOfWordsFromParsedTask(
+                input_path=f,
+                yaml_file=self.yaml_file
+            ) for f in self._iterator()
+        ]
 
     def output(self):
         return luigi.LocalTarget('log.txt')

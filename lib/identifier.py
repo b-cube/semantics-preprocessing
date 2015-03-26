@@ -29,11 +29,6 @@ class Identify():
 
         self.ignore_case = options['ignore_case'] if 'ignore_case' in options else False
 
-    # def _parse_yaml(self):
-    #     with open(self.yaml_file, 'r') as f:
-    #         text = f.read()
-    #     return yaml.load(text)
-
     def _filter(self, operator, filters, clauses):
         '''
         generate a list of dicts for operator and booleans
@@ -256,6 +251,54 @@ class Identify():
 
         return max(found_versions) if found_versions else ''
 
+    def _identify_language(self, protocol, source_as_parser):
+        '''
+        check for some language abbreviation in case the header/etc
+        failed to filter it out of the harvest
+        '''
+        if 'language' not in protocol:
+            return ''
+
+        languages = protocol['language']
+        if not languages:
+            return ''
+
+        def _process_type(f):
+            if f['type'] == 'simple':
+                filter_value = f['value']
+                filter_object = self.source_content if f['object'] == 'content' \
+                    else self.source_url
+
+                if self.ignore_case:
+                    filter_value = filter_value.upper()
+                    filter_object = filter_object.upper()
+
+                if filter_value in filter_object:
+                    return f['text']
+
+            elif f['type'] == 'xpath':
+                if not source_as_parser:
+                    # TODO: log this
+                    return ''
+                try:
+                    value = source_as_parser.find(f['value'])
+                except:
+                    # the xpath failed (namespace reasons or otherwise?)
+                    return ''
+                if value:
+                    return value[0] if isinstance(value, list) else value.strip()
+
+            return ''
+
+        to_check = languages.get('checks', [])
+
+        for c in to_check:
+            for f in c[1]:
+                language = _process_type(f)
+                if language:
+                    return language
+        return ''
+
     def to_json(self):
         return {
             "protocol": self.protocol,
@@ -264,7 +307,8 @@ class Identify():
             "has_dataset": self.has_dataset,
             "has_metadata": self.has_metadata,
             "is_error": self.is_error,
-            "subtype": self.subtype
+            "subtype": self.subtype,
+            "language": self.language
         }
 
     def generate_urn(self):
@@ -299,6 +343,7 @@ class Identify():
         self.has_metadata = False
         self.is_error = False
         self.subtype = subtype
+        self.language = ''
 
         if not protocol:
             return
@@ -323,3 +368,6 @@ class Identify():
         # extract the version
         parser = self.options.get('parser', None)
         self.version = self._identify_version(protocol_data, parser)
+
+        # extract the language
+        self.language = self._identify_language(protocol_data, parser)

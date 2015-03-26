@@ -64,3 +64,23 @@
           object: content
           value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
           text: '1.0'
+- name: UNIDATA:NCML
+  subtype: dataset
+  filters:
+    ands:
+      - type: simple
+        object: content
+        value: 'http://www.unidata.ucar.edu/namespaces/netcdf/ncml-'
+      - type: xpath
+        object: content
+        value: '/*[local-name()="netcdf"]'
+- name: UNIDATA:DDX
+  subtype: metadata
+  filters:
+    ands:
+      - type: simple
+        object: content
+        value: 'http://xml.opendap.org/ns/DAP'
+      - type: xpath
+        object: content
+        value: '/*[local-name()="Dataset"]'

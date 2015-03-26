@@ -1,0 +1,18 @@
+init:
+  # clear_output_directories: true
+
+Clean:
+  output_directory: 'testdata/solr_20150320/clean_20150325_p'
+    
+Identify:
+  identifiers:
+    - lib/configs/rdf_identifier.yaml
+    - lib/configs/ogc_identifier.yaml
+    - lib/configs/opensearch_identifier.yaml
+    - lib/configs/iso_identifier.yaml
+    - lib/configs/oaipmh_identifier.yaml
+    - lib/configs/thredds_identifier.yaml
+  output_directory: 'testdata/solr_20150320/identify_20150325_p'
+
+Parse:
+  output_directory: 'testdata/solr_20150320/parse_20150325_p'

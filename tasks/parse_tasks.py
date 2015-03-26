@@ -151,13 +151,17 @@ class ParseTask(luigi.Task):
         url = data['source_url']
         identity = data['identity']
 
-        if not self.params or not self.params.get('process_unidentified', False):
-            # do not generate the generic xml output if it's unknown
-            return {}
+        # if not self.params.get('process_unidentified', False):
+        #     # do not generate the generic xml output if it's unknown
+        #     print '######### not identified'
+        #     return {}
 
         processor = Processor(identity, content, url)
         if not processor:
+            print '######### no processor'
             return {}
+
+        print '################## Parsed #####'
 
         description = processor.reader.parse_service()
         description['solr_identifier'] = data['digest']

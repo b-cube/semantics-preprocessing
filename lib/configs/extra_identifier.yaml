@@ -23,14 +23,27 @@
   metadatas:
   errors:
   versions: 
-- name: '"MARC:21"'
-  # this name is just excel evil
+- name: 'MARC 21 Format'
   subtype: metadata
   filters:
     ors:
       - type: simple
         object: content
         value: 'http://www.loc.gov/MARC21/slim'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
+- name: DDI
+  subtype: metadata
+  filters:
+    ands:
+      - type: simple
+        object: content
+        value: 'http://www.ddialliance.org/Specification/DDI-Codebook'
+      - type: xpath
+        object: content
+        value: '/*[local-name()="codeBook"]'
   datasets:
   metadatas:
   errors:

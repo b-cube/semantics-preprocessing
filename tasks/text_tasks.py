@@ -4,13 +4,31 @@ from tasks.parse_tasks import ParseTask
 from lib.nlp_utils import normalize_subjects
 from lib.nlp_utils import is_english
 from lib.nlp_utils import collapse_to_bag
+from lib.nlp_utils import remove_punctuation
+from lib.nlp_utils import remove_stopwords
+from lib.nlp_utils import remove_mimetypes
 from task_helpers import parse_yaml, extract_task_config
 from task_helpers import generate_output_filename
+from task_helpers import read_data
 
 
 '''
 text processing tasks
 '''
+
+
+def _normalize_keywords(service_description):
+    service = service_description.get('service', {})
+    if not service:
+        return service_description
+    subjects = service.get('subject', [])
+    if not subjects:
+        return service_description
+
+    # return split and as a unique list
+    service['subject'] = normalize_subjects(subjects, True, True)
+    service_description['service'] = service
+    return service_description
 
 
 class TextPreprocessingTask(luigi.Task):
@@ -67,7 +85,7 @@ class TextPreprocessingTask(luigi.Task):
                 service_description = self._detect_language(service_description)
 
             if k == "normalize_keywords":
-                service_description = self._normalize_keywords(service_description)
+                service_description = _normalize_keywords(service_description)
 
         data['service_description'] = service_description
         return data
@@ -103,48 +121,75 @@ class TextPreprocessingTask(luigi.Task):
 
         return service_description
 
-    def _normalize_keywords(self, service_description):
-        service = service_description.get('service', {})
-        if not service:
-            return service_description
-        subjects = service.get('subject', [])
-        if not subjects:
-            return service_description
 
-        # return split and as a unique list
-        service['subject'] = normalize_subjects(subjects, True, True)
-
-        # if len(subjects) != len(service['subject']):
-        #     print '########### UPDATED SUBJECTS: ', subjects, service['subject']
-
-        service_description['service'] = service
-
-        return service_description
-
-
-class BagOfWordsTask(luigi.Task):
+class BagOfWordsFromParsedTask(luigi.Task):
     # generate a bag of words with all the cleanup
+    # from an already parsed json file (this is the one task)
+
+    '''
+    normalize keywords
+    collapse bag (for more processing)
+    remove mimetypes
+    remove punctuation
+    tokenize words
+    remove stopwords
+    parts of speech tagging
+    lemmatize/stem
+    extract by pos (noun/verb only? depending on lemma vs stem)
+    collapse bag (return none if bag length < N words)
+    '''
 
     yaml_file = luigi.Parameter()
     input_file = luigi.Parameter()
 
     output_path = ''
     tasks = {}
+    minimum_wordcount = 10
 
     def requires(self):
-        return
+        return []
 
     def output(self):
-        return
+        return luigi.LocalTarget(
+            generate_output_filename(
+                self.input_file,
+                self.output_path,
+                'bow'
+            )
+        )
 
     def run(self):
-        return
+        self._configure()
+
+        data = read_data(self.input_file)
+        bagofwords = self.process_response(data)
+
+        with self.output().open('w') as out_file:
+            out_file.write(bagofwords)
 
     def _configure(self):
         config = parse_yaml(self.yaml_file)
-        config = extract_task_config(config, 'BagOfWords')
+        config = extract_task_config(config, 'BagOfWordsFromParsed')
         self.output_path = config.get('output_directory', '')
         self.tasks = config.get('tasks', {})
+        self.minimum_wordcount = config.get('minimum_wordcount', self.minimum_wordcount)
 
-    def process_response(self):
-        pass
+    def process_response(self, data):
+        service_description = data.get('service_description', {})
+        if not service_description:
+            return ''
+
+        if 'normalize_keywords' in self.tasks:
+            service_description = _normalize_keywords(service_description)
+
+        bag = collapse_to_bag(service_description, True)
+
+        for k, v in self.tasks.iteritems():
+            if k == 'remove_mimetypes':
+                bag = remove_mimetypes(bag)
+            elif k == 'remove_punctuation':
+                bag = remove_punctuation(bag)
+            elif k == 'remove_stopwords':
+                bag = remove_stopwords(bag)
+
+        return bag

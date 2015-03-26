@@ -2,7 +2,7 @@ init:
   # clear_output_directories: true
 
 Clean:
-  output_directory: 'testdata/solr_20150320/clean'
+  output_directory: 'testdata/solr_20150320/clean_20150325'
     
 Identify:
   identifiers:
@@ -18,4 +18,4 @@ Identify:
     - lib/configs/atom_identifier.yaml
     - lib/configs/wsdl_identifier.yaml
     - lib/configs/wadl_identifier.yaml
-  output_directory: 'testdata/solr_20150320/identify'
+  output_directory: 'testdata/solr_20150320/identify_20150325'

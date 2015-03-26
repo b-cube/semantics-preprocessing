@@ -19,3 +19,11 @@
   metadatas:
   errors:
   versions:
+  language:
+    filters:
+      checks:
+        ors:
+          - type: xpath
+            object: content
+            value: '@xml:lang'
+

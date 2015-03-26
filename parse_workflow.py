@@ -33,11 +33,11 @@ class ParseWorkflow(luigi.Task):
 
 
 if __name__ == '__main__':
-    interval = 2000
+    interval = 1000
     for i in xrange(0, 26000, interval):
         w = ParseWorkflow(
             doc_dir='testdata/solr_20150320/docs/',
-            yaml_file='tasks/identity_20150320.yaml',
+            yaml_file='tasks/parse_20150320.yaml',
             start_index=i,
             end_index=(i + interval)
         )
