@@ -250,6 +250,7 @@ class TestIso(unittest.TestCase):
         identifier.identify()
 
         self.assertTrue(identifier.protocol == 'ISO-19115')
+        self.assertTrue(identifier.language == 'eng')
 
     def test_if_returning_iso_protocol_for_ds(self):
         with open('tests/test_data/iso-19115_ds.xml', 'r') as f:
