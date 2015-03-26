@@ -95,3 +95,15 @@
           object: content
           # and we are concatenating name and version (note, this does not manage whitespace issues!)
           value: 'concat(/*/*[local-name()="seriesMetadata"]/*[local-name()="MD_Metadata" or local-name()="MI_Metadata"]/{http://www.isotc211.org/2005/gmd}metadataStandardName/{http://www.isotc211.org/2005/gco}CharacterString/text(), " ", /*/*[local-name()="seriesMetadata"]/*[local-name()="MD_Metadata" or local-name()="MI_Metadata"]/{http://www.isotc211.org/2005/gmd}metadataStandardVersion/{http://www.isotc211.org/2005/gco}CharacterString/text())'
+  language:
+    checks:
+      ors:
+        - type: xpath
+          object: content
+          value: '/*/{http://www.isotc211.org/2005/gmd}language/{http://www.isotc211.org/2005/gco}CharacterString/text()'
+
+
+
+
+
+

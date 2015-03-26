@@ -1,12 +1,15 @@
 import luigi
 import json
+import re
 from tasks.parse_tasks import ParseTask
+from lib.parsers import Parser
 from lib.nlp_utils import normalize_subjects
 from lib.nlp_utils import is_english
 from lib.nlp_utils import collapse_to_bag
 from lib.nlp_utils import remove_punctuation
 from lib.nlp_utils import remove_stopwords
 from lib.nlp_utils import remove_mimetypes
+from lib.nlp_utils import tokenize_text
 from task_helpers import parse_yaml, extract_task_config
 from task_helpers import generate_output_filename
 from task_helpers import read_data
@@ -193,3 +196,80 @@ class BagOfWordsFromParsedTask(luigi.Task):
                 bag = remove_stopwords(bag)
 
         return bag
+
+
+class BagOfWordsFromXML(luigi.Task):
+    yaml_file = luigi.Parameter()
+    input_file = luigi.Parameter()
+
+    output_path = ''
+    tasks = {}
+    minimum_wordcount = 10
+    include_structure = True
+
+    def requires(self):
+        return []
+
+    def output(self):
+        return luigi.LocalTarget(
+            generate_output_filename(
+                self.input_file,
+                self.output_path,
+                'bow'
+            )
+        )
+
+    def run(self):
+        self._configure()
+
+        data = read_data(self.input_file)
+        bagofwords = self.process_response(data)
+
+        with self.output().open('w') as out_file:
+            out_file.write(bagofwords)
+
+    def _configure(self):
+        config = parse_yaml(self.yaml_file)
+        config = extract_task_config(config, 'BagOfWordsFromXML')
+        self.output_path = config.get('output_directory', '')
+        self.tasks = config.get('tasks', {})
+        self.minimum_wordcount = config.get('minimum_wordcount', self.minimum_wordcount)
+        self.include_structure = config.get('include_structure', self.include_structure)
+
+    def process_response(self, data):
+        '''
+        data here is just the raw_content from the cleaned result set
+
+        strip punctuation (modified version)
+        tokenize
+        strip stopwords
+        '''
+
+        def _strip_punctuation(text):
+            simple_pattern = r'[;|>+:=.,<?(){}`\'"]'
+            text = re.sub(simple_pattern, ' ', text)
+            return text.replace("/", ' ')
+
+        content = data['content']
+
+        if self.include_structure:
+            # include the xml tags, etc
+            # note: this uses a different punctuation set
+            bow = _strip_punctuation(content)
+            words = tokenize_text(bow)
+            return ' '.join(remove_stopwords(words))
+        else:
+            # pull out the text only
+            parser = Parser(content)
+            all_text = parser.find_nodes()
+
+            # collapse to just text and attributes.text values
+            bow = ''
+            bow += ' '.join([a.get('text' '') for a in all_text])
+
+            atts = [a.get('attributes', []) for a in all_text]
+            bow += ' '.join([a.get('text' '') for a in atts])
+
+            bow = remove_punctuation(bow)
+            words = tokenize_text(bow)
+            bow = ' '.join(remove_stopwords(words))

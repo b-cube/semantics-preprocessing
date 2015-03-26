@@ -18,14 +18,14 @@ class OpenSearchReader(BaseReader):
                    "{http://a9.com/-/spec/opensearch/1.1/}Developer",
         "rights": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
                   "{http://a9.com/-/spec/opensearch/1.1/}SyndicationRight",
-        "language": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
-                    "{http://a9.com/-/spec/opensearch/1.1/}Language",
         "subject": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
                    "{http://a9.com/-/spec/opensearch/1.1/}Tags"
     }
     _to_exclude = [
         "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
-        "{http://a9.com/-/spec/opensearch/1.1/}Url"
+        "{http://a9.com/-/spec/opensearch/1.1/}Url",
+        "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
+        "{http://a9.com/-/spec/opensearch/1.1/}Language/"
     ]
 
     _parameter_formats = {

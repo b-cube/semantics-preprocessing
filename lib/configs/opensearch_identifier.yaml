@@ -32,3 +32,9 @@
           object: content
           value: 'http://a9.com/-/spec/opensearch/1.1/'
           text: '1.1'
+  language:
+    checks:
+      ors:
+        - type: xpath
+          object: content
+          value: '/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}Language/text()'
