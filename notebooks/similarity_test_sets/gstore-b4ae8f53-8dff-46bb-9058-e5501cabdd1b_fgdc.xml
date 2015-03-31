@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://www.fgdc.gov/metadata/fgdc-std-001-1998.xsd">
+   <idinfo>
+      <citation>
+         <citeinfo>
+            <origin>Earth Data Analysis Center, University of New Mexico</origin>
+            <pubdate>20100930</pubdate>
+            <title>NM School District Boundaries</title>
+            <geoform>vector digital data</geoform>
+            <onlink>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/services/ogc/wms?SERVICE=wms&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1</onlink>
+            <onlink>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/services/ogc/wfs?SERVICE=wfs&amp;REQUEST=GetCapabilities&amp;VERSION=1.0.0</onlink>
+            <onlink>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/school_district_boundaries.derived.shp</onlink>
+            <onlink>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/school_district_boundaries.original.zip</onlink>
+            <onlink>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/school_district_boundaries.derived.gml</onlink>
+            <onlink>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/school_district_boundaries.derived.kml</onlink>
+            <onlink>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/school_district_boundaries.derived.geojson</onlink>
+            <onlink>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/school_district_boundaries.derived.json</onlink>
+            <onlink>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/school_district_boundaries.derived.csv</onlink>
+            <onlink>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/school_district_boundaries.derived.xls</onlink>
+            <onlink>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/metadata/FGDC-STD-001-1998.xml</onlink>
+            <onlink>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/metadata/FGDC-STD-001-1998.html</onlink>
+            <onlink>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/metadata/ISO-19115:2003.xml</onlink>
+            <onlink>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/metadata/ISO-19115:2003.html</onlink>
+            <onlink>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/metadata/ISO-19119:WMS.xml</onlink>
+            <onlink>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/metadata/ISO-19119:WFS.xml</onlink>
+            <onlink>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/metadata/ISO-19110.xml</onlink>
+         </citeinfo>
+      </citation>
+      <descript>
+         <abstract>The dataset represents the boundaries of all public school districts in the state of New Mexico. The source for the data layer is the New Mexico Public Education Department School District Boundary Atlas.</abstract>
+         <purpose>The data was prepared to identify school district boundaries.</purpose>
+         <supplinf>The digital 2000 Census TIGER (Topologically Integrated Geographic Encoding and Referencing)/Line file was used a digital starting point. This digital layer was updated and corrected with information provided by the New Mexico Public Education Department School District Boundary Atlas.</supplinf>
+      </descript>
+      <timeperd>
+         <timeinfo>
+            <sngdate>
+               <caldate>20091217</caldate>
+            </sngdate>
+         </timeinfo>
+         <current>publication date</current>
+      </timeperd>
+      <status>
+         <progress>In work</progress>
+         <update>As needed</update>
+      </status>
+      <spdom>
+         <bounding>
+            <westbc>-109.048459649</westbc>
+            <eastbc>-102.944004835</eastbc>
+            <northbc>37.0502547079</northbc>
+            <southbc>31.3095001591</southbc>
+         </bounding>
+      </spdom>
+      <keywords>
+         <theme>
+            <themekt>ISO 19115 Topic Categories</themekt>
+            <themekey>boundaries</themekey>
+         </theme>
+         <theme>
+            <themekt>None</themekt>
+            <themekey>polygon, school, district, unified, school district, school districts, unified schools, unified school districts, unified school district, code, district code</themekey>
+         </theme>
+         <place>
+            <placekt>Spatial Reference System Identifiers</placekt>
+            <placekey>EPSG:4269</placekey>
+            <placekey>EPSG:7019</placekey>
+            <placekey>EPSG:26713</placekey>
+         </place>
+         <place>
+            <placekt>None</placekt>
+            <placekey>New Mexico, United States</placekey>
+         </place>
+         <temporal>
+            <tempkt>None</tempkt>
+            <tempkey>2009</tempkey>
+         </temporal>
+      </keywords>
+      <accconst>None.</accconst>
+      <useconst>
+New Mexico Public Education Department assumes no liability for the misuse of the data.  Data should be used at the scale for which it is intended.
+Data Disclaimer - This geospatial data is made available as a public service. The geospatial data in this map is in the public domain and may be copied without permission provided that an accompanying citation to the source (New Mexico Public Education Department) is made. The map itself is unofficial and the information contained in the map is offered only to assist in locating, identifying, and inventorying parcels of land in New Mexico in reference to school districts.  As such, it should not be construed or used as a legal description or for any other purposes requiring accurate school boundary, property or other land descriptions or measurements.  Any errors or omissions in or recommendations for improving the map should be reported to the  New Mexico Public Education Department ("NMPED").  The NMPED assumes no responsibility for improper reliance on this map. Maps and data are to be used for reference purposes only and the New Mexico Public Education Department is not responsible for any inaccuracies herein contained. No responsibility is assumed for damages or other liabilities due to the accuracy, availability, use or misuse of the information herein provided. This geospatial data is in the public domain and may be copied without permission; citation of the source is expected. Map information is believed to be relatively accurate but accuracy is not guaranteed. Any errors, omissions, or recommendations should be reported to the New Mexico Public Education Department.  In no event will the New Mexico Public Education Department be liable for any damages or loss that might arise from the use of these maps and data or the information they contain.
+</useconst>
+      <ptcontac>
+         <cntinfo>
+            <cntperp>
+               <cntper>Don Moya</cntper>
+               <cntorg>New Mexico Public Education Department</cntorg>
+            </cntperp>
+            <cntpos>Deputy Secretary, Finance and Operations</cntpos>
+            <cntaddr>
+               <addrtype>mailing and physical address</addrtype>
+               <address>300 Don Gaspar, Education Building 224</address>
+               <city>Santa Fe</city>
+               <state>New Mexico</state>
+               <postal>87501-2786</postal>
+               <country>USA</country>
+            </cntaddr>
+            <cntvoice>505-827-6519</cntvoice>
+            <cntfax>505-827-1299</cntfax>
+            <cntemail>don.moya@state.nm.us</cntemail>
+         </cntinfo>
+      </ptcontac>
+      <datacred>This data set is the product of collaboration between the New Mexico Public Education Department (NMPED), the Earth Data Analysis Center (EDAC) at the University of New Mexico, the New Mexico Taxation and Revenue Department and Public Service Company of New Mexico(PNM).</datacred>
+      <native>Microsoft Windows Vista Version 6.1 (Build 7601) Service Pack 1; ESRI ArcCatalog 9.3.1.4000</native>
+   </idinfo>
+   <dataqual>
+      <logic>Unknown</logic>
+      <complete>Complete.</complete>
+      <lineage>
+         <srcinfo>
+            <srccite>
+               <citeinfo>
+                  <origin>New Mexico Public Education Department</origin>
+                  <pubdate>1997</pubdate>
+                  <title>New Mexico Public Education Department School District Boundary Atlas</title>
+               </citeinfo>
+            </srccite>
+            <typesrc>Paper Maps</typesrc>
+            <srctime>
+               <timeinfo>
+                  <sngdate>
+                     <caldate>Unknown</caldate>
+                  </sngdate>
+               </timeinfo>
+               <srccurr>publication date</srccurr>
+            </srctime>
+            <srccitea>NMPED</srccitea>
+            <srccontr>1997 NMPED School Boundary Atlas</srccontr>
+         </srcinfo>
+         <procstep>
+            <procdesc>Dataset copied.</procdesc>
+            <procdate>20081104</procdate>
+            <proctime>095041</proctime>
+         </procstep>
+         <procstep>
+            <procdesc>Starting with the base 2000 census TIGER shapefile the school district boundaries were updated to match the district boundaries from the 1997 NMPED School District Boundary Atlas. The atlas was produced in 1997 from GIS data obtained from the RGIS program and data from the NM Department of Education by the NM General Services Department, Information Systems Division.</procdesc>
+            <procdate>2009</procdate>
+            <proccont>
+               <cntinfo>
+                  <cntperp>
+                     <cntper>Shawn Penman</cntper>
+                     <cntorg>Earth Data Analysis Center, University of New Mexico</cntorg>
+                  </cntperp>
+                  <cntpos>GIS Specialist</cntpos>
+                  <cntaddr>
+                     <addrtype>mailing address</addrtype>
+                     <address>MSC01 1110</address>
+                     <address>1 University of New Mexico</address>
+                     <city>Albuquerque</city>
+                     <state>NM</state>
+                     <postal>87131-001</postal>
+                     <country>USA</country>
+                  </cntaddr>
+                  <cntvoice>505-277-3622 x227</cntvoice>
+                  <cntfax>505-277-3614</cntfax>
+                  <cntemail>spenman@edac.unm.edu</cntemail>
+                  <hours>M-F 9-5</hours>
+               </cntinfo>
+            </proccont>
+         </procstep>
+      </lineage>
+   </dataqual>
+   <spdoinfo>
+      <indspref>United States</indspref>
+      <direct>Vector</direct>
+      <ptvctinf>
+         <sdtsterm>
+            <sdtstype>G-polygon</sdtstype>
+            <ptvctcnt>89</ptvctcnt>
+         </sdtsterm>
+      </ptvctinf>
+   </spdoinfo>
+   <spref>
+      <horizsys>
+         <planar>
+            <gridsys>
+                <gridsysn>Universal Transverse Mercator</gridsysn>
+                <utm>
+                    <utmzone>13</utmzone>
+                    <transmer>
+                        <sfctrmer>0.999600</sfctrmer>
+                        <longcm>-105.000000</longcm>
+                        <latprjo>0.000000</latprjo>
+                        <feast>500000.000000</feast>
+                        <fnorth>0.000000</fnorth>
+                    </transmer>
+                </utm>
+            </gridsys>
+            <planci>
+               <plance>row and column</plance>
+               <coordrep>
+                  <absres>1</absres>
+                  <ordres>1</ordres>
+               </coordrep>
+               <plandu>meters</plandu>
+            </planci>
+         </planar>
+         <geodetic>
+                <horizdn>North American Datum of 1927</horizdn>
+                <ellips>Clarke 1866</ellips>
+                <semiaxis>6378206.400000</semiaxis>
+                <denflat>294.978698</denflat>
+            </geodetic>
+      </horizsys>
+   </spref>
+   <eainfo>
+      <detailed>
+         <enttyp>
+            <enttypl>school_district_boundaries</enttypl>
+            <enttypd>polygon</enttypd>
+            <enttypds>none</enttypds>
+         </enttyp>
+         <attr>
+            <attrlabl>FID</attrlabl>
+            <attrdef>Internal feature number.</attrdef>
+            <attrdefs>ESRI</attrdefs>
+            <attrdomv>
+               <udom>Sequential unique whole numbers that are automatically generated.</udom>
+            </attrdomv>
+         </attr>
+         <attr>
+            <attrlabl>Shape</attrlabl>
+            <attrdef>Feature geometry.</attrdef>
+            <attrdefs>ESRI</attrdefs>
+            <attrdomv>
+               <udom>Coordinates defining the features.</udom>
+            </attrdomv>
+         </attr>
+         <attr>
+            <attrlabl>NAMEPROPER</attrlabl>
+            <attrdef>School District Name</attrdef>
+            <attrdefs>New Mexico Public Education Department 300 Don Gaspar Santa Fe, NM 87501 (505) 827-5800 "2007-2008 New Mexico Educational Personnel Directory" at http://www.ped.state.nm.us/resources/personneldirectory/fullDirectoryPackage.pdf#pagemode=bookmarks</attrdefs>
+            <attrdomv>
+               <edom>
+                  <edomv>Text</edomv>
+                  <edomvd>free text</edomvd>
+                  <edomvds>unknown</edomvds>
+               </edom>
+            </attrdomv>
+         </attr>
+         <attr>
+            <attrlabl>DIST_CODE</attrlabl>
+            <attrdef>School district code</attrdef>
+            <attrdefs>New Mexico Public Education Department 300 Don Gaspar Santa Fe, NM 87501 (505) 827-5800 "2007-2008 New Mexico Educational Personnel Directory" at http://www.ped.state.nm.us/resources/personneldirectory/fullDirectoryPackage.pdf#pagemode=bookmarks</attrdefs>
+            <attrdomv>
+               <edom>
+                  <edomv>text</edomv>
+                  <edomvd>free text</edomvd>
+                  <edomvds>unknown</edomvds>
+               </edom>
+            </attrdomv>
+         </attr>
+         <attr>
+            <attrlabl>CNTY_CODE</attrlabl>
+            <attrdef>County FIPS Code</attrdef>
+            <attrdefs>FIP... Federal Information Processing Standard</attrdefs>
+            <attrdomv>
+               <edom>
+                  <edomv>text</edomv>
+                  <edomvd>free text</edomvd>
+                  <edomvds>unknown</edomvds>
+               </edom>
+            </attrdomv>
+         </attr>
+         <attr>
+            <attrlabl>COUNTY</attrlabl>
+            <attrdef>County Name</attrdef>
+            <attrdefs>State of New Mexico</attrdefs>
+            <attrdomv>
+               <edom>
+                  <edomv>Text</edomv>
+                  <edomvd>free text</edomvd>
+                  <edomvds>unknown</edomvds>
+               </edom>
+            </attrdomv>
+         </attr>
+         <attr>
+            <attrlabl>Shape_Area</attrlabl>
+            <attrdef>Area of feature in internal units squared.</attrdef>
+            <attrdefs>ESRI</attrdefs>
+            <attrdomv>
+               <udom>Positive real numbers that are automatically generated.</udom>
+            </attrdomv>
+         </attr>
+      </detailed>
+   </eainfo>
+   <distinfo>
+      <distrib>
+         <cntinfo>
+            <cntorgp>
+               <cntorg>Earth Data Analysis Center</cntorg>
+            </cntorgp>
+            <cntpos>Clearinghouse Manager</cntpos>
+            <cntaddr>
+               <addrtype>mailing and physical address</addrtype>
+               <address>MSC01 1110</address>
+               <address>1 University of New Mexico</address>
+               <city>Albuquerque</city>
+               <state>NM</state>
+               <postal>87131-0001</postal>
+               <country>USA</country>
+            </cntaddr>
+            <cntvoice>505-277-3622 ext. 230</cntvoice>
+            <cntfax>505-277-3614</cntfax>
+            <cntemail>clearinghouse@edac.unm.edu</cntemail>
+            <hours>0800 - 1700 MT, M-F -7 hours GMT</hours>
+         </cntinfo>
+      </distrib>
+      <resdesc>Downloadable Data</resdesc>
+      <distliab>The material on this site is made available as a public service. Maps and data are to be used for reference purposes only and the Earth Data Analysis Center (EDAC), Resource Geographic Information System (RGIS) and The University of New Mexico are not responsible for any inaccuracies herein contained. No responsibility is assumed for damages or other liabilities due to the accuracy, availability, use or misuse of the information herein provided. Unless otherwise indicated in the documentation (metadata) for individual data sets, information on this site is public domain and may be copied without permission; citation of the source is appreciated.</distliab>
+      <stdorder>
+         <digform>
+            <digtinfo>
+               <formname>ZIP</formname>
+               <transize>1</transize>
+            </digtinfo>
+            <digtopt>
+               <onlinopt>
+                  <computer>
+                     <networka>
+                        <networkr>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/school_district_boundaries.original.zip</networkr>
+                     </networka>
+                  </computer>
+                  <accinstr>Download from Resource Geographic Information System (RGIS) at http://rgis.unm.edu.</accinstr>
+               </onlinopt>
+            </digtopt>
+         </digform>
+         <fees>None. The files are available to download from Resource Geographic Information System (RGIS) (http://rgis.unm.edu).</fees>
+         <ordering>Contact Earth Data Analysis Center at clearinghouse@edac.unm.edu</ordering>
+      </stdorder>
+      <stdorder>
+         <digform>
+            <digtinfo>
+               <formname>ESRI Shapefile (shp)</formname>
+               <transize>5</transize>
+            </digtinfo>
+            <digtopt>
+               <onlinopt>
+                  <computer>
+                     <networka>
+                        <networkr>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/school_district_boundaries.derived.shp</networkr>
+                     </networka>
+                  </computer>
+                  <accinstr>Download from Resource Geographic Information System (RGIS) at http://rgis.unm.edu.</accinstr>
+               </onlinopt>
+            </digtopt>
+         </digform>
+         <fees>None. The files are available to download from Resource Geographic Information System (RGIS) (http://rgis.unm.edu).</fees>
+         <ordering>Contact Earth Data Analysis Center at clearinghouse@edac.unm.edu</ordering>
+      </stdorder>
+      <stdorder>
+         <digform>
+            <digtinfo>
+               <formname>GML</formname>
+               <transize>5</transize>
+            </digtinfo>
+            <digtopt>
+               <onlinopt>
+                  <computer>
+                     <networka>
+                        <networkr>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/school_district_boundaries.derived.gml</networkr>
+                     </networka>
+                  </computer>
+                  <accinstr>Download from Resource Geographic Information System (RGIS) at http://rgis.unm.edu.</accinstr>
+               </onlinopt>
+            </digtopt>
+         </digform>
+         <fees>None. The files are available to download from Resource Geographic Information System (RGIS) (http://rgis.unm.edu).</fees>
+         <ordering>Contact Earth Data Analysis Center at clearinghouse@edac.unm.edu</ordering>
+      </stdorder>
+      <stdorder>
+         <digform>
+            <digtinfo>
+               <formname>KML</formname>
+               <transize>5</transize>
+            </digtinfo>
+            <digtopt>
+               <onlinopt>
+                  <computer>
+                     <networka>
+                        <networkr>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/school_district_boundaries.derived.kml</networkr>
+                     </networka>
+                  </computer>
+                  <accinstr>Download from Resource Geographic Information System (RGIS) at http://rgis.unm.edu.</accinstr>
+               </onlinopt>
+            </digtopt>
+         </digform>
+         <fees>None. The files are available to download from Resource Geographic Information System (RGIS) (http://rgis.unm.edu).</fees>
+         <ordering>Contact Earth Data Analysis Center at clearinghouse@edac.unm.edu</ordering>
+      </stdorder>
+      <stdorder>
+         <digform>
+            <digtinfo>
+               <formname>GeoJSON</formname>
+               <transize>5</transize>
+            </digtinfo>
+            <digtopt>
+               <onlinopt>
+                  <computer>
+                     <networka>
+                        <networkr>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/school_district_boundaries.derived.geojson</networkr>
+                     </networka>
+                  </computer>
+                  <accinstr>Download from Resource Geographic Information System (RGIS) at http://rgis.unm.edu.</accinstr>
+               </onlinopt>
+            </digtopt>
+         </digform>
+         <fees>None. The files are available to download from Resource Geographic Information System (RGIS) (http://rgis.unm.edu).</fees>
+         <ordering>Contact Earth Data Analysis Center at clearinghouse@edac.unm.edu</ordering>
+      </stdorder>
+      <stdorder>
+         <digform>
+            <digtinfo>
+               <formname>JSON</formname>
+               <transize>5</transize>
+            </digtinfo>
+            <digtopt>
+               <onlinopt>
+                  <computer>
+                     <networka>
+                        <networkr>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/school_district_boundaries.derived.json</networkr>
+                     </networka>
+                  </computer>
+                  <accinstr>Download from Resource Geographic Information System (RGIS) at http://rgis.unm.edu.</accinstr>
+               </onlinopt>
+            </digtopt>
+         </digform>
+         <fees>None. The files are available to download from Resource Geographic Information System (RGIS) (http://rgis.unm.edu).</fees>
+         <ordering>Contact Earth Data Analysis Center at clearinghouse@edac.unm.edu</ordering>
+      </stdorder>
+      <stdorder>
+         <digform>
+            <digtinfo>
+               <formname>Comma Separated Values (csv)</formname>
+               <transize>5</transize>
+            </digtinfo>
+            <digtopt>
+               <onlinopt>
+                  <computer>
+                     <networka>
+                        <networkr>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/school_district_boundaries.derived.csv</networkr>
+                     </networka>
+                  </computer>
+                  <accinstr>Download from Resource Geographic Information System (RGIS) at http://rgis.unm.edu.</accinstr>
+               </onlinopt>
+            </digtopt>
+         </digform>
+         <fees>None. The files are available to download from Resource Geographic Information System (RGIS) (http://rgis.unm.edu).</fees>
+         <ordering>Contact Earth Data Analysis Center at clearinghouse@edac.unm.edu</ordering>
+      </stdorder>
+      <stdorder>
+         <digform>
+            <digtinfo>
+               <formname>MS Excel format (xls)</formname>
+               <transize>5</transize>
+            </digtinfo>
+            <digtopt>
+               <onlinopt>
+                  <computer>
+                     <networka>
+                        <networkr>http://gstore.unm.edu/apps/rgis/datasets/b4ae8f53-8dff-46bb-9058-e5501cabdd1b/school_district_boundaries.derived.xls</networkr>
+                     </networka>
+                  </computer>
+                  <accinstr>Download from Resource Geographic Information System (RGIS) at http://rgis.unm.edu.</accinstr>
+               </onlinopt>
+            </digtopt>
+         </digform>
+         <fees>None. The files are available to download from Resource Geographic Information System (RGIS) (http://rgis.unm.edu).</fees>
+         <ordering>Contact Earth Data Analysis Center at clearinghouse@edac.unm.edu</ordering>
+      </stdorder>
+      <custom>Contact Earth Data Analysis Center at clearinghouse@edac.unm.edu</custom>
+      <techpreq>Adequate computer capability is the only technical prerequisite for viewing data in digital form.</techpreq>
+   </distinfo>
+   <metainfo>
+      <metd>20150331</metd>
+      <metc>
+         <cntinfo>
+            <cntorgp>
+               <cntorg>Earth Data Analysis Center</cntorg>
+            </cntorgp>
+            <cntpos>Clearinghouse Manager</cntpos>
+            <cntaddr>
+               <addrtype>mailing and physical address</addrtype>
+               <address>MSC01 1110</address>
+               <address>1 University of New Mexico</address>
+               <city>Albuquerque</city>
+               <state>NM</state>
+               <postal>87131-0001</postal>
+               <country>USA</country>
+            </cntaddr>
+            <cntvoice>505-277-3622 ext. 230</cntvoice>
+            <cntfax>505-277-3614</cntfax>
+            <cntemail>clearinghouse@edac.unm.edu</cntemail>
+            <hours>0800 - 1700 MT, M-F -7 hours GMT</hours>
+         </cntinfo>
+      </metc>
+      <metstdn>FGDC Content Standards for Digital Geospatial Metadata</metstdn>
+      <metstdv>FGDC-STD-001-1998</metstdv>
+      <mettc>local time</mettc>
+   </metainfo>
+</metadata>
