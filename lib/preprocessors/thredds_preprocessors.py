@@ -24,64 +24,7 @@ class ThreddsReader(BaseReader):
         services = self.parser.find('//*[local-name()="service" and @base != ""]')
         service_bases = {s.attrib.get('name'): s.attrib.get('base') for s in services}
 
-        elem_xpath = generate_qualified_xpath(elem, True)
-        self._to_exclude += [elem_xpath] + [elem_xpath + '/@' + k for k in elem.attrib.keys()]
-
-        if tag == 'metadata':
-            service_elem = next(iter(elem.xpath('*[local-name()="serviceName"]')), None)
-            if service_elem is not None:
-                self._to_exclude.append(generate_qualified_xpath(service_elem, True))
-                description['service'] = service_elem.text.strip()
-
-            publisher_elem = next(iter(elem.xpath('*[local-name()="publisher"]')), None)
-            if publisher_elem is not None:
-                name_elem = next(iter(publisher_elem.xpath('*[local-name()="name"]')), None)
-                contact_elem = next(iter(publisher_elem.xpath('*[local-name()="contact"]')),
-                                    None)
-
-                if name_elem is not None:
-                    self._to_exclude.append(generate_qualified_xpath(name_elem, True))
-                    self._to_exclude.append(
-                        generate_qualified_xpath(name_elem, True) + "/@vocabulary"
-                    )
-                    description['publisher_name'] = name_elem.text.strip()
-                    description['publisher_vocab'] = name_elem.attrib.get('vocabulary', '')
-
-                if contact_elem is not None:
-                    contact_xpath = generate_qualified_xpath(contact_elem, True)
-                    self._to_exclude += [contact_xpath] + \
-                        [contact_xpath + '/@' + k for k in contact_elem.attrib.keys()]
-                    description['publisher_contact'] = contact_elem.attrib
-        elif tag == 'dataset':
-            datasize_elem = next(iter(elem.xpath('*[local-name()="dataSize"]')), None)
-            if datasize_elem is not None:
-                self._to_exclude.append(generate_qualified_xpath(datasize_elem, True))
-                self._to_exclude.append(generate_qualified_xpath(datasize_elem, True) + "/@units")
-                description['datasize_units'] = datasize_elem.attrib.get('units', '')
-                description['datasize_size'] = datasize_elem.text.strip()
-
-            date_elem = next(iter(elem.xpath('*[local-name()="date"]')), None)
-            if date_elem is not None:
-                self._to_exclude.append(generate_qualified_xpath(date_elem, True))
-                self._to_exclude.append(generate_qualified_xpath(date_elem, True) + "/@type")
-                description['date_type'] = date_elem.attrib.get('type', '')
-                description['date'] = date_elem.text.strip()
-
-            if 'urlPath' in elem.attrib:
-                url = elem.attrib.get('urlPath')
-                for_service = elem.attrib.get('serviceName', '')
-                
-            else:
-                access_elem = next(iter(elem.xpath('*[local-name()="access"]')), None)
-                if access_elem is not None:
-                    self._to_exclude.append(
-                        generate_qualified_xpath(access_elem, True) + "/@serviceName"
-                    )
-                    self._to_exclude.append(
-                        generate_qualified_xpath(access_elem, True) + "/@urlPath"
-                    )
-                    description["serviceName"] = access_elem.attrib.get('serviceName', '')
-                    description["url"] = access_elem.attrib.get('urlPath', '')
+        
 
         if 'ID' not in description:
             description.update({"ID": generate_short_uuid()})

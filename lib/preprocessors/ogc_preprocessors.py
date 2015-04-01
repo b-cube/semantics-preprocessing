@@ -78,6 +78,13 @@ class OgcReader():
         def _replace_nones(to_check):
             return '' if to_check is None else to_check
 
+        def _append_params(base_url, operation):
+            if not base_url[-1] == '?':
+                base_url += '?'
+            return base_url + 'SERVICE=%s&VERSION=%s&REQUEST=%s' % (self.service,
+                                                                    self.version,
+                                                                    operation)
+
         def _merge_params(op_name, found_params):
             '''
             for some parameter structure:
@@ -132,7 +139,7 @@ class OgcReader():
                 {
                     "name": o.name,
                     "type": m.get('type', ''),
-                    "url": m.get('url', ''),
+                    "url": _append_params(m.get('url', ''), o.name),
                     "constraints": m.get('constraints', []),
                     "formats": formats,
                     "parameters": [{
