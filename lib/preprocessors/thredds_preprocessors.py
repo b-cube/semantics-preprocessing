@@ -20,6 +20,10 @@ class ThreddsReader(BaseReader):
         '''
         description = {extract_element_tag(k): v for k, v in elem.attrib.iteritems()}
 
+        # get the service bases in case
+        services = self.parser.find('//*[local-name()="service" and @base != ""]')
+        service_bases = {s.attrib.get('name'): s.attrib.get('base') for s in services}
+
         elem_xpath = generate_qualified_xpath(elem, True)
         self._to_exclude += [elem_xpath] + [elem_xpath + '/@' + k for k in elem.attrib.keys()]
 
@@ -63,16 +67,21 @@ class ThreddsReader(BaseReader):
                 description['date_type'] = date_elem.attrib.get('type', '')
                 description['date'] = date_elem.text.strip()
 
-            access_elem = next(iter(elem.xpath('*[local-name()="access"]')), None)
-            if access_elem is not None:
-                self._to_exclude.append(
-                    generate_qualified_xpath(access_elem, True) + "/@serviceName"
-                )
-                self._to_exclude.append(
-                    generate_qualified_xpath(access_elem, True) + "/@urlPath"
-                )
-                description["serviceName"] = access_elem.attrib.get('serviceName', '')
-                description["url"] = access_elem.attrib.get('urlPath', '')
+            if 'urlPath' in elem.attrib:
+                url = elem.attrib.get('urlPath')
+                for_service = elem.attrib.get('serviceName', '')
+                
+            else:
+                access_elem = next(iter(elem.xpath('*[local-name()="access"]')), None)
+                if access_elem is not None:
+                    self._to_exclude.append(
+                        generate_qualified_xpath(access_elem, True) + "/@serviceName"
+                    )
+                    self._to_exclude.append(
+                        generate_qualified_xpath(access_elem, True) + "/@urlPath"
+                    )
+                    description["serviceName"] = access_elem.attrib.get('serviceName', '')
+                    description["url"] = access_elem.attrib.get('urlPath', '')
 
         if 'ID' not in description:
             description.update({"ID": generate_short_uuid()})
@@ -108,16 +117,6 @@ class ThreddsReader(BaseReader):
                 description['parentOf'] = parents
 
         return description, endpoints
-
-    def _href_munging(self, tail_url):
-        '''
-        get siblings, get children, get parent catalog
-            (parent of the parent element's catalog rather)
-        '''
-
-        # source_parts = split_url(self._url)
-
-        pass
 
     def _normalize_endpoints(self, endpoints):
         '''

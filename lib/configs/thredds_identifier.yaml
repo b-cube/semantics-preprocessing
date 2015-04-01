@@ -52,6 +52,12 @@
         - type: simple
           object: content
           value: '<variables vocabulary='
+        - type: simple
+          object: content
+          value: '<dap:Error'
+        - type: xpath
+          object: content
+          value: '/*[local-name()="Error"]'
   versions:
     checks:
       ors: 

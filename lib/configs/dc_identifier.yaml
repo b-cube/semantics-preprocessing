@@ -1,0 +1,21 @@
+- name: DC
+  subtype: metadata
+  filters:
+    ands:
+      - type: simple
+        object: content
+        value: 'http://www.openarchives.org/OAI/2.0/oai_dc/'
+      - type: xpath
+        object: content
+        value: '/*[local-name() = "dc"]'
+  service_description:
+  datasets:
+  metadatas:
+  errors:
+  versions:
+    defaults:
+      ors:
+        - type: simple
+          object: content
+          value: 'http://www.openarchives.org/OAI/2.0/oai_dc/'
+          text: '2.0'

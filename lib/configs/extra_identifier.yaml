@@ -313,7 +313,20 @@
       - type: simple
         object: url
         value: http://ferret.pmel.noaa.gov/thredds/view/ToolsUI.jnlp?
-
+- name: XSD
+  subtype: file
+  filters:
+    ands:
+      - type: simple
+        object: content
+        value: 'xmlns:xs="http://www.w3.org/2001/XMLSchema'
+      - type: xpath
+        object: content
+        value: '/*[local-name()="schema"] and //*[local-name()="element"]'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
 
 
 
