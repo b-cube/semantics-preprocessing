@@ -21,6 +21,7 @@ for f in files:
 
     rr = RawResponse(source_url.upper(), content, digest, **{})
     cleaned_text = rr.clean_raw_content()
+    cleaned_text = cleaned_text.encode('unicode_escape')
 
     parser = Parser(cleaned_text)
 
@@ -36,3 +37,5 @@ for f in files:
 
     with open(os.path.join(outdir, '%s.json' % digest), 'w') as g:
         g.write(json.dumps(data, indent=4))
+
+    identify = None

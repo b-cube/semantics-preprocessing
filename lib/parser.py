@@ -40,9 +40,26 @@ class Parser():
             # traceback.print_exc(file=sys.stdout)
             self.xml = None
 
+        if self.xml is None:
+            # try something else and wtf
+            try:
+                self.xml = etree.fromstring(
+                    self._string,
+                    parser=etree.XMLParser(encoding=self._encoding)
+                )
+            except Exception as ex:
+                # print self._string[0:50]
+                print ex
+                # traceback.print_exc(file=sys.stdout)
+                self.xml = None
+                return
+
         self._namespaces = self._get_document_namespaces()
-        self._strip_html()
-        self._strip_whitespace()
+        try:
+            self._strip_html()
+            self._strip_whitespace()
+        except AttributeError:
+            print 'text not writable? ', self._string[:100]
 
     def find(self, xpath):
         '''
