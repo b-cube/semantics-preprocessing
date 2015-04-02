@@ -1,3 +1,4 @@
+
 - name: WMS111
   common: 
     - name: service
@@ -120,7 +121,7 @@
     - name: version
       type: string
       format:    
-  smethods:
+  methods:
     - name: GETCAPABILITIES
 
 - name: WCS100

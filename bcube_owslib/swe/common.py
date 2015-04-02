@@ -1,13 +1,13 @@
 from __future__ import (absolute_import, division, print_function)
 
-from owslib.util import nspath_eval
-from owslib.namespaces import Namespaces
-from owslib.util import testXMLAttribute, testXMLValue, InfiniteDateTime, NegativeInfiniteDateTime
+from bcube_owslib.util import nspath_eval
+from bcube_owslib.namespaces import Namespaces
+from bcube_owslib.util import testXMLAttribute, testXMLValue, InfiniteDateTime, NegativeInfiniteDateTime
 
 from dateutil import parser
 from datetime import timedelta
 
-from owslib.etree import etree
+from bcube_owslib.etree import etree
 
 def get_namespaces():
     ns = Namespaces()

@@ -86,13 +86,13 @@ Also, the directory tests/ contains several examples of well-formed "Execute" re
 
 from __future__ import (absolute_import, division, print_function)
 
-from owslib.etree import etree
-from owslib.ows import DEFAULT_OWS_NAMESPACE, ServiceIdentification, ServiceProvider, OperationsMetadata
+from bcube_owslib.etree import etree
+from bcube_owslib.ows import DEFAULT_OWS_NAMESPACE, ServiceIdentification, ServiceProvider, OperationsMetadata
 from time import sleep
-from owslib.util import (testXMLValue, build_get_url, dump, getTypedValue, 
+from bcube_owslib.util import (testXMLValue, build_get_url, dump, getTypedValue, 
                   getNamespace, element_to_string, nspath, openURL, nspath_eval, log)
 from xml.dom.minidom import parseString
-from owslib.namespaces import Namespaces
+from bcube_owslib.namespaces import Namespaces
 
 # namespace definition
 n = Namespaces()

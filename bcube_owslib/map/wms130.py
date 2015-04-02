@@ -21,10 +21,10 @@ import cgi
 import urllib2
 from urllib import urlencode
 import warnings
-from owslib.etree import etree
-from owslib.util import openURL, testXMLValue, extract_xml_list, xmltag_split, nspath
-from owslib.fgdc import Metadata
-from owslib.iso import MD_Metadata
+from bcube_owslib.etree import etree
+from bcube_owslib.util import openURL, testXMLValue, extract_xml_list, xmltag_split, nspath
+from bcube_owslib.fgdc import Metadata
+from bcube_owslib.iso import MD_Metadata
 
 
 WMS_NAMESPACE = 'http://www.opengis.net/wms'

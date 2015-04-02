@@ -1,7 +1,7 @@
 from __future__ import (absolute_import, division, print_function)
 
-from owslib.waterml.wml import SitesResponse, TimeSeriesResponse, VariablesResponse, namespaces
-from owslib.etree import etree
+from bcube_owslib.waterml.wml import SitesResponse, TimeSeriesResponse, VariablesResponse, namespaces
+from bcube_owslib.etree import etree
 
 def ns(namespace):
     return namespaces.get(namespace)

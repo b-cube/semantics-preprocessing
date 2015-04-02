@@ -11,15 +11,15 @@
 
 from __future__ import (absolute_import, division, print_function)
 
-from owslib.coverage.wcsBase import WCSBase, WCSCapabilitiesReader, ServiceException
+from bcube_owslib.coverage.wcsBase import WCSBase, WCSCapabilitiesReader, ServiceException
 from urllib import urlencode
-from owslib.util import openURL, testXMLValue
-from owslib.etree import etree
-from owslib.crs import Crs
+from bcube_owslib.util import openURL, testXMLValue
+from bcube_owslib.etree import etree
+from bcube_owslib.crs import Crs
 import os, errno
 
 import logging
-from owslib.util import log
+from bcube_owslib.util import log
 
 #  function to save writing out WCS namespace in full each time
 def ns(tag):

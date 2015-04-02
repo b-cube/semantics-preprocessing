@@ -1,8 +1,8 @@
 from __future__ import (absolute_import, division, print_function)
 
-from owslib.etree import etree
-from owslib.util import nspath, testXMLValue, openURL
-from owslib.util import xml_to_dict as _xml_to_dict
+from bcube_owslib.etree import etree
+from bcube_owslib.util import nspath, testXMLValue, openURL
+from bcube_owslib.util import xml_to_dict as _xml_to_dict
 from datetime import datetime
 from dateutil import parser
 

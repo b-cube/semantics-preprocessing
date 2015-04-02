@@ -9,12 +9,12 @@
 from __future__ import (absolute_import, division, print_function)
 
 #owslib imports:
-from owslib.ows import ServiceIdentification, ServiceProvider, OperationsMetadata
-from owslib.etree import etree
-from owslib.util import nspath, testXMLValue
-from owslib.crs import Crs
-from owslib.feature import WebFeatureService_
-from owslib.namespaces import Namespaces
+from bcube_owslib.ows import ServiceIdentification, ServiceProvider, OperationsMetadata
+from bcube_owslib.etree import etree
+from bcube_owslib.util import nspath, testXMLValue
+from bcube_owslib.crs import Crs
+from bcube_owslib.feature import WebFeatureService_
+from bcube_owslib.namespaces import Namespaces
 
 #other imports
 import cgi

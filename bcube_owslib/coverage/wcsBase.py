@@ -13,7 +13,7 @@ from __future__ import (absolute_import, division, print_function)
 
 from urllib import urlencode
 from urllib2 import urlopen, Request
-from owslib.etree import etree
+from bcube_owslib.etree import etree
 import cgi
 from StringIO import StringIO
 

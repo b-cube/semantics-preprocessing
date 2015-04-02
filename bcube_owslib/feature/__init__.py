@@ -7,11 +7,11 @@
 
 from __future__ import (absolute_import, division, print_function)
 
-from owslib.crs import Crs
+from bcube_owslib.crs import Crs
 
 from urllib import urlencode
 import logging
-from owslib.util import log
+from bcube_owslib.util import log
 
 class WebFeatureService_(object):
     """Base class for WebFeatureService implementations"""

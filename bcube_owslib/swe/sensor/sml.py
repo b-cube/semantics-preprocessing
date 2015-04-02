@@ -2,10 +2,10 @@
 
 from __future__ import (absolute_import, division, print_function)
 
-from owslib.etree import etree
-from owslib import crs, util
-from owslib.util import testXMLValue, testXMLAttribute, nspath_eval, xmltag_split, dict_union, extract_xml_list
-from owslib.namespaces import Namespaces
+from bcube_owslib.etree import etree
+from bcube_owslib import crs, util
+from bcube_owslib.util import testXMLValue, testXMLAttribute, nspath_eval, xmltag_split, dict_union, extract_xml_list
+from bcube_owslib.namespaces import Namespaces
 
 def get_namespaces():
     n = Namespaces()

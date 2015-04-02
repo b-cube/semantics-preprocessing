@@ -12,9 +12,9 @@
 
 from __future__ import (absolute_import, division, print_function)
 
-from owslib.etree import etree
-from owslib import util
-from owslib.namespaces import Namespaces
+from bcube_owslib.etree import etree
+from bcube_owslib import util
+from bcube_owslib.namespaces import Namespaces
 
 # default variables
 def get_namespaces():

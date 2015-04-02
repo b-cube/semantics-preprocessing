@@ -17,9 +17,9 @@ Currently supports version 1.1.0 (06-121r3).
 
 from __future__ import (absolute_import, division, print_function)
 
-from owslib.etree import etree
-from owslib import crs, util
-from owslib.namespaces import Namespaces
+from bcube_owslib.etree import etree
+from bcube_owslib import crs, util
+from bcube_owslib.namespaces import Namespaces
 n = Namespaces()
 
 OWS_NAMESPACE_1_0_0 = n.get_namespace("ows")

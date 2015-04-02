@@ -12,9 +12,9 @@
 from __future__ import (absolute_import, division, print_function)
 
 from .wcsBase import WCSBase, WCSCapabilitiesReader, ServiceException
-from owslib.util import openURL, testXMLValue, xmltag_split
+from bcube_owslib.util import openURL, testXMLValue, xmltag_split
 from urllib import urlencode
-from owslib.crs import Crs
+from bcube_owslib.crs import Crs
 
 import logging
 from owslib.util import log

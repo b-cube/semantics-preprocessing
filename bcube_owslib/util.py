@@ -14,8 +14,8 @@ import sys
 from dateutil import parser
 from datetime import datetime
 import pytz
-from owslib.etree import etree
-from owslib.namespaces import Namespaces
+from bcube_owslib.etree import etree
+from bcube_owslib.namespaces import Namespaces
 import urlparse, urllib2
 from urllib2 import urlopen, HTTPError, Request
 from urllib2 import HTTPPasswordMgrWithDefaultRealm

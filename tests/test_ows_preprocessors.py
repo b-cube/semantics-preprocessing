@@ -5,6 +5,8 @@ from lib.preprocessors.ows_preprocessors import OwsWfsPreprocessor
 from lib.preprocessors.ows_preprocessors import OwsCswPreprocessor
 
 
+# TODO: ALL THE WRONG TESTS
+
 class TestOwsWmsPreprocessor(unittest.TestCase):
     def setUp(self):
         with open('tests/test_data/wms_v1.1.1.xml', 'r') as f:
@@ -63,6 +65,11 @@ class TestOwsWfsPreprocessor110(unittest.TestCase):
         self.assertTrue('1998 Assessment of Undiscovered Deposits of Gold, Silver,' +
                         ' Copper, Lead, and Zinc in the United States' in descriptors['title'])
         self.assertFalse(descriptors['version'] == "1.0.2")
+
+        endpoints = descriptors.get('endpoints', [])
+        print endpoints
+        print descriptors
+        self.assertTrue('?SERVICE=WFS&REQUEST=GetCapabilities&VERSION=1.0.2' in endpoints[0]['url'])
 
 
 class TestOwsCswPreprocessor(unittest.TestCase):

@@ -29,6 +29,7 @@ class OgcReader():
 
         # get the owslib object
         self.reader = self._get_reader()
+        self._get_config()
 
     def _get_reader(self):
         if self.service == 'WMS' and self.version in ['1.1.1', '1.3.0']:
@@ -93,12 +94,13 @@ class OgcReader():
 
             '''
             # TODO: how to handle aliases (if necessary)
-            req_methods = self.config['methods']
+            req_methods = self.config.get('methods', [])
             req_params = next(
                 iter(
                     [d for d in req_methods if d['name'] == op_name.upper()]
                 ), {}
             ).get('params', [])
+            req_params = [] if not req_params else req_params
             defaults = self.config.get('common', []) + req_params
 
             if not found_params:

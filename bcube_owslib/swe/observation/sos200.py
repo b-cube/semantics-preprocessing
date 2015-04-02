@@ -1,14 +1,14 @@
 from __future__ import (absolute_import, division, print_function)
 
 import cgi
-from owslib.etree import etree
+from bcube_owslib.etree import etree
 from datetime import datetime
 from urllib import urlencode
-from owslib import ows
-from owslib.crs import Crs
-from owslib.fes import FilterCapabilities200
-from owslib.util import openURL, testXMLValue, nspath_eval, nspath, extract_time
-from owslib.namespaces import Namespaces
+from bcube_owslib import ows
+from bcube_owslib.crs import Crs
+from bcube_owslib.fes import FilterCapabilities200
+from bcube_owslib.util import openURL, testXMLValue, nspath_eval, nspath, extract_time
+from bcube_owslib.namespaces import Namespaces
 
 def get_namespaces():
     n = Namespaces()

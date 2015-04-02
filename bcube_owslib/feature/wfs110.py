@@ -13,16 +13,16 @@ import cgi
 from cStringIO import StringIO
 from urllib import urlencode
 from urllib2 import urlopen
-from owslib.util import openURL, testXMLValue, nspath_eval, ServiceException
-from owslib.etree import etree
-from owslib.fgdc import Metadata
-from owslib.iso import MD_Metadata
-from owslib.ows import *
-from owslib.fes import *
-from owslib.crs import Crs
-from owslib.feature import WebFeatureService_
-from owslib.namespaces import Namespaces
-from owslib.util import log
+from bcube_owslib.util import openURL, testXMLValue, nspath_eval, ServiceException
+from bcube_owslib.etree import etree
+from bcube_owslib.fgdc import Metadata
+from bcube_owslib.iso import MD_Metadata
+from bcube_owslib.ows import *
+from bcube_owslib.fes import *
+from bcube_owslib.crs import Crs
+from bcube_owslib.feature import WebFeatureService_
+from bcube_owslib.namespaces import Namespaces
+from bcube_owslib.util import log
 
 def get_namespaces():
     n = Namespaces()
