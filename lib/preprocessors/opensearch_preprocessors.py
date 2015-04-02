@@ -48,7 +48,8 @@ class OpenSearchReader(BaseReader):
             {
                 "type": url.get('type', ''),
                 "url": url.get('template', ''),
-                "parameters": self._extract_url_parameters(url.get('template', ''))
+                "parameters": self._extract_url_parameters(url.get('template', '')),
+                "actionable": 0 if 'rel' not in url.attrib.keys() else 2
             } for url in urls
         ]
 

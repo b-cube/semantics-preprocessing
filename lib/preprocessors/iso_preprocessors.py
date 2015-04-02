@@ -178,6 +178,13 @@ class IsoReader(BaseReader):
                 format_name, format_version, format_desc = self._extract_format_info(format_elem)
                 format = self._identify_format(format_name, format_version, format_desc, url)
 
-                endpoints.append({"url": url, "type": codes[0] if codes else '', "format": format})
+                endpoints.append(
+                    {
+                        "url": url,
+                        "type": codes[0] if codes else '',
+                        "format": format,
+                        "actionable": 1  # we can only assume these are good links in the iso
+                    }
+                )
 
         return endpoints

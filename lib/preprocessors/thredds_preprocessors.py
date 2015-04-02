@@ -13,26 +13,89 @@ class ThreddsReader(BaseReader):
     }
     _to_exclude = []
 
-    def _get_items(self, tag, elem):
+    def _get_items(self, tag, elem, base_url):
         '''
         return any structure not part of the
         current element's attributes
         '''
+
+        def _normalize_key(key):
+            '''
+            standardize the url (or other) xml tags to the desired
+            json key
+            '''
+
+            # as source key: endpoint key
+            remaps = {
+                "serviceType": "type",
+                "href": "url",
+                "base": "url",
+                "urlPath": "url"
+            }
+
+            key = key.split('_')[-1] if '_' in key else key
+
+            if key in remaps:
+                return remaps[key]
+            return key
+
+        def _generate_xpath(tags):
+            return '/'.join(['*[local-name()="%s"]' % t if t not in ['*', '..', '.'] else t
+                             for t in tags.split('/') if t])
+
+        def _run_element(elem, tags):
+            # run a generated xpath on the given element
+            excludes = []
+            element = {}
+
+            excludes.append(generate_qualified_xpath(elem, True))
+
+            for tag in tags:
+                xp = _generate_xpath(tag)
+                e = next(iter(elem.xpath(xp)), None)
+                if e is None:
+                    continue
+
+                # sort out a key and get the text
+                if isinstance(str, e):
+                    value = e
+                    key = '_'.join([t.replace('@', '') for t in tags.split('/')[-2:]])
+                else:
+                    value = e.text()
+                    key = extract_element_tag(e)
+
+                normalized_key = _normalize_key(key)
+                element[normalized_key] = value
+                excludes.append(generate_qualified_xpath(e, True))
+
+            # get the service bases in case
+            services = self.parser.find('//*[local-name()="service" and @base != ""]')
+            service_bases = {s.attrib.get('name'): s.attrib.get('base') for s in services}
+            if 'url' in element and 'serviceName' in element:
+                service_bases = [v for k, v in service_bases if k == element['serviceName']]
+
+            element['url'] = intersect_url(value, base_url, service_bases)
+            element['actionable'] = 2
+
+            return element, excludes
+
         description = {extract_element_tag(k): v for k, v in elem.attrib.iteritems()}
+        elem_xpath = generate_qualified_xpath(elem, True)
+        self._to_exclude += [elem_xpath] + [elem_xpath + '/@' + k for k in elem.attrib.keys()]
 
-        # get the service bases in case
-        services = self.parser.find('//*[local-name()="service" and @base != ""]')
-        service_bases = {s.attrib.get('name'): s.attrib.get('base') for s in services}
+        if tag == 'dataset':
+            pass
 
-        
+        elif tag == 'metadata':
+            pass
 
         if 'ID' not in description:
             description.update({"ID": generate_short_uuid()})
 
         return description
 
-    def _handle_elem(self, elem, child_tags):
-        description = self._get_items(extract_element_tag(elem.tag), elem)
+    def _handle_elem(self, elem, child_tags, base_url):
+        description = self._get_items(extract_element_tag(elem.tag), elem, base_url)
         description['source'] = extract_element_tag(elem.tag)
 
         endpoints = []
@@ -44,7 +107,7 @@ class ThreddsReader(BaseReader):
                 endpoints += [
                     dict(
                         chain(
-                            self._get_items(extract_element_tag(e.tag), e).items(),
+                            self._get_items(extract_element_tag(e.tag), e, base_url).items(),
                             {
                                 "childOf": description.get('ID', ''),
                                 "source": extract_element_tag(child_tag)
@@ -61,33 +124,6 @@ class ThreddsReader(BaseReader):
 
         return description, endpoints
 
-    def _normalize_endpoints(self, endpoints):
-        '''
-        the extraction takes any attribute/element tag as is
-        but that is less than ideal for the triples (we want
-            to minimize the special flower handling at that
-            end as much as possible)
-
-        minor flattening
-        '''
-
-        # as source key: endpoint key
-        remaps = {
-            "serviceType": "type",
-            "href": "url",
-            "base": "url",
-            "urlPath": "url",
-            "serviceName": "type"
-        }
-
-        new_endpoints = []
-        for endpoint in endpoints:
-            # remap things
-            new_endpoints.append({remaps[k] if k in remaps else k: v
-                                  for k, v in endpoint.iteritems()})
-
-        return new_endpoints
-
     def return_dataset_descriptors(self):
         dataset_xpath = "/{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/" + \
                         "{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}dataset"
@@ -101,11 +137,12 @@ class ThreddsReader(BaseReader):
 
             for dataset in datasets:
                 description, child_endpoints = self._handle_elem(
-                    dataset, ['dataset', 'metadata', 'catalogRef']
+                    dataset, ['dataset', 'metadata', 'catalogRef'],
+                    self._url
                 )
                 endpoints += [description] + child_endpoints
 
-        return {"endpoints": self._normalize_endpoints(endpoints)}
+        return {"endpoints": endpoints}
 
     def return_metadata_descriptors(self):
         metadata_xpath = "/{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/" + \
@@ -119,10 +156,10 @@ class ThreddsReader(BaseReader):
                 self._to_exclude.append(metadata_xpath[1:] + '/@' + key)
 
             for metadata in metadatas:
-                description, child_endpoints = self._handle_elem(metadata, [])
+                description, child_endpoints = self._handle_elem(metadata, [], self._url)
                 endpoints += [description] + child_endpoints
 
-        return {"endpoints": self._normalize_endpoints(endpoints)}
+        return {"endpoints": endpoints}
 
     def return_exclude_descriptors(self):
         '''
@@ -157,7 +194,7 @@ class ThreddsReader(BaseReader):
                 self._to_exclude.append(svc_xpath[1:] + '/@' + key)
 
             for service in services:
-                description, child_endpoints = self._handle_elem(service, ['service'])
+                description, child_endpoints = self._handle_elem(service, ['service'], self._url)
                 endpoints += [description] + child_endpoints
 
         catrefs = self.parser.find(catref_xpath)
@@ -166,7 +203,9 @@ class ThreddsReader(BaseReader):
             self._to_exclude.append(catref_xpath[1:] + '/@title')
             self._to_exclude.append(catref_xpath[1:] + '/@href')
             for catref in catrefs:
-                description, child_endpoints = self._handle_elem(catref, ['catalogRef', 'metadata'])
+                description, child_endpoints = self._handle_elem(
+                    catref, ['catalogRef', 'metadata'], self._url
+                )
                 endpoints += [description] + child_endpoints
 
-        return self._normalize_endpoints(endpoints)
+        return endpoints

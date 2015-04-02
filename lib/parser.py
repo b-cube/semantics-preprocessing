@@ -26,7 +26,6 @@ class Parser():
         '''
         parser = etree.XMLParser(
             encoding=self._encoding,
-            ns_clean=True,
             remove_blank_text=True,
             remove_comments=True,
             recover=True
