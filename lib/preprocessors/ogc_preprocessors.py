@@ -144,6 +144,7 @@ class OgcReader():
                     "url": _append_params(m.get('url', ''), o.name),
                     "constraints": m.get('constraints', []),
                     "formats": formats,
+                    "actionable": 1 if o.name == 'GetCapabilities' else 2,
                     "parameters": [{
                         "name": p.get('name', ''),
                         "type": p.get('type', ''),
