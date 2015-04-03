@@ -13,7 +13,12 @@ class ThreddsReader(BaseReader):
     }
     _to_exclude = []
 
-    def _get_items(self, tag, elem, base_url):
+    def _manage_id(self, obj):
+        if 'ID' not in obj:
+            obj.update({"ID": generate_short_uuid()})
+        return obj
+
+    def _get_items(self, tag, elem, base_url, service_bases):
         '''
         return any structure not part of the
         current element's attributes
@@ -43,56 +48,58 @@ class ThreddsReader(BaseReader):
             return '/'.join(['*[local-name()="%s"]' % t if t not in ['*', '..', '.'] else t
                              for t in tags.split('/') if t])
 
-        def _run_element(elem, tags):
+        def _run_element(elem, service_bases):
+            '''
+            for a given element, return any text() and any attribute value
+            '''
             # run a generated xpath on the given element
-            excludes = []
-            element = {}
+            excludes = [generate_qualified_xpath(elem, True)]
 
-            excludes.append(generate_qualified_xpath(elem, True))
+            children = elem.xpath('./node()[local-name()!="metadata"' +
+                                  'and local-name()!="dataset" and' +
+                                  'local-name()!="catalogRef"]')
 
-            for tag in tags:
-                xp = _generate_xpath(tag)
-                e = next(iter(elem.xpath(xp)), None)
-                if e is None:
-                    continue
+            element = {extract_element_tag(k): v for k, v in elem.attrib.iteritems()}
+            element = self._manage_id(element)
 
-                # sort out a key and get the text
-                if isinstance(str, e):
-                    value = e
-                    key = '_'.join([t.replace('@', '') for t in tags.split('/')[-2:]])
-                else:
-                    value = e.text()
-                    key = extract_element_tag(e)
+            for child in children:
+                value = child.text
+                xp = generate_qualified_xpath(child, True)
+                tag = _normalize_key(extract_element_tag(child))
 
-                normalized_key = _normalize_key(key)
-                element[normalized_key] = value
-                excludes.append(generate_qualified_xpath(e, True))
+                excludes += [xp] + [xp + '/@' + k for k in child.attrib.keys()]
+
+                element[tag] = value
+                for k, v in child.attrib.iteritems():
+                    element[tag + '_' + _normalize_key(extract_element_tag(k))] = v
+
+            for k, v in element.iteritems():
+                sbs = [v for k, v in service_bases if k == element['serviceName']]
 
             # get the service bases in case
-            services = self.parser.find('//*[local-name()="service" and @base != ""]')
-            service_bases = {s.attrib.get('name'): s.attrib.get('base') for s in services}
-            if 'url' in element and 'serviceName' in element:
-                service_bases = [v for k, v in service_bases if k == element['serviceName']]
+            if [g for g in element.keys() if g.endswith('url') or g.endswith('serviceName')]:
+                # generate the url
+                sbs = [v for k, v in service_bases if k == element['serviceName']]
+            else:
+                sbs = service_bases
 
-            element['url'] = intersect_url(value, base_url, service_bases)
+            element['url'] = intersect_url(value, base_url, sbs)
             element['actionable'] = 2
 
             return element, excludes
 
-        description = {extract_element_tag(k): v for k, v in elem.attrib.iteritems()}
-        elem_xpath = generate_qualified_xpath(elem, True)
-        self._to_exclude += [elem_xpath] + [elem_xpath + '/@' + k for k in elem.attrib.keys()]
+        children = elem.xpath('./node()[local-name()="metadata" or ' +
+                              'local-name()="dataset" or local-name()="catalogRef"]')
 
-        if tag == 'dataset':
-            pass
+        element = _run_element(elem, service_bases)
+        element['children'] = []
+        excludes = []
+        for c in children:
+            element_desc, element_excludes = _run_element(c)
+            excludes += element_excludes
+            element['children'] += element_desc
 
-        elif tag == 'metadata':
-            pass
-
-        if 'ID' not in description:
-            description.update({"ID": generate_short_uuid()})
-
-        return description
+        return element, excludes
 
     def _handle_elem(self, elem, child_tags, base_url):
         description = self._get_items(extract_element_tag(elem.tag), elem, base_url)
@@ -185,6 +192,9 @@ class ThreddsReader(BaseReader):
                        "{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalogRef"
 
         endpoints = []
+
+        service_bases = self.parser.find('//*[local-name()="service" and @base != ""]')
+        service_bases = {s.attrib.get('name'): s.attrib.get('base') for s in service_bases}
 
         services = self.parser.find(svc_xpath)
         # ffs, services can be nested too
