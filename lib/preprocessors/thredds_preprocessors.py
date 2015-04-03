@@ -73,27 +73,25 @@ class ThreddsReader(BaseReader):
                 for k, v in child.attrib.iteritems():
                     element[tag + '_' + _normalize_key(extract_element_tag(k))] = v
 
-            for k, v in element.iteritems():
-                sbs = [v for k, v in service_bases if k == element['serviceName']]
-
             # get the service bases in case
             if [g for g in element.keys() if g.endswith('url') or g.endswith('serviceName')]:
                 # generate the url
-                sbs = [v for k, v in service_bases if k == element['serviceName']]
+                sbs = [v for k, v in service_bases.iteritems() if k == element['serviceName']]
             else:
-                sbs = service_bases
+                sbs = service_bases.values()
 
-            element['url'] = intersect_url(value, base_url, sbs)
-            element['actionable'] = 2
+            url_key = next(iter([g for g in element.keys() if g.endswith('url')]), '')
+            if url_key:
+                element['url'] = intersect_url(element[url_key], base_url, sbs)
+                element['actionable'] = 2
 
             return element, excludes
 
         children = elem.xpath('./node()[local-name()="metadata" or ' +
                               'local-name()="dataset" or local-name()="catalogRef"]')
 
-        element = _run_element(elem, service_bases)
+        element, excludes = _run_element(elem, service_bases)
         element['children'] = []
-        excludes = []
         for c in children:
             element_desc, element_excludes = _run_element(c)
             excludes += element_excludes
@@ -101,29 +99,43 @@ class ThreddsReader(BaseReader):
 
         return element, excludes
 
-    def _handle_elem(self, elem, child_tags, base_url):
-        description = self._get_items(extract_element_tag(elem.tag), elem, base_url)
+    def _handle_elem(self, elem, child_tags, base_url, service_bases):
+        description, excludes = self._get_items(
+            extract_element_tag(elem.tag), elem, base_url, service_bases
+        )
         description['source'] = extract_element_tag(elem.tag)
+
+        self._to_exclude += excludes
 
         endpoints = []
 
         for child_tag in child_tags:
             elems = elem.xpath('*[local-name()="%s"]' % child_tag)
 
-            if elems:
-                endpoints += [
-                    dict(
-                        chain(
-                            self._get_items(extract_element_tag(e.tag), e, base_url).items(),
-                            {
-                                "childOf": description.get('ID', ''),
-                                "source": extract_element_tag(child_tag)
-                            }.items()
-                        )
-                    ) for e in elems
-                ]
+            for e in elems:
+                e_desc, e_excludes = self._get_items(
+                    extract_element_tag(e.tag), e, base_url, service_bases
+                )
 
-                self._to_exclude += [generate_qualified_xpath(e, True) for e in elems]
+                e_desc['childOf'] = description.get('ID', '')
+                e_desc["source"] = extract_element_tag(child_tag)
+                self._to_exclude += e_excludes
+
+                # endpoints += [
+                #     dict(
+                #         chain(
+                #             self._get_items(
+                #                 extract_element_tag(e.tag), e, base_url, service_bases
+                #             ).items(),
+                #             {
+                #                 "childOf": description.get('ID', ''),
+                #                 "source": extract_element_tag(child_tag)
+                #             }.items()
+                #         )
+                #     ) for e in elems
+                # ]
+
+                # self._to_exclude += [generate_qualified_xpath(e, True) for e in elems]
 
                 parents = description.get('parentOf', [])
                 parents += [e['ID'] for e in endpoints if 'childOf' in e]
@@ -204,7 +216,9 @@ class ThreddsReader(BaseReader):
                 self._to_exclude.append(svc_xpath[1:] + '/@' + key)
 
             for service in services:
-                description, child_endpoints = self._handle_elem(service, ['service'], self._url)
+                description, child_endpoints = self._handle_elem(
+                    service, ['service'], self._url, service_bases
+                )
                 endpoints += [description] + child_endpoints
 
         catrefs = self.parser.find(catref_xpath)
