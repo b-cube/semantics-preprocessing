@@ -69,18 +69,27 @@ class ThreddsReader(BaseReader):
                     element[tag] = value
 
                 for k, v in child.attrib.iteritems():
-                    element[tag + '_' + _normalize_key(extract_element_tag(k))] = v
+                    if v:
+                        element[tag + '_' + _normalize_key(extract_element_tag(k))] = v
 
             # get the service bases in case
-            if [g for g in element.keys() if g.endswith('url') or g.endswith('serviceName')]:
-                # generate the url
+            if [g for g in element.keys() if g.endswith('serviceName')]:
                 sbs = [v for k, v in service_bases.iteritems() if k == element.get('serviceName')]
             else:
                 sbs = service_bases.values()
 
+            # send a unique list of base relative paths
+            sbs = list(set(sbs))
+
             url_key = next(iter([g for g in element.keys() if g.endswith('url')]), '')
             if url_key:
-                element['url'] = intersect_url(base_url, element[url_key], sbs)
+                # for service urls, if catalog.xml isn't appended it will resolve to
+                # the html endpoint (not desired). so if the path equals the/a path in
+                # the service bases, append catalog.xml to the path
+                elem_url = element[url_key]
+                if elem_url in sbs:
+                    elem_url += ('' if elem_url.endswith('/') else '/') + 'catalog.xml'
+                element['url'] = intersect_url(base_url, elem_url, sbs)
                 element['actionable'] = 2
 
             return element, excludes
@@ -89,11 +98,14 @@ class ThreddsReader(BaseReader):
                               'local-name()="dataset" or local-name()="catalogRef"]')
 
         element, excludes = _run_element(elem, service_bases)
-        element['children'] = []
+        element_children = []
         for c in children:
             element_desc, element_excludes = _run_element(c, service_bases)
             excludes += element_excludes
-            element['children'].append(element_desc)
+            element_children.append(element_desc)
+
+        if element_children:
+            element['children'] = element_children
 
         return element, excludes
 
@@ -212,7 +224,9 @@ class ThreddsReader(BaseReader):
                     self._url,
                     self.service_bases
                 )
-                endpoints += [description] + child_endpoints
+                endpoints += [description]
+                if child_endpoints:
+                    endpoints += child_endpoints
 
         catrefs = self.parser.find(catref_xpath)
         if catrefs:
