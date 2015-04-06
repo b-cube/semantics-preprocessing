@@ -80,7 +80,7 @@ class ThreddsReader(BaseReader):
 
             url_key = next(iter([g for g in element.keys() if g.endswith('url')]), '')
             if url_key:
-                element['url'] = intersect_url(element[url_key], base_url, sbs)
+                element['url'] = intersect_url(base_url, element[url_key], sbs)
                 element['actionable'] = 2
 
             return element, excludes

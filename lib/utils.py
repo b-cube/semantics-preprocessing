@@ -53,7 +53,14 @@ def parse_url(url):
 def intersect_url(url, path, bases=[]):
     '''
     returns a list of urls
+
+    params:
+        url: root path
+        path: "test" path, ie path to intersect
+        bases: an array of relative intermediate paths (thredds service blobs)
     '''
+    if path.startswith('/'):
+        path = path[1:]
     parts = urlparse.urlparse(path)
     if parts.scheme and parts.netloc:
         # it's a valid url, do nothing
