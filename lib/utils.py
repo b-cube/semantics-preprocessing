@@ -136,6 +136,23 @@ def generate_qualified_xpath(elem, do_join=True):
     return '/'.join(tags) if do_join else tags
 
 
+def generate_localname_xpath(tags):
+    '''
+    from some tag "list", generate an xpath using local-names only
+
+    note: this is meant for processing and not for the remainder/excludes
+          functions
+
+    params:
+        tags: list of element names as root/parent/child
+
+    returns:
+        *[local-name()="root"]/*[local-name()="parent"]/*[local-name()="child"]
+    '''
+    return '/'.join(['*[local-name()="%s"]' % t if t not in ['*', '..', '.'] else t
+                    for t in tags.split('/') if t])
+
+
 def flatten(items, excluded_keys=[]):
     '''
     flatten a list of irregular lists/singletons
