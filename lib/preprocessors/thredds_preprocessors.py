@@ -87,7 +87,7 @@ class ThreddsReader(BaseReader):
                 # the html endpoint (not desired). so if the path equals the/a path in
                 # the service bases, append catalog.xml to the path
                 elem_url = element[url_key]
-                if elem_url in sbs:
+                if elem_url in sbs or not sbs:
                     elem_url += ('' if elem_url.endswith('/') else '/') + 'catalog.xml'
                 element['url'] = intersect_url(base_url, elem_url, sbs)
                 element['actionable'] = 2
@@ -222,7 +222,7 @@ class ThreddsReader(BaseReader):
                     service,
                     ['service'],
                     self._url,
-                    self.service_bases
+                    {}
                 )
                 endpoints += [description]
                 if child_endpoints:
@@ -238,7 +238,7 @@ class ThreddsReader(BaseReader):
                     catref,
                     ['catalogRef', 'metadata'],
                     self._url,
-                    self.service_bases
+                    {}  # TODO: so dap or file base path only? (not the full set, that makes no sense)
                 )
                 endpoints += [description] + child_endpoints
 
