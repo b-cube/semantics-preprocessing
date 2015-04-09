@@ -3,7 +3,7 @@
 # Copyright (c) 2004, 2006 Sean C. Gillies
 # Copyright (c) 2007 STFC <http://www.stfc.ac.uk>
 #
-# Authors : 
+# Authors :
 #          Dominic Lowe <d.lowe@rl.ac.uk>
 #
 # Contact email: d.lowe@rl.ac.uk
@@ -14,32 +14,32 @@ from __future__ import (absolute_import, division, print_function)
 from bcube_owslib.coverage.wcsBase import WCSBase, WCSCapabilitiesReader, ServiceException
 from urllib import urlencode
 from bcube_owslib.util import openURL, testXMLValue
-from bcube_owslib.etree import etree
 from bcube_owslib.crs import Crs
-import os, errno
 
 import logging
 from bcube_owslib.util import log
 
+
 #  function to save writing out WCS namespace in full each time
 def ns(tag):
-    return '{http://www.opengis.net/wcs}'+tag
+    return '{http://www.opengis.net/wcs}' + tag
+
 
 class WebCoverageService_1_0_0(WCSBase):
     """Abstraction for OGC Web Coverage Service (WCS), version 1.0.0
     Implements IWebCoverageService.
     """
-    def __getitem__(self,name):
+    def __getitem__(self, name):
         ''' check contents dictionary to allow dict like access to service layers'''
         if name in self.__getattribute__('contents').keys():
             return self.__getattribute__('contents')[name]
         else:
             raise KeyError("No content named %s" % name)
-    
-    def __init__(self,url,xml, cookies):
-        self.version='1.0.0'
-        self.url = url   
-        self.cookies=cookies
+
+    def __init__(self, url, xml, cookies):
+        self.version = '1.0.0'
+        self.url = url
+        self.cookies = cookies
         # initialize from saved capability document or access the server
         reader = WCSCapabilitiesReader(self.version, self.cookies)
         if xml:
@@ -51,118 +51,127 @@ class WebCoverageService_1_0_0(WCSBase):
         se = self._capabilities.find('ServiceException')
 
         if se is not None:
-            err_message = str(se.text).strip()  
-            raise ServiceException(err_message, xml) 
+            err_message = str(se.text).strip()
+            raise ServiceException(err_message, xml)
 
-        #serviceIdentification metadata
-        subelem=self._capabilities.find(ns('Service'))
-        self.identification=ServiceIdentification(subelem)                               
-                   
-        #serviceProvider metadata
-        subelem=self._capabilities.find(ns('Service/')+ns('responsibleParty'))
-        self.provider=ServiceProvider(subelem)   
-        
-        #serviceOperations metadata
-        self.operations=[]
-        for elem in self._capabilities.find(ns('Capability/')+ns('Request'))[:]:
+        # serviceIdentification metadata
+        subelem = self._capabilities.find(ns('Service'))
+        self.identification = ServiceIdentification(subelem)
+
+        # serviceProvider metadata
+        subelem = self._capabilities.find(ns('Service/') + ns('responsibleParty'))
+        self.provider = ServiceProvider(subelem)
+
+        # serviceOperations metadata
+        self.operations = []
+        for elem in self._capabilities.find(ns('Capability/') + ns('Request'))[:]:
             self.operations.append(OperationMetadata(elem))
-          
-        #serviceContents metadata
-        self.contents={}
-        for elem in self._capabilities.findall(ns('ContentMetadata/')+ns('CoverageOfferingBrief')): 
-            cm=ContentMetadata(elem, self)
-            self.contents[cm.id]=cm
-        
-        #Some WCS servers (wrongly) advertise 'Content' OfferingBrief instead.
-        if self.contents=={}:
-            for elem in self._capabilities.findall(ns('ContentMetadata/')+ns('ContentOfferingBrief')): 
-                cm=ContentMetadata(elem, self)
-                self.contents[cm.id]=cm
-        
-        #exceptions
-        self.exceptions = [f.text for f \
-                in self._capabilities.findall('Capability/Exception/Format')]
-    
-    
+
+        # serviceContents metadata
+        self.contents = {}
+        for elem in self._capabilities.findall(
+            ns('ContentMetadata/') + ns('CoverageOfferingBrief')
+        ):
+            cm = ContentMetadata(elem, self)
+            self.contents[cm.id] = cm
+
+        # Some WCS servers (wrongly) advertise 'Content' OfferingBrief instead.
+        if self.contents == {}:
+            for elem in self._capabilities.findall(
+                ns('ContentMetadata/') + ns('ContentOfferingBrief')
+            ):
+                cm = ContentMetadata(elem, self)
+                self.contents[cm.id] = cm
+
+        # exceptions
+        self.exceptions = [f.text for f
+                           in self._capabilities.findall('Capability/Exception/Format')]
+
     def items(self):
         '''supports dict-like items() access'''
-        items=[]
+        items = []
         for item in self.contents:
-            items.append((item,self.contents[item]))
+            items.append((item, self.contents[item]))
         return items
-    
-    def __makeString(self,value):
-        #using repr unconditionally breaks things in some circumstances if a value is already a string
+
+    def __makeString(self, value):
+        # using repr unconditionally breaks things in some
+        # circumstances if a value is already a string
         if type(value) is not str:
-            sval=repr(value)
+            sval = repr(value)
         else:
             sval = value
         return sval
-  
-    def getCoverage(self, identifier=None, bbox=None, time=None, format = None,  crs=None, width=None, height=None, resx=None, resy=None, resz=None,parameter=None,method='Get',**kwargs):
+
+    def getCoverage(self, identifier=None, bbox=None, time=None,
+                    format=None, crs=None, width=None, height=None, resx=None, resy=None,
+                    resz=None, parameter=None, method='Get', **kwargs):
         """Request and return a coverage from the WCS as a file-like object
         note: additional **kwargs helps with multi-version implementation
         core keyword arguments should be supported cross version
         example:
-        cvg=wcs.getCoverage(identifier=['TuMYrRQ4'], timeSequence=['2792-06-01T00:00:00.0'], bbox=(-112,36,-106,41),format='cf-netcdf')
+        cvg=wcs.getCoverage(identifier=['TuMYrRQ4'], timeSequence=['2792-06-01T00:00:00.0'],
+            bbox=(-112,36,-106,41),format='cf-netcdf')
 
         is equivalent to:
         http://myhost/mywcs?SERVICE=WCS&REQUEST=GetCoverage&IDENTIFIER=TuMYrRQ4&VERSION=1.1.0&BOUNDINGBOX=-180,-90,180,90&TIME=2792-06-01T00:00:00.0&FORMAT=cf-netcdf
-           
+
         """
         if log.isEnabledFor(logging.DEBUG):
             log.debug('WCS 1.0.0 DEBUG: Parameters passed to GetCoverage: identifier=%s, bbox=%s, time=%s, format=%s, crs=%s, width=%s, height=%s, resx=%s, resy=%s, resz=%s, parameter=%s, method=%s, other_arguments=%s'%(identifier, bbox, time, format, crs, width, height, resx, resy, resz, parameter, method, str(kwargs)))
-                
+
         try:
-            base_url = next((m.get('url') for m in self.getOperationByName('GetCoverage').methods if m.get('type').lower() == method.lower()))
+            base_url = next(
+                (
+                    m.get('url') for m in self.getOperationByName('GetCoverage').methods
+                    if m.get('type').lower() == method.lower()
+                )
+            )
         except StopIteration:
             base_url = self.url
-        
+
         if log.isEnabledFor(logging.DEBUG):
-            log.debug('WCS 1.0.0 DEBUG: base url of server: %s'%base_url)
-        
-        #process kwargs
-        request = {'version': self.version, 'request': 'GetCoverage', 'service':'WCS'}
+            log.debug('WCS 1.0.0 DEBUG: base url of server: %s' % base_url)
+
+        # process kwargs
+        request = {'version': self.version, 'request': 'GetCoverage', 'service': 'WCS'}
         assert len(identifier) > 0
-        request['Coverage']=identifier
-        #request['identifier'] = ','.join(identifier)
+        request['Coverage'] = identifier
+        # request['identifier'] = ','.join(identifier)
         if bbox:
-            request['BBox']=','.join([self.__makeString(x) for x in bbox])
+            request['BBox'] = ','.join([self.__makeString(x) for x in bbox])
         else:
-            request['BBox']=None
+            request['BBox'] = None
         if time:
-            request['time']=','.join(time)
+            request['time'] = ','.join(time)
         if crs:
-            request['crs']=crs
-        request['format']=format
+            request['crs'] = crs
+        request['format'] = format
         if width:
-            request['width']=width
+            request['width'] = width
         if height:
-            request['height']=height
+            request['height'] = height
         if resx:
-            request['resx']=resx
+            request['resx'] = resx
         if resy:
-            request['resy']=resy
+            request['resy'] = resy
         if resz:
-            request['resz']=resz
-        
-        #anything else e.g. vendor specific parameters must go through kwargs
+            request['resz'] = resz
+
+        # anything else e.g. vendor specific parameters must go through kwargs
         if kwargs:
             for kw in kwargs:
-                request[kw]=kwargs[kw]
-        
-        #encode and request
+                request[kw] = kwargs[kw]
+
+        # encode and request
         data = urlencode(request)
         if log.isEnabledFor(logging.DEBUG):
-            log.debug('WCS 1.0.0 DEBUG: Second part of URL: %s'%data)
-        
-        
-        u=openURL(base_url, data, method, self.cookies)
+            log.debug('WCS 1.0.0 DEBUG: Second part of URL: %s' % data)
+
+        u = openURL(base_url, data, method, self.cookies)
 
         return u
-    
 
-               
     def getOperationByName(self, name):
         """Return a named operation item."""
         for item in self.operations:
@@ -172,51 +181,54 @@ class WebCoverageService_1_0_0(WCSBase):
 
 
 class OperationMetadata(object):
-    """Abstraction for WCS metadata.   
+    """Abstraction for WCS metadata.
     Implements IMetadata.
     """
     def __init__(self, elem):
         """."""
-        self.name = elem.tag.split('}')[1]          
-        
-        #self.formatOptions = [f.text for f in elem.findall('{http://www.opengis.net/wcs/1.1/ows}Parameter/{http://www.opengis.net/wcs/1.1/ows}AllowedValues/{http://www.opengis.net/wcs/1.1/ows}Value')]
+        self.name = elem.tag.split('}')[1]
+
+        # self.formatOptions = [f.text for f in elem.findall('{http://www.opengis.net/wcs/1.1/ows}Parameter/{http://www.opengis.net/wcs/1.1/ows}AllowedValues/{http://www.opengis.net/wcs/1.1/ows}Value')]
         self.methods = []
-        for resource in elem.findall(ns('DCPType/')+ns('HTTP/')+ns('Get/')+ns('OnlineResource')):
+        for resource in elem.findall(ns('DCPType/') + ns('HTTP/') + ns('Get/') + ns('OnlineResource')):
             url = resource.attrib['{http://www.w3.org/1999/xlink}href']
             self.methods.append({'type': 'Get', 'url': url})
-        for resource in elem.findall(ns('DCPType/')+ns('HTTP/')+ns('Post/')+ns('OnlineResource')):
+        for resource in elem.findall(ns('DCPType/') + ns('HTTP/') + ns('Post/') + ns('OnlineResource')):
             url = resource.attrib['{http://www.w3.org/1999/xlink}href']
             self.methods.append({'type': 'Post', 'url': url})
 
 
 class ServiceIdentification(object):
     """ Abstraction for ServiceIdentification metadata """
-    def __init__(self,elem):
-        # properties              
-        self.type='OGC:WCS'
-        self.version='1.0.0'
+    def __init__(self, elem):
+        # properties
+        self.type = 'OGC:WCS'
+        self.version = '1.0.0'
         self.service = testXMLValue(elem.find(ns('name')))
         self.abstract = testXMLValue(elem.find(ns('description')))
-        self.title = testXMLValue(elem.find(ns('label')))     
-        self.keywords = [f.text for f in elem.findall(ns('keywords')+'/'+ns('keyword'))]
-        #note: differs from 'rights' in interface
-        self.fees=elem.find(ns('fees')).text
-        self.accessconstraints=elem.find(ns('accessConstraints')).text
-       
+        self.title = testXMLValue(elem.find(ns('label')))
+        self.keywords = [f.text for f in elem.findall(ns('keywords') + '/' + ns('keyword'))]
+        # note: differs from 'rights' in interface
+        self.fees = elem.find(ns('fees')).text
+        self.accessconstraints = elem.find(ns('accessConstraints')).text
+
+
 class ServiceProvider(object):
-    """ Abstraction for WCS ResponsibleParty 
+    """ Abstraction for WCS ResponsibleParty
     Implements IServiceProvider"""
     def __init__(self,elem):
-        #it's not uncommon for the service provider info to be missing
-        #so handle case where None is passed in
+        # it's not uncommon for the service provider info to be missing
+        # so handle case where None is passed in
         if elem is None:
-            self.name=None
-            self.url=None
+            self.name = None
+            self.url = None
             self.contact = None
         else:
-            self.name=testXMLValue(elem.find(ns('organisationName')))
-            self.url=self.name #there is no definitive place for url  WCS, repeat organisationName
-            self.contact=ContactMetadata(elem)
+            self.name = testXMLValue(elem.find(ns('organisationName')))
+            # there is no definitive place for url  WCS, repeat organisationName
+            self.url = self.name
+            self.contact = ContactMetadata(elem)
+
 
 class ContactMetadata(object):
     ''' implements IContactMetadata'''
@@ -226,33 +238,46 @@ class ContactMetadata(object):
         except AttributeError:
             self.name = None
         try:
-            self.organization=elem.find(ns('organisationName')).text 
+            self.organization = elem.find(ns('organisationName')).text
         except AttributeError:
             self.organization = None
         try:
-            self.address = elem.find(ns('contactInfo')+'/'+ns('address')+'/'+ns('deliveryPoint')).text
+            self.address = elem.find(
+                ns('contactInfo') + '/' + ns('address') + '/' + ns('deliveryPoint')
+            ).text
         except AttributeError:
             self.address = None
         try:
-            self.city= elem.find(ns('contactInfo')+'/'+ns('address')+'/'+ns('city')).text
+            self.city = elem.find(
+                ns('contactInfo') + '/' + ns('address') + '/' + ns('city')
+            ).text
         except AttributeError:
             self.city = None
         try:
-            self.region=elem.find(ns('contactInfo')+'/'+ns('address')+'/'+ns('administrativeArea')).text
+            self.region = elem.find(
+                ns('contactInfo') + '/' + ns('address') + '/' + ns('administrativeArea')
+            ).text
         except AttributeError:
             self.region = None
         try:
-            self.postcode=elem.find(ns('contactInfo')+'/'+ns('address')+'/'+ns('postalCode')).text
+            self.postcode = elem.find(
+                ns('contactInfo') + '/' + ns('address') + '/' + ns('postalCode')
+            ).text
         except AttributeError:
-            self.postcode=None
+            self.postcode = None
         try:
-            self.country=elem.find(ns('contactInfo')+'/'+ns('address')+'/'+ns('country')).text
+            self.country = elem.find(
+                ns('contactInfo') + '/' + ns('address') + '/' + ns('country')
+            ).text
         except AttributeError:
             self.country = None
         try:
-            self.email=elem.find(ns('contactInfo')+'/'+ns('address')+'/'+ns('electronicMailAddress')).text
+            self.email = elem.find(
+                ns('contactInfo') + '/' + ns('address') + '/' + ns('electronicMailAddress')
+            ).text
         except AttributeError:
             self.email = None
+
 
 class ContentMetadata(object):
     """
@@ -260,32 +285,34 @@ class ContentMetadata(object):
     """
     def __init__(self, elem, service):
         """Initialize. service is required so that describeCoverage requests may be made"""
-        #TODO - examine the parent for bounding box info.
-        
-        #self._parent=parent
-        self._elem=elem
-        self._service=service
-        self.id=elem.find(ns('name')).text
-        self.title = testXMLValue(elem.find(ns('label')))
-        self.abstract= testXMLValue(elem.find(ns('description')))
-        self.keywords = [f.text for f in elem.findall(ns('keywords')+'/'+ns('keyword'))]        
-        self.boundingBox=None #needed for iContentMetadata harmonisation
-        self.boundingBoxWGS84 = None        
-        b = elem.find(ns('lonLatEnvelope')) 
-        if b is not None:
-            gmlpositions=b.findall('{http://www.opengis.net/gml}pos')
-            lc=gmlpositions[0].text
-            uc=gmlpositions[1].text
-            self.boundingBoxWGS84 = (
-                    float(lc.split()[0]),float(lc.split()[1]),
-                    float(uc.split()[0]), float(uc.split()[1]),
-                    )
-        #others not used but needed for iContentMetadata harmonisation
-        self.styles=None
-        self.crsOptions=None
-        self.defaulttimeposition=None
+        # TODO - examine the parent for bounding box info.
 
-    #grid is either a gml:Grid or a gml:RectifiedGrid if supplied as part of the DescribeCoverage response.
+        # self._parent=parent
+        self._elem = elem
+        self._service = service
+        self.id = elem.find(ns('name')).text
+        self.title = testXMLValue(elem.find(ns('label')))
+        self.abstract = testXMLValue(elem.find(ns('description')))
+        self.keywords = [f.text for f in elem.findall(ns('keywords') + '/' + ns('keyword'))]
+        self.boundingBox = None
+        self.boundingBoxWGS84 = None
+        b = elem.find(ns('lonLatEnvelope'))
+        if b is not None:
+            gmlpositions = b.findall('{http://www.opengis.net/gml}pos')
+            lc = gmlpositions[0].text
+            uc = gmlpositions[1].text
+            self.boundingBoxWGS84 = (
+                float(lc.split()[0]), float(lc.split()[1]),
+                float(uc.split()[0]), float(uc.split()[1]),
+            )
+
+        # others not used but needed for iContentMetadata harmonisation
+        self.styles = None
+        self.crsOptions = None
+        self.defaulttimeposition = None
+        self.attribution = None
+
+    # grid is either a gml:Grid or a gml:RectifiedGrid if supplied as part of the DescribeCoverage response.
     def _getGrid(self):
         if not hasattr(self, 'descCov'):
                 self.descCov=self._service.getDescribeCoverage(self.id)
