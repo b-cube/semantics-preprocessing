@@ -182,23 +182,36 @@ class OgcReader():
         return service
 
     def return_service_descriptors(self):
+        rights = [self.reader.identification.accessconstraints]
         try:
-            rights = self.reader.identification.accessconstraints
+            contact = [self.reader.provider.contact.name]
         except AttributeError:
-            rights = ''
-        try:
-            contact = self.reader.provider.contact.name
-        except AttributeError:
-            contact = ''
+            contact = []
 
-        return {
-            "title": self.reader.identification.title,
-            "abstract": self.reader.identification.abstract,
-            "subject": self.reader.identification.keywords,
-            "rights": rights,
-            "contact": contact,
-            "endpoints": self._get_operations()
+        abstract = [self.reader.identification.abstract]
+        keywords = self.reader.identification.keywords
+        endpoints = self._get_operations()
+
+        service = {
+            "title": [self.reader.identification.title],
         }
+
+        if rights:
+            service['rights'] = rights
+
+        if contact:
+            service['contact'] = contact
+
+        if abstract:
+            service['abstract'] = abstract
+
+        if keywords:
+            service['subject'] = keywords
+
+        if endpoints:
+            service['endpoints'] = endpoints
+
+        return endpoints
 
     def return_dataset_descriptors(self):
         '''

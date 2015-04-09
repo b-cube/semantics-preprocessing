@@ -254,18 +254,19 @@ class WebMapService_1_1_1(object):
     def getfeatureinfo(self):
         raise NotImplementedError
 
-    def getOperationByName(self, name): 
+    def getOperationByName(self, name):
         """Return a named content item."""
         for item in self.operations:
             if item.name == name:
                 return item
         raise KeyError("No operation named %s" % name)
-    
+
+
 class ServiceIdentification(object):
     ''' Implements IServiceIdentificationMetadata '''
-    
+
     def __init__(self, infoset, version):
-        self._root=infoset
+        self._root = infoset
         self.type = testXMLValue(self._root.find('Name'))
         self.version = version
         self.title = testXMLValue(self._root.find('Title'))
@@ -274,25 +275,26 @@ class ServiceIdentification(object):
         self.accessconstraints = testXMLValue(self._root.find('AccessConstraints'))
         self.fees = testXMLValue(self._root.find('Fees'))
 
+
 class ServiceProvider(object):
     ''' Implements IServiceProviderMetatdata '''
     def __init__(self, infoset):
-        self._root=infoset
-        name=self._root.find('ContactInformation/ContactPersonPrimary/ContactOrganization')
+        self._root = infoset
+        name = self._root.find('ContactInformation/ContactPersonPrimary/ContactOrganization')
         if name is not None:
-            self.name=name.text
+            self.name = name.text
         else:
-            self.name=None
-        self.url=self._root.find('OnlineResource').attrib.get('{http://www.w3.org/1999/xlink}href', '')
-        #contact metadata
+            self.name = None
+        self.url = self._root.find('OnlineResource').attrib.get('{http://www.w3.org/1999/xlink}href', '')
+        # contact metadata
         contact = self._root.find('ContactInformation')
-        ## sometimes there is a contact block that is empty, so make
-        ## sure there are children to parse
+        # sometimes there is a contact block that is empty, so make
+        # sure there are children to parse
         if contact is not None and contact[:] != []:
             self.contact = ContactMetadata(contact)
         else:
             self.contact = None
-            
+
     def getContentByName(self, name):
         """Return a named content item."""
         for item in self.contents:
@@ -305,8 +307,8 @@ class ServiceProvider(object):
         for item in self.operations:
             if item.name == name:
                 return item
-        raise KeyError("No operation named %s" % name)
-        
+
+
 class ContentMetadata:
     """
     Abstraction for WMS layer metadata.
@@ -316,13 +318,13 @@ class ContentMetadata:
     def __init__(self, elem, parent=None, index=0, parse_remote_metadata=False, timeout=30):
         if elem.tag != 'Layer':
             raise ValueError('%s should be a Layer' % (elem,))
-        
+
         self.parent = parent
         if parent:
             self.index = "%s.%d" % (parent.index, index)
         else:
             self.index = str(index)
-        
+
         self.id = self.name = testXMLValue(elem.find('Name'))
 
         # layer attributes

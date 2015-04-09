@@ -25,11 +25,11 @@ WFS_NAMESPACE = n.get_namespace("wfs")
 OGC_NAMESPACE = n.get_namespace("ogc")
 
 
-#TODO: use nspath in util.py
+# TODO: use nspath in util.py
 def nspath(path, ns=WFS_NAMESPACE):
     """
     Prefix the given path with the given namespace identifier.
-    
+
     Parameters
     ----------
     path : string
@@ -52,8 +52,8 @@ class WebFeatureService_1_0_0(object):
     Implements IWebFeatureService.
     """
     def __new__(self,url, version, xml, parse_remote_metadata=False, timeout=30):
-        """ overridden __new__ method 
-        
+        """ overridden __new__ method
+
         @type url: string
         @param url: url of WFS capabilities document
         @type xml: string
@@ -63,18 +63,17 @@ class WebFeatureService_1_0_0(object):
         @param timeout: time (in seconds) after which requests should timeout
         @return: initialized WebFeatureService_1_0_0 object
         """
-        obj=object.__new__(self)
+        obj = object.__new__(self)
         obj.__init__(url, version, xml, parse_remote_metadata, timeout)
         return obj
-    
-    def __getitem__(self,name):
+
+    def __getitem__(self, name):
         ''' check contents dictionary to allow dict like access to service layers'''
         if name in self.__getattribute__('contents').keys():
             return self.__getattribute__('contents')[name]
         else:
             raise KeyError("No content named %s" % name)
-    
-    
+
     def __init__(self, url, version, xml=None, parse_remote_metadata=False, timeout=30):
         """Initialize."""
         self.url = url
@@ -87,61 +86,61 @@ class WebFeatureService_1_0_0(object):
         else:
             self._capabilities = reader.read(self.url)
         self._buildMetadata(parse_remote_metadata)
-    
+
     def _buildMetadata(self, parse_remote_metadata=False):
         '''set up capabilities metadata objects: '''
-        
-        #serviceIdentification metadata
-        serviceelem=self._capabilities.find(nspath('Service'))
-        self.identification=ServiceIdentification(serviceelem, self.version)  
-    
-        #serviceProvider metadata
-        self.provider=ServiceProvider(serviceelem)   
-        
-        #serviceOperations metadata 
-        self.operations=[]
+
+        # serviceIdentification metadata
+        serviceelem = self._capabilities.find(nspath('Service'))
+        self.identification = ServiceIdentification(serviceelem, self.version)
+
+        # serviceProvider metadata
+        self.provider = ServiceProvider(serviceelem)
+
+        # serviceOperations metadata
+        self.operations = []
         for elem in self._capabilities.find(nspath('Capability/Request'))[:]:
             self.operations.append(OperationMetadata(elem))
-                   
-        #serviceContents metadata: our assumption is that services use a top-level 
-        #layer as a metadata organizer, nothing more. 
-        
-        self.contents={} 
-        featuretypelist=self._capabilities.find(nspath('FeatureTypeList'))
+
+        # serviceContents metadata: our assumption is that services use a top-level
+        # layer as a metadata organizer, nothing more.
+
+        self.contents = {}
+        featuretypelist = self._capabilities.find(nspath('FeatureTypeList'))
         features = self._capabilities.findall(nspath('FeatureTypeList/FeatureType'))
         for feature in features:
-            cm=ContentMetadata(feature, featuretypelist, parse_remote_metadata)
-            self.contents[cm.id]=cm       
-        
-        #exceptions
-        self.exceptions = [f.text for f \
-                in self._capabilities.findall('Capability/Exception/Format')]
-      
+            cm = ContentMetadata(feature, featuretypelist, parse_remote_metadata)
+            self.contents[cm.id] = cm
+
+        # exceptions
+        self.exceptions = [f.text for f
+                           in self._capabilities.findall('Capability/Exception/Format')]
+
     def getcapabilities(self):
-        """Request and return capabilities document from the WFS as a 
+        """Request and return capabilities document from the WFS as a
         file-like object.
         NOTE: this is effectively redundant now"""
         reader = WFSCapabilitiesReader(self.version)
         return urlopen(reader.capabilities_url(self.url), timeout=self.timeout)
-    
+
     def items(self):
         '''supports dict-like items() access'''
-        items=[]
+        items = []
         for item in self.contents:
-            items.append((item,self.contents[item]))
+            items.append((item, self.contents[item]))
         return items
-    
+
     def getfeature(self, typename=None, filter=None, bbox=None, featureid=None,
                    featureversion=None, propertyname=['*'], maxfeatures=None,
                    srsname=None, outputFormat=None, method='{http://www.opengis.net/wfs}Get',
                    startindex=None):
         """Request and return feature data as a file-like object.
-        
+
         Parameters
         ----------
         typename : list
             List of typenames (string)
-        filter : string 
+        filter : string
             XML-encoded OGC filter expression.
         bbox : tuple
             (left, bottom, right, top) in the feature type's coordinates.
@@ -162,7 +161,6 @@ class WebFeatureService_1_0_0(object):
         startindex: int (optional)
             Start position to return feature set (paging in combination with maxfeatures)
 
-            
         There are 3 different modes of use
 
         1) typename and bbox (simple spatial query)
@@ -170,7 +168,12 @@ class WebFeatureService_1_0_0(object):
         3) featureid (direct access to known features)
         """
         try:
-            base_url = next((m.get('url') for m in self.getOperationByName('GetFeature').methods if m.get('type').lower() == method.lower()))
+            base_url = next(
+                (
+                    m.get('url') for m in self.getOperationByName('GetFeature').methods
+                    if m.get('type').lower() == method.lower()
+                )
+            )
         except StopIteration:
             base_url = self.url
         request = {'service': 'WFS', 'version': self.version, 'request': 'GetFeature'}
@@ -182,18 +185,21 @@ class WebFeatureService_1_0_0(object):
             request['bbox'] = ','.join([repr(x) for x in bbox])
         elif filter and typename:
             request['filter'] = str(filter)
-        
+
         if srsname:
             request['srsname'] = str(srsname)
-            
+
         assert len(typename) > 0
         request['typename'] = ','.join(typename)
-        
+
         if propertyname:
             request['propertyname'] = ','.join(propertyname)
-        if featureversion: request['featureversion'] = str(featureversion)
-        if maxfeatures: request['maxfeatures'] = str(maxfeatures)
-        if startindex: request['startindex'] = str(startindex)
+        if featureversion:
+            request['featureversion'] = str(featureversion)
+        if maxfeatures:
+            request['maxfeatures'] = str(maxfeatures)
+        if startindex:
+            request['startindex'] = str(startindex)
 
         if outputFormat is not None:
             request["outputFormat"] = outputFormat
@@ -201,8 +207,7 @@ class WebFeatureService_1_0_0(object):
         data = urlencode(request)
         log.debug("Making request: %s?%s" % (base_url, data))
         u = openURL(base_url, data, method, timeout=self.timeout)
-        
-        
+
         # check for service exceptions, rewrap, and return
         # We're going to assume that anything with a content-length > 32k
         # is data. We'll check anything smaller.
@@ -214,7 +219,7 @@ class WebFeatureService_1_0_0(object):
             data = u.read()
             have_read = True
             length = len(data)
-     
+
         if length < 32000:
             if not have_read:
                 data = u.read()
@@ -242,11 +247,12 @@ class WebFeatureService_1_0_0(object):
                 return item
         raise KeyError("No operation named %s" % name)
 
+
 class ServiceIdentification(object):
     ''' Implements IServiceIdentificationMetadata '''
-    
+
     def __init__(self, infoset, version):
-        self._root=infoset
+        self._root = infoset
         self.type = testXMLValue(self._root.find(nspath('Name')))
         self.version = version
         self.title = testXMLValue(self._root.find(nspath('Title')))
@@ -254,6 +260,7 @@ class ServiceIdentification(object):
         self.keywords = [f.text for f in self._root.findall(nspath('Keywords'))]
         self.fees = testXMLValue(self._root.find(nspath('Fees')))
         self.accessconstraints = testXMLValue(self._root.find(nspath('AccessConstraints')))
+
 
 class ServiceProvider(object):
     ''' Implements IServiceProviderMetatdata '''
@@ -263,9 +270,13 @@ class ServiceProvider(object):
         self.url = testXMLValue(self._root.find(nspath('OnlineResource')))
         self.keywords = extract_xml_list(self._root.find(nspath('Keywords')))
 
+        # no contact info in this version of the spec
+        self.contact = None
+
+
 class ContentMetadata:
     """Abstraction for WFS metadata.
-    
+
     Implements IMetadata.
     """
 
@@ -277,33 +288,47 @@ class ContentMetadata:
         self.keywords = [f.text for f in elem.findall(nspath('Keywords'))]
 
         # bboxes
-        self.boundingBox = None
-        b = elem.find(nspath('BoundingBox'))
-        if b is not None:
-            self.boundingBox = (float(b.attrib['minx']),float(b.attrib['miny']),
-                    float(b.attrib['maxx']), float(b.attrib['maxy']),
-                    b.attrib['SRS'])
+        boxes = elem.findall('BoundingBox')
+        self.boundingBoxes = []
+        for b in boxes:
+            try:
+                # sometimes the SRS attribute is (wrongly) not provided
+                srs = b.attrib['SRS']
+            except KeyError:
+                srs = None
+            self.boundingBoxes.append((
+                float(b.attrib['minx']),
+                float(b.attrib['miny']),
+                float(b.attrib['maxx']),
+                float(b.attrib['maxy']),
+                srs,
+            ))
+
+        self.boundingBoxes = list(set(self.boundingBoxes))
+
         self.boundingBoxWGS84 = None
         b = elem.find(nspath('LatLongBoundingBox'))
         if b is not None:
             self.boundingBoxWGS84 = (
-                    float(b.attrib['minx']),float(b.attrib['miny']),
-                    float(b.attrib['maxx']), float(b.attrib['maxy']),
-                    )
+                float(b.attrib['minx']), float(b.attrib['miny']),
+                float(b.attrib['maxx']), float(b.attrib['maxy']),
+            )
         # crs options
-        self.crsOptions = [Crs(srs.text) for srs in elem.findall(nspath('SRS'))]
+        self.crsOptions = [str(Crs(srs.text)) for srs in elem.findall(nspath('SRS'))]
 
         # verbs
-        self.verbOptions = [op.tag for op \
-            in parent.findall(nspath('Operations/*'))]
-        self.verbOptions + [op.tag for op \
-            in elem.findall(nspath('Operations/*')) \
-            if op.tag not in self.verbOptions]
-        
-        #others not used but needed for iContentMetadata harmonisation
-        self.styles=None
-        self.timepositions=None
-        self.defaulttimeposition=None
+        self.verbOptions = [op.tag for op in parent.findall(nspath('Operations/*'))]
+        self.verbOptions + [
+            op.tag for op
+            in elem.findall(nspath('Operations/*'))
+            if op.tag not in self.verbOptions
+        ]
+
+        # others not used but needed for iContentMetadata harmonisation
+        self.styles = None
+        self.timepositions = None
+        self.defaulttimeposition = None
+        self.attribution = None
 
         # MetadataURLs
         self.metadataUrls = []

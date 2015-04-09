@@ -24,17 +24,19 @@ from bcube_owslib.feature import WebFeatureService_
 from bcube_owslib.namespaces import Namespaces
 from bcube_owslib.util import log
 
+
 def get_namespaces():
     n = Namespaces()
-    return n.get_namespaces(["gml","ogc","ows","wfs"])
+    return n.get_namespaces(["gml", "ogc", "ows", "wfs"])
 namespaces = get_namespaces()
+
 
 class WebFeatureService_1_1_0(WebFeatureService_):
     """Abstraction for OGC Web Feature Service (WFS).
 
     Implements IWebFeatureService.
     """
-    def __new__(self,url, version, xml, parse_remote_metadata=False, timeout=30):
+    def __new__(self, url, version, xml, parse_remote_metadata=False, timeout=30):
         """ overridden __new__ method
 
         @type url: string
@@ -46,17 +48,16 @@ class WebFeatureService_1_1_0(WebFeatureService_):
         @param timeout: time (in seconds) after which requests should timeout
         @return: initialized WebFeatureService_1_1_0 object
         """
-        obj=object.__new__(self)
+        obj = object.__new__(self)
         obj.__init__(url, version, xml, parse_remote_metadata, timeout)
         return obj
 
-    def __getitem__(self,name):
+    def __getitem__(self, name):
         ''' check contents dictionary to allow dict like access to service layers'''
         if name in self.__getattribute__('contents').keys():
             return self.__getattribute__('contents')[name]
         else:
             raise KeyError("No content named %s" % name)
-
 
     def __init__(self, url, version, xml=None, parse_remote_metadata=False, timeout=30):
         """Initialize."""
@@ -77,31 +78,35 @@ class WebFeatureService_1_1_0(WebFeatureService_):
 
         # ServiceIdentification
         val = self._capabilities.find(util.nspath_eval('ows:ServiceIdentification', namespaces))
-        self.identification=ServiceIdentification(val,self.owscommon.namespace)
+        self.identification = ServiceIdentification(val, self.owscommon.namespace)
         # ServiceProvider
         val = self._capabilities.find(util.nspath_eval('ows:ServiceProvider', namespaces))
-        self.provider=ServiceProvider(val,self.owscommon.namespace)
+        self.provider = ServiceProvider(val, self.owscommon.namespace)
         # ServiceOperations metadata
-        self.operations=[]
-        for elem in self._capabilities.findall(util.nspath_eval('ows:OperationsMetadata/ows:Operation', namespaces)):
+        self.operations = []
+        for elem in self._capabilities.findall(util.nspath_eval(
+            'ows:OperationsMetadata/ows:Operation', namespaces)
+        ):
             self.operations.append(OperationsMetadata(elem, self.owscommon.namespace))
 
         # FilterCapabilities
         val = self._capabilities.find(util.nspath_eval('ogc:Filter_Capabilities', namespaces))
-        self.filters=FilterCapabilities(val)
+        self.filters = FilterCapabilities(val)
 
-        #serviceContents metadata: our assumption is that services use a top-level
-        #layer as a metadata organizer, nothing more.
+        # serviceContents metadata: our assumption is that services use a top-level
+        # layer as a metadata organizer, nothing more.
 
-        self.contents={}
-        features = self._capabilities.findall(nspath_eval('wfs:FeatureTypeList/wfs:FeatureType', namespaces))
+        self.contents = {}
+        features = self._capabilities.findall(
+            nspath_eval('wfs:FeatureTypeList/wfs:FeatureType', namespaces)
+        )
         for feature in features:
-            cm=ContentMetadata(feature, parse_remote_metadata)
-            self.contents[cm.id]=cm
+            cm = ContentMetadata(feature, parse_remote_metadata)
+            self.contents[cm.id] = cm
 
-        #exceptions
-        self.exceptions = [f.text for f \
-                in self._capabilities.findall('Capability/Exception/Format')]
+        # exceptions
+        self.exceptions = [f.text for f
+                           in self._capabilities.findall('Capability/Exception/Format')]
 
     def getcapabilities(self):
         """Request and return capabilities document from the WFS as a
