@@ -117,9 +117,9 @@ class WebFeatureService_1_1_0(WebFeatureService_):
 
     def items(self):
         '''supports dict-like items() access'''
-        items=[]
+        items = []
         for item in self.contents:
-            items.append((item,self.contents[item]))
+            items.append((item, self.contents[item]))
         return items
 
     def getfeature(self, typename=None, filter=None, bbox=None, featureid=None,
@@ -161,7 +161,12 @@ class WebFeatureService_1_1_0(WebFeatureService_):
         3) featureid (direct access to known features)
         """
         try:
-            base_url = next((m.get('url') for m in self.getOperationByName('GetFeature').methods if m.get('type').lower() == method.lower()))
+            base_url = next(
+                (
+                    m.get('url') for m in self.getOperationByName('GetFeature').methods
+                    if m.get('type').lower() == method.lower()
+                )
+            )
         except StopIteration:
             base_url = self.url
         request = {'service': 'WFS', 'version': self.version, 'request': 'GetFeature'}
@@ -178,7 +183,9 @@ class WebFeatureService_1_1_0(WebFeatureService_):
                     request['srsname'] = srsnameobj.id
                 else:
                     options = ", ".join(map(lambda x: x.id, self.contents[typename[0]].crsOptions))
-                    raise ServiceException("SRSNAME %s not supported.  Options: %s" % (srsname, options))
+                    raise ServiceException(
+                        "SRSNAME %s not supported.  Options: %s" % (srsname, options)
+                    )
             else:
                 request['srsname'] = str(srsname)
 
@@ -254,7 +261,6 @@ class WebFeatureService_1_1_0(WebFeatureService_):
         raise KeyError("No operation named %s" % name)
 
 
-
 class ContentMetadata:
     """Abstraction for WFS metadata.
 
@@ -266,27 +272,53 @@ class ContentMetadata:
         self.id = testXMLValue(elem.find(nspath_eval('wfs:Name', namespaces)))
         self.title = testXMLValue(elem.find(nspath_eval('wfs:Title', namespaces)))
         self.abstract = testXMLValue(elem.find(nspath_eval('wfs:Abstract', namespaces)))
-        self.keywords = [f.text for f in elem.findall(nspath_eval('ows:Keywords/ows:Keyword', namespaces))]
+        self.keywords = [
+            f.text for f in elem.findall(nspath_eval('ows:Keywords/ows:Keyword', namespaces))
+        ]
+
+        boxes = elem.findall(nspath_eval('ows:BoundingBox', namespaces))
+        self.boundingBoxes = []
+        for b in boxes:
+            try:
+                # sometimes the SRS attribute is (wrongly) not provided
+                srs = b.attrib['SRS']
+            except KeyError:
+                srs = None
+            self.boundingBoxes.append((
+                float(b.attrib['minx']),
+                float(b.attrib['miny']),
+                float(b.attrib['maxx']),
+                float(b.attrib['maxy']),
+                srs,
+            ))
 
         # bbox
         self.boundingBoxWGS84 = None
-        b = BoundingBox(elem.find(nspath_eval('ows:WGS84BoundingBox', namespaces)), namespaces['ows'])
+        b = BoundingBox(
+            elem.find(nspath_eval('ows:WGS84BoundingBox', namespaces)), namespaces['ows']
+        )
         if b is not None:
             self.boundingBoxWGS84 = (
-                    float(b.minx), float(b.miny),
-                    float(b.maxx), float(b.maxy),
-                    )
+                float(b.minx), float(b.miny),
+                float(b.maxx), float(b.maxy),
+            )
         # crs options
-        self.crsOptions = [Crs(srs.text) for srs in elem.findall(nspath_eval('wfs:OtherSRS', namespaces))]
+        self.crsOptions = [
+            str(Crs(srs.text)) for srs in elem.findall(nspath_eval('wfs:OtherSRS', namespaces))
+        ]
         dsrs = testXMLValue(elem.find(nspath_eval('wfs:DefaultSRS', namespaces)))
         if dsrs is not None:  # first element is default srs
-            self.crsOptions.insert(0, Crs(dsrs))
+            self.crsOptions.insert(0, str(Crs(dsrs)))
 
         # verbs
-        self.verbOptions = [op.text for op in elem.findall(nspath_eval('wfs:Operations/wfs:Operation', namespaces))]
+        self.verbOptions = [
+            op.text for op in elem.findall(nspath_eval('wfs:Operations/wfs:Operation', namespaces))
+        ]
 
         # output formats
-        self.outputFormats = [op.text for op in elem.findall(nspath_eval('wfs:OutputFormats/wfs:Format', namespaces))]
+        self.outputFormats = [
+            op.text for op in elem.findall(nspath_eval('wfs:OutputFormats/wfs:Format', namespaces))
+        ]
 
         # MetadataURLs
         self.metadataUrls = []
@@ -311,10 +343,12 @@ class ContentMetadata:
 
             self.metadataUrls.append(metadataUrl)
 
-        #others not used but needed for iContentMetadata harmonisation
-        self.styles=None
-        self.timepositions=None
-        self.defaulttimeposition=None
+        # others not used but needed for iContentMetadata harmonisation
+        self.styles = None
+        self.timepositions = None
+        self.defaulttimeposition = None
+        self.attribution = None
+
 
 class WFSCapabilitiesReader(object):
     """Read and parse capabilities document into a lxml.etree infoset
@@ -368,4 +402,3 @@ class WFSCapabilitiesReader(object):
         if not isinstance(st, str):
             raise ValueError("String must be of type string, not %s" % type(st))
         return etree.fromstring(st)
-
