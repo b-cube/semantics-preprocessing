@@ -9,6 +9,6 @@ local/stanford*
 notebooks/lda/dictionaries/
 
 
-.ipynb_checkpoints/Untitled0-checkpoint.ipynb
+.ipynb_checkpoints
 
 notebooks/Untitled0.ipynb
