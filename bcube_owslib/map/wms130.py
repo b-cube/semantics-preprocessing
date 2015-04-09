@@ -338,26 +338,26 @@ class ContentMetadata:
         self.abstract = testXMLValue(elem.find(nspath('Abstract', WMS_NAMESPACE)))
 
         # bboxes
-        # TODO: LOOK UP AN ISSUE RE: not bboxES but just the one
-        #       and then don't do that
-        b = elem.find(nspath('BoundingBox', WMS_NAMESPACE))
-        self.boundingBox = None
-        if b is not None:
+        boxes = elem.findall(nspath('BoundingBox', WMS_NAMESPACE))
+        self.boundingBoxes = []
+        for b in boxes:
             try:
                 # sometimes the SRS attribute is (wrongly) not provided
                 srs = b.attrib['SRS']
             except KeyError:
                 srs = None
-            self.boundingBox = (
+            self.boundingBoxes.append((
                 float(b.attrib['minx']),
                 float(b.attrib['miny']),
                 float(b.attrib['maxx']),
                 float(b.attrib['maxy']),
                 srs,
-            )
-        elif self.parent:
+            ))
+        if self.parent:
             if hasattr(self.parent, 'boundingBox'):
-                self.boundingBox = self.parent.boundingBox
+                self.boundingBoxes.append(self.parent.boundingBox)
+
+        self.boundingBoxes = list(set(self.boundingBoxes))
 
         # ScaleHint
         sh = elem.find(nspath('ScaleHint', WMS_NAMESPACE))
@@ -367,8 +367,8 @@ class ContentMetadata:
                 self.scaleHint = {'min': sh.attrib['min'], 'max': sh.attrib['max']}
 
         attribution = elem.find(nspath('Attribution', WMS_NAMESPACE))
+        self.attribution = {}
         if attribution is not None:
-            self.attribution = dict()
             title = attribution.find(nspath('Title', WMS_NAMESPACE))
             url = attribution.find(nspath('OnlineResource', WMS_NAMESPACE))
             logo = attribution.find(nspath('LogoURL', WMS_NAMESPACE))
@@ -377,20 +377,25 @@ class ContentMetadata:
             if url is not None:
                 self.attribution['url'] = url.attrib['{http://www.w3.org/1999/xlink}href']
             if logo is not None:
-                self.attribution['logo_size'] = (int(logo.attrib['width']), int(logo.attrib['height']))
-                self.attribution['logo_url'] = logo.find(nspath('OnlineResource', WMS_NAMESPACE)).attrib['{http://www.w3.org/1999/xlink}href']
+                self.attribution['logo_size'] = (
+                    int(logo.attrib['width']),
+                    int(logo.attrib['height'])
+                )
+                self.attribution['logo_url'] = logo.find(
+                    nspath('OnlineResource', WMS_NAMESPACE)
+                ).attrib['{http://www.w3.org/1999/xlink}href']
 
         b = elem.find(nspath('EX_GeographicBoundingBox', WMS_NAMESPACE))
         if b is not None:
-            westBoundLongitude = b.find(nspath('westBoundLongitude', WMS_NAMESPACE))
-            eastBoundLongitude = b.find(nspath('eastBoundLongitude', WMS_NAMESPACE))
-            southBoundLatitude = b.find(nspath('southBoundLatitude', WMS_NAMESPACE))
-            northBoundLatitude = b.find(nspath('northBoundLatitude', WMS_NAMESPACE))
+            west_longitude = b.find(nspath('westBoundLongitude', WMS_NAMESPACE))
+            east_longitude = b.find(nspath('eastBoundLongitude', WMS_NAMESPACE))
+            south_latitude = b.find(nspath('southBoundLatitude', WMS_NAMESPACE))
+            north_latitude = b.find(nspath('northBoundLatitude', WMS_NAMESPACE))
             self.boundingBoxWGS84 = (
-                float(westBoundLongitude.text if westBoundLongitude is not None else ''),
-                float(southBoundLatitude.text if southBoundLatitude is not None else ''),
-                float(eastBoundLongitude.text if eastBoundLongitude is not None else ''),
-                float(northBoundLatitude.text if northBoundLatitude is not None else ''),
+                float(west_longitude.text if west_longitude is not None else ''),
+                float(south_latitude.text if south_latitude is not None else ''),
+                float(east_longitude.text if east_longitude is not None else ''),
+                float(north_latitude.text if north_latitude is not None else ''),
             )
         elif self.parent:
             self.boundingBoxWGS84 = self.parent.boundingBoxWGS84

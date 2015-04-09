@@ -177,8 +177,7 @@ class OgcReader():
         this is a little unnecessary
         '''
         service = {
-            "service": self.return_service_descriptors(),
-            "remainder": []
+            "service": self.return_service_descriptors()
         }
         return service
 
@@ -205,8 +204,51 @@ class OgcReader():
         '''
         from some content metadata object, get all of the
         layers/features/coverages
+
+        output:
+            name
+            title
+            srs
+            bounding boxes
+            wgs84 bbox
+
+            style
+
+            metadataurl (should be a relate)
+
+            elevation
+            time
+
+        note: the values are lists to handle other service responses
+              that may have multiple values for that element.
         '''
-        pass
+        datasets = []
+
+        for name, dataset in self.reader.contents.iteritems():
+            d = {}
+
+            d['name'] = name
+            if dataset.title:
+                d['title'] = [dataset.title]
+
+            if dataset.abstract:
+                d['abstract'] = [dataset.abstract]
+
+            if dataset.boundingBoxes:
+                d['bboxes'] = dataset.boundingBoxes
+
+            if dataset.boundingBoxWGS84:
+                d['bbox'] = [dataset.boundingBoxWGS84]
+
+            if dataset.crsOptions:
+                d['spatial_refs'] = dataset.crsOptions
+
+            if dataset.attribution:
+                d['rights'] = [dataset.attribution]
+
+            datasets.append(d)
+
+        return datasets
 
     def return_metadata_descriptors(self):
         '''

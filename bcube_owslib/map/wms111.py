@@ -340,46 +340,51 @@ class ContentMetadata:
             self.title = title.strip()
 
         self.abstract = testXMLValue(elem.find('Abstract'))
-        
+
         # bboxes
-        b = elem.find('BoundingBox')
-        self.boundingBox = None
-        if b is not None:
-            try: #sometimes the SRS attribute is (wrongly) not provided
-                srs=b.attrib['SRS']
+        boxes = elem.findall('BoundingBox')
+        self.boundingBoxes = []
+        for b in boxes:
+            try:
+                # sometimes the SRS attribute is (wrongly) not provided
+                srs = b.attrib['SRS']
             except KeyError:
-                srs=None
-            self.boundingBox = (
+                srs = None
+            self.boundingBoxes.append((
                 float(b.attrib['minx']),
                 float(b.attrib['miny']),
                 float(b.attrib['maxx']),
                 float(b.attrib['maxy']),
                 srs,
-                )
-        elif self.parent:
+            ))
+        if self.parent:
             if hasattr(self.parent, 'boundingBox'):
-                self.boundingBox = self.parent.boundingBox
+                self.boundingBoxes.append(self.parent.boundingBox)
 
-        # ScaleHint 
-        sh = elem.find('ScaleHint') 
-        self.scaleHint = None 
-        if sh is not None: 
+        # ScaleHint
+        sh = elem.find('ScaleHint')
+        self.scaleHint = None
+        if sh is not None:
             if 'min' in sh.attrib and 'max' in sh.attrib:
-                self.scaleHint = {'min': sh.attrib['min'], 'max': sh.attrib['max']} 
+                self.scaleHint = {'min': sh.attrib['min'], 'max': sh.attrib['max']}
 
         attribution = elem.find('Attribution')
+        self.attribution = {}
         if attribution is not None:
-            self.attribution = dict()
             title = attribution.find('Title')
             url = attribution.find('OnlineResource')
             logo = attribution.find('LogoURL')
-            if title is not None: 
+            if title is not None:
                 self.attribution['title'] = title.text
             if url is not None:
                 self.attribution['url'] = url.attrib['{http://www.w3.org/1999/xlink}href']
-            if logo is not None: 
-                self.attribution['logo_size'] = (int(logo.attrib['width']), int(logo.attrib['height']))
-                self.attribution['logo_url'] = logo.find('OnlineResource').attrib['{http://www.w3.org/1999/xlink}href']
+            if logo is not None:
+                self.attribution['logo_size'] = (
+                    int(logo.attrib['width']), int(logo.attrib['height'])
+                )
+                self.attribution['logo_url'] = logo.find(
+                    'OnlineResource'
+                ).attrib['{http://www.w3.org/1999/xlink}href']
 
         b = elem.find('LatLonBoundingBox')
         if b is not None:
@@ -393,25 +398,25 @@ class ContentMetadata:
             self.boundingBoxWGS84 = self.parent.boundingBoxWGS84
         else:
             self.boundingBoxWGS84 = None
-            
-        #SRS options
+
+        # SRS options
         self.crsOptions = []
-            
-        #Copy any parent SRS options (they are inheritable properties)
+
+        # Copy any parent SRS options (they are inheritable properties)
         if self.parent:
             self.crsOptions = list(self.parent.crsOptions)
 
-        #Look for SRS option attached to this layer
+        # Look for SRS option attached to this layer
         if elem.find('SRS') is not None:
-            ## some servers found in the wild use a single SRS
-            ## tag containing a whitespace separated list of SRIDs
-            ## instead of several SRS tags. hence the inner loop
+            # some servers found in the wild use a single SRS
+            # tag containing a whitespace separated list of SRIDs
+            # instead of several SRS tags. hence the inner loop
             for srslist in map(lambda x: x.text, elem.findall('SRS')):
                 if srslist:
                     for srs in srslist.split():
                         self.crsOptions.append(srs)
-                        
-        #Get rid of duplicate entries
+
+        # Get rid of duplicate entries
         self.crsOptions = list(set(self.crsOptions))
 
         #Set self.crsOptions to None if the layer (and parents) had no SRS options
