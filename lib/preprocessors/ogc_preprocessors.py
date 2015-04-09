@@ -117,6 +117,25 @@ class OgcReader():
 
             return defaults
 
+        def _return_parameter(param):
+            # return a parameter dict without empty values
+            parameter = {}
+            for key in ['name', 'type', 'format', 'values']:
+                if key in param and param[key]:
+                    parameter[key] = param[key]
+            return parameter
+
+        def _tidy_endpoint(endpoint):
+            # the perils of dict comprehensions
+            to_remove = []
+            for k, v in endpoint.iteritems():
+                if not v:
+                    to_remove.append(k)
+            for k in to_remove:
+                del endpoint[k]
+
+            return endpoint
+
         operations = []
         for o in self.reader.operations:
             # TODO: handle the differing formatOptions
@@ -137,24 +156,19 @@ class OgcReader():
             except AttributeError:
                 formats = []
 
-            endpoint = [
-                {
+            endpoints = [
+                _tidy_endpoint({
                     "name": o.name,
                     "type": m.get('type', ''),
                     "url": _append_params(m.get('url', ''), o.name),
                     "constraints": m.get('constraints', []),
                     "formats": formats,
                     "actionable": 1 if o.name == 'GetCapabilities' else 2,
-                    "parameters": [{
-                        "name": p.get('name', ''),
-                        "type": p.get('type', ''),
-                        "format": p.get('format', ''),
-                        "values": p.get('values', [])
-                    } for p in params]
-                } for m in o.methods
+                    "parameters": [_return_parameter(p) for p in params]
+                }) for m in o.methods
             ]
 
-            operations += endpoint
+            operations += endpoints
 
         return operations
 
