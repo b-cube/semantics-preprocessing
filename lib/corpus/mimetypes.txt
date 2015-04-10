@@ -26,6 +26,7 @@ application/vnd.ogc.sld+xml
 application/vnd.ogc.wcs_xml
 text/xml; subtype=gml/2.1.2
 text/xml; subtype=gml/3.1.1
+text/xml;subtype="sensorML/1.0.1"
 application/vnd.ogc.gml/3.1.1
 text/xml; subtype='om/1.0'
 application/vnd.ogc.gml

@@ -216,11 +216,13 @@ class SosObservationOffering(object):
         self._root = element
 
         self.id = testXMLValue(self._root.attrib.get(nspath_eval('gml:id', namespaces)), True)
-        self.description = testXMLValue(self._root.find(nspath_eval('gml:description', namespaces)))
+        self.abstract = testXMLValue(self._root.find(nspath_eval('gml:description', namespaces)))
         self.name = testXMLValue(self._root.find(nspath_eval('gml:name', namespaces)))
         val = testXMLValue(self._root.find(nspath_eval('gml:srsName', namespaces)))
         if val is not None:
             self.srs = Crs(val)
+
+        self.title = None
 
         # LOOK: Check on GML boundedBy to make sure we handle all of the cases
         # gml:boundedBy
