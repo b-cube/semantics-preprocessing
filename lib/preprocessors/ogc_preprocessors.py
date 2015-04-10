@@ -237,6 +237,9 @@ class OgcReader():
         '''
         datasets = []
 
+        if self.reader.contents is None:
+            return []
+
         for name, dataset in self.reader.contents.iteritems():
             d = {}
 

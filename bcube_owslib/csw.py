@@ -96,6 +96,9 @@ class CatalogueServiceWeb:
                 for elem in self._exml.findall(util.nspath_eval('ows:OperationsMetadata/ows:Operation', namespaces)):
                     self.operations.append(ows.OperationsMetadata(elem, self.owscommon.namespace))
 
+                # for harmonization
+                self.contents = None
+
                 # FilterCapabilities
                 val = self._exml.find(util.nspath_eval('ogc:Filter_Capabilities', namespaces))
                 self.filters=fes.FilterCapabilities(val)
