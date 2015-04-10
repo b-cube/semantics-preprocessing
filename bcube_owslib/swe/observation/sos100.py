@@ -2,20 +2,21 @@ from __future__ import (absolute_import, division, print_function)
 
 import cgi
 from bcube_owslib.etree import etree
-from datetime import datetime
 from urllib import urlencode
 from bcube_owslib import ows
 from bcube_owslib.crs import Crs
 from bcube_owslib.fes import FilterCapabilities
-from bcube_owslib.util import openURL, testXMLValue, nspath_eval, nspath, extract_time
+from bcube_owslib.util import openURL, testXMLValue, nspath_eval, extract_time
 from bcube_owslib.namespaces import Namespaces
+
 
 def get_namespaces():
     n = Namespaces()
-    ns = n.get_namespaces(["ogc","sml","gml","om","sos","swe","xlink"])
+    ns = n.get_namespaces(["ogc", "sml", "gml", "om", "sos", "swe", "xlink"])
     ns["ows"] = n.get_namespace("ows110")
     return ns
 namespaces = get_namespaces()
+
 
 class SensorObservationService_1_0_0(object):
     """
@@ -23,15 +24,15 @@ class SensorObservationService_1_0_0(object):
 
         Implements ISensorObservationService.
     """
-
-    def __new__(self,url, version, xml=None, username=None, password=None):
+    def __new__(self, url, version, xml=None, username=None, password=None):
         """overridden __new__ method"""
-        obj=object.__new__(self)
+        obj = object.__new__(self)
         obj.__init__(url, version, xml, username, password)
         return obj
 
-    def __getitem__(self,id):
-        ''' check contents dictionary to allow dict like access to service observational offerings'''
+    def __getitem__(self, id):
+        ''' check contents dictionary to allow dict like
+        access to service observational offerings'''
         if id in self.__getattribute__('contents').keys():
             return self.__getattribute__('contents')[id]
         else:
@@ -47,8 +48,8 @@ class SensorObservationService_1_0_0(object):
 
         # Authentication handled by Reader
         reader = SosCapabilitiesReader(
-                version=self.version, url=self.url, username=self.username, password=self.password
-                )
+            version=self.version, url=self.url, username=self.username, password=self.password
+        )
         if xml:  # read from stored xml
             self._capabilities = reader.read_string(xml)
         else:  # read from server
@@ -73,16 +74,21 @@ class SensorObservationService_1_0_0(object):
             Set up capabilities metadata objects
         """
         # ows:ServiceIdentification metadata
-        service_id_element = self._capabilities.find(nspath_eval('ows:ServiceIdentification', namespaces))
+        service_id_element = self._capabilities.find(
+            nspath_eval('ows:ServiceIdentification', namespaces)
+        )
         self.identification = ows.ServiceIdentification(service_id_element)
 
         # ows:ServiceProvider metadata
-        service_provider_element = self._capabilities.find(nspath_eval('ows:ServiceProvider', namespaces))
+        service_provider_element = self._capabilities.find(
+            nspath_eval('ows:ServiceProvider', namespaces)
+        )
         self.provider = ows.ServiceProvider(service_provider_element)
 
         # ows:OperationsMetadata metadata
-        self.operations=[]
-        for elem in self._capabilities.findall(nspath_eval('ows:OperationsMetadata/ows:Operation', namespaces)):
+        self.operations = []
+        for elem in self._capabilities.findall(
+                nspath_eval('ows:OperationsMetadata/ows:Operation', namespaces)):
             self.operations.append(ows.OperationsMetadata(elem))
 
         # sos:FilterCapabilities
@@ -95,18 +101,23 @@ class SensorObservationService_1_0_0(object):
         # sos:Contents metadata
         self.contents = {}
         self.offerings = []
-        for offering in self._capabilities.findall(nspath_eval('sos:Contents/sos:ObservationOfferingList/sos:ObservationOffering', namespaces)):
+        for offering in self._capabilities.findall(
+                nspath_eval('sos:Contents/sos:ObservationOfferingList/sos:ObservationOffering',
+                namespaces)):
             off = SosObservationOffering(offering)
             self.contents[off.id] = off
             self.offerings.append(off)
 
-    def describe_sensor(self,   outputFormat=None,
-                                procedure=None,
-                                method='Get',
-                                **kwargs):
+    def describe_sensor(self, outputFormat=None,
+                        procedure=None,
+                        method='Get',
+                        **kwargs):
 
         try:
-            base_url = next((m.get('url') for m in self.getOperationByName('DescribeSensor').methods if m.get('type').lower() == method.lower()))
+            base_url = next((
+                m.get('url') for m in self.getOperationByName('DescribeSensor').methods
+                if m.get('type').lower() == method.lower())
+            )
         except StopIteration:
             base_url = self.url
         request = {'service': 'SOS', 'version': self.version, 'request': 'DescribeSensor'}
@@ -120,19 +131,23 @@ class SensorObservationService_1_0_0(object):
 
         url_kwargs = {}
         if 'timeout' in kwargs:
-            url_kwargs['timeout'] = kwargs.pop('timeout') # Client specified timeout value
+            url_kwargs['timeout'] = kwargs.pop('timeout')  # Client specified timeout value
 
         # Optional Fields
         if kwargs:
             for kw in kwargs:
-                request[kw]=kwargs[kw]
+                request[kw] = kwargs[kw]
 
         data = urlencode(request)
 
-
-        response = openURL(base_url, data, method, username=self.username, password=self.password, **url_kwargs).read()
-
-
+        response = openURL(
+            base_url,
+            data,
+            method,
+            username=self.username,
+            password=self.password,
+            **url_kwargs
+        ).read()
 
         tr = etree.fromstring(response)
 
@@ -141,12 +156,12 @@ class SensorObservationService_1_0_0(object):
 
         return response
 
-    def get_observation(self,   responseFormat=None,
-                                offerings=None,
-                                observedProperties=None,
-                                eventTime=None,
-                                method='Get',
-                                **kwargs):
+    def get_observation(self, responseFormat=None,
+                        offerings=None,
+                        observedProperties=None,
+                        eventTime=None,
+                        method='Get',
+                        **kwargs):
         """
         Parameters
         ----------
@@ -158,7 +173,10 @@ class SensorObservationService_1_0_0(object):
             anything else e.g. vendor specific parameters
         """
         try:
-            base_url = next((m.get('url') for m in self.getOperationByName('GetObservation').methods if m.get('type').lower() == method.lower()))
+            base_url = next((
+                m.get('url') for m in self.getOperationByName('GetObservation').methods
+                if m.get('type').lower() == method.lower())
+            )
         except StopIteration:
             base_url = self.url
 
@@ -174,18 +192,17 @@ class SensorObservationService_1_0_0(object):
         assert isinstance(responseFormat, str)
         request['responseFormat'] = responseFormat
 
-
         # Optional Fields
         if eventTime is not None:
             request['eventTime'] = eventTime
 
         url_kwargs = {}
         if 'timeout' in kwargs:
-            url_kwargs['timeout'] = kwargs.pop('timeout') # Client specified timeout value
+            url_kwargs['timeout'] = kwargs.pop('timeout')  # Client specified timeout value
 
         if kwargs:
             for kw in kwargs:
-                request[kw]=kwargs[kw]
+                request[kw] = kwargs[kw]
 
         data = urlencode(request)
 
@@ -211,6 +228,8 @@ class SensorObservationService_1_0_0(object):
                 return item
         raise KeyError("No Operation named %s" % name)
 
+
+
 class SosObservationOffering(object):
     def __init__(self, element):
         self._root = element
@@ -222,44 +241,73 @@ class SosObservationOffering(object):
         if val is not None:
             self.srs = Crs(val)
 
+        # harmonization
         self.title = None
+        self.boundingBoxes = []
+        self.boundingBoxWGS84 = ()
+        self.crsOptions = []
+        self.attribution = None
 
         # LOOK: Check on GML boundedBy to make sure we handle all of the cases
         # gml:boundedBy
         try:
             envelope = self._root.find(nspath_eval('gml:boundedBy/gml:Envelope', namespaces))
-            lower_left_corner = testXMLValue(envelope.find(nspath_eval('gml:lowerCorner', namespaces))).split()
-            upper_right_corner = testXMLValue(envelope.find(nspath_eval('gml:upperCorner', namespaces))).split()
+            lower_left_corner = testXMLValue(
+                envelope.find(nspath_eval('gml:lowerCorner', namespaces))
+            ).split()
+            upper_right_corner = testXMLValue(
+                envelope.find(nspath_eval('gml:upperCorner', namespaces))
+            ).split()
             # (left, bottom, right, top) in self.bbox_srs units
-            self.bbox = (float(lower_left_corner[1]), float(lower_left_corner[0]), float(upper_right_corner[1]), float(upper_right_corner[0]))
+            self.bbox = (
+                float(lower_left_corner[1]),
+                float(lower_left_corner[0]),
+                float(upper_right_corner[1]),
+                float(upper_right_corner[0])
+            )
             self.bbox_srs = Crs(testXMLValue(envelope.attrib.get('srsName'), True))
         except Exception:
             self.bbox = None
             self.bbox_srs = None
 
+        if self.bbox_srs:
+            self.crsOptions.append(str(self.bbox_srs))
+
         # LOOK: Support all gml:TimeGeometricPrimitivePropertyType
         # Right now we are just supporting gml:TimePeriod
         # sos:Time
-        begin_position_element = self._root.find(nspath_eval('sos:time/gml:TimePeriod/gml:beginPosition', namespaces))
+        begin_position_element = self._root.find(
+            nspath_eval('sos:time/gml:TimePeriod/gml:beginPosition', namespaces)
+        )
         self.begin_position = extract_time(begin_position_element)
-        end_position_element = self._root.find(nspath_eval('sos:time/gml:TimePeriod/gml:endPosition', namespaces))
+        end_position_element = self._root.find(
+            nspath_eval('sos:time/gml:TimePeriod/gml:endPosition', namespaces)
+        )
         self.end_position = extract_time(end_position_element)
 
-        self.result_model = testXMLValue(self._root.find(nspath_eval('sos:resultModel', namespaces)))
+        self.result_model = testXMLValue(
+            self._root.find(nspath_eval('sos:resultModel', namespaces))
+        )
 
         self.procedures = []
         for proc in self._root.findall(nspath_eval('sos:procedure', namespaces)):
-            self.procedures.append(testXMLValue(proc.attrib.get(nspath_eval('xlink:href', namespaces)), True))
+            self.procedures.append(
+                testXMLValue(proc.attrib.get(nspath_eval('xlink:href', namespaces)), True)
+            )
 
         # LOOK: Support swe:Phenomenon here
         # this includes compound properties
         self.observed_properties = []
         for op in self._root.findall(nspath_eval('sos:observedProperty', namespaces)):
-            self.observed_properties.append(testXMLValue(op.attrib.get(nspath_eval('xlink:href', namespaces)), True))
+            self.observed_properties.append(
+                testXMLValue(op.attrib.get(nspath_eval('xlink:href', namespaces)), True)
+            )
 
         self.features_of_interest = []
         for fot in self._root.findall(nspath_eval('sos:featureOfInterest', namespaces)):
-            self.features_of_interest.append(testXMLValue(fot.attrib.get(nspath_eval('xlink:href', namespaces)), True))
+            self.features_of_interest.append(
+                testXMLValue(fot.attrib.get(nspath_eval('xlink:href', namespaces)), True)
+            )
 
         self.response_formats = []
         for rf in self._root.findall(nspath_eval('sos:responseFormat', namespaces)):
@@ -271,6 +319,7 @@ class SosObservationOffering(object):
 
     def __str__(self):
         return 'Offering id: %s, name: %s' % (self.id, self.name)
+
 
 class SosCapabilitiesReader(object):
     def __init__(self, version="1.0.0", url=None, username=None, password=None):

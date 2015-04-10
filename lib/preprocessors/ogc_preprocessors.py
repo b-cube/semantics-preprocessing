@@ -253,6 +253,13 @@ class OgcReader():
             if dataset.boundingBoxWGS84:
                 d['bbox'] = [dataset.boundingBoxWGS84]
 
+            try:
+                # for the sos
+                if dataset.bbox:
+                    d['bbox'] = [dataset.bbox]
+            except AttributeError:
+                pass
+
             if dataset.crsOptions:
                 d['spatial_refs'] = dataset.crsOptions
 
