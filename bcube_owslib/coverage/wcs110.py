@@ -21,7 +21,7 @@ from owslib.util import log
 
 
 def ns(tags):
-    """go by the tag name, no namspaces for future/version-proofing
+    """go by the tag name, no namespaces for future/version-proofing
     """
     return '/'.join(['*[local-name()="%s"]' % t if t not in ['*', '..', '.'] else t
                      for t in tags.split('/') if t])
@@ -95,7 +95,8 @@ class WebCoverageService_1_1_x(WCSBase):
         # serviceContents: our assumption is that services use a top-level layer
         # as a metadata organizer, nothing more.
         self.contents = {}
-        for elem in findall(self._capabilities, '/' + ns('*/Contents') + '//' + ns('CoverageSummary')):
+        for elem in findall(
+            self._capabilities, '/' + ns('*/Contents') + '//' + ns('CoverageSummary')):
             cm = ContentMetadata(elem, None, self)
             self.contents[cm.id] = cm
         # top = find(self._capabilities, ns('Contents/CoverageSummary'))
@@ -119,69 +120,100 @@ class WebCoverageService_1_1_x(WCSBase):
             items.append((item, self.contents[item]))
         return items
 
-
-    #TO DO: Handle rest of the  WCS 1.1.0 keyword parameters e.g. GridCRS etc. 
-    def getCoverage(self, identifier=None, bbox=None, time=None, format = None, store=False, rangesubset=None, gridbaseCRS=None, gridtype=None, gridCS=None, gridorigin=None, gridoffsets=None, method='Get',**kwargs):
+    # TODO: Handle rest of the  WCS 1.1.0 keyword parameters e.g. GridCRS etc.
+    def getCoverage(self,
+                    identifier=None,
+                    bbox=None,
+                    time=None,
+                    format=None,
+                    store=False,
+                    rangesubset=None,
+                    gridbaseCRS=None,
+                    gridtype=None,
+                    gridCS=None,
+                    gridorigin=None,
+                    gridoffsets=None,
+                    method='Get',
+                    **kwargs):
         """Request and return a coverage from the WCS as a file-like object
         note: additional **kwargs helps with multi-version implementation
         core keyword arguments should be supported cross version
         example:
-        cvg=wcs.getCoverageRequest(identifier=['TuMYrRQ4'], time=['2792-06-01T00:00:00.0'], bbox=(-112,36,-106,41),format='application/netcdf', store='true')
+        cvg=wcs.getCoverageRequest(identifier=['TuMYrRQ4'], time=['2792-06-01T00:00:00.0'],
+            bbox=(-112,36,-106,41),format='application/netcdf', store='true')
 
         is equivalent to:
-        http://myhost/mywcs?SERVICE=WCS&REQUEST=GetCoverage&IDENTIFIER=TuMYrRQ4&VERSION=1.1.0&BOUNDINGBOX=-180,-90,180,90&TIMESEQUENCE=2792-06-01T00:00:00.0&FORMAT=application/netcdf
-        
+        http://myhost/mywcs?SERVICE=WCS&REQUEST=GetCoverage&IDENTIFIER=TuMYrRQ4&VERSION=1.1.0&BOUNDINGBOX=
+                -180,-90,180,90&TIMESEQUENCE=2792-06-01T00:00:00.0&FORMAT=application/netcdf
+
         if store = true, returns a coverages XML file
         if store = false, returns a multipart mime
         """
         if log.isEnabledFor(logging.DEBUG):
-            log.debug('WCS 1.1.0 DEBUG: Parameters passed to GetCoverage: identifier=%s, bbox=%s, time=%s, format=%s, rangesubset=%s, gridbaseCRS=%s, gridtype=%s, gridCS=%s, gridorigin=%s, gridoffsets=%s, method=%s, other_arguments=%s'%(identifier, bbox, time, format, rangesubset, gridbaseCRS, gridtype, gridCS, gridorigin, gridoffsets, method, str(kwargs)))
-        
+            log.debug('''WCS 1.1.0 DEBUG: Parameters passed to GetCoverage: identifier=%s, bbox=%s,
+                time=%s, format=%s, rangesubset=%s, gridbaseCRS=%s, gridtype=%s, gridCS=%s,
+                gridorigin=%s, gridoffsets=%s, method=%s, other_arguments=%s''' % (
+                identifier,
+                bbox,
+                time,
+                format,
+                rangesubset,
+                gridbaseCRS,
+                gridtype,
+                gridCS,
+                gridorigin,
+                gridoffsets,
+                method,
+                str(kwargs)
+            ))
+
         if method == 'Get':
-            method='{http://www.opengis.net/wcs/1.1/ows}Get'
+            method = '{http://www.opengis.net/wcs/1.1/ows}Get'
         try:
-            base_url = next((m.get('url') for m in self.getOperationByName('GetCoverage').methods if m.get('type').lower() == method.lower()))
+            base_url = next(
+                (m.get('url') for m in self.getOperationByName('GetCoverage').methods
+                    if m.get('type').lower() == method.lower())
+            )
         except StopIteration:
             base_url = self.url
 
-
-        #process kwargs
-        request = {'version': self.version, 'request': 'GetCoverage', 'service':'WCS'}
+        # process kwargs
+        request = {'version': self.version, 'request': 'GetCoverage', 'service': 'WCS'}
         assert len(identifier) > 0
-        request['identifier']=identifier
-        #request['identifier'] = ','.join(identifier)
+        request['identifier'] = identifier
+        # request['identifier'] = ','.join(identifier)
         if bbox:
-            request['boundingbox']=','.join([repr(x) for x in bbox])
+            request['boundingbox'] = ','.join([repr(x) for x in bbox])
         if time:
-            request['timesequence']=','.join(time)
-        request['format']=format
-        request['store']=store
-        
-        #rangesubset: untested - require a server implementation
+            request['timesequence'] = ','.join(time)
+        request['format'] = format
+        request['store'] = store
+
+        # rangesubset: untested - require a server implementation
         if rangesubset:
-            request['RangeSubset']=rangesubset
-        
-        #GridCRS structure: untested - require a server implementation
+            request['RangeSubset'] = rangesubset
+
+        # GridCRS structure: untested - require a server implementation
         if gridbaseCRS:
-            request['gridbaseCRS']=gridbaseCRS
+            request['gridbaseCRS'] = gridbaseCRS
         if gridtype:
-            request['gridtype']=gridtype
+            request['gridtype'] = gridtype
         if gridCS:
-            request['gridCS']=gridCS
+            request['gridCS'] = gridCS
         if gridorigin:
-            request['gridorigin']=gridorigin
+            request['gridorigin'] = gridorigin
         if gridoffsets:
-            request['gridoffsets']=gridoffsets
-       
-       #anything else e.g. vendor specific parameters must go through kwargs
+            request['gridoffsets'] = gridoffsets
+
+        # anything else e.g. vendor specific parameters must go through kwargs
         if kwargs:
             for kw in kwargs:
-                request[kw]=kwargs[kw]
-        
-        #encode and request
+                request[kw] = kwargs[kw]
+
+        # encode and request
         data = urlencode(request)
-        
-        u=openURL(base_url, data, method, self.cookies)
+
+        u = openURL(base_url, data, method, self.cookies)
         return u
 
     def getOperationByName(self, name):
@@ -250,17 +282,17 @@ class ServiceIdentification(object):
 
 
 class ServiceProvider(object):
-    """ Abstraction for ServiceProvider metadata 
+    """ Abstraction for ServiceProvider metadata
     implements IServiceProviderMetadata """
-    def __init__(self,elem):
-        name=elem.find('{http://www.opengis.net/ows}ProviderName')
+    def __init__(self, elem):
+        name = elem.find('{http://www.opengis.net/ows}ProviderName')
         if name is not None:
-            self.name=name.text
+            self.name = name.text
         else:
-            self.name=None
-        #self.contact=ServiceContact(elem.find('{http://www.opengis.net/ows}ServiceContact'))
-        self.contact =ContactMetadata(elem)
-        self.url=self.name # no obvious definitive place for url in wcs, repeat provider name?
+            self.name = None
+        # self.contact=ServiceContact(elem.find('{http://www.opengis.net/ows}ServiceContact'))
+        self.contact = ContactMetadata(elem)
+        self.url = self.name  # no obvious definitive place for url in wcs, repeat provider name?
 
 
 class ContactMetadata(object):
@@ -307,9 +339,15 @@ class ContentMetadata(object):
         self._elem = elem
 
         # find returns the first item so we should be good here
-        self.id = testXMLValue(find(elem, '*[local-name()="Identifier"] | ../*[local-name()="Identifier"]'))
-        self.abstract = testXMLValue(find(elem, '*[local-name()="Abstract"] | ../*[local-name()="Abstract"]'))
-        self.title = testXMLValue(find(elem, '*[local-name()="Title"] | ../*[local-name()="Title"]'))
+        self.id = testXMLValue(
+            find(elem, '*[local-name()="Identifier"] | ../*[local-name()="Identifier"]')
+        )
+        self.abstract = testXMLValue(
+            find(elem, '*[local-name()="Abstract"] | ../*[local-name()="Abstract"]')
+        )
+        self.title = testXMLValue(
+            find(elem, '*[local-name()="Title"] | ../*[local-name()="Title"]')
+        )
 
         # get the ancestors related to nested CoverageSummary elems and the local keywords
         tags = [elem.tag] + [e.tag for e in elem.iterancestors() if e.tag in ['CoverageSummary']]
@@ -317,7 +355,6 @@ class ContentMetadata(object):
                   for i in xrange(len(tags))]
         self.keywords = [k.text for k in findall(elem, ' | '.join(xpaths))] if xpaths else []
 
-        self.boundingBox = None  # needed for iContentMetadata harmonisation
         self.boundingBoxWGS84 = None
         b = find(elem, ns('WGS84BoundingBox'))
         if b is not None:
@@ -329,7 +366,7 @@ class ContentMetadata(object):
             )
 
         # bboxes - other CRS
-        self.boundingboxes = []
+        self.boundingBoxes = []
         for bbox in findall(elem, ns('BoundingBox')):
             if bbox is not None:
                 try:
@@ -340,13 +377,14 @@ class ContentMetadata(object):
                         float(uc.split()[0]), float(uc.split()[1]),
                         b.attrib['crs']
                     )
-                    self.boundingboxes.append(boundingBox)
+                    self.boundingBoxes.append(boundingBox)
                 except:
                     pass
 
         # others not used but needed for iContentMetadata harmonisation
         self.styles = None
         self.crsOptions = None
+        self.attribution = None
 
         # SupportedCRS
         self.supportedCRS = []
@@ -358,25 +396,30 @@ class ContentMetadata(object):
         for format in findall(elem, ns('SupportedFormat')):
             self.supportedFormats.append(format.text)
 
-    # grid is either a gml:Grid or a gml:RectifiedGrid if supplied as part of the DescribeCoverage response.
+    # grid is either a gml:Grid or a gml:RectifiedGrid if supplied
+    # as part of the DescribeCoverage response.
     def _getGrid(self):
-        grid=None
-        #TODO- convert this to 1.1 from 1.0
-        #if not hasattr(self, 'descCov'):
-                #self.descCov=self._service.getDescribeCoverage(self.id)
-        #gridelem= self.descCov.find(ns('CoverageOffering/')+ns('domainSet/')+ns('spatialDomain/')+'{http://www.opengis.net/gml}RectifiedGrid')
-        #if gridelem is not None:
-            #grid=RectifiedGrid(gridelem)
-        #else:
-            #gridelem=self.descCov.find(ns('CoverageOffering/')+ns('domainSet/')+ns('spatialDomain/')+'{http://www.opengis.net/gml}Grid')
-            #grid=Grid(gridelem)
+        grid = None
+        # TODO- convert this to 1.1 from 1.0
+        # if not hasattr(self, 'descCov'):
+        #   self.descCov=self._service.getDescribeCoverage(self.id)
+        # gridelem= self.descCov.find(
+        #    ns('CoverageOffering/')+ns('domainSet/')+ns('spatialDomain/')+'{http://www.opengis.net/gml}RectifiedGrid')
+        # if gridelem is not None:
+        #   grid=RectifiedGrid(gridelem)
+        # else:
+        #    gridelem=self.descCov.find(
+        #    ns('CoverageOffering/')+ns('domainSet/')+ns('spatialDomain/')+'{http://www.opengis.net/gml}Grid')
+        #    grid=Grid(gridelem)
         return grid
     grid = property(_getGrid, None)
 
     # time limits/postions require a describeCoverage request therefore only resolve when requested
     def _getTimeLimits(self):
         timelimits = []
-        for elem in findall(self._service.getDescribeCoverage(self.id), ns('CoverageDescription/Domain/TemporalDomain/TimePeriod')):
+        for elem in findall(
+            self._service.getDescribeCoverage(self.id),
+                ns('CoverageDescription/Domain/TemporalDomain/TimePeriod')):
             subelems = elem.getchildren()
             timelimits = [subelems[0].text, subelems[1].text]
         return timelimits

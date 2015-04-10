@@ -118,7 +118,24 @@ class WebCoverageService_1_0_0(WCSBase):
 
         """
         if log.isEnabledFor(logging.DEBUG):
-            log.debug('WCS 1.0.0 DEBUG: Parameters passed to GetCoverage: identifier=%s, bbox=%s, time=%s, format=%s, crs=%s, width=%s, height=%s, resx=%s, resy=%s, resz=%s, parameter=%s, method=%s, other_arguments=%s'%(identifier, bbox, time, format, crs, width, height, resx, resy, resz, parameter, method, str(kwargs)))
+            log.debug('''WCS 1.0.0 DEBUG: Parameters passed to GetCoverage: identifier=%s, bbox=%s,
+                time=%s, format=%s, crs=%s, width=%s, height=%s, resx=%s, resy=%s, resz=%s,
+                parameter=%s, method=%s, other_arguments=%s''' % (
+                    identifier,
+                    bbox,
+                    time,
+                    format,
+                    crs,
+                    width,
+                    height,
+                    resx,
+                    resy,
+                    resz,
+                    parameter,
+                    method,
+                    str(kwargs)
+                )
+            )
 
         try:
             base_url = next(
@@ -188,12 +205,15 @@ class OperationMetadata(object):
         """."""
         self.name = elem.tag.split('}')[1]
 
-        # self.formatOptions = [f.text for f in elem.findall('{http://www.opengis.net/wcs/1.1/ows}Parameter/{http://www.opengis.net/wcs/1.1/ows}AllowedValues/{http://www.opengis.net/wcs/1.1/ows}Value')]
+        # self.formatOptions = [f.text for f in elem.findall('{http://www.opengis.net/wcs/1.1/ows}
+        #    Parameter/{http://www.opengis.net/wcs/1.1/ows}AllowedValues/{http://www.opengis.net/wcs/1.1/ows}Value')]
         self.methods = []
-        for resource in elem.findall(ns('DCPType/') + ns('HTTP/') + ns('Get/') + ns('OnlineResource')):
+        for resource in elem.findall(
+            ns('DCPType/') + ns('HTTP/') + ns('Get/') + ns('OnlineResource')):
             url = resource.attrib['{http://www.w3.org/1999/xlink}href']
             self.methods.append({'type': 'Get', 'url': url})
-        for resource in elem.findall(ns('DCPType/') + ns('HTTP/') + ns('Post/') + ns('OnlineResource')):
+        for resource in elem.findall(
+            ns('DCPType/') + ns('HTTP/') + ns('Post/') + ns('OnlineResource')):
             url = resource.attrib['{http://www.w3.org/1999/xlink}href']
             self.methods.append({'type': 'Post', 'url': url})
 
@@ -216,7 +236,7 @@ class ServiceIdentification(object):
 class ServiceProvider(object):
     """ Abstraction for WCS ResponsibleParty
     Implements IServiceProvider"""
-    def __init__(self,elem):
+    def __init__(self, elem):
         # it's not uncommon for the service provider info to be missing
         # so handle case where None is passed in
         if elem is None:
@@ -294,7 +314,7 @@ class ContentMetadata(object):
         self.title = testXMLValue(elem.find(ns('label')))
         self.abstract = testXMLValue(elem.find(ns('description')))
         self.keywords = [f.text for f in elem.findall(ns('keywords') + '/' + ns('keyword'))]
-        self.boundingBox = None
+        self.boundingBoxes = None
         self.boundingBoxWGS84 = None
         b = elem.find(ns('lonLatEnvelope'))
         if b is not None:
@@ -312,138 +332,179 @@ class ContentMetadata(object):
         self.defaulttimeposition = None
         self.attribution = None
 
-    # grid is either a gml:Grid or a gml:RectifiedGrid if supplied as part of the DescribeCoverage response.
+    # grid is either a gml:Grid or a gml:RectifiedGrid if supplied
+    # as part of the DescribeCoverage response.
     def _getGrid(self):
         if not hasattr(self, 'descCov'):
-                self.descCov=self._service.getDescribeCoverage(self.id)
-        gridelem= self.descCov.find(ns('CoverageOffering/')+ns('domainSet/')+ns('spatialDomain/')+'{http://www.opengis.net/gml}RectifiedGrid')
+                self.descCov = self._service.getDescribeCoverage(self.id)
+        gridelem = self.descCov.find(
+            ns('CoverageOffering/') +
+            ns('domainSet/') + ns('spatialDomain/') +
+            '{http://www.opengis.net/gml}RectifiedGrid'
+        )
         if gridelem is not None:
-            grid=RectifiedGrid(gridelem)
+            grid = RectifiedGrid(gridelem)
         else:
-            gridelem=self.descCov.find(ns('CoverageOffering/')+ns('domainSet/')+ns('spatialDomain/')+'{http://www.opengis.net/gml}Grid')
-            grid=Grid(gridelem)
+            gridelem = self.descCov.find(
+                ns('CoverageOffering/') +
+                ns('domainSet/') +
+                ns('spatialDomain/') +
+                '{http://www.opengis.net/gml}Grid'
+            )
+            grid = Grid(gridelem)
         return grid
-    grid=property(_getGrid, None)
-        
-     #timelimits are the start/end times, timepositions are all timepoints. WCS servers can declare one or both or neither of these.
+    grid = property(_getGrid, None)
+
+    # timelimits are the start/end times, timepositions are all timepoints.
+    # WCS servers can declare one or both or neither of these.
     def _getTimeLimits(self):
-        timepoints, timelimits=[],[]
-        b=self._elem.find(ns('lonLatEnvelope'))
+        timepoints, timelimits = [], []
+        b = self._elem.find(ns('lonLatEnvelope'))
         if b is not None:
-            timepoints=b.findall('{http://www.opengis.net/gml}timePosition')
+            timepoints = b.findall('{http://www.opengis.net/gml}timePosition')
         else:
-            #have to make a describeCoverage request...
+            # have to make a describeCoverage request...
             if not hasattr(self, 'descCov'):
-                self.descCov=self._service.getDescribeCoverage(self.id)
-            for pos in self.descCov.findall(ns('CoverageOffering/')+ns('domainSet/')+ns('temporalDomain/')+'{http://www.opengis.net/gml}timePosition'):
+                self.descCov = self._service.getDescribeCoverage(self.id)
+            for pos in self.descCov.findall(
+                ns('CoverageOffering/') +
+                ns('domainSet/') +
+                ns('temporalDomain/') +
+                '{http://www.opengis.net/gml}timePosition'
+            ):
                 timepoints.append(pos)
         if timepoints:
-                timelimits=[timepoints[0].text,timepoints[1].text]
+                timelimits = [timepoints[0].text, timepoints[1].text]
         return timelimits
-    timelimits=property(_getTimeLimits, None)   
-    
+    timelimits = property(_getTimeLimits, None)
+
     def _getTimePositions(self):
-        timepositions=[]
+        timepositions = []
         if not hasattr(self, 'descCov'):
-            self.descCov=self._service.getDescribeCoverage(self.id)
-        for pos in self.descCov.findall(ns('CoverageOffering/')+ns('domainSet/')+ns('temporalDomain/')+'{http://www.opengis.net/gml}timePosition'):
+            self.descCov = self._service.getDescribeCoverage(self.id)
+        for pos in self.descCov.findall(
+            ns('CoverageOffering/') +
+            ns('domainSet/') +
+            ns('temporalDomain/') +
+            '{http://www.opengis.net/gml}timePosition'):
                 timepositions.append(pos.text)
         return timepositions
-    timepositions=property(_getTimePositions, None)
-           
-            
+    timepositions = property(_getTimePositions, None)
+
     def _getOtherBoundingBoxes(self):
         ''' incomplete, should return other bounding boxes not in WGS84
             #TODO: find any other bounding boxes. Need to check for gml:EnvelopeWithTimePeriod.'''
 
-        bboxes=[]
+        bboxes = []
 
         if not hasattr(self, 'descCov'):
-            self.descCov=self._service.getDescribeCoverage(self.id)
+            self.descCov = self._service.getDescribeCoverage(self.id)
 
-        for envelope in self.descCov.findall(ns('CoverageOffering/')+ns('domainSet/')+ns('spatialDomain/')+'{http://www.opengis.net/gml}Envelope'):
+        for envelope in self.descCov.findall(
+            ns('CoverageOffering/') +
+            ns('domainSet/') +
+            ns('spatialDomain/') +
+            '{http://www.opengis.net/gml}Envelope'):
             bbox = {}
             bbox['nativeSrs'] = envelope.attrib['srsName']
             gmlpositions = envelope.findall('{http://www.opengis.net/gml}pos')
-            lc=gmlpositions[0].text.split()
-            uc=gmlpositions[1].text.split()
+            lc = gmlpositions[0].text.split()
+            uc = gmlpositions[1].text.split()
             bbox['bbox'] = (
-                float(lc[0]),float(lc[1]),
+                float(lc[0]), float(lc[1]),
                 float(uc[0]), float(uc[1])
             )
             bboxes.append(bbox)
 
-        return bboxes        
-    boundingboxes=property(_getOtherBoundingBoxes,None)
-    
+        return bboxes
+    boundingboxes = property(_getOtherBoundingBoxes, None)
+
     def _getSupportedCRSProperty(self):
         # gets supported crs info
-        crss=[]
-        for elem in self._service.getDescribeCoverage(self.id).findall(ns('CoverageOffering/')+ns('supportedCRSs/')+ns('responseCRSs')):
+        crss = []
+        for elem in self._service.getDescribeCoverage(self.id).findall(
+            ns('CoverageOffering/') + ns('supportedCRSs/') + ns('responseCRSs')):
             for crs in elem.text.split(' '):
                 crss.append(Crs(crs))
-        for elem in self._service.getDescribeCoverage(self.id).findall(ns('CoverageOffering/')+ns('supportedCRSs/')+ns('requestResponseCRSs')):
+        for elem in self._service.getDescribeCoverage(self.id).findall(
+            ns('CoverageOffering/') + ns('supportedCRSs/') + ns('requestResponseCRSs')):
             for crs in elem.text.split(' '):
                 crss.append(Crs(crs))
-        for elem in self._service.getDescribeCoverage(self.id).findall(ns('CoverageOffering/')+ns('supportedCRSs/')+ns('nativeCRSs')):
+        for elem in self._service.getDescribeCoverage(self.id).findall(
+            ns('CoverageOffering/') + ns('supportedCRSs/') + ns('nativeCRSs')):
             for crs in elem.text.split(' '):
                 crss.append(Crs(crs))
         return crss
-    supportedCRS=property(_getSupportedCRSProperty, None)
-       
-       
+    supportedCRS = property(_getSupportedCRSProperty, None)
+
     def _getSupportedFormatsProperty(self):
         # gets supported formats info
-        frmts =[]
-        for elem in self._service.getDescribeCoverage(self.id).findall(ns('CoverageOffering/')+ns('supportedFormats/')+ns('formats')):
+        frmts = []
+        for elem in self._service.getDescribeCoverage(self.id).findall(
+            ns('CoverageOffering/') + ns('supportedFormats/') + ns('formats')):
             frmts.append(elem.text)
         return frmts
-    supportedFormats=property(_getSupportedFormatsProperty, None)
-    
+    supportedFormats = property(_getSupportedFormatsProperty, None)
+
     def _getAxisDescriptionsProperty(self):
-        #gets any axis descriptions contained in the rangeset (requires a DescribeCoverage call to server).
-        axisDescs =[]
-        for elem in self._service.getDescribeCoverage(self.id).findall(ns('CoverageOffering/')+ns('rangeSet/')+ns('RangeSet/')+ns('axisDescription/')+ns('AxisDescription')):
-            axisDescs.append(AxisDescription(elem)) #create a 'AxisDescription' object.
+        # gets any axis descriptions contained in the rangeset
+        # (requires a DescribeCoverage call to server).
+        axisDescs = []
+        for elem in self._service.getDescribeCoverage(self.id).findall(
+            ns('CoverageOffering/') +
+            ns('rangeSet/') +
+            ns('RangeSet/') +
+            ns('axisDescription/') +
+            ns('AxisDescription')):
+            axisDescs.append(AxisDescription(elem))  # create a 'AxisDescription' object.
         return axisDescs
-    axisDescriptions=property(_getAxisDescriptionsProperty, None)
-        
-        
-          
-#Adding classes to represent gml:grid and gml:rectifiedgrid. One of these is used for the cvg.grid property
-#(where cvg is a member of the contents dictionary)     
-#There is no simple way to convert the offset values in a rectifiedgrid grid to real values without CRS understanding, therefore this is beyond the current scope of owslib, so the representation here is purely to provide access to the information in the GML.
-   
+    axisDescriptions = property(_getAxisDescriptionsProperty, None)
+
+
+# Adding classes to represent gml:grid and gml:rectifiedgrid. One of these is used for the cvg.grid
+# property (where cvg is a member of the contents dictionary)
+# There is no simple way to convert the offset values in a rectifiedgrid grid to real values without
+# CRS understanding, therefore this is beyond the current scope of owslib, so the representation
+# here is purely to provide access to the information in the GML.
+
 class Grid(object):
     ''' Simple grid class to provide axis and value information for a gml grid '''
     def __init__(self, grid):
         self.axislabels = []
-        self.dimension=None
-        self.lowlimits=[]
-        self.highlimits=[]
+        self.dimension = None
+        self.lowlimits = []
+        self.highlimits = []
         if grid is not None:
-            self.dimension=int(grid.get('dimension'))
-            self.lowlimits= grid.find('{http://www.opengis.net/gml}limits/{http://www.opengis.net/gml}GridEnvelope/{http://www.opengis.net/gml}low').text.split(' ')
-            self.highlimits = grid.find('{http://www.opengis.net/gml}limits/{http://www.opengis.net/gml}GridEnvelope/{http://www.opengis.net/gml}high').text.split(' ')
+            self.dimension = int(grid.get('dimension'))
+            self.lowlimits = grid.find(
+                '{http://www.opengis.net/gml}limits/{http://www.opengis.net/gml}GridEnvelope/{http://www.opengis.net/gml}low'
+            ).text.split(' ')
+            self.highlimits = grid.find(
+                '{http://www.opengis.net/gml}limits/{http://www.opengis.net/gml}GridEnvelope/{http://www.opengis.net/gml}high'
+            ).text.split(' ')
             for axis in grid.findall('{http://www.opengis.net/gml}axisName'):
                 self.axislabels.append(axis.text)
-      
+
 
 class RectifiedGrid(Grid):
     ''' RectifiedGrid class, extends Grid with additional offset vector information '''
     def __init__(self, rectifiedgrid):
-        super(RectifiedGrid,self).__init__(rectifiedgrid)
-        self.origin=rectifiedgrid.find('{http://www.opengis.net/gml}origin/{http://www.opengis.net/gml}pos').text.split()
-        self.offsetvectors=[]
+        super(RectifiedGrid, self).__init__(rectifiedgrid)
+        self.origin = rectifiedgrid.find(
+            '{http://www.opengis.net/gml}origin/{http://www.opengis.net/gml}pos'
+        ).text.split()
+        self.offsetvectors = []
         for offset in rectifiedgrid.findall('{http://www.opengis.net/gml}offsetVector'):
             self.offsetvectors.append(offset.text.split())
-        
+
+
 class AxisDescription(object):
-    ''' Class to represent the AxisDescription element optionally found as part of the RangeSet and used to 
+    ''' Class to represent the AxisDescription element optionally found
+    as part of the RangeSet and used to
     define ordinates of additional dimensions such as wavelength bands or pressure levels'''
     def __init__(self, axisdescElem):
-        self.name=self.label=None
-        self.values=[]
+        self.name = self.label = None
+        self.values = []
         for elem in axisdescElem.getchildren():
             if elem.tag == ns('name'):
                 self.name = elem.text
@@ -451,4 +512,4 @@ class AxisDescription(object):
                 self.label = elem.text
             elif elem.tag == ns('values'):
                 for child in elem.getchildren():
-                    self.values.append(child.text)     
+                    self.values.append(child.text)
