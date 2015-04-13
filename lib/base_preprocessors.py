@@ -1,7 +1,7 @@
 from lxml import etree
 
-# note: this is from b-cube/semantics
 from lib.parser import Parser
+from lib.utils import tidy_dict
 
 '''
 strip out some identified set of elements for the
@@ -30,6 +30,19 @@ class BaseReader():
 
     def _load_xml(self):
         self.parser = Parser(self._response)
+
+    def _remap_http_method(self, original_method):
+        '''
+        return the "full" http method from some input
+        '''
+        definition = {
+            "HTTP GET": ['get'],
+            "HTTP POST": ['post']
+        }
+        for k, v in definition.iteritems():
+            if original_method.lower() in v:
+                return k
+        return original_method
 
     def return_service_descriptors(self):
         '''
@@ -96,7 +109,7 @@ class BaseReader():
         }
         excluded = self.return_exclude_descriptors()
         service['remainder'] = self.return_everything_else(excluded)
-        self.service = service
+        self.service = tidy_dict(service)
 
         return self.service
 

@@ -1,4 +1,5 @@
 from lib.base_preprocessors import BaseReader
+from lib.utils import tidy_dict
 
 
 class IsoReader(BaseReader):
@@ -178,13 +179,14 @@ class IsoReader(BaseReader):
                 format_name, format_version, format_desc = self._extract_format_info(format_elem)
                 format = self._identify_format(format_name, format_version, format_desc, url)
 
+                # TODO: sort out if this "type" is the http method or some other thing
                 endpoints.append(
-                    {
+                    tidy_dict({
                         "url": url,
                         "type": codes[0] if codes else '',
-                        "format": format,
+                        "mimeType": format,
                         "actionable": 1  # we can only assume these are good links in the iso
-                    }
+                    })
                 )
 
         return endpoints

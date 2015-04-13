@@ -160,6 +160,19 @@ def generate_localname_xpath(tags):
                     for t in tags.split('/') if t])
 
 
+def tidy_dict(items):
+    # cleanup a dict (remove empty elements)
+    # but only at the single depth
+    to_remove = []
+    for k, v in items.iteritems():
+        if not v:
+            to_remove.append(k)
+    for k in to_remove:
+        del items[k]
+
+    return items
+
+
 def flatten(items, excluded_keys=[]):
     '''
     flatten a list of irregular lists/singletons

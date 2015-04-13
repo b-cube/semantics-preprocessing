@@ -192,7 +192,7 @@ class TestOpenSearchReader(unittest.TestCase):
         with open('tests/test_data/basic_osdd_c1576284036448b5ef3d16b2cd37acbc.txt', 'r') as f:
             text = f.read()
         text = text.replace('\\n', ' ')
-        self.reader = OpenSearchReader(text)
+        self.reader = OpenSearchReader(text, '')
         self.reader._load_xml()
 
     def test_return_descriptors(self):
@@ -207,7 +207,7 @@ class TestOpenSearchReaderWithEndpoints(unittest.TestCase):
     def setUp(self):
         with open('tests/test_data/opensearch-nasa.xml', 'r') as f:
             text = f.read()
-        self.reader = OpenSearchReader(text)
+        self.reader = OpenSearchReader(text, '')
         self.reader._load_xml()
 
     def test_parse_service(self):
@@ -228,6 +228,8 @@ class TestOpenSearchReaderWithEndpoints(unittest.TestCase):
 
     def test_parse_endpoints(self):
         endpoints = self.reader.parse_endpoints()
+
+        print endpoints
 
         expected_endpoint = 'http://modwebsrv.modaps.eosdis.nasa.gov/axis2/' + \
                             'services/MODAPSservices/getOpenSearch?' + \

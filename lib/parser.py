@@ -1,7 +1,7 @@
 from lxml import etree
 from HTMLParser import HTMLParser
-import traceback
-import sys
+# import traceback
+# import sys
 
 
 class Parser():
@@ -95,11 +95,18 @@ class Parser():
             atts = self._parse_node_attributes(elem, exclude_descriptors)
 
             if '/'.join(tags) not in exclude_descriptors and (atts or t):
-                nodes.append({
-                    "text": t,
-                    "xpath": '/'.join(tags),
-                    "attributes": atts
-                })
+                to_append = {}
+                if t:
+                    to_append.update({"text": t})
+                if atts:
+                    to_append.update({"attributes": atts})
+
+                if not to_append:
+                    # skip if no text or no attributes
+                    continue
+
+                to_append.update({"xpath": '/'.join(tags)})
+                nodes.append(to_append)
 
         return nodes
 

@@ -5,6 +5,7 @@ from lib.utils import generate_short_uuid
 from lib.utils import generate_qualified_xpath
 # from lib.utils import generate_localname_xpath
 from lib.utils import intersect_url
+from lib.utils import tidy_dict
 
 
 class ThreddsReader(BaseReader):

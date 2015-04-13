@@ -159,10 +159,10 @@ class OgcReader():
             endpoints = [
                 _tidy_endpoint({
                     "name": o.name,
-                    "type": m.get('type', ''),
+                    "protocol": self._remap_http_method(m.get('type', '')),
                     "url": _append_params(m.get('url', ''), o.name),
                     "constraints": m.get('constraints', []),
-                    "formats": formats,
+                    "mimeType": formats,
                     "actionable": 1 if o.name == 'GetCapabilities' else 2,
                     "parameters": [_return_parameter(p) for p in params]
                 }) for m in o.methods
