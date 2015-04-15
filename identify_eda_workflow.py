@@ -27,5 +27,5 @@ class IdentifyEDAWorkflow(luigi.Task):
         run_init(config)
 
 if __name__ == '__main__':
-    w = IdentifyEDAWorkflow(yaml_file='tasks/identity_eda.yaml')
+    w = IdentifyEDAWorkflow(yaml_file='tasks/identity_eda_20150414_firstharvest.yaml')
     luigi.build([w], local_scheduler=True)

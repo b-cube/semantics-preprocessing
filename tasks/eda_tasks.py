@@ -50,6 +50,7 @@ class IdentityEDATask(luigi.Task):
         self.input_path = config.get('input_directory', '')
         self.output_path = config.get('output_directory', '')
         self.delimiter = config.get('delimiter', ',')
+        self.delimiter_replace = config.get('delimiter_replace', ';;')
 
         # if the identifier_pattern: get all matches
         identifier_pattern = config.get('identifier_pattern', '')
@@ -89,7 +90,7 @@ class IdentityEDATask(luigi.Task):
 
             response = [
                 digest,
-                source_url,
+                source_url.replace(self.delimiter, self.delimiter_replace),
                 protocol,
                 subtype,
                 service,

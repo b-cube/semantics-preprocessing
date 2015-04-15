@@ -36,8 +36,8 @@ if __name__ == '__main__':
     interval = 1000
     for i in xrange(0, 26000, interval):
         w = IdentifyWorkflow(
-            doc_dir='testdata/solr_20150320/docs/',
-            yaml_file='tasks/identity_20150320.yaml',
+            doc_dir='testdata/docs/',
+            yaml_file='tasks/identity_20150414_firstharvest.yaml',
             start_index=i,
             end_index=(i + interval)
         )
