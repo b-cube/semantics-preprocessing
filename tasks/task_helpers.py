@@ -44,8 +44,9 @@ def write_data(path, data):
         f.write(json.dumps(data, indent=4))
 
 
-def generate_output_filename(input_file, output_path, postfix):
+def generate_output_filename(input_file, output_path, postfix, extension_overwrite=''):
     file_name, file_ext = os.path.splitext(os.path.basename(input_file))
+    file_ext = extension_overwrite if extension_overwrite else file_ext
     return os.path.join(output_path, '_'.join([file_name, postfix]) + file_ext)
 
 

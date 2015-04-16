@@ -6,6 +6,7 @@ from lib.process_router import Processor
 import json
 from task_helpers import parse_yaml, extract_task_config
 from task_helpers import read_data, generate_output_filename
+import subprocess
 
 
 class ResponseTask(luigi.Task):
@@ -172,3 +173,59 @@ class ParseTask(luigi.Task):
 
         data["service_description"] = description
         return data
+
+
+class TripleTask(luigi.Task):
+    yaml_file = luigi.Parameter()
+    input_file = luigi.Parameter()
+
+    output_path = ''
+    params = {}
+
+    def requires(self):
+        return []
+
+    def output(self):
+        return luigi.LocalTarget(
+            generate_output_filename(
+                self.input_file,
+                self.output_path,
+                'triples',
+                '.ttl'
+            )
+        )
+
+    def run(self):
+        '''  '''
+        self._configure()
+
+        # f = self.input().open('r')
+        # data = json.loads(f.read())
+
+        # the triple cli either outputs the file or posts to the
+        # triple store so not sure how this will work
+        print '**************', self.input_file
+
+        triples = self.process_response(self.input_file)
+
+        if triples:
+            with self.output().open('w') as out_file:
+                out_file.write()
+
+    def _configure(self):
+        config = parse_yaml(self.yaml_file)
+        config = extract_task_config(config, 'Triple')
+        self.output_path = config.get('output_directory', '')
+        self.params = config.get('params', {})
+
+    def process_response(self, file_path):
+        # from the input source/file, get the json and
+        # don't do that, just point the cli to the file
+        # also this is not the "right" way to do this
+        # so, you know, don't do this
+        args = ['python', '../semantics/lib/btriple.py', '-p', file_path]
+
+        process = subprocess.Popen(args, stdout=subprocess.PIPE)
+        triples = process.communicate()[0]
+        print triples
+        return triples

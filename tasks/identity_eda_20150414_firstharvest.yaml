@@ -1,0 +1,8 @@
+init:
+
+IdentityEDA:
+  input_directory: 'testdata/docs_identified_20150414'
+  output_directory: 'testdata/'
+  delimiter: '|'
+  delimiter_replace: ';;'
+  identifier_pattern: lib/configs/*_identifier.yaml
