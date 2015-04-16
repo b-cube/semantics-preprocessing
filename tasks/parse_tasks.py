@@ -198,19 +198,13 @@ class TripleTask(luigi.Task):
     def run(self):
         '''  '''
         self._configure()
-
-        # f = self.input().open('r')
-        # data = json.loads(f.read())
-
         # the triple cli either outputs the file or posts to the
         # triple store so not sure how this will work
-        print '**************', self.input_file
-
         triples = self.process_response(self.input_file)
 
         if triples:
             with self.output().open('w') as out_file:
-                out_file.write()
+                out_file.write(triples)
 
     def _configure(self):
         config = parse_yaml(self.yaml_file)
@@ -225,7 +219,7 @@ class TripleTask(luigi.Task):
         # so, you know, don't do this
         args = ['python', '../semantics/lib/btriple.py', '-p', file_path]
 
+        # TODO: add the command to POST to parliament
         process = subprocess.Popen(args, stdout=subprocess.PIPE)
         triples = process.communicate()[0]
-        print triples
         return triples
