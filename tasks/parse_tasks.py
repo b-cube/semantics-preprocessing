@@ -219,6 +219,9 @@ class TripleTask(luigi.Task):
         # so, you know, don't do this
         args = ['python', '../semantics/lib/btriple.py', '-p', file_path]
 
+        if 'triplestore' in self.params:
+            args += ['-s', self.params['triplestore']]
+
         # TODO: add the command to POST to parliament
         process = subprocess.Popen(args, stdout=subprocess.PIPE)
         triples = process.communicate()[0]
