@@ -1,13 +1,14 @@
-*.csv
+/*.csv
+!notebooks/opensearch_hrefs_stats.csv
 *.pyc
 *.xlsx
+
 test.txt
 testdata/
 we_hate_xml*
 notebooks/.ipynb_checkpoints/*
 local/stanford*
 notebooks/lda/dictionaries/
-
 
 .ipynb_checkpoints
 
