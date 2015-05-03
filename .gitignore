@@ -8,8 +8,12 @@ testdata/
 we_hate_xml*
 notebooks/.ipynb_checkpoints/*
 local/stanford*
+
 notebooks/lda/dictionaries/
 notebooks/simhashing
+notebooks/simhashing_near_dupes
+
+solr_superset/
 
 .ipynb_checkpoints
 

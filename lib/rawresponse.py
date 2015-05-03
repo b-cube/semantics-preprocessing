@@ -58,7 +58,8 @@ class RawResponse():
         if this generates multiple spaces, we should be okay with
         the parser.
         '''
-        self.content = self.content.replace(u'\\\\ufffd', ' ')
+        # TODO: still a ridiculous thing. make it nicer.
+        self.content = self.content.replace(u'\\\\ufffd', ' ').replace(u'\\ufffd', ' ')
 
     def clean_raw_content(self):
         '''
