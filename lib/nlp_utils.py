@@ -111,6 +111,20 @@ def remove_mimetypes(text):
     return pttn.sub('', text)
 
 
+def remove_numeric(text):
+    '''
+    remove a word if it is only a number
+    (so keep hashes, codes like az8745)
+
+    note: this doesn't capture the hyphen.
+    '''
+    match_pttn = ur'\w*\b-?\d\s*\w*'
+    captures = re.findall(match_pttn, text)
+
+    # strip them out
+    return re.sub('|'.join(captures), ' ', text)
+
+
 def extract_mimetypes(text, do_replace=True):
     '''
     pull a list of mimetypes from some text feature
