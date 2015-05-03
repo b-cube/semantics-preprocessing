@@ -327,7 +327,20 @@
   metadatas:
   errors:
   versions: 
-
+- name: HDF-XML
+  subtype: file
+  filters:
+    ands:
+      - type: xpath
+        object: content
+        value: '/*[local-name()="HDF5-File"]'
+      - type: simple
+        object: content
+        value: 'xmlns:hdf5="http://hdfgroup.org/DTDs/HDF5-File'
+  datasets:
+  metadatas:
+  errors:
+  versions: 
 
 
 
