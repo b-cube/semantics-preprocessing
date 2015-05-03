@@ -78,7 +78,7 @@ def remove_punctuation(text):
     remove any punctuation from the text (for
         bag of words to be just words)
     '''
-    simple_pattern = r'[;|>+:=.,()/?!]'
+    simple_pattern = r'[;|>+:=.,()/?!\[\]]'
     return re.sub(simple_pattern, ' ', text)
 
 
