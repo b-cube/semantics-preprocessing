@@ -62,16 +62,18 @@ class RawResponse():
         the parser.
         '''
         # remove anything that looks like \\ufffd
-        pttn = ur'[\\{2,}ufffd]'
+        # pttn = ur'[\\{2,}ufffd]'
+        # self.content = re.sub(pttn, ' ', self.content)
 
-        self.content = re.sub(pttn, ' ', self.content)
-        # self.content = self.content.replace(u'\\\\ufffd', ' ').replace(u'\\ufffd', ' ')
+        self.content = self.content.replace('\\\\ufffd', ' ').replace('\\ufffd', ' ')
 
     def _strip_greedy_encoding(self):
         '''
         enthusiastic encoding with backslashes everywhere.
+
+        this also is behaving badly
         '''
-        pttn = ur'[\\{2,}]'
+        pttn = ur'[\\{3,}]'
         self.content = re.sub(pttn, ' ', self.content)
 
     def clean_raw_content(self):
@@ -84,6 +86,6 @@ class RawResponse():
         self._strip_invalid_start()
         self._strip_unicode_replace()
         self._strip_whitespace()
-        self._strip_greedy_encoding()
+        # self._strip_greedy_encoding()
 
         return self.content

@@ -1,0 +1,27 @@
+init:
+  # clear_output_directories: true
+
+Clean:
+  output_directory: 'solr_superset/cleaned'
+    
+Identify:
+  identifiers:
+    - lib/configs/rdf_identifier.yaml
+    - lib/configs/ogc_identifier.yaml
+    - lib/configs/opensearch_identifier.yaml
+    - lib/configs/iso_identifier.yaml
+    - lib/configs/oaipmh_identifier.yaml
+    - lib/configs/thredds_identifier.yaml
+    - lib/configs/opendap_identifier.yaml
+    - lib/configs/atom_identifier.yaml
+    - lib/configs/dc_identifier.yaml
+    - lib/configs/dif_identifier.yaml
+    - lib/configs/fgdc_identifier.yaml
+    - lib/configs/extra_identifier.yaml
+    - lib/configs/wadl_identifier.yaml
+    - lib/configs/wsdl_identifier.yaml
+
+  output_directory: 'solr_superset/identified'
+
+Parse:
+  output_directory: 'solr_superset/parsed'
