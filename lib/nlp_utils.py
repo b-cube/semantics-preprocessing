@@ -69,7 +69,7 @@ def normalize_keyword_text(keyword_string):
     underscore_pattern = r'[_]'
     keyword_string = re.sub(underscore_pattern, ' ', keyword_string)
 
-    punctuation_pattern = r'[;|>+:=+]'
+    punctuation_pattern = r'[;|>+:=+(){}]'
     return re.sub(punctuation_pattern, ',', keyword_string)
 
 
@@ -78,7 +78,7 @@ def remove_punctuation(text):
     remove any punctuation from the text (for
         bag of words to be just words)
     '''
-    simple_pattern = r'[;|>+:=.,()/?!\[\]]'
+    simple_pattern = r'[;|>+:=.,()/?!\[\]{}]'
     return re.sub(simple_pattern, ' ', text)
 
 
@@ -95,6 +95,7 @@ def remove_stopwords(text):
     '''
     _stopwords = set(stopwords.words('english'))
     words = word_tokenize(text)
+    words = words if isinstance(words, list) else words.split()
     return ' '.join([w for w in words if w not in _stopwords and w])
 
 
@@ -122,7 +123,10 @@ def remove_numeric(text):
     captures = re.findall(match_pttn, text)
 
     # strip them out
-    return re.sub('|'.join(captures), ' ', text)
+    if captures:
+        return re.sub('|'.join(captures), ' ', text)
+
+    return text
 
 
 def extract_mimetypes(text, do_replace=True):
@@ -196,6 +200,7 @@ def collapse_to_bag(data_blob, exclude_urls=True):
 
     # TODO: run the generator
     bag_of_words = flatten(data_blob, excludes)
+    bag_of_words = bag_of_words if isinstance(bag_of_words, list) else bag_of_words.split()
 
     return ' '.join(bag_of_words)
 

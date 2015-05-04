@@ -94,8 +94,8 @@ if __name__ == '__main__':
             )
         else:
             w = BowWorkflow(
-                doc_dir='testdata/solr_20150320/docs/',
-                yaml_file='tasks/bagofwords_20150320.yaml',
+                doc_dir='solr_superset/parsed',
+                yaml_file='tasks/bagofwords_from_parsed_20150504.yaml',
                 start_index=i,
                 end_index=(i + interval)
             )

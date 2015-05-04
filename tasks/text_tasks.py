@@ -1,7 +1,6 @@
 import luigi
 import json
 import re
-import HTMLParser
 from tasks.parse_tasks import ParseTask
 from lib.parser import Parser
 from lib.nlp_utils import normalize_subjects
@@ -10,6 +9,7 @@ from lib.nlp_utils import collapse_to_bag
 from lib.nlp_utils import remove_punctuation
 from lib.nlp_utils import remove_stopwords
 from lib.nlp_utils import remove_mimetypes
+from lib.nlp_utils import remove_numeric
 from lib.nlp_utils import tokenize, tokenize_text
 from task_helpers import parse_yaml, extract_task_config
 from task_helpers import generate_output_filename
@@ -158,7 +158,8 @@ class BagOfWordsFromParsedTask(luigi.Task):
             generate_output_filename(
                 self.input_file,
                 self.output_path,
-                'bow'
+                'bow',
+                '.txt'
             )
         )
 
@@ -188,6 +189,7 @@ class BagOfWordsFromParsedTask(luigi.Task):
 
         bag = collapse_to_bag(service_description, True)
 
+        # TODO: worry about ordering from the yaml to dict conversion
         for k, v in self.tasks.iteritems():
             if k == 'remove_mimetypes':
                 bag = remove_mimetypes(bag)
@@ -195,6 +197,8 @@ class BagOfWordsFromParsedTask(luigi.Task):
                 bag = remove_punctuation(bag)
             elif k == 'remove_stopwords':
                 bag = remove_stopwords(bag)
+            elif k == 'remove_numeric':
+                bag = remove_numeric(bag)
 
         return bag
 

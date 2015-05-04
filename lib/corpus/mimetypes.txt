@@ -115,7 +115,7 @@ application/fastinfoset
 application/fastsoap
 application/fdt+xml
 application/fits
-application/font-sfntJTC1]
+application/font-sfnt
 application/font-tdpfr
 application/font-woff
 application/framework-attributes+xml
@@ -319,9 +319,9 @@ application/timestamped-data
 application/ttml+xml
 application/tve-trigger
 application/ulpfec
-application/urc-grpsheet+xmlJTC1]
-application/urc-ressheet+xmlJTC1]
-application/urc-targetdesc+xmlJTC1]
+application/urc-grpsheet+xml
+application/urc-ressheet+xml
+application/urc-targetdesc+xml
 application/urc-uisocketdesc+xml
 application/vcard+json
 application/vcard+xml
@@ -1110,7 +1110,6 @@ application/vq-rtcpxr
 application/watcherinfo+xml
 application/whoispp-query
 application/whoispp-response
-[W3C][Steven_Pemberton][ISO/IEC
 application/wita
 application/wordperfect5.1
 application/wsdl+xml
@@ -1183,7 +1182,7 @@ audio/EVRCWB0
 audio/EVRCWB1
 audio/example
 audio/fwdred
-audio/G719Errata3245]
+audio/G719E
 audio/G721
 audio/G722
 audio/G723
@@ -1276,7 +1275,7 @@ audio/vnd.sealedmedia.softseal-mpeg
 audio/vnd.vmx.cvsd
 audio/vorbis
 audio/vorbis-config
-image/cgm[Alan_Francis]
+image/cgm
 image/example
 image/fits
 image/g3fax
@@ -1292,8 +1291,8 @@ image/prs.pti
 image/pwg-raster
 image/svg+xml
 image/t38
-image/tiffImage[RFC3302]
-image/tiff-fxFormat[RFC3950]
+image/tiffImage
+image/tiff-fxFormat
 image/vnd.adobe.photoshop
 image/vnd.airzip.accelerator.azv
 image/vnd.cns.inf2

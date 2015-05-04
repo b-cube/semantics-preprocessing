@@ -337,7 +337,8 @@ class ContentMetadata(object):
         if time_elems is not None:
             self.timepositions = []
         for time_elem in time_elems:
-            self.timepositions.append(time_elem.text)
+            if time_elem.text:
+                self.timepositions.append(time_elem.text.strip())
 
     # NOTE: removing all of the DescribeCoverage
 
