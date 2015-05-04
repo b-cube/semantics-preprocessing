@@ -51,6 +51,19 @@ class OgcReader():
         self.config = next(d for d in data if d['name'] == self.service.upper() +
                            self.version.replace('.', ''))
 
+    def _remap_http_method(self, original_method):
+        '''
+        return the "full" http method from some input
+        '''
+        definition = {
+            "HTTP GET": ['get'],
+            "HTTP POST": ['post']
+        }
+        for k, v in definition.iteritems():
+            if original_method.lower() in v:
+                return k
+        return original_method
+
     def _get_operations(self):
         '''
         each operation can have more than one endpoint (get and post, ex)

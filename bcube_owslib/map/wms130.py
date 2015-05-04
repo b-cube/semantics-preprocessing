@@ -343,7 +343,7 @@ class ContentMetadata:
         for b in boxes:
             try:
                 # sometimes the SRS attribute is (wrongly) not provided
-                srs = b.attrib['SRS']
+                srs = b.attrib['CRS']
             except KeyError:
                 srs = None
             self.boundingBoxes.append((
