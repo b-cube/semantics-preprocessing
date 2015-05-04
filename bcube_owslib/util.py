@@ -544,9 +544,9 @@ def extract_xml_list(elements):
 Some people don't have seperate tags for their keywords and seperate them with
 a newline. This will extract out all of the keywords correctly.
 """
-    if not elements:
+    if elements is None:
         return []
-    keywords = [re.split(r'[\n\r]+',f.text) for f in elements if f is not None and f.text]
+    keywords = [re.split(r'[\n\r]+', f.text) for f in elements if f is not None and f.text]
     flattened = [item.strip() for sublist in keywords for item in sublist]
     remove_blank = filter(None, flattened)
     return remove_blank
@@ -554,21 +554,21 @@ a newline. This will extract out all of the keywords correctly.
 
 def bind_url(url):
     """binds an HTTP GET query string endpiont"""
-    if url.find('?') == -1: # like http://host/wms
+    if url.find('?') == -1:  # like http://host/wms
         binder = '?'
 
     # if like http://host/wms?foo=bar& or http://host/wms?foo=bar
     if url.find('=') != -1:
-        if url.find('&', -1) != -1: # like http://host/wms?foo=bar&
+        if url.find('&', -1) != -1:  # like http://host/wms?foo=bar&
             binder = ''
-        else: # like http://host/wms?foo=bar
+        else:  # like http://host/wms?foo=bar
             binder = '&'
 
     # if like http://host/wms?foo
     if url.find('?') != -1:
-        if url.find('?', -1) != -1: # like http://host/wms?
+        if url.find('?', -1) != -1:  # like http://host/wms?
             binder = ''
-        elif url.find('&', -1) == -1: # like http://host/wms?foo=bar
+        elif url.find('&', -1) == -1:  # like http://host/wms?foo=bar
             binder = '&'
     return '%s%s' % (url, binder)
 
@@ -590,5 +590,3 @@ try:  # 2.7
     from collections import OrderedDict
 except:  # 2.6
     from ordereddict import OrderedDict
-
-

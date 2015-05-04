@@ -282,6 +282,9 @@ class OgcReader():
             if dataset.attribution:
                 d['rights'] = [dataset.attribution]
 
+            if dataset.timepositions:
+                d['temporal'] = dataset.timepositions
+
             datasets.append(d)
 
         return datasets

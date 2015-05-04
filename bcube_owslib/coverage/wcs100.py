@@ -331,134 +331,143 @@ class ContentMetadata(object):
         self.crsOptions = None
         self.defaulttimeposition = None
         self.attribution = None
+        self.timepositions = None
 
-    # grid is either a gml:Grid or a gml:RectifiedGrid if supplied
-    # as part of the DescribeCoverage response.
-    def _getGrid(self):
-        if not hasattr(self, 'descCov'):
-                self.descCov = self._service.getDescribeCoverage(self.id)
-        gridelem = self.descCov.find(
-            ns('CoverageOffering/') +
-            ns('domainSet/') + ns('spatialDomain/') +
-            '{http://www.opengis.net/gml}RectifiedGrid'
-        )
-        if gridelem is not None:
-            grid = RectifiedGrid(gridelem)
-        else:
-            gridelem = self.descCov.find(
-                ns('CoverageOffering/') +
-                ns('domainSet/') +
-                ns('spatialDomain/') +
-                '{http://www.opengis.net/gml}Grid'
-            )
-            grid = Grid(gridelem)
-        return grid
-    grid = property(_getGrid, None)
+        time_elems = b.findall('{http://www.opengis.net/gml}timePosition')
+        if time_elems is not None:
+            self.timepositions = []
+        for time_elem in time_elems:
+            self.timepositions.append(time_elem.text)
 
-    # timelimits are the start/end times, timepositions are all timepoints.
-    # WCS servers can declare one or both or neither of these.
-    def _getTimeLimits(self):
-        timepoints, timelimits = [], []
-        b = self._elem.find(ns('lonLatEnvelope'))
-        if b is not None:
-            timepoints = b.findall('{http://www.opengis.net/gml}timePosition')
-        else:
-            # have to make a describeCoverage request...
-            if not hasattr(self, 'descCov'):
-                self.descCov = self._service.getDescribeCoverage(self.id)
-            for pos in self.descCov.findall(
-                ns('CoverageOffering/') +
-                ns('domainSet/') +
-                ns('temporalDomain/') +
-                '{http://www.opengis.net/gml}timePosition'
-            ):
-                timepoints.append(pos)
-        if timepoints:
-                timelimits = [timepoints[0].text, timepoints[1].text]
-        return timelimits
-    timelimits = property(_getTimeLimits, None)
+    # NOTE: removing all of the DescribeCoverage
 
-    def _getTimePositions(self):
-        timepositions = []
-        if not hasattr(self, 'descCov'):
-            self.descCov = self._service.getDescribeCoverage(self.id)
-        for pos in self.descCov.findall(
-            ns('CoverageOffering/') +
-            ns('domainSet/') +
-            ns('temporalDomain/') +
-            '{http://www.opengis.net/gml}timePosition'):
-                timepositions.append(pos.text)
-        return timepositions
-    timepositions = property(_getTimePositions, None)
+    # # grid is either a gml:Grid or a gml:RectifiedGrid if supplied
+    # # as part of the DescribeCoverage response.
+    # def _getGrid(self):
+    #     if not hasattr(self, 'descCov'):
+    #             self.descCov = self._service.getDescribeCoverage(self.id)
+    #     gridelem = self.descCov.find(
+    #         ns('CoverageOffering/') +
+    #         ns('domainSet/') + ns('spatialDomain/') +
+    #         '{http://www.opengis.net/gml}RectifiedGrid'
+    #     )
+    #     if gridelem is not None:
+    #         grid = RectifiedGrid(gridelem)
+    #     else:
+    #         gridelem = self.descCov.find(
+    #             ns('CoverageOffering/') +
+    #             ns('domainSet/') +
+    #             ns('spatialDomain/') +
+    #             '{http://www.opengis.net/gml}Grid'
+    #         )
+    #         grid = Grid(gridelem)
+    #     return grid
+    # grid = property(_getGrid, None)
 
-    def _getOtherBoundingBoxes(self):
-        ''' incomplete, should return other bounding boxes not in WGS84
-            #TODO: find any other bounding boxes. Need to check for gml:EnvelopeWithTimePeriod.'''
+    # # timelimits are the start/end times, timepositions are all timepoints.
+    # # WCS servers can declare one or both or neither of these.
+    # def _getTimeLimits(self):
+    #     timepoints, timelimits = [], []
+    #     b = self._elem.find(ns('lonLatEnvelope'))
+    #     if b is not None:
+    #         timepoints = b.findall('{http://www.opengis.net/gml}timePosition')
+    #     else:
+    #         # have to make a describeCoverage request...
+    #         if not hasattr(self, 'descCov'):
+    #             self.descCov = self._service.getDescribeCoverage(self.id)
+    #         for pos in self.descCov.findall(
+    #             ns('CoverageOffering/') +
+    #             ns('domainSet/') +
+    #             ns('temporalDomain/') +
+    #             '{http://www.opengis.net/gml}timePosition'
+    #         ):
+    #             timepoints.append(pos)
+    #     if timepoints:
+    #             timelimits = [timepoints[0].text, timepoints[1].text]
+    #     return timelimits
+    # timelimits = property(_getTimeLimits, None)
 
-        bboxes = []
+    # def _getTimePositions(self):
+    #     timepositions = []
+    #     if not hasattr(self, 'descCov'):
+    #         self.descCov = self._service.getDescribeCoverage(self.id)
+    #     for pos in self.descCov.findall(
+    #         ns('CoverageOffering/') +
+    #         ns('domainSet/') +
+    #         ns('temporalDomain/') +
+    #         '{http://www.opengis.net/gml}timePosition'):
+    #             timepositions.append(pos.text)
+    #     return timepositions
+    # timepositions = property(_getTimePositions, None)
 
-        if not hasattr(self, 'descCov'):
-            self.descCov = self._service.getDescribeCoverage(self.id)
+    # def _getOtherBoundingBoxes(self):
+    #     ''' incomplete, should return other bounding boxes not in WGS84
+    #         #TODO: find any other bounding boxes. Need to check for gml:EnvelopeWithTimePeriod.'''
 
-        for envelope in self.descCov.findall(
-            ns('CoverageOffering/') +
-            ns('domainSet/') +
-            ns('spatialDomain/') +
-            '{http://www.opengis.net/gml}Envelope'):
-            bbox = {}
-            bbox['nativeSrs'] = envelope.attrib['srsName']
-            gmlpositions = envelope.findall('{http://www.opengis.net/gml}pos')
-            lc = gmlpositions[0].text.split()
-            uc = gmlpositions[1].text.split()
-            bbox['bbox'] = (
-                float(lc[0]), float(lc[1]),
-                float(uc[0]), float(uc[1])
-            )
-            bboxes.append(bbox)
+    #     bboxes = []
 
-        return bboxes
-    boundingboxes = property(_getOtherBoundingBoxes, None)
+    #     if not hasattr(self, 'descCov'):
+    #         self.descCov = self._service.getDescribeCoverage(self.id)
 
-    def _getSupportedCRSProperty(self):
-        # gets supported crs info
-        crss = []
-        for elem in self._service.getDescribeCoverage(self.id).findall(
-            ns('CoverageOffering/') + ns('supportedCRSs/') + ns('responseCRSs')):
-            for crs in elem.text.split(' '):
-                crss.append(Crs(crs))
-        for elem in self._service.getDescribeCoverage(self.id).findall(
-            ns('CoverageOffering/') + ns('supportedCRSs/') + ns('requestResponseCRSs')):
-            for crs in elem.text.split(' '):
-                crss.append(Crs(crs))
-        for elem in self._service.getDescribeCoverage(self.id).findall(
-            ns('CoverageOffering/') + ns('supportedCRSs/') + ns('nativeCRSs')):
-            for crs in elem.text.split(' '):
-                crss.append(Crs(crs))
-        return crss
-    supportedCRS = property(_getSupportedCRSProperty, None)
+    #     for envelope in self.descCov.findall(
+    #         ns('CoverageOffering/') +
+    #         ns('domainSet/') +
+    #         ns('spatialDomain/') +
+    #         '{http://www.opengis.net/gml}Envelope'):
+    #         bbox = {}
+    #         bbox['nativeSrs'] = envelope.attrib['srsName']
+    #         gmlpositions = envelope.findall('{http://www.opengis.net/gml}pos')
+    #         lc = gmlpositions[0].text.split()
+    #         uc = gmlpositions[1].text.split()
+    #         bbox['bbox'] = (
+    #             float(lc[0]), float(lc[1]),
+    #             float(uc[0]), float(uc[1])
+    #         )
+    #         bboxes.append(bbox)
 
-    def _getSupportedFormatsProperty(self):
-        # gets supported formats info
-        frmts = []
-        for elem in self._service.getDescribeCoverage(self.id).findall(
-            ns('CoverageOffering/') + ns('supportedFormats/') + ns('formats')):
-            frmts.append(elem.text)
-        return frmts
-    supportedFormats = property(_getSupportedFormatsProperty, None)
+    #     return bboxes
+    # boundingboxes = property(_getOtherBoundingBoxes, None)
 
-    def _getAxisDescriptionsProperty(self):
-        # gets any axis descriptions contained in the rangeset
-        # (requires a DescribeCoverage call to server).
-        axisDescs = []
-        for elem in self._service.getDescribeCoverage(self.id).findall(
-            ns('CoverageOffering/') +
-            ns('rangeSet/') +
-            ns('RangeSet/') +
-            ns('axisDescription/') +
-            ns('AxisDescription')):
-            axisDescs.append(AxisDescription(elem))  # create a 'AxisDescription' object.
-        return axisDescs
-    axisDescriptions = property(_getAxisDescriptionsProperty, None)
+    # def _getSupportedCRSProperty(self):
+    #     # gets supported crs info
+    #     crss = []
+    #     for elem in self._service.getDescribeCoverage(self.id).findall(
+    #         ns('CoverageOffering/') + ns('supportedCRSs/') + ns('responseCRSs')):
+    #         for crs in elem.text.split(' '):
+    #             crss.append(Crs(crs))
+    #     for elem in self._service.getDescribeCoverage(self.id).findall(
+    #         ns('CoverageOffering/') + ns('supportedCRSs/') + ns('requestResponseCRSs')):
+    #         for crs in elem.text.split(' '):
+    #             crss.append(Crs(crs))
+    #     for elem in self._service.getDescribeCoverage(self.id).findall(
+    #         ns('CoverageOffering/') + ns('supportedCRSs/') + ns('nativeCRSs')):
+    #         for crs in elem.text.split(' '):
+    #             crss.append(Crs(crs))
+    #     return crss
+    # supportedCRS = property(_getSupportedCRSProperty, None)
+
+    # def _getSupportedFormatsProperty(self):
+    #     # gets supported formats info
+    #     frmts = []
+    #     for elem in self._service.getDescribeCoverage(self.id).findall(
+    #         ns('CoverageOffering/') + ns('supportedFormats/') + ns('formats')):
+    #         frmts.append(elem.text)
+    #     return frmts
+    # supportedFormats = property(_getSupportedFormatsProperty, None)
+
+    # def _getAxisDescriptionsProperty(self):
+    #     # gets any axis descriptions contained in the rangeset
+    #     # (requires a DescribeCoverage call to server).
+    #     axisDescs = []
+    #     for elem in self._service.getDescribeCoverage(self.id).findall(
+    #         ns('CoverageOffering/') +
+    #         ns('rangeSet/') +
+    #         ns('RangeSet/') +
+    #         ns('axisDescription/') +
+    #         ns('AxisDescription')):
+    #         axisDescs.append(AxisDescription(elem))  # create a 'AxisDescription' object.
+    #     return axisDescs
+    # axisDescriptions = property(_getAxisDescriptionsProperty, None)
 
 
 # Adding classes to represent gml:grid and gml:rectifiedgrid. One of these is used for the cvg.grid
