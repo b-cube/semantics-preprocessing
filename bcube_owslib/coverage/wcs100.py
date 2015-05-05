@@ -332,6 +332,7 @@ class ContentMetadata(object):
         self.defaulttimeposition = None
         self.attribution = None
         self.timepositions = None
+        self.metadataUrls = []
 
         time_elems = b.findall('{http://www.opengis.net/gml}timePosition')
         if time_elems is not None:

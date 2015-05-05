@@ -276,14 +276,24 @@ class SosObservationOffering(object):
         # LOOK: Support all gml:TimeGeometricPrimitivePropertyType
         # Right now we are just supporting gml:TimePeriod
         # sos:Time
+        self.timepositions = []
         begin_position_element = self._root.find(
             nspath_eval('sos:time/gml:TimePeriod/gml:beginPosition', namespaces)
         )
-        self.begin_position = extract_time(begin_position_element)
+        # self.begin_position = extract_time(begin_position_element)
+        try:
+            self.timepositions.append(extract_time(begin_position_element).isoformat())
+        except:
+            pass
+
         end_position_element = self._root.find(
             nspath_eval('sos:time/gml:TimePeriod/gml:endPosition', namespaces)
         )
-        self.end_position = extract_time(end_position_element)
+        # self.end_position = extract_time(end_position_element)
+        try:
+            self.timepositions.append(extract_time(end_position_element).isoformat())
+        except:
+            pass
 
         self.result_model = testXMLValue(
             self._root.find(nspath_eval('sos:resultModel', namespaces))

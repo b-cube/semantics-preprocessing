@@ -169,8 +169,9 @@ class BagOfWordsFromParsedTask(luigi.Task):
         data = read_data(self.input_file)
         bagofwords = self.process_response(data)
 
-        with self.output().open('w') as out_file:
-            out_file.write(bagofwords)
+        if bagofwords:
+            with self.output().open('w') as out_file:
+                out_file.write(bagofwords)
 
     def _configure(self):
         config = parse_yaml(self.yaml_file)
@@ -200,7 +201,7 @@ class BagOfWordsFromParsedTask(luigi.Task):
             elif k == 'remove_numeric':
                 bag = remove_numeric(bag)
 
-        return bag
+        return ' '.join(bag.split()) if len(bag.split()) >= self.minimum_wordcount and bag else ''
 
 
 class BagOfWordsFromXML(luigi.Task):

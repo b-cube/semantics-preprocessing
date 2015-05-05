@@ -386,6 +386,8 @@ class ContentMetadata(object):
         self.crsOptions = None
         self.attribution = None
 
+        self.metadataUrls = None
+
         # SupportedCRS
         self.supportedCRS = []
         for crs in elem.findall('{http://www.opengis.net/wcs/1.1}SupportedCRS'):

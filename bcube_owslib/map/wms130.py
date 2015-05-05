@@ -550,27 +550,36 @@ class ContactMetadata:
         address = elem.find(nspath('ContactAddress', WMS_NAMESPACE))
         if address is not None:
             street = address.find(nspath('Address', WMS_NAMESPACE))
-            if street is not None: self.address = street.text
+            if street is not None:
+                self.address = street.text
 
             city = address.find(nspath('City', WMS_NAMESPACE))
-            if city is not None: self.city = city.text
+            if city is not None:
+                self.city = city.text
 
             region = address.find(nspath('StateOrProvince', WMS_NAMESPACE))
-            if region is not None: self.region = region.text
+            if region is not None:
+                self.region = region.text
 
             postcode = address.find(nspath('PostCode', WMS_NAMESPACE))
-            if postcode is not None: self.postcode = postcode.text
+            if postcode is not None:
+                self.postcode = postcode.text
 
             country = address.find(nspath('Country', WMS_NAMESPACE))
-            if country is not None: self.country = country.text
+            if country is not None:
+                self.country = country.text
 
         organization = elem.find(nspath('ContactPersonPrimary/ContactOrganization', WMS_NAMESPACE))
-        if organization is not None: self.organization = organization.text
-        else: self.organization = None
+        if organization is not None:
+            self.organization = organization.text
+        else:
+            self.organization = None
 
         position = elem.find(nspath('ContactPosition', WMS_NAMESPACE))
-        if position is not None: self.position = position.text
-        else: self.position = None
+        if position is not None:
+            self.position = position.text
+        else:
+            self.position = None
 
 
 class WMSCapabilitiesReader:
@@ -623,9 +632,15 @@ class WMSCapabilitiesReader:
         """
         getcaprequest = self.capabilities_url(service_url)
 
-        #now split it up again to use the generic openURL function...
-        spliturl=getcaprequest.split('?')
-        u = openURL(spliturl[0], spliturl[1], method='Get', username = self.username, password = self.password)
+        # now split it up again to use the generic openURL function...
+        spliturl = getcaprequest.split('?')
+        u = openURL(
+            spliturl[0],
+            spliturl[1],
+            method='Get',
+            username=self.username,
+            password=self.password
+        )
         return etree.fromstring(u.read())
 
     def readString(self, st):

@@ -293,4 +293,16 @@ class OgcReader():
         '''
         children of the content widget
         '''
-        pass
+        if self.reader.contents is None:
+            return []
+
+        metadatas = []
+        for name, dataset in self.reader.contents.iteritems():
+            d = {}
+
+            if dataset.metadataUrls:
+                d['name'] = name
+                d['metadata_urls'] = dataset.metadataUrls
+                metadatas.append(d)
+
+        return metadatas
