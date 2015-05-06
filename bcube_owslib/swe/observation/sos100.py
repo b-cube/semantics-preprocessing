@@ -229,7 +229,6 @@ class SensorObservationService_1_0_0(object):
         raise KeyError("No Operation named %s" % name)
 
 
-
 class SosObservationOffering(object):
     def __init__(self, element):
         self._root = element
@@ -247,6 +246,7 @@ class SosObservationOffering(object):
         self.boundingBoxWGS84 = ()
         self.crsOptions = []
         self.attribution = None
+        self.metadataUrls = None  # should be in ows common, no example?
 
         # LOOK: Check on GML boundedBy to make sure we handle all of the cases
         # gml:boundedBy
@@ -280,7 +280,7 @@ class SosObservationOffering(object):
         begin_position_element = self._root.find(
             nspath_eval('sos:time/gml:TimePeriod/gml:beginPosition', namespaces)
         )
-        # self.begin_position = extract_time(begin_position_element)
+
         try:
             self.timepositions.append(extract_time(begin_position_element).isoformat())
         except:
@@ -289,7 +289,7 @@ class SosObservationOffering(object):
         end_position_element = self._root.find(
             nspath_eval('sos:time/gml:TimePeriod/gml:endPosition', namespaces)
         )
-        # self.end_position = extract_time(end_position_element)
+
         try:
             self.timepositions.append(extract_time(end_position_element).isoformat())
         except:
@@ -367,8 +367,14 @@ class SosCapabilitiesReader(object):
             acceptVersions, and request parameters
         """
         getcaprequest = self.capabilities_url(service_url)
-        spliturl=getcaprequest.split('?')
-        u = openURL(spliturl[0], spliturl[1], method='Get', username=self.username, password=self.password)
+        spliturl = getcaprequest.split('?')
+        u = openURL(
+            spliturl[0],
+            spliturl[1],
+            method='Get',
+            username=self.username,
+            password=self.password
+        )
         return etree.fromstring(u.read())
 
     def read_string(self, st):

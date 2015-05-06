@@ -185,6 +185,10 @@ class BagOfWordsFromParsedTask(luigi.Task):
         if not service_description:
             return ''
 
+        if isinstance(service_description, list):
+            print '############ HOW IS THIS POSSIBLE %s' % self.input_file
+            print service_description
+
         if 'normalize_keywords' in self.tasks:
             service_description = _normalize_keywords(service_description)
 

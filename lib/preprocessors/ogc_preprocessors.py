@@ -224,7 +224,7 @@ class OgcReader():
         if endpoints:
             service['endpoints'] = endpoints
 
-        return endpoints
+        return service
 
     def return_dataset_descriptors(self):
         '''

@@ -23,7 +23,7 @@
           format:
         - name: layers
           type: string
-          format: comma-delimtied string
+          format: comma-delimited string
         - name: bbox
           type: string
           format: 'minx,miny,maxx,maxy'
