@@ -185,10 +185,6 @@ class BagOfWordsFromParsedTask(luigi.Task):
         if not service_description:
             return ''
 
-        if isinstance(service_description, list):
-            print '############ HOW IS THIS POSSIBLE %s' % self.input_file
-            print service_description
-
         if 'normalize_keywords' in self.tasks:
             service_description = _normalize_keywords(service_description)
 
@@ -204,6 +200,9 @@ class BagOfWordsFromParsedTask(luigi.Task):
                 bag = remove_stopwords(bag)
             elif k == 'remove_numeric':
                 bag = remove_numeric(bag)
+
+        if 'remove_duplicates' in self.tasks:
+            bag = ' '.join(list(set(bag.split())))
 
         return ' '.join(bag.split()) if len(bag.split()) >= self.minimum_wordcount and bag else ''
 
