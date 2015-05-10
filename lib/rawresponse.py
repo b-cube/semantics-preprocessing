@@ -52,13 +52,29 @@ class RawResponse():
     def _strip_whitespace(self):
         self.content = self.content.replace('\\n', ' ').replace('\\t', ' ')
 
+        # and do any chunks of spaces
+        self.content = ' '.join(self.content.split())
+
     def _strip_unicode_replace(self):
         '''
         remove the unicode replacement char and replace with a space
         if this generates multiple spaces, we should be okay with
         the parser.
         '''
-        self.content = self.content.replace(u'\\\\ufffd', ' ')
+        # remove anything that looks like \\ufffd
+        # pttn = ur'[\\{2,}ufffd]'
+        # self.content = re.sub(pttn, ' ', self.content)
+
+        self.content = self.content.replace('\\\\ufffd', ' ').replace('\\ufffd', ' ')
+
+    def _strip_greedy_encoding(self):
+        '''
+        enthusiastic encoding with backslashes everywhere.
+
+        this also is behaving badly
+        '''
+        pttn = ur'[\\{3,}]'
+        self.content = re.sub(pttn, ' ', self.content)
 
     def clean_raw_content(self):
         '''
@@ -68,7 +84,8 @@ class RawResponse():
         '''
         self._extract_from_cdata()
         self._strip_invalid_start()
-        self._strip_whitespace()
         self._strip_unicode_replace()
+        self._strip_whitespace()
+        # self._strip_greedy_encoding()
 
         return self.content

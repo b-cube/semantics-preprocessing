@@ -1,0 +1,10 @@
+init:
+  # clear_output_directories: true
+
+BagOfWordsFromXML:
+  tasks:
+  output_directory: 'testdata/solr_20150320/bow_xml'
+  #output_directory: 'testdata/solr_20150320/bow_no_xml'
+  minimum_wordcount: 5
+  include_structure: true
+

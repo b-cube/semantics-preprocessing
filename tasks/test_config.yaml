@@ -1,0 +1,28 @@
+init:
+  clear_output_directories: true
+
+Clean:
+  output_directory: 'testdata/triples/clean'
+    
+Identify:
+  identifiers:
+    - lib/configs/rdf_identifier.yaml
+    - lib/configs/ogc_identifier.yaml
+    - lib/configs/opensearch_identifier.yaml
+    - lib/configs/iso_identifier.yaml
+    - lib/configs/oaipmh_identifier.yaml
+    - lib/configs/thredds_identifier.yaml
+  output_directory: 'testdata/triples/identify'
+
+Parse:
+  output_directory: 'testdata/triples/parse'
+  params:
+    process_unidentified: true
+
+TextPreprocessing:
+  output_directory: 'testdata/triples/text'
+  tasks: 
+    # detect_language:
+    #   params:
+    #     keep_text: true
+    normalize_keywords:

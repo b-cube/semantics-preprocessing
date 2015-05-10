@@ -1,8 +1,11 @@
 from lib.base_preprocessors import BaseReader
-from itertools import chain
+# from itertools import chain
 from lib.utils import extract_element_tag
 from lib.utils import generate_short_uuid
 from lib.utils import generate_qualified_xpath
+# from lib.utils import generate_localname_xpath
+from lib.utils import intersect_url
+from lib.utils import tidy_dict
 
 
 class ThreddsReader(BaseReader):
@@ -12,128 +15,130 @@ class ThreddsReader(BaseReader):
     }
     _to_exclude = []
 
-    def _get_items(self, tag, elem):
+    def _manage_id(self, obj):
+        if 'ID' not in obj:
+            obj.update({"ID": generate_short_uuid()})
+        return obj
+
+    def _get_items(self, tag, elem, base_url, service_bases):
         '''
         return any structure not part of the
         current element's attributes
         '''
-        description = {extract_element_tag(k): v for k, v in elem.attrib.iteritems()}
 
-        elem_xpath = generate_qualified_xpath(elem, True)
-        self._to_exclude += [elem_xpath] + [elem_xpath + '/@' + k for k in elem.attrib.keys()]
+        def _normalize_key(key):
+            '''
+            standardize the url (or other) xml tags to the desired
+            json key
 
-        if tag == 'metadata':
-            service_elem = next(iter(elem.xpath('*[local-name()="serviceName"]')), None)
-            if service_elem is not None:
-                self._to_exclude.append(generate_qualified_xpath(service_elem, True))
-                description['service'] = service_elem.text.strip()
+            as source key: endpoint key
+            '''
+            remaps = {
+                "serviceType": "type",
+                "href": "url",
+                "base": "url",
+                "urlPath": "url"
+            }
 
-            publisher_elem = next(iter(elem.xpath('*[local-name()="publisher"]')), None)
-            if publisher_elem is not None:
-                name_elem = next(iter(publisher_elem.xpath('*[local-name()="name"]')), None)
-                contact_elem = next(iter(publisher_elem.xpath('*[local-name()="contact"]')),
-                                    None)
+            if key in remaps:
+                return remaps[key]
+            return key
 
-                if name_elem is not None:
-                    self._to_exclude.append(generate_qualified_xpath(name_elem, True))
-                    self._to_exclude.append(
-                        generate_qualified_xpath(name_elem, True) + "/@vocabulary"
-                    )
-                    description['publisher_name'] = name_elem.text.strip()
-                    description['publisher_vocab'] = name_elem.attrib.get('vocabulary', '')
+        def _run_element(elem, service_bases):
+            '''
+            for a given element, return any text() and any attribute value
+            '''
+            # run a generated xpath on the given element
+            excludes = [generate_qualified_xpath(elem, True)]
 
-                if contact_elem is not None:
-                    contact_xpath = generate_qualified_xpath(contact_elem, True)
-                    self._to_exclude += [contact_xpath] + \
-                        [contact_xpath + '/@' + k for k in contact_elem.attrib.keys()]
-                    description['publisher_contact'] = contact_elem.attrib
-        elif tag == 'dataset':
-            datasize_elem = next(iter(elem.xpath('*[local-name()="dataSize"]')), None)
-            if datasize_elem is not None:
-                self._to_exclude.append(generate_qualified_xpath(datasize_elem, True))
-                self._to_exclude.append(generate_qualified_xpath(datasize_elem, True) + "/@units")
-                description['datasize_units'] = datasize_elem.attrib.get('units', '')
-                description['datasize_size'] = datasize_elem.text.strip()
+            children = elem.xpath('./node()[local-name()!="metadata"' +
+                                  'and local-name()!="dataset" and' +
+                                  'local-name()!="catalogRef"]')
 
-            date_elem = next(iter(elem.xpath('*[local-name()="date"]')), None)
-            if date_elem is not None:
-                self._to_exclude.append(generate_qualified_xpath(date_elem, True))
-                self._to_exclude.append(generate_qualified_xpath(date_elem, True) + "/@type")
-                description['date_type'] = date_elem.attrib.get('type', '')
-                description['date'] = date_elem.text.strip()
+            element = {_normalize_key(extract_element_tag(k)): v for k, v
+                       in elem.attrib.iteritems()}
+            element = self._manage_id(element)
 
-            access_elem = next(iter(elem.xpath('*[local-name()="access"]')), None)
-            if access_elem is not None:
-                self._to_exclude.append(
-                    generate_qualified_xpath(access_elem, True) + "/@serviceName"
-                )
-                self._to_exclude.append(
-                    generate_qualified_xpath(access_elem, True) + "/@urlPath"
-                )
-                description["serviceName"] = access_elem.attrib.get('serviceName', '')
-                description["url"] = access_elem.attrib.get('urlPath', '')
+            for child in children:
+                value = child.text
+                xp = generate_qualified_xpath(child, True)
+                tag = _normalize_key(extract_element_tag(child.tag))
 
-        if 'ID' not in description:
-            description.update({"ID": generate_short_uuid()})
+                excludes += [xp] + [xp + '/@' + k for k in child.attrib.keys()]
 
-        return description
+                if value:
+                    element[tag] = value
 
-    def _handle_elem(self, elem, child_tags):
-        description = self._get_items(extract_element_tag(elem.tag), elem)
+                for k, v in child.attrib.iteritems():
+                    if v:
+                        element[tag + '_' + _normalize_key(extract_element_tag(k))] = v
+
+            # get the service bases in case
+            if [g for g in element.keys() if g.endswith('serviceName')]:
+                sbs = [v for k, v in service_bases.iteritems() if k == element.get('serviceName')]
+            else:
+                sbs = service_bases.values()
+
+            # send a unique list of base relative paths
+            sbs = list(set(sbs))
+
+            url_key = next(iter([g for g in element.keys() if g.endswith('url')]), '')
+            if url_key:
+                # for service urls, if catalog.xml isn't appended it will resolve to
+                # the html endpoint (not desired). so if the path equals the/a path in
+                # the service bases, append catalog.xml to the path
+                elem_url = element[url_key]
+                if elem_url in sbs or not sbs:
+                    elem_url += ('' if elem_url.endswith('/') else '/') + 'catalog.xml'
+                element['url'] = intersect_url(base_url, elem_url, sbs)
+                element['actionable'] = 2
+
+            return element, excludes
+
+        children = elem.xpath('./node()[local-name()="metadata" or ' +
+                              'local-name()="dataset" or local-name()="catalogRef"]')
+
+        element, excludes = _run_element(elem, service_bases)
+        element_children = []
+        for c in children:
+            element_desc, element_excludes = _run_element(c, service_bases)
+            excludes += element_excludes
+            element_children.append(element_desc)
+
+        if element_children:
+            element['children'] = element_children
+
+        return element, excludes
+
+    def _handle_elem(self, elem, child_tags, base_url, service_bases):
+        description, excludes = self._get_items(
+            extract_element_tag(elem.tag), elem, base_url, service_bases
+        )
         description['source'] = extract_element_tag(elem.tag)
+
+        self._to_exclude += excludes
 
         endpoints = []
 
         for child_tag in child_tags:
             elems = elem.xpath('*[local-name()="%s"]' % child_tag)
 
-            if elems:
-                endpoints += [
-                    dict(
-                        chain(
-                            self._get_items(extract_element_tag(e.tag), e).items(),
-                            {
-                                "childOf": description.get('ID', ''),
-                                "source": extract_element_tag(child_tag)
-                            }.items()
-                        )
-                    ) for e in elems
-                ]
+            for e in elems:
+                e_desc, e_excludes = self._get_items(
+                    extract_element_tag(e.tag), e, base_url, service_bases
+                )
 
-                self._to_exclude += [generate_qualified_xpath(e, True) for e in elems]
+                e_desc['childOf'] = description.get('ID', '')
+                e_desc["source"] = extract_element_tag(child_tag)
+                self._to_exclude += e_excludes
 
                 parents = description.get('parentOf', [])
                 parents += [e['ID'] for e in endpoints if 'childOf' in e]
                 description['parentOf'] = parents
 
+                endpoints.append(e_desc)
+
         return description, endpoints
-
-    def _normalize_endpoints(self, endpoints):
-        '''
-        the extraction takes any attribute/element tag as is
-        but that is less than ideal for the triples (we want
-            to minimize the special flower handling at that
-            end as much as possible)
-
-        minor flattening
-        '''
-
-        # as source key: endpoint key
-        remaps = {
-            "serviceType": "type",
-            "href": "url",
-            "base": "url",
-            "urlPath": "url",
-            "serviceName": "type"
-        }
-
-        new_endpoints = []
-        for endpoint in endpoints:
-            # remap things
-            new_endpoints.append({remaps[k] if k in remaps else k: v
-                                  for k, v in endpoint.iteritems()})
-
-        return new_endpoints
 
     def return_dataset_descriptors(self):
         dataset_xpath = "/{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/" + \
@@ -148,11 +153,13 @@ class ThreddsReader(BaseReader):
 
             for dataset in datasets:
                 description, child_endpoints = self._handle_elem(
-                    dataset, ['dataset', 'metadata', 'catalogRef']
+                    dataset, ['dataset', 'metadata', 'catalogRef'],
+                    self._url,
+                    self.service_bases
                 )
                 endpoints += [description] + child_endpoints
 
-        return {"endpoints": self._normalize_endpoints(endpoints)}
+        return {"endpoints": endpoints}
 
     def return_metadata_descriptors(self):
         metadata_xpath = "/{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/" + \
@@ -166,10 +173,15 @@ class ThreddsReader(BaseReader):
                 self._to_exclude.append(metadata_xpath[1:] + '/@' + key)
 
             for metadata in metadatas:
-                description, child_endpoints = self._handle_elem(metadata, [])
+                description, child_endpoints = self._handle_elem(
+                    metadata,
+                    [],
+                    self._url,
+                    self.service_bases
+                )
                 endpoints += [description] + child_endpoints
 
-        return {"endpoints": self._normalize_endpoints(endpoints)}
+        return {"endpoints": endpoints}
 
     def return_exclude_descriptors(self):
         '''
@@ -196,6 +208,9 @@ class ThreddsReader(BaseReader):
 
         endpoints = []
 
+        service_bases = self.parser.find('//*[local-name()="service" and @base != ""]')
+        self.service_bases = {s.attrib.get('name'): s.attrib.get('base') for s in service_bases}
+
         services = self.parser.find(svc_xpath)
         # ffs, services can be nested too
         if services:
@@ -204,8 +219,15 @@ class ThreddsReader(BaseReader):
                 self._to_exclude.append(svc_xpath[1:] + '/@' + key)
 
             for service in services:
-                description, child_endpoints = self._handle_elem(service, ['service'])
-                endpoints += [description] + child_endpoints
+                description, child_endpoints = self._handle_elem(
+                    service,
+                    ['service'],
+                    self._url,
+                    {}
+                )
+                endpoints += [description]
+                if child_endpoints:
+                    endpoints += child_endpoints
 
         catrefs = self.parser.find(catref_xpath)
         if catrefs:
@@ -213,7 +235,12 @@ class ThreddsReader(BaseReader):
             self._to_exclude.append(catref_xpath[1:] + '/@title')
             self._to_exclude.append(catref_xpath[1:] + '/@href')
             for catref in catrefs:
-                description, child_endpoints = self._handle_elem(catref, ['catalogRef', 'metadata'])
+                description, child_endpoints = self._handle_elem(
+                    catref,
+                    ['catalogRef', 'metadata'],
+                    self._url,
+                    {}  # TODO: so dap or file base path only? (not the full set, that makes no sense)
+                )
                 endpoints += [description] + child_endpoints
 
-        return self._normalize_endpoints(endpoints)
+        return endpoints

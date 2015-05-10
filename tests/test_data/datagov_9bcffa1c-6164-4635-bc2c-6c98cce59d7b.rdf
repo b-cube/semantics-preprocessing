@@ -1,0 +1,261 @@
+<rdf:RDF xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcat="http://www.w3.org/ns/dcat#" xmlns:dct="http://purl.org/dc/terms/">
+  <dcat:Dataset rdf:about="https://catalog.data.gov/dataset/dmsp-ols-operational-linescan-system">
+    <owl:sameAs rdf:resource="urn:uuid:9bcffa1c-6164-4635-bc2c-6c98cce59d7b"></owl:sameAs>
+    <dct:description>Visible and infrared imagery from DMSP Operational Linescan System (OLS) instruments are used to monitor the global distribution of clouds and cloud top temperatures twice each day. The archive data set consists of low resolution global and high resolution regional, imagery recorded along a 3,000 km scan, satellite ephemeris and solar and lunar information. Infrared pixel values correspond to a temperature range of 190 to 310 Kelvins in 256 equally spaced steps. Onboard calibration is performed during each scan. Visible pixels are relative values ranging from 0 to 63 rather than absolute values in Watts per m^2. Instrumental gain levels are adjusted to maintain constant cloud reference values under varying conditions of solar and lunar illumination. Telescope pixel values are replaced by Photo Multiplier Tube (PMT) values at night. A telescope pixel is 0.55 km at high resolution (fine mode) and 2.7 km at low resolution(smooth mode). Low resolution
+               values are the mean of the appropriate 25 high resolution values.</dct:description>
+        <dcat:keyword>earth science</dcat:keyword>
+        <dcat:keyword>sun-earth interactions</dcat:keyword>
+        <dcat:keyword>ionosphere/magnetosphere particles</dcat:keyword>
+        <dcat:keyword>earth science</dcat:keyword>
+        <dcat:keyword>sun-earth interactions</dcat:keyword>
+        <dcat:keyword>ionosphere/magnetosphere particles</dcat:keyword>
+        <dcat:keyword>electron flux</dcat:keyword>
+        <dcat:keyword>earth science</dcat:keyword>
+        <dcat:keyword>sun-earth interactions</dcat:keyword>
+        <dcat:keyword>ionosphere/magnetosphere particles</dcat:keyword>
+        <dcat:keyword>proton flux</dcat:keyword>
+        <dcat:keyword>earth science</dcat:keyword>
+        <dcat:keyword>sun-earth interactions</dcat:keyword>
+        <dcat:keyword>ionosphere/magnetosphere particles</dcat:keyword>
+        <dcat:keyword>particle density</dcat:keyword>
+        <dcat:keyword>earth science</dcat:keyword>
+        <dcat:keyword>sun-earth interactions</dcat:keyword>
+        <dcat:keyword>ionosphere/magnetosphere particles</dcat:keyword>
+        <dcat:keyword>particle speed</dcat:keyword>
+        <dcat:keyword>earth science</dcat:keyword>
+        <dcat:keyword>sun-earth interactions</dcat:keyword>
+        <dcat:keyword>ionosphere/magnetosphere particles</dcat:keyword>
+        <dcat:keyword>particle temperature</dcat:keyword>
+        <dcat:keyword>earth science</dcat:keyword>
+        <dcat:keyword>spectral/engineering</dcat:keyword>
+        <dcat:keyword>visible wavelengths</dcat:keyword>
+        <dcat:keyword>earth science</dcat:keyword>
+        <dcat:keyword>spectral/engineering</dcat:keyword>
+        <dcat:keyword>infrared wavelengths</dcat:keyword>
+        <dcat:keyword>earth science</dcat:keyword>
+        <dcat:keyword>spectral/engineering</dcat:keyword>
+        <dcat:keyword>microwave</dcat:keyword>
+        <dcat:keyword>earth science</dcat:keyword>
+        <dcat:keyword>atmosphere</dcat:keyword>
+        <dcat:keyword>clouds</dcat:keyword>
+        <dcat:keyword>earth science</dcat:keyword>
+        <dcat:keyword>atmosphere</dcat:keyword>
+        <dcat:keyword>atmospheric water vapor</dcat:keyword>
+        <dcat:keyword>water vapor</dcat:keyword>
+        <dcat:keyword>earth science</dcat:keyword>
+        <dcat:keyword>atmosphere</dcat:keyword>
+        <dcat:keyword>atmospheric temperature</dcat:keyword>
+        <dcat:keyword>earth science</dcat:keyword>
+        <dcat:keyword>atmosphere</dcat:keyword>
+        <dcat:keyword>precipitation</dcat:keyword>
+        <dcat:keyword>earth science</dcat:keyword>
+        <dcat:keyword>spectral/engineering</dcat:keyword>
+        <dcat:keyword>microwave</dcat:keyword>
+        <dcat:keyword>brightness temperature</dcat:keyword>
+        <dcat:keyword>earth science</dcat:keyword>
+        <dcat:keyword>hydrosphere</dcat:keyword>
+        <dcat:keyword>surface water</dcat:keyword>
+        <dcat:keyword>earth science</dcat:keyword>
+        <dcat:keyword>oceans</dcat:keyword>
+        <dcat:keyword>ocean winds</dcat:keyword>
+        <dcat:keyword>earth science</dcat:keyword>
+        <dcat:keyword>oceans</dcat:keyword>
+        <dcat:keyword>sea ice</dcat:keyword>
+        <dcat:keyword>earth science</dcat:keyword>
+        <dcat:keyword>biosphere</dcat:keyword>
+        <dcat:keyword>ecological dynamics</dcat:keyword>
+        <dcat:keyword>fire occurrence</dcat:keyword>
+        <dcat:keyword>earth science</dcat:keyword>
+        <dcat:keyword>hydrosphere</dcat:keyword>
+        <dcat:keyword>snow/ice</dcat:keyword>
+        <dcat:keyword>earth science</dcat:keyword>
+        <dcat:keyword>hydrosphere</dcat:keyword>
+        <dcat:keyword>surface water</dcat:keyword>
+        <dcat:keyword>lakes</dcat:keyword>
+        <dcat:keyword>earth science</dcat:keyword>
+        <dcat:keyword>hydrosphere</dcat:keyword>
+        <dcat:keyword>surface water</dcat:keyword>
+        <dcat:keyword>rivers/streams</dcat:keyword>
+        <dcat:keyword>dmsp</dcat:keyword>
+        <dcat:keyword>global change</dcat:keyword>
+        <dcat:keyword>meteorological satellites</dcat:keyword>
+        <dcat:keyword>satellite meteorology</dcat:keyword>
+        <dcat:keyword>polar orbiters</dcat:keyword>
+        <dcat:keyword>wdc/stp</dcat:keyword>
+        <dcat:keyword>boulder</dcat:keyword>
+        <dcat:keyword>world data center for solar-terrestrial physics</dcat:keyword>
+        <dcat:keyword>boulder</dcat:keyword>
+        <dcat:keyword>doc/noaa/nesdis/ngdc</dcat:keyword>
+        <dcat:keyword>national geophysical data center</dcat:keyword>
+        <dcat:keyword>nesdis</dcat:keyword>
+        <dcat:keyword>noaa</dcat:keyword>
+        <dcat:keyword>u.s. department of commerce</dcat:keyword>
+        <dcat:keyword>global</dcat:keyword>
+    <foaf:homepage rdf:resource="https://catalog.data.gov/dataset/dmsp-ols-operational-linescan-system"></foaf:homepage>
+    <rdfs:label>dmsp-ols-operational-linescan-system</rdfs:label>
+    <dct:identifier>dmsp-ols-operational-linescan-system</dct:identifier>
+    <dct:title>DMSP OLS - Operational Linescan System</dct:title>
+        <dcat:distribution>
+            <dcat:Distribution>
+                <dcat:accessURL rdf:resource="http://www.ngdc.noaa.gov/dmsp/"></dcat:accessURL>
+               <dct:title>Defense Meteorological Satellite Program</dct:title>
+            </dcat:Distribution>
+        </dcat:distribution>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>bbox-east-long</rdfs:label>
+            <rdf:value>180.000000</rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>__category_tag_470db9bc-e604-4217-aafd-3bb6412c8b30</rdfs:label>
+            <rdf:value></rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>resource-type</rdfs:label>
+            <rdf:value>dataset</rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>bbox-north-lat</rdfs:label>
+            <rdf:value>90.000000</rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>coupled-resource</rdfs:label>
+            <rdf:value>[]</rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>guid</rdfs:label>
+            <rdf:value>gov.noaa.ngdc.stp.dmsp:G01119</rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>spatial_harvester</rdfs:label>
+            <rdf:value>True</rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>bbox-south-lat</rdfs:label>
+            <rdf:value>-90.000000</rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>spatial-reference-system</rdfs:label>
+            <rdf:value></rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>spatial</rdfs:label>
+            <rdf:value>{"type": "Polygon", "coordinates": [[[-180.0, -90.0], [180.0, -90.0], [180.0, 90.0], [-180.0, 90.0], [-180.0, -90.0]]]}</rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>progress</rdfs:label>
+            <rdf:value>underDevelopment</rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>access_constraints</rdfs:label>
+            <rdf:value>["Use Constraints: None", "Access Constraints: No Constraints"]</rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>temporal-extent-begin</rdfs:label>
+            <rdf:value>1975-04-01</rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>contact-email</rdfs:label>
+            <rdf:value>ngdc.dmsp@noaa.gov</rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>bbox-west-long</rdfs:label>
+            <rdf:value>-180.000000</rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>metadata-date</rdfs:label>
+            <rdf:value>2011-11-09</rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>dataset-reference-date</rdfs:label>
+            <rdf:value>[{"type": "publication", "value": "1992-01-01"}]</rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>frequency-of-update</rdfs:label>
+            <rdf:value>daily</rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>licence</rdfs:label>
+            <rdf:value>["While every effort has been made to ensure that these data are accurate and reliable within the limits of the current state of the art, NOAA cannot assume liability for any damages caused by any errors or omissions in the data, nor as a result of the failure of the data to function on a particular system. NOAA makes no warranty, expressed or implied, nor does the fact of distribution constitute such a warranty."]</rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>metadata_type</rdfs:label>
+            <rdf:value>geospatial</rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>responsible-party</rdfs:label>
+            <rdf:value>[{"name": "DOC/NOAA/NESDIS/NGDC &gt; National Geophysical Data Center, NESDIS, NOAA, U.S. Department of Commerce", "roles": ["pointOfContact"]}]</rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>spatial-data-service-type</rdfs:label>
+            <rdf:value></rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>metadata-language</rdfs:label>
+            <rdf:value></rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>harvest_object_id</rdfs:label>
+            <rdf:value>e84ef28f-7935-4ca2-b9c7-7a77cb156c4c</rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>harvest_source_id</rdfs:label>
+            <rdf:value>396abd4b-225d-43bb-9398-4f2b89144acd</rdf:value>
+          </rdf:Description>
+        </dct:relation>
+        <dct:relation>
+          <rdf:Description>
+            <rdfs:label>harvest_source_title</rdfs:label>
+            <rdf:value>NGDC - STP - DMSP - iso</rdf:value>
+          </rdf:Description>
+        </dct:relation>
+  </dcat:Dataset>
+</rdf:RDF>

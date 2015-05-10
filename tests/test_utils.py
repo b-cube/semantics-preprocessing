@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from lib.nlp_utils import normalize_keyword_text
+from lib.nlp_utils import normalize_keyword_text, normalize_subjects
 from lib.nlp_utils import collapse_to_bag
 from lib.nlp_utils import is_english
 from lib.yaml_configs import import_yaml_configs
@@ -71,6 +71,13 @@ class TestNlpUtils(unittest.TestCase):
         self.assertTrue(tests is not None)
         self.assertTrue(len(set(tests)) == 1)
         self.assertTrue('+' not in next(iter(set(tests))))
+
+        # a better test
+        new_strings = normalize_subjects(strings, False, True)
+        self.assertTrue(len(new_strings) == 1)
+
+        new_strings = normalize_subjects(strings, False, False)
+        self.assertTrue(len(new_strings) == 4)
 
     def test_collapse_to_bag(self):
         '''

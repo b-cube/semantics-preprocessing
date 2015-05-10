@@ -4,6 +4,7 @@ from lib.preprocessors.oaipmh_preprocessors import OaiPmhReader
 from lib.preprocessors.thredds_preprocessors import ThreddsReader
 from lib.preprocessors.xml_preprocessors import XmlReader
 from lib.preprocessors.ogc_preprocessors import OgcReader
+from lib.preprocessors.rdf_preprocessors import RdfReader
 
 
 class Processor():
@@ -15,28 +16,32 @@ class Processor():
     not great but let's hide all of the options away
     and not give the processors more than they need
     '''
-    def __init__(self, identification, response):
+    def __init__(self, identification, response, source_url):
         self.identity = identification
-        self._instantiate(response)
+        self.source_url = source_url
+        self._instantiate(response, source_url)
 
-    def _instantiate(self, response):
+    def _instantiate(self, response, url):
         '''
         set up the router
         '''
         protocol = self.identity['protocol']
         version = self.identity['version']
 
+        if not protocol:
+            # we will try a generic xml parser
+            self.reader = XmlReader(response, url)
+
         if protocol == 'OpenSearch':
-            self.reader = OpenSearchReader(response)
+            self.reader = OpenSearchReader(response, url)
         elif protocol == 'OAI-PMH':
-            self.reader = OaiPmhReader(response)
+            self.reader = OaiPmhReader(response, url)
         elif protocol == 'UNIDATA':
-            self.reader = ThreddsReader(response)
+            self.reader = ThreddsReader(response, url)
         elif protocol in ['ISO-19115']:
             # TODO: update this for the data series and service metadata
-            self.reader = IsoReader(response)
+            self.reader = IsoReader(response, url)
         elif protocol.startswith('OGC:') and 'error' not in protocol:
-            self.reader = OgcReader(response, version)
-        else:
-            # we will try a generic xml parser
-            self.reader = XmlReader(response)
+            self.reader = OgcReader(protocol.split(':')[-1], version, response, url)
+        elif protocol == 'RDF':
+            self.reader = RdfReader(response, url)

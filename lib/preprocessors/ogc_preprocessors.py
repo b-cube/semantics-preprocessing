@@ -1,9 +1,9 @@
-from owslib.wms import WebMapService
-from owslib.wcs import WebCoverageService
-from owslib.wfs import WebFeatureService
-from owslib.csw import CatalogueServiceWeb
+from bcube_owslib.wms import WebMapService
+from bcube_owslib.wcs import WebCoverageService
+from bcube_owslib.wfs import WebFeatureService
+from bcube_owslib.csw import CatalogueServiceWeb
+from bcube_owslib.sos import SensorObservationService
 from lib.yaml_configs import import_yaml_configs
-from lib.nlp_utils import normalize_keyword_text
 
 
 class OgcReader():
@@ -11,19 +11,25 @@ class OgcReader():
     base class to handle OWSLib responses
 
     support for: WMS 1.1.1
+                 WMS 1.3.0
                  WFS 1.0.0
                  WFS 1.1.0
                  WCS 1.0.0
                  WCS 1.1.0
+                 WCS 1.1.1
+                 WCS 1.1.2
                  CSW 2.0.2
+                 SOS 1.0.0
     '''
-    def __init__(self, service, version, response_as_string):
+    def __init__(self, service, version, response_as_string, url):
         self.service = service
         self.version = version
         self.response = response_as_string
+        self.url = url
 
         # get the owslib object
         self.reader = self._get_reader()
+        self._get_config()
 
     def _get_reader(self):
         if self.service == 'WMS' and self.version in ['1.1.1', '1.3.0']:
@@ -34,6 +40,8 @@ class OgcReader():
             reader = WebCoverageService('', xml=self.response, version=self.version)
         elif self.service == 'CSW' and self.version in ['2.0.2']:
             reader = CatalogueServiceWeb('', xml=self.response, version=self.version)
+        elif self.service == 'SOS' and self.version in ['1.0.0']:
+            reader = SensorObservationService('', xml=self.response, version=self.version)
         else:
             return None
         return reader
@@ -43,24 +51,18 @@ class OgcReader():
         self.config = next(d for d in data if d['name'] == self.service.upper() +
                            self.version.replace('.', ''))
 
-    def _normalize_subjects(self, do_split=False):
+    def _remap_http_method(self, original_method):
         '''
-        for a given set of subject strings, run the keyword
-        normalizer ()
+        return the "full" http method from some input
         '''
-        service_description = self.service.get('service', {})
-        if not service_description:
-            return
-
-        normalized_subjects = []
-        subjects = service_description.get('subject', [])
-        for subject in subjects:
-            normalized = normalize_keyword_text(subject)
-            normalized_subjects += [n.strip() for n in normalized.split(',')] \
-                if do_split else [normalized]
-
-        if normalized_subjects:
-            self.service['service']['subject'] = normalized_subjects
+        definition = {
+            "HTTP GET": ['get'],
+            "HTTP POST": ['post']
+        }
+        for k, v in definition.iteritems():
+            if original_method.lower() in v:
+                return k
+        return original_method
 
     def _get_operations(self):
         '''
@@ -90,6 +92,13 @@ class OgcReader():
         def _replace_nones(to_check):
             return '' if to_check is None else to_check
 
+        def _append_params(base_url, operation):
+            if not base_url[-1] == '?':
+                base_url += '?'
+            return base_url + 'SERVICE=%s&VERSION=%s&REQUEST=%s' % (self.service,
+                                                                    self.version,
+                                                                    operation)
+
         def _merge_params(op_name, found_params):
             '''
             for some parameter structure:
@@ -98,12 +107,13 @@ class OgcReader():
 
             '''
             # TODO: how to handle aliases (if necessary)
-            req_methods = self.config['methods']
+            req_methods = self.config.get('methods', [])
             req_params = next(
                 iter(
                     [d for d in req_methods if d['name'] == op_name.upper()]
                 ), {}
             ).get('params', [])
+            req_params = [] if not req_params else req_params
             defaults = self.config.get('common', []) + req_params
 
             if not found_params:
@@ -119,6 +129,25 @@ class OgcReader():
                 defaults[found_index] = param
 
             return defaults
+
+        def _return_parameter(param):
+            # return a parameter dict without empty values
+            parameter = {}
+            for key in ['name', 'type', 'format', 'values']:
+                if key in param and param[key]:
+                    parameter[key] = param[key]
+            return parameter
+
+        def _tidy_endpoint(endpoint):
+            # the perils of dict comprehensions
+            to_remove = []
+            for k, v in endpoint.iteritems():
+                if not v:
+                    to_remove.append(k)
+            for k in to_remove:
+                del endpoint[k]
+
+            return endpoint
 
         operations = []
         for o in self.reader.operations:
@@ -140,23 +169,19 @@ class OgcReader():
             except AttributeError:
                 formats = []
 
-            endpoint = [
-                {
+            endpoints = [
+                _tidy_endpoint({
                     "name": o.name,
-                    "type": m.get('type', ''),
-                    "url": m.get('url', ''),
+                    "protocol": self._remap_http_method(m.get('type', '')),
+                    "url": _append_params(m.get('url', ''), o.name),
                     "constraints": m.get('constraints', []),
-                    "formats": formats,
-                    "parameters": [{
-                        "name": p.get('name', ''),
-                        "type": p.get('type', ''),
-                        "format": p.get('format', ''),
-                        "values": p.get('values', [])
-                    } for p in params]
-                } for m in o.methods
+                    "mimeType": formats,
+                    "actionable": 1 if o.name == 'GetCapabilities' else 2,
+                    "parameters": [_return_parameter(p) for p in params]
+                }) for m in o.methods
             ]
 
-            operations += endpoint
+            operations += endpoints
 
         return operations
 
@@ -165,27 +190,119 @@ class OgcReader():
         this is a little unnecessary
         '''
         service = {
-            "service": self.return_service_descriptors(),
-            "remainder": []
+            "service": self.return_service_descriptors()
         }
-        self._normalize_subjects(True)
         return service
 
     def return_service_descriptors(self):
+        rights = [self.reader.identification.accessconstraints]
         try:
-            rights = self.reader.identification.accessconstraints
+            contact = [self.reader.provider.contact.name]
         except AttributeError:
-            rights = ''
-        try:
-            contact = self.reader.provider.contact.name
-        except AttributeError:
-            contact = ''
+            contact = []
 
-        return {
-            "title": self.reader.identification.title,
-            "abstract": self.reader.identification.abstract,
-            "tags": self.reader.identification.keywords,
-            "rights": rights,
-            "contact": contact,
-            "endpoints": self._get_operations()
+        abstract = [self.reader.identification.abstract]
+        keywords = self.reader.identification.keywords
+        endpoints = self._get_operations()
+
+        service = {
+            "title": [self.reader.identification.title],
         }
+
+        if rights:
+            service['rights'] = rights
+
+        if contact:
+            service['contact'] = contact
+
+        if abstract:
+            service['abstract'] = abstract
+
+        if keywords:
+            service['subject'] = keywords
+
+        if endpoints:
+            service['endpoints'] = endpoints
+
+        return service
+
+    def return_dataset_descriptors(self):
+        '''
+        from some content metadata object, get all of the
+        layers/features/coverages
+
+        output:
+            name
+            title
+            srs
+            bounding boxes
+            wgs84 bbox
+
+            style
+
+            metadataurl (should be a relate)
+
+            elevation
+            time
+
+        note: the values are lists to handle other service responses
+              that may have multiple values for that element.
+        '''
+        datasets = []
+
+        if self.reader.contents is None:
+            return []
+
+        for name, dataset in self.reader.contents.iteritems():
+            d = {}
+
+            d['name'] = name
+            if dataset.title:
+                d['title'] = [dataset.title]
+
+            if dataset.abstract:
+                d['abstract'] = [dataset.abstract]
+
+            if dataset.boundingBoxes:
+                d['bboxes'] = dataset.boundingBoxes
+
+            if dataset.boundingBoxWGS84:
+                d['bbox'] = [dataset.boundingBoxWGS84]
+
+            try:
+                # for the sos
+                if dataset.bbox:
+                    d['bbox'] = [dataset.bbox]
+            except AttributeError:
+                pass
+
+            if dataset.crsOptions:
+                d['spatial_refs'] = dataset.crsOptions
+
+            if dataset.attribution:
+                d['rights'] = [dataset.attribution]
+
+            if dataset.timepositions:
+                d['temporal'] = dataset.timepositions
+
+            datasets.append(d)
+
+        return datasets
+
+    def return_metadata_descriptors(self):
+        '''
+        children of the content widget
+        '''
+        if self.reader.contents is None:
+            return []
+
+        metadatas = []
+        for name, dataset in self.reader.contents.iteritems():
+            d = {}
+
+            if dataset.metadataUrls:
+                d['name'] = name
+                d['metadata_urls'] = dataset.metadataUrls
+                metadatas.append(d)
+
+        return metadatas

@@ -12,7 +12,7 @@ class TestBasicIdentifiers(unittest.TestCase):
                         <element>OpenSearchDescription</element></OpenSearch>'''
         url = 'http://www.opensearch.com'
 
-        self.identifier = Identify(yaml_file, content, url)
+        self.identifier = Identify([yaml_file], content, url)
         self.identifier.identify()
 
     def test_load_yaml(self):
@@ -50,7 +50,7 @@ class TestComplexIdentifiers(unittest.TestCase):
         parser = Parser(parser_content)
         options = {'parser': parser}
 
-        self.identifier = Identify(yaml_file, content, url, **options)
+        self.identifier = Identify([yaml_file], content, url, **options)
         self.identifier.identify()
 
     def test_load_yaml(self):
@@ -109,7 +109,7 @@ class TestExceptionIdentification(unittest.TestCase):
             content = f.read()
         url = 'http://www.mapserver.com/cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GETCAPABILITIES'
 
-        self.identifier = Identify(yaml_file, content, url)
+        self.identifier = Identify([yaml_file], content, url)
         self.identifier.identify()
 
     def test_is_error(self):
@@ -126,7 +126,7 @@ class TestVersionExtraction(unittest.TestCase):
             content = f.read()
         url = 'http://www.mapserver.com/cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GETCAPABILITIES'
 
-        self.identifier = Identify(yaml_file, content, url)
+        self.identifier = Identify([yaml_file], content, url)
         self.identifier.identify()
 
         content = content.replace('\\n', '')
@@ -154,7 +154,7 @@ class TestVersionDefaults(unittest.TestCase):
                         <element>OpenSearchDescription</element></OpenSearch>'''
         url = 'http://www.opensearch.com'
 
-        self.identifier = Identify(yaml_file, content, url)
+        self.identifier = Identify([yaml_file], content, url)
         self.identifier.identify()
 
     def test_default_version(self):
@@ -181,7 +181,7 @@ class TestVersionCombined(unittest.TestCase):
 
         self.parser = Parser(content)
 
-        self.identifier = Identify(yaml_file, content, url)
+        self.identifier = Identify([yaml_file], content, url)
         self.identifier.identify()
 
     def test_default_version(self):
@@ -207,7 +207,7 @@ class TestIso(unittest.TestCase):
         content = content.replace('\\n', '')
         parser = Parser(content)
 
-        identifier = Identify(self.yaml_file, content, url, **{'parser': parser})
+        identifier = Identify([self.yaml_file], content, url, **{'parser': parser})
         identifier.identify()
 
         self.assertFalse(identifier.protocol == 'ISO-19115')
@@ -220,7 +220,20 @@ class TestIso(unittest.TestCase):
         content = content.replace('\\n', '')
         parser = Parser(content)
 
-        identifier = Identify(self.yaml_file, content, url, **{'parser': parser})
+        identifier = Identify([self.yaml_file], content, url, **{'parser': parser})
+        identifier.identify()
+
+        self.assertTrue(identifier.protocol == 'ISO-19115')
+
+        # and now make sure it's not csw or rdf or oai-pmh
+        identifier = Identify(
+            [
+                'lib/configs/iso_identifier.yaml',
+                'lib/configs/ogc_identifier.yaml',
+                'lib/configs/oaipmh_identifier.yaml',
+                'lib/configs/rdf_identifier.yaml'
+            ], content, url, **{'parser': parser}
+        )
         identifier.identify()
 
         self.assertTrue(identifier.protocol == 'ISO-19115')
@@ -233,10 +246,11 @@ class TestIso(unittest.TestCase):
         content = content.replace('\\n', '')
         parser = Parser(content)
 
-        identifier = Identify(self.yaml_file, content, url, **{'parser': parser})
+        identifier = Identify([self.yaml_file], content, url, **{'parser': parser})
         identifier.identify()
 
         self.assertTrue(identifier.protocol == 'ISO-19115')
+        self.assertTrue(identifier.language == 'eng')
 
     def test_if_returning_iso_protocol_for_ds(self):
         with open('tests/test_data/iso-19115_ds.xml', 'r') as f:
@@ -246,11 +260,13 @@ class TestIso(unittest.TestCase):
         content = content.replace('\\n', '')
         parser = Parser(content)
 
-        identifier = Identify(self.yaml_file, content, url, **{'parser': parser})
+        identifier = Identify([self.yaml_file], content, url, **{'parser': parser})
         identifier.identify()
 
+        print identifier.to_json()
+
         self.assertTrue(identifier.protocol == 'ISO-19115 DS')
-        self.assertTrue(identifier.version == 'ISO19115 (2003/Cor.1:2006)')
+        self.assertTrue(identifier.version == 'ISO19115 2003/Cor.1:2006')
         self.assertTrue(identifier.has_metadata)
 
 
@@ -288,7 +304,7 @@ class TestWfsIdentification(unittest.TestCase):
         content = content.replace('\\n', '')
         parser = Parser(content)
 
-        self.identifier = Identify(yaml_file, content, url, **{'parser': parser})
+        self.identifier = Identify([yaml_file], content, url, **{'parser': parser})
         # self.identifier.identify()
 
     def test_identify_dataset(self):
@@ -315,7 +331,7 @@ class TestWmsIdentification(unittest.TestCase):
         content = content.replace('\\n', '')
         parser = Parser(content)
 
-        self.identifier = Identify(yaml_file, content, url, **{'parser': parser})
+        self.identifier = Identify([yaml_file], content, url, **{'parser': parser})
         # self.identifier.identify()
 
     def test_identify_dataset(self):
@@ -329,3 +345,109 @@ class TestWmsIdentification(unittest.TestCase):
         has_metadata = self.identifier._identify_metadata_service(protocol_data)
 
         self.assertFalse(has_metadata)
+
+
+class TestCswIdentification(unittest.TestCase):
+    def setUp(self):
+        yaml_files = ['lib/configs/ogc_identifier.yaml', 'lib/configs/iso_identifier.yaml']
+
+        # set up for the known csw getcapabilities
+        with open('tests/test_data/cwic_csw_v2_0_2.xml', 'r') as f:
+            csw_content = f.read()
+        csw_url = 'http://www.mapserver.com/cgi?SERVICE=WCS&VERSION=2.0.2&REQUEST=GETCAPABILITIES'
+
+        csw_content = csw_content.replace('\\n', '')
+        csw_parser = Parser(csw_content)
+
+        self.csw_identifier = Identify(yaml_files, csw_content, csw_url, **{'parser': csw_parser})
+
+        # set up for the geonetwork mismatched namespacing iso issue
+        with open('tests/test_data/geonetwork_iso_NOT_csw.xml', 'r') as f:
+            iso_content = f.read()
+        iso_url = 'http://catalog.data.gov/harvest/object/d5de6dde-3042-4daf-b4ba-95e21e3ab343'
+
+        iso_content = iso_content.replace('\\n', '')
+        iso_parser = Parser(iso_content)
+
+        self.iso_identifier = Identify(yaml_files, iso_content, iso_url, **{'parser': iso_parser})
+
+    def test_identifies_csw(self):
+        self.csw_identifier.identify()
+
+        self.assertTrue(self.csw_identifier.protocol == 'OGC:CSW')
+
+    def test_identifies_not_as_csw(self):
+        # that is a terrible name, but a test for something that
+        # looks like csw from the namespaces but isn't
+
+        self.iso_identifier.identify()
+
+        self.assertTrue(self.iso_identifier.protocol == 'ISO-19115')
+
+
+class TestRdfDataset(unittest.TestCase):
+    def setUp(self):
+        # yaml_file = 'lib/configs/rdf_identifier.yaml'
+
+        with open('tests/test_data/datagov_9bcffa1c-6164-4635-bc2c-6c98cce59d7b.rdf', 'r') as f:
+            content = f.read()
+        url = 'http://catalog.data.gov/9bcffa1c-6164-4635-bc2c-6c98cce59d7b.rdf'
+
+        content = content.replace('\\n', '')
+        parser = Parser(content)
+
+        self.identifier = Identify(
+            [
+                'lib/configs/iso_identifier.yaml',
+                'lib/configs/ogc_identifier.yaml',
+                'lib/configs/oaipmh_identifier.yaml',
+                'lib/configs/rdf_identifier.yaml'
+            ], content, url, **{'parser': parser}
+        )
+
+    def test_rdf_identification(self):
+        self.identifier.identify()
+
+        self.assertTrue(self.identifier.protocol == 'RDF')
+
+    def test_rdf_language(self):
+        with open('tests/test_data/rdf_french_ed14b44e96042ad56c11cc0ca3768979.xml', 'r') as f:
+            content = f.read()
+        url = 'http://catalog.data.gov/9bcffa1c-6164-4635-bc2c-6c98cce59d7b.rdf'
+
+        content = content.replace('\\n', '')
+        parser = Parser(content)
+
+        identifier = Identify(
+            [
+                'lib/configs/iso_identifier.yaml',
+                'lib/configs/ogc_identifier.yaml',
+                'lib/configs/oaipmh_identifier.yaml',
+                'lib/configs/rdf_identifier.yaml'
+            ], content, url, **{'parser': parser}
+        )
+        identifier.identify()
+        print identifier.to_json()
+        self.assertTrue(identifier.protocol == 'RDF')
+        self.assertTrue(identifier.language == 'fr')
+
+
+class TestThreddsIdentification(unittest.TestCase):
+    def setUp(self):
+        yaml_file = 'lib/configs/thredds_identifier.yaml'
+
+        with open('tests/test_data/mod_stellwagen.xml', 'r') as f:
+            content = f.read()
+        url = 'http://stellwagen.er.usgs.gov/thredds/catalog/TSdata/catalog.xml'
+
+        content = content.replace('\\n', '')
+        parser = Parser(content)
+
+        self.identifier = Identify([yaml_file], content, url, **{'parser': parser})
+
+    def test_thredds_identification(self):
+        self.identifier.identify()
+
+        self.assertTrue(self.identifier.protocol == 'UNIDATA')
+        self.assertTrue(self.identifier.has_metadata)
+        self.assertTrue(self.identifier.has_dataset)

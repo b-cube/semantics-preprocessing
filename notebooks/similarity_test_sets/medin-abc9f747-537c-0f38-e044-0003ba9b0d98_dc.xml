@@ -1,0 +1,10 @@
+<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+    <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/">British Geological Survey (BGS) Geophysical Survey 1995/2: The Wash (25/07/1995 to 01/08/1995)</dc:title>
+    <dc:type xmlns:dc="http://purl.org/dc/elements/1.1/">dataset</dc:type>
+    <dc:identifier xmlns:dc="http://purl.org/dc/elements/1.1/">bgs.nerc.ac.uk:DC:abc9f747-537c-0f38-e044-0003ba9b0d98</dc:identifier>
+    <dc:description xmlns:dc="http://purl.org/dc/elements/1.1/">This British Geological Survey (BGS) survey took place in July/August 1995) in the Wash on board the Greyhound Tracker. Technical details are contained in BGS Report WB/95/36. Report: Brett, CP. 1995. LOEPS Shallow Seismic Survey, Wash, N. Norfolk, Humber Operations Report: Project 95/02.
+    </dc:description>
+    <dc:date xmlns:dc="http://purl.org/dc/elements/1.1/">1995-08-01</dc:date>
+</oai_dc:dc>

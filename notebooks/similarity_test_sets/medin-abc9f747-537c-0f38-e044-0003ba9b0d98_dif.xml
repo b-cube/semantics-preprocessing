@@ -1,0 +1,78 @@
+<ns0:DIF xmlns:ns0="http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/ http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif_v9.4.xsd">
+    <ns0:Entry_ID>bgs.nerc.ac.uk:DIF:BGS_CMD_REF272</ns0:Entry_ID>
+    <ns0:Entry_Title>British Geological Survey (BGS) Geophysical Survey 1995/2: The Wash (25/07/1995 to 01/08/1995)</ns0:Entry_Title>
+    <ns0:Parameters>
+        <ns0:Category/>
+        <ns0:Topic/>
+        <ns0:Term>NDGO0001</ns0:Term>
+    </ns0:Parameters>
+    <ns0:Parameters>
+        <ns0:Category/>
+        <ns0:Topic/>
+        <ns0:Term>Geology</ns0:Term>
+    </ns0:Parameters>
+    <ns0:Parameters>
+        <ns0:Category/>
+        <ns0:Topic/>
+        <ns0:Term>soil and sediment crust</ns0:Term>
+    </ns0:Parameters>
+    <ns0:Parameters>
+        <ns0:Category/>
+        <ns0:Topic/>
+        <ns0:Term>Bathymetry and Elevation Two-dimensional seismic reflection Side-scan sonar</ns0:Term>
+    </ns0:Parameters>
+    <ns0:ISO_Topic_Category>geoscientificInformation</ns0:ISO_Topic_Category>
+    <ns0:Keyword>NDGO0001</ns0:Keyword>
+    <ns0:Keyword>Geology</ns0:Keyword>
+    <ns0:Keyword>soil and sediment crust</ns0:Keyword>
+    <ns0:Keyword>Bathymetry and Elevation Two-dimensional seismic reflection Side-scan sonar</ns0:Keyword>
+    <Source_Name xmlns="http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/">
+        <Short_Name>NOTE! This GCMD DIF has been produced automatically from ISO19139 MEDIN v2.3 profile.  Not all MEDIN info is reproduced here - this conversion is intended to provide basic information to be reproduced in the NDG/MEDIN discovery service</Short_Name>
+    </Source_Name>
+    <ns0:Temporal_Coverage>
+        <ns0:Start_Date>1995-07-25</ns0:Start_Date>
+        <ns0:Stop_Date>1995-08-01</ns0:Stop_Date>
+    </ns0:Temporal_Coverage>
+    <ns0:Spatial_Coverage>
+        <ns0:Southernmost_Latitude>52.8801</ns0:Southernmost_Latitude>
+        <ns0:Northernmost_Latitude>53.6478</ns0:Northernmost_Latitude>
+        <ns0:Westernmost_Longitude>0.0840</ns0:Westernmost_Longitude>
+        <ns0:Easternmost_Longitude>1.2011</ns0:Easternmost_Longitude>
+    </ns0:Spatial_Coverage>
+    <ns0:Data_Center>
+        <ns0:Data_Center_Name>
+            <ns0:Short_Name>British Geological Survey (BGS)</ns0:Short_Name>
+        </ns0:Data_Center_Name>
+        <ns0:Personnel>
+            <ns0:Role>custodian</ns0:Role>
+            <ns0:Last_Name/>
+        </ns0:Personnel>
+    </ns0:Data_Center>
+    <ns0:Data_Center>
+        <ns0:Data_Center_Name>
+            <ns0:Short_Name>British Geological Survey (BGS)</ns0:Short_Name>
+        </ns0:Data_Center_Name>
+        <ns0:Personnel>
+            <ns0:Role>originator</ns0:Role>
+            <ns0:Last_Name/>
+        </ns0:Personnel>
+    </ns0:Data_Center>
+    <ns0:Data_Center>
+        <ns0:Data_Center_Name>
+            <ns0:Short_Name>British Geological Survey (BGS)</ns0:Short_Name>
+        </ns0:Data_Center_Name>
+        <ns0:Personnel>
+            <ns0:Role>distributor</ns0:Role>
+            <ns0:Last_Name/>
+        </ns0:Personnel>
+    </ns0:Data_Center>
+    <ns0:Summary>This British Geological Survey (BGS) survey took place in July/August 1995) in the Wash on board the Greyhound Tracker. Technical details are contained in BGS Report WB/95/36. Report: Brett, CP. 1995. LOEPS Shallow Seismic Survey, Wash, N. Norfolk, Humber Operations Report: Project 95/02.</ns0:Summary>
+    <ns0:Related_URL>
+        <ns0:URL>http://www.bgs.ac.uk/GeoIndex/offshore.htm</ns0:URL>
+    </ns0:Related_URL>
+    <ns0:Metadata_Name>9.4</ns0:Metadata_Name>
+    <ns0:Metadata_Version>[CEOS IDN DIF]</ns0:Metadata_Version>
+    <ns0:DIF_Creation_Date>1995-08-01</ns0:DIF_Creation_Date>
+</ns0:DIF>

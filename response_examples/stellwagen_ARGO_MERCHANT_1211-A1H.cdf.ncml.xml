@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" location="Not provided because of security concerns.">
+  <attribute name="CREATION_DATE" value="15:28 24-APR-97" />
+  <attribute name="DATA_TYPE" value="TIME" />
+  <attribute name="DATA_SUBTYPE" value="" />
+  <attribute name="DATA_ORIGIN" value="USGS/WHFC" />
+  <attribute name="COORD_SYSTEM" value="GEOGRAPHICAL" />
+  <attribute name="WATER_MASS" value="?" />
+  <attribute name="EXPERIMENT" value="?" />
+  <attribute name="PROJECT" value="?" />
+  <attribute name="MOORING" value="1211" />
+  <attribute name="DELTA_T" value="60.00 minutes&#xD;&#xA;" />
+  <attribute name="COMPOSITE" type="int" value="0" />
+  <attribute name="DATA_CMNT" value=" GREAT SOUTH CHANNEL; ARGO MERCHANT SITE.  BEFORE TIPPED.&#xD;&#xA;" />
+  <attribute name="POS_CONST" type="int" value="0" />
+  <attribute name="DEPTH_CONST" type="int" value="0" />
+  <attribute name="WATER_DEPTH" type="int" value="69" />
+  <attribute name="DESCRIPT" value="?" />
+  <attribute name="DRIFTER" type="int" value="0" />
+  <attribute name="FILL_FLAG" type="int" value="0" />
+  <attribute name="VAR_FILL" value="" />
+  <attribute name="magnetic_variation(deg)" type="float" value="-16.0" />
+  <attribute name="title" value="Current meter archive data - Butman et al, Oct.  1992" />
+  <attribute name="start_time" value="28-Dec-1976 21:29:59" />
+  <attribute name="stop_time" value="08-Jan-1977 06:29:59" />
+  <attribute name="cycles" type="int" value="250" />
+  <attribute name="days" type="int" value="10" />
+  <attribute name="latitude" type="float" value="40.90111" />
+  <attribute name="longitude" type="float" value="-69.17667" />
+  <attribute name="history" value="Original file creation date was 22:50 JUN 29,'83&#xD;&#xA;Converted to EPIC/NetCDF Tue Feb 18 10:14:55 1997&#xA;&#xA;Original ascii file was h1211x01.ascChanged epic code 4020 to 4001 on Thu Apr 24 14:24:10 1997&#xA;" />
+  <attribute name="summary" value="1211-A1H       start time = 28 Dec 1976  16:29:59  cycles = 250&#xA;               stop  time =  8 Jan 1977  01:29:59  # days = 10&#xA;Expt. = 'USGS'  sampling interval = 60.00 minutes&#xA;Lat =  40.901112&#xA;Lon = -69.176666  File created:  22:50 JUN 29,'83&#xA;depth = 69m  Mag.var = -16.000000&#xA;#  Variable     Units        Codes Depth   Inst.   Minimum   Maximum&#xA;-- ------------ ------------ ----- ------- ------ --------- ---------&#xA; 1 TIME         SECONDS      T     &#xA; 2 EAST  COMP   CMS/SEC      R       69.00 V-0069   -44.012    49.297&#xA; 3 NORTH COMP   CMS/SEC      R       69.00 V-0069   -50.654    72.174&#xA; 4 VDIR.1       DEG          R       69.00 V-0069     1.868   359.745&#xA; 5 VSPD.1       CMS/SEC      R       69.00 V-0069     1.416    79.172&#xA; 6 INT_ROTOR    CMS/SEC      R       69.00 V-0069     5.847    79.927&#xA;---------------------------------------------------------------------&#xA; Comments:                                                      REDUCE&#xA; GREAT SOUTH CHANNEL; ARGO MERCHANT SITE.  BEFORE TIPPED.&#xA; VARIABLES LISTED IN ORDER SHOWN ABOVE&#xA;" />
+  <attribute name="INST_TYPE" value="V-0069" />
+  <attribute name="VAR_DESC" value="u:v:CD:CS:upr" />
+  <attribute name="_CoordSysBuilder" value="ucar.nc2.dataset.conv.DefaultConvention" />
+  <dimension name="time" length="250" />
+  <dimension name="depth" length="1" />
+  <dimension name="lat" length="1" />
+  <dimension name="lon" length="1" />
+  <group name="CFMetadata">
+    <attribute name="geospatial_lon_min" value="-69.17666625976562" type="float" />
+    <attribute name="geospatial_lat_min" value="40.9011116027832" type="float" />
+    <attribute name="geospatial_lon_max" value="-69.17666625976562" type="float" />
+    <attribute name="geospatial_lat_max" value="40.9011116027832" type="float" />
+    <attribute name="geospatial_lon_units" value="degrees_east" />
+    <attribute name="geospatial_lat_units" value="degrees_north" />
+    <attribute name="geospatial_lon_resolution" value="0.0" />
+    <attribute name="geospatial_lat_resolution" value="0.0" />
+    <attribute name="geospatial_vertical_min" value="69.0" />
+    <attribute name="geospatial_vertical_max" value="69.0" />
+    <attribute name="geospatial_vertical_units" value="m" />
+    <attribute name="geospatial_vertical_resolution" value="0.0" />
+  </group>
+  <group name="NCISOMetadata">
+    <attribute name="metadata_creation" value="2015-03-23" />
+    <attribute name="nciso_version" value="2.2.2" />
+  </group>
+  <variable name="time2" shape="time" type="int">
+    <attribute name="FORTRAN_format" value="F10.2" />
+    <attribute name="units" value="msec since 0:00 GMT" />
+    <attribute name="type" value="EVEN" />
+    <attribute name="epic_code" type="int" value="624" />
+  </variable>
+  <variable name="u_1205" shape="time depth lat lon" type="float">
+    <attribute name="name" value="u" />
+    <attribute name="long_name" value="Eastward Velocity        " />
+    <attribute name="generic_name" value="u" />
+    <attribute name="FORTRAN_format" value=" " />
+    <attribute name="units" value="cm/s" />
+    <attribute name="epic_code" type="int" value="1205" />
+    <attribute name="code" value="R" />
+    <attribute name="sensor_depth" type="float" value="69.0" />
+    <attribute name="serial_number" value="V-0069" />
+    <attribute name="minimum" type="float" value="-44.0116" />
+    <attribute name="maximum" type="float" value="49.2965" />
+    <attribute name="valid_range" type="float" value="-1000.0 1000.0" />
+  </variable>
+  <variable name="v_1206" shape="time depth lat lon" type="float">
+    <attribute name="name" value="v" />
+    <attribute name="long_name" value="Northward Velocity       " />
+    <attribute name="generic_name" value="v" />
+    <attribute name="FORTRAN_format" value=" " />
+    <attribute name="units" value="cm/s" />
+    <attribute name="epic_code" type="int" value="1206" />
+    <attribute name="code" value="R" />
+    <attribute name="sensor_depth" type="float" value="69.0" />
+    <attribute name="serial_number" value="V-0069" />
+    <attribute name="minimum" type="float" value="-50.6539" />
+    <attribute name="maximum" type="float" value="72.1739" />
+    <attribute name="valid_range" type="float" value="-1000.0 1000.0" />
+  </variable>
+  <variable name="CD_310" shape="time depth lat lon" type="float">
+    <attribute name="name" value="CD" />
+    <attribute name="long_name" value="CURRENT DIRECTION (T)     " />
+    <attribute name="generic_name" value="vdir" />
+    <attribute name="FORTRAN_format" value="f8.2" />
+    <attribute name="units" value="degrees" />
+    <attribute name="epic_code" type="int" value="310" />
+    <attribute name="code" value="R" />
+    <attribute name="sensor_depth" type="float" value="69.0" />
+    <attribute name="serial_number" value="V-0069" />
+    <attribute name="minimum" type="float" value="1.86825" />
+    <attribute name="maximum" type="float" value="359.745" />
+    <attribute name="valid_range" type="float" value="0.0 360.0" />
+  </variable>
+  <variable name="CS_300" shape="time depth lat lon" type="float">
+    <attribute name="name" value="CS" />
+    <attribute name="long_name" value="CURRENT SPEED (CM/S)      " />
+    <attribute name="generic_name" value="vspd" />
+    <attribute name="FORTRAN_format" value="f8.2" />
+    <attribute name="units" value="cm s-1 " />
+    <attribute name="epic_code" type="int" value="300" />
+    <attribute name="code" value="R" />
+    <attribute name="sensor_depth" type="float" value="69.0" />
+    <attribute name="serial_number" value="V-0069" />
+    <attribute name="minimum" type="float" value="1.41605" />
+    <attribute name="maximum" type="float" value="79.1717" />
+    <attribute name="valid_range" type="float" value="0.0 1000.0" />
+  </variable>
+  <variable name="upr_4001" shape="time depth lat lon" type="float">
+    <attribute name="name" value="upr" />
+    <attribute name="long_name" value="UPPER ROTOR SPEED     " />
+    <attribute name="generic_name" value="rotor" />
+    <attribute name="FORTRAN_format" value="f10.3" />
+    <attribute name="units" value="cm/s" />
+    <attribute name="epic_code" type="int" value="4001" />
+    <attribute name="code" value="R" />
+    <attribute name="sensor_depth" type="float" value="69.0" />
+    <attribute name="serial_number" value="V-0069" />
+    <attribute name="minimum" type="float" value="5.84666" />
+    <attribute name="maximum" type="float" value="79.9272" />
+    <attribute name="valid_range" type="float" value="0.0 1000.0" />
+  </variable>
+  <variable name="time" shape="time" type="int">
+    <attribute name="FORTRAN_format" value="F10.2" />
+    <attribute name="units" value="True Julian Day" />
+    <attribute name="type" value="EVEN" />
+    <attribute name="epic_code" type="int" value="624" />
+  </variable>
+  <variable name="depth" shape="depth" type="float">
+    <attribute name="FORTRAN_format" value="F10.2" />
+    <attribute name="units" value="m" />
+    <attribute name="type" value="EVEN" />
+    <attribute name="epic_code" type="int" value="3" />
+    <attribute name="_CoordinateAxisType" value="Height" />
+  </variable>
+  <variable name="lat" shape="lat" type="float">
+    <attribute name="FORTRAN_format" value="F10.2" />
+    <attribute name="units" value="degrees_north" />
+    <attribute name="type" value="EVEN" />
+    <attribute name="epic_code" type="int" value="500" />
+    <attribute name="_CoordinateAxisType" value="Lat" />
+  </variable>
+  <variable name="lon" shape="lon" type="float">
+    <attribute name="FORTRAN_format" value="F10.2" />
+    <attribute name="units" value="degrees_east" />
+    <attribute name="type" value="EVEN" />
+    <attribute name="epic_code" type="int" value="502" />
+    <attribute name="_CoordinateAxisType" value="Lon" />
+  </variable>
+</netcdf>
+

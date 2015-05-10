@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<rdf:RDF 
+    xmlns:foaf="http://xmlns.com/foaf/0.1/" 
+    xmlns:dct="http://purl.org/dc/terms/" 
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+    xmlns:dcat="http://www.w3.org/ns/dcat#" xml:lang="fr">
+    <dcat:Dataset rdf:about="http://data.angers.fr/?eID=smile_od_rdf&amp;id=205">
+        <dct:identifier>alm_111_DEL_2013</dct:identifier>
+        <dct:title>Délibérations du conseil d'Angers Loire Métropole en 2013</dct:title>
+        <dct:description>Actes administratifs exécutoires pris par le conseil communautaire d'Angers Loire Métropole lors des séances de l'année 20013</dct:description>
+        <dcat:landingPage>http://data.angers.fr/donnees/deliberations-du-conseil-dangers-loire-metropole-en-2013/</dcat:landingPage>
+        <dcat:theme>Citoyenneté / Institution</dcat:theme>
+        <dcat:keywords>délibération, acte, institution publique</dcat:keywords>
+        <dct:licence>Licence ODbL</dct:licence>
+        <dct:issued>1402869600</dct:issued>
+        <dct:modified>0</dct:modified>
+        <lastModificationDescription/>
+        <dct:temporal>publication unique</dct:temporal>
+        <dct:created>1402925121</dct:created>
+        <dct:creator/>
+        <dct:contributor>Angers Loire Métropole</dct:contributor>
+        <dct:publisher>Angers Loire Métropole</dct:publisher>
+        <dct:spatial>Territoire d'Angers Loire Métropole</dct:spatial>
+        <dct:language/>
+        <dcat:dataQuality/>
+        <dcat:granularity/>
+        <dct:references/>
+        <dcat:themeTaxonomy/>
+        <dcat:distribution>
+            <dcat:Distribution>
+                <dcat:Download>fileadmin/datastore/data/Citoyennete/Archives-DEL-11-12-13/alm_111_DEL_20131010.7z</dcat:Download>
+                <dct:format>PDF</dct:format>
+                <dcat:accessURL>http://data.angers.fr/fileadmin/datastore/data/Citoyennete/Archives-DEL-11-12-13/alm_111_DEL_20131010.7z</dcat:accessURL>
+            </dcat:Distribution>
+            <dcat:Distribution>
+                <dcat:Download>fileadmin/datastore/data/Citoyennete/Archives-DEL-11-12-13/alm_111_DEL_20130912.7z</dcat:Download>
+                <dct:format>PDF</dct:format>
+                <dcat:accessURL>http://data.angers.fr/fileadmin/datastore/data/Citoyennete/Archives-DEL-11-12-13/alm_111_DEL_20130912.7z</dcat:accessURL>
+            </dcat:Distribution>
+            <dcat:Distribution>
+                <dcat:Download>fileadmin/datastore/data/Citoyennete/Archives-DEL-11-12-13/alm_111_DEL_20130711.7z</dcat:Download>
+                <dct:format>PDF</dct:format>
+                <dcat:accessURL>http://data.angers.fr/fileadmin/datastore/data/Citoyennete/Archives-DEL-11-12-13/alm_111_DEL_20130711.7z</dcat:accessURL>
+            </dcat:Distribution>
+            <dcat:Distribution>
+                <dcat:Download>fileadmin/datastore/data/Citoyennete/Archives-DEL-11-12-13/alm_111_DEL_20130613.7z</dcat:Download>
+                <dct:format>PDF</dct:format>
+                <dcat:accessURL>http://data.angers.fr/fileadmin/datastore/data/Citoyennete/Archives-DEL-11-12-13/alm_111_DEL_20130613.7z</dcat:accessURL>
+            </dcat:Distribution>
+            <dcat:Distribution>
+                <dcat:Download>fileadmin/datastore/data/Citoyennete/Archives-DEL-11-12-13/alm_111_DEL_20130507.7z</dcat:Download>
+                <dct:format>PDF</dct:format>
+                <dcat:accessURL>http://data.angers.fr/fileadmin/datastore/data/Citoyennete/Archives-DEL-11-12-13/alm_111_DEL_20130507.7z</dcat:accessURL>
+            </dcat:Distribution>
+            <dcat:Distribution>
+                <dcat:Download>fileadmin/datastore/data/Citoyennete/Archives-DEL-11-12-13/alm_111_DEL_20130411.7z</dcat:Download>
+                <dct:format>PDF</dct:format>
+                <dcat:accessURL>http://data.angers.fr/fileadmin/datastore/data/Citoyennete/Archives-DEL-11-12-13/alm_111_DEL_20130411.7z</dcat:accessURL>
+            </dcat:Distribution>
+            <dcat:Distribution>
+                <dcat:Download>fileadmin/datastore/data/Citoyennete/Archives-DEL-11-12-13/alm_111_DEL_20130314.7z</dcat:Download>
+                <dct:format>PDF</dct:format>
+                <dcat:accessURL>http://data.angers.fr/fileadmin/datastore/data/Citoyennete/Archives-DEL-11-12-13/alm_111_DEL_20130314.7z</dcat:accessURL>
+            </dcat:Distribution>
+            <dcat:Distribution>
+                <dcat:Download>fileadmin/datastore/data/Citoyennete/Archives-DEL-11-12-13/alm_111_DEL_20130214.7z</dcat:Download>
+                <dct:format>PDF</dct:format>
+                <dcat:accessURL>http://data.angers.fr/fileadmin/datastore/data/Citoyennete/Archives-DEL-11-12-13/alm_111_DEL_20130214.7z</dcat:accessURL>
+            </dcat:Distribution>
+            <dcat:Distribution>
+                <dcat:Download>fileadmin/datastore/data/Citoyennete/Archives-DEL-11-12-13/alm_111_DEL_20130124.7z</dcat:Download>
+                <dct:format>PDF</dct:format>
+                <dcat:accessURL>http://data.angers.fr/fileadmin/datastore/data/Citoyennete/Archives-DEL-11-12-13/alm_111_DEL_20130124.7z</dcat:accessURL>
+            </dcat:Distribution>
+        </dcat:distribution>
+    </dcat:Dataset>
+</rdf:RDF>

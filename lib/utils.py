@@ -1,6 +1,8 @@
 import urlparse
+import urllib
 import collections
 from uuid import uuid4
+import hashlib
 
 
 '''
@@ -40,6 +42,10 @@ url handling:
 '''
 
 
+def unquote(url):
+    return urllib.unquote(url)
+
+
 def parse_url(url):
     '''
     strip out the query parameters
@@ -49,6 +55,59 @@ def parse_url(url):
     parsed_url = urlparse.urlparse(url)
     return urlparse.parse_qs(parsed_url.query)
 
+
+def intersect_url(url, path, bases=[]):
+    '''
+    returns a list of urls
+
+    params:
+        url: root path
+        path: "test" path, ie path to intersect
+        bases: an array of relative intermediate paths (thredds service blobs)
+    '''
+    if path.startswith('/'):
+        path = path[1:]
+    parts = urlparse.urlparse(path)
+    if parts.scheme and parts.netloc:
+        # it's a valid url, do nothing
+        return [path]
+
+    parts = urlparse.urlparse(url)
+    url_paths = parts.path.split('/')
+    paths = path.split('/')
+
+    if bases:
+        # it has options at the root of the base path
+        return [urlparse.urlunparse((
+            parts.scheme,
+            parts.netloc,
+            '/'.join([b, path]),
+            parts.params,
+            parts.query,
+            parts.fragment
+        )) for b in bases]
+
+    match_index = url_paths.index(paths[0]) if paths[0] in url_paths else -1
+    if match_index < 0:
+        # it does not intersect, just combine
+        return [urlparse.urljoin(url.replace('catalog.xml', ''), path)]
+    else:
+        # there is some overlap, union
+        return [
+            urlparse.urljoin(
+                urlparse.urlunparse(
+                    (
+                        parts.scheme,
+                        parts.netloc,
+                        '/'.join(url_paths[0:match_index + 1]),
+                        parts.params,
+                        parts.query,
+                        parts.fragment
+                    )
+                ),
+                path
+            )
+        ]
 
 '''
 general utils
@@ -61,6 +120,10 @@ def generate_short_uuid():
     it is the first chunk of the hash
     '''
     return str(uuid4()).split('-')[0]
+
+
+def generate_sha(text):
+    return hashlib.sha224(text).hexdigest()
 
 
 def extract_element_tag(tag):
@@ -88,6 +151,36 @@ def generate_qualified_xpath(elem, do_join=True):
     #     continue
 
     return '/'.join(tags) if do_join else tags
+
+
+def generate_localname_xpath(tags):
+    '''
+    from some tag "list", generate an xpath using local-names only
+
+    note: this is meant for processing and not for the remainder/excludes
+          functions
+
+    params:
+        tags: list of element names as root/parent/child
+
+    returns:
+        *[local-name()="root"]/*[local-name()="parent"]/*[local-name()="child"]
+    '''
+    return '/'.join(['*[local-name()="%s"]' % t if t not in ['*', '..', '.'] else t
+                    for t in tags.split('/') if t])
+
+
+def tidy_dict(items):
+    # cleanup a dict (remove empty elements)
+    # but only at the single depth
+    to_remove = []
+    for k, v in items.iteritems():
+        if not v:
+            to_remove.append(k)
+    for k in to_remove:
+        del items[k]
+
+    return items
 
 
 def flatten(items, excluded_keys=[]):

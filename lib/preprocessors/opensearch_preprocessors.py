@@ -1,7 +1,7 @@
 import re
 
 from lib.base_preprocessors import BaseReader
-from lib.utils import parse_url, flatten
+from lib.utils import parse_url, flatten, tidy_dict
 
 
 class OpenSearchReader(BaseReader):
@@ -18,14 +18,14 @@ class OpenSearchReader(BaseReader):
                    "{http://a9.com/-/spec/opensearch/1.1/}Developer",
         "rights": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
                   "{http://a9.com/-/spec/opensearch/1.1/}SyndicationRight",
-        "language": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
-                    "{http://a9.com/-/spec/opensearch/1.1/}Language",
         "subject": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
                    "{http://a9.com/-/spec/opensearch/1.1/}Tags"
     }
     _to_exclude = [
         "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
-        "{http://a9.com/-/spec/opensearch/1.1/}Url"
+        "{http://a9.com/-/spec/opensearch/1.1/}Url",
+        "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
+        "{http://a9.com/-/spec/opensearch/1.1/}Language/"
     ]
 
     _parameter_formats = {
@@ -45,11 +45,12 @@ class OpenSearchReader(BaseReader):
                                 "{http://a9.com/-/spec/opensearch/1.1/}Url")
 
         endpoints = [
-            {
-                "type": url.get('type', ''),
+            tidy_dict({
+                "protocol": self._remap_http_method(url.get('type', '')),
                 "url": url.get('template', ''),
-                "parameters": self._extract_url_parameters(url.get('template', ''))
-            } for url in urls
+                "parameters": self._extract_url_parameters(url.get('template', '')),
+                "actionable": 0 if 'rel' not in url.attrib.keys() else 2
+            }) for url in urls
         ]
 
         return endpoints
@@ -90,12 +91,12 @@ class OpenSearchReader(BaseReader):
                         in query_params.iteritems()]
 
         return [
-            {
+            tidy_dict({
                 "name": qp[0],
                 "namespaces": self.parser._namespaces,
                 "prefix": qp[1],
                 "type": qp[2],
-                "formats": self._parameter_formats.get(':'.join(qp[1:]))
-            }
+                "format": self._parameter_formats.get(':'.join(qp[1:]))
+            })
             for qp in query_params
         ]
