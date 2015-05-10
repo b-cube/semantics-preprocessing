@@ -1,7 +1,96 @@
 from lxml import etree
 from HTMLParser import HTMLParser
-# import traceback
-# import sys
+from bs4 import BeautifulSoup
+import re
+from lib.utils import unquote
+
+
+class BasicParser():
+    '''
+    not concerned about namespaces or querying
+
+    note: these could merge at some point
+    '''
+    def __init__(self, text, handle_html=False):
+        self.text = text.encode('unicode_escape')
+        self.parser = etree.XMLParser(
+            remove_blank_text=True,
+            remove_comments=True,
+            recover=True,
+            remove_pis=True
+        )
+        self.handle_html = handle_html
+
+        self._parse_node_attributes
+
+    def _parse(self):
+        try:
+            self.xml = etree.fromstring(self.text, parser=self.parser)
+        except:
+            raise
+
+    def _un_htmlify(self, text):
+        def _handle_bad_html(s):
+            pttn = re.compile('<|>')
+            return pttn.sub(' ', s)
+
+        soup = BeautifulSoup(text.strip())
+
+        # get all of the text and any a/@href values
+        texts = [_handle_bad_html(t) for t in soup.find_all(text=True)] + \
+            [unquote(a['href']) for a in soup.find_all('a') if 'href' in a.attrs]
+
+        try:
+            text = ' '.join(texts)
+        except:
+            raise
+        return text
+
+    def strip_text(self, exclude_tags=[]):
+        # pull any text() and attribute. again.
+        # bag of words BUT we care about where in
+        # the tree it was found (just for thinking)
+        # except do not care about namespace prefixed
+        # why am i not stripping out the prefixes? no idea.
+        # just don't want to install pparse/saxonb really
+        #
+        # exclude_patterns = list of element tag strings
+        # to ignore (ie schemaLocation, etc)
+
+        def _extract_tag(t):
+            if not t:
+                return
+            return t.split('}')[-1]
+
+        def _taggify(e):
+            tags = [e.tag] + [m.tag for m in e.iterancestors()]
+            tags.reverse()
+
+            try:
+                return [_extract_tag(t) for t in tags]
+            except:
+                continue
+
+        blobs = []
+        for elem in self.xml.iter():
+            t = elem.text.strip() if elem.text else ''
+            tags = _taggify(elem)
+
+            if [e for e in exclude_tags if e in tags]:
+                continue
+
+            if t:
+                if self.handle_html and (
+                        (t.startswith('<') and t.endswith('>'))
+                        or ('<' in t or '>' in t)):
+                    t = self._un_htmlify(self, t)
+                blobs.append(('/'.join(tags), t))
+
+            for k, v in elem.attrib.iteritems():
+                if v.strip():
+                    blobs.append(('/'.join(tags + ['@' + _extract_tag(k)]), v.strip()))
+
+        return blobs
 
 
 class Parser():
@@ -34,9 +123,7 @@ class Parser():
         try:
             self.xml = etree.fromstring(self._string, parser)
         except Exception as ex:
-            # print self._string[0:50]
             print ex
-            # traceback.print_exc(file=sys.stdout)
             self.xml = None
 
         if self.xml is None:
@@ -47,9 +134,7 @@ class Parser():
                     parser=etree.XMLParser(encoding=self._encoding)
                 )
             except Exception as ex:
-                # print self._string[0:50]
                 print ex
-                # traceback.print_exc(file=sys.stdout)
                 self.xml = None
                 return
 
@@ -59,6 +144,9 @@ class Parser():
             self._strip_whitespace()
         except AttributeError:
             print 'text not writable? ', self._string[:100]
+
+    def to_string(self):
+        return etree.tostring(self.xml)
 
     def find(self, xpath):
         '''

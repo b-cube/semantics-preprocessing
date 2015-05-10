@@ -3,6 +3,7 @@ from lib.rawresponse import RawResponse
 from lib.parser import Parser
 from lib.identifier import Identify
 from lib.process_router import Processor
+from lib.utils import generate_sha
 import json
 from task_helpers import parse_yaml, extract_task_config
 from task_helpers import read_data, generate_output_filename
@@ -10,6 +11,11 @@ import subprocess
 
 
 class ResponseTask(luigi.Task):
+    '''
+    task to pull the handful of elements from the solr
+    response and deal with the encoding/storage issues
+    in the xml
+    '''
     yaml_file = luigi.Parameter()
     input_file = luigi.Parameter()
 
@@ -46,6 +52,7 @@ class ResponseTask(luigi.Task):
         source_url = data['url']
         content = data['raw_content']
         digest = data['digest']
+        url_sha = data.get('sha', generate_sha(source_url))
 
         rr = RawResponse(source_url.upper(), content, digest, **{})
         cleaned_text = rr.clean_raw_content()
@@ -54,8 +61,52 @@ class ResponseTask(luigi.Task):
         return {
             "digest": digest,
             "source_url": source_url,
-            "content": cleaned_text
+            "content": cleaned_text,
+            "sha": url_sha
         }
+
+
+class ExtractXmlTask(luigi.Task):
+    '''
+    task to dump just the xml out of the response
+    '''
+    yaml_file = luigi.Parameter()
+    input_file = luigi.Parameter()
+
+    output_path = ''
+
+    def requires(self):
+        return []
+
+    def output(self):
+        return luigi.LocalTarget(
+            generate_output_filename(
+                self.input_file,
+                self.output_path,
+                'extracted',
+                '.xml'
+            )
+        )
+
+    def run(self):
+        '''  '''
+        self._configure()
+
+        data = read_data(self.input_file)
+        self.xml = self.process_response(data)
+        with self.output().open('w') as out_file:
+            out_file.write(self.xml)
+
+    def _configure(self):
+        config = parse_yaml(self.yaml_file)
+        config = extract_task_config(config, 'ExtractXml')
+        self.output_path = config.get('output_directory', '')
+
+    def process_response(self, data):
+        # do the response processing
+        content = data['content'].encode('unicode_escape')
+        parser = Parser(content)
+        return parser.to_string()
 
 
 class IdentifyTask(luigi.Task):

@@ -1,6 +1,8 @@
 import urlparse
+import urllib
 import collections
 from uuid import uuid4
+import hashlib
 
 
 '''
@@ -38,6 +40,10 @@ def parse_gml_envelope(envelope, namespaces):
 url handling:
     query parameter parsing
 '''
+
+
+def unquote(url):
+    return urllib.unquote(url)
 
 
 def parse_url(url):
@@ -114,6 +120,10 @@ def generate_short_uuid():
     it is the first chunk of the hash
     '''
     return str(uuid4()).split('-')[0]
+
+
+def generate_sha(text):
+    return hashlib.sha224(text).hexdigest()
 
 
 def extract_element_tag(tag):

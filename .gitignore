@@ -3,6 +3,11 @@
 *.pyc
 *.xlsx
 
+notebooks/*.log
+notebooks/*.sql
+notebooks/*.csv
+notebooks/*.sqlite
+
 test.txt
 testdata/
 we_hate_xml*
@@ -20,3 +25,5 @@ solr_superset/
 notebooks/Untitled0.ipynb
 
 notebooks/identifier_extraction.log
+
+*.sqlite

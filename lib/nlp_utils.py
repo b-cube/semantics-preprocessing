@@ -99,14 +99,14 @@ def remove_stopwords(text):
     return ' '.join([w for w in words if w not in _stopwords and w])
 
 
-def remove_mimetypes(text):
+def remove_tokens(term_file, text):
     '''
     do this before something like tokenize or the
     resplit option will split the mimetypes to not
     be recognizable as such anymore
     '''
-    mimetypes = WordListCorpusReader(_corpus_root, 'mimetypes.txt')
-    words = [w.replace('+', '\+') for w in mimetypes.words()]
+    tokens = WordListCorpusReader(_corpus_root, term_file)
+    words = [w.replace('+', '\+') for w in tokens.words()]
 
     pttn = re.compile('|'.join(words))
     return pttn.sub('', text)
@@ -141,7 +141,7 @@ def extract_mimetypes(text, do_replace=True):
     found_mimetypes = [w for w in mimetypes.words() if w in text]
 
     if do_replace:
-        text = remove_mimetypes(text)
+        text = remove_tokens('mimetypes.txt', text)
 
     return found_mimetypes, text
 
