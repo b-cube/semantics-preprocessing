@@ -11,7 +11,7 @@ class BasicParser():
 
     note: these could merge at some point
     '''
-    def __init__(self, text, handle_html=False):
+    def __init__(self, text, handle_html=False, include_html_hrefs=False):
         self.text = text.encode('unicode_escape')
         self.parser = etree.XMLParser(
             remove_blank_text=True,
@@ -20,6 +20,7 @@ class BasicParser():
             remove_pis=True
         )
         self.handle_html = handle_html
+        self.include_html_hrefs = include_html_hrefs
 
         self._parse_node_attributes
 
@@ -37,8 +38,9 @@ class BasicParser():
         soup = BeautifulSoup(text.strip())
 
         # get all of the text and any a/@href values
-        texts = [_handle_bad_html(t) for t in soup.find_all(text=True)] + \
-            [unquote(a['href']) for a in soup.find_all('a') if 'href' in a.attrs]
+        texts = [_handle_bad_html(t) for t in soup.find_all(text=True)]
+        if self.include_html_hrefs:
+            texts += [unquote(a['href']) for a in soup.find_all('a') if 'href' in a.attrs]
 
         try:
             text = ' '.join(texts)
@@ -71,7 +73,6 @@ class BasicParser():
             except:
                 return []
 
-        blobs = []
         for elem in self.xml.iter():
             t = elem.text.strip() if elem.text else ''
             tags = _taggify(elem)
@@ -84,13 +85,12 @@ class BasicParser():
                         (t.startswith('<') and t.endswith('>'))
                         or ('<' in t or '>' in t)):
                     t = self._un_htmlify(self, t)
-                blobs.append(('/'.join(tags), t))
+                if t:
+                    yield ('/'.join(tags), t)
 
             for k, v in elem.attrib.iteritems():
                 if v.strip():
-                    blobs.append(('/'.join(tags + ['@' + _extract_tag(k)]), v.strip()))
-
-        return blobs
+                    yield ('/'.join(tags + ['@' + _extract_tag(k)]), v.strip())
 
 
 class Parser():

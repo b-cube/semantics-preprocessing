@@ -1,5 +1,6 @@
 import re
 from urlparse import urlparse
+from lib.parser import BasicParser
 from lib.nlp_utils import remove_tokens
 from lxml import etree
 
@@ -110,13 +111,30 @@ def extract_by_xpath(xml):
             yield (pattern_type, t)
 
 
-def process_identifiers(xml):
+# TODO: add the logging to capture what & where
+def process_identifiers(text, handle_html=False):
     '''
     run the regex and xpath checks
-    '''
-    text = etree.tostring(xml)
+    starting with the text ? for more
+    parsing
 
-    pass
+    handle_html is mostly for things like RSS
+    '''
+    parser = BasicParser(text, handle_html=handle_html)
+
+    # TODO: add excludes
+    for tag_blob, text_blob in parser.strip_text():
+        for match_type, match_blob in extract_by_regex(text_blob):
+            yield {
+                'type': match_type,
+                'identifier': match_blob
+            }
+
+    for match_type, match_text in extract_by_xpath(parser.xml):
+        yield {
+            'type': match_type,
+            'identifier': match_text
+        }
 
 
 
