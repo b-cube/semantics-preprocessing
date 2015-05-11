@@ -29,17 +29,4 @@ class TripleWorkflow(luigi.Task):
 
     def _iterator(self):
         for f in glob.glob(os.path.join(self.doc_dir, '*.json'))[self.start_index:self.end_index]:
-            print '#' * 20, f
             yield f
-
-
-if __name__ == '__main__':
-    interval = 5
-    for i in xrange(0, 5, interval):
-        w = TripleWorkflow(
-            doc_dir='testdata/test_triples/',
-            yaml_file='tasks/triples_test.yaml',
-            start_index=i,
-            end_index=(i + interval)
-        )
-        luigi.build([w], local_scheduler=True)

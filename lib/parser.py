@@ -69,7 +69,7 @@ class BasicParser():
             try:
                 return [_extract_tag(t) for t in tags]
             except:
-                continue
+                return []
 
         blobs = []
         for elem in self.xml.iter():

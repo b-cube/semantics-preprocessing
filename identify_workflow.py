@@ -30,15 +30,3 @@ class IdentifyWorkflow(luigi.Task):
     def _iterator(self):
         for f in glob.glob(os.path.join(self.doc_dir, '*.json'))[self.start_index:self.end_index]:
             yield f
-
-
-if __name__ == '__main__':
-    interval = 1000
-    for i in xrange(0, 26000, interval):
-        w = IdentifyWorkflow(
-            doc_dir='testdata/docs/',
-            yaml_file='tasks/identity_20150414_firstharvest.yaml',
-            start_index=i,
-            end_index=(i + interval)
-        )
-        luigi.build([w], local_scheduler=True)
