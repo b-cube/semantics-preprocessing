@@ -2,6 +2,7 @@ import luigi
 import json
 import re
 from tasks.parse_tasks import ParseTask
+from tasks.parse_tasks import ExtractXmlTask
 from lib.parser import Parser
 from lib.nlp_utils import normalize_subjects
 from lib.nlp_utils import is_english
@@ -14,7 +15,7 @@ from lib.nlp_utils import tokenize, tokenize_text
 from task_helpers import parse_yaml, extract_task_config
 from task_helpers import generate_output_filename
 from task_helpers import read_data
-
+from lib.unique_identifiers import process_identifiers
 
 '''
 text processing tasks
@@ -207,7 +208,7 @@ class BagOfWordsFromParsedTask(luigi.Task):
         return ' '.join(bag.split()) if len(bag.split()) >= self.minimum_wordcount and bag else ''
 
 
-class BagOfWordsFromXML(luigi.Task):
+class BagOfWordsFromXMLTask(luigi.Task):
     yaml_file = luigi.Parameter()
     input_file = luigi.Parameter()
 
@@ -265,6 +266,7 @@ class BagOfWordsFromXML(luigi.Task):
             # note: this uses a different punctuation set
             bow = _strip_punctuation(content)
             # so this runs without error in ipy but not here.
+            # TODO: fix that
             words = tokenize(bow)
             words = remove_stopwords(words)
             return words
@@ -287,3 +289,49 @@ class BagOfWordsFromXML(luigi.Task):
             if len(words) < self.minimum_wordcount:
                 return ''
             return ' '.join(words)
+
+
+class ExtractIdentifiersTask(luigi.Task):
+    '''
+    extract the unique identifiers from some xml
+    '''
+    yaml_file = luigi.Parameter()
+    input_file = luigi.Parameter()
+
+    output_path = ''
+
+    def requires(self):
+        return ExtractXmlTask(input_file=self.input_file, yaml_file=self.yaml_file)
+
+    def output(self):
+        return luigi.LocalTarget(
+            generate_output_filename(
+                self.input_file,
+                self.output_path,
+                'unique_identifiers',
+                '.json'
+            )
+        )
+
+    def run(self):
+        '''  '''
+        self._configure()
+
+        xml_as_string = read_data(self.input_file)
+
+        self.identifiers = self.process_response(xml_as_string)
+        if self.identifiers:
+            with self.output().open('w') as out_file:
+                out_file.write(json.dumps(self.identifiers, indent=4))
+
+    def _configure(self):
+        config = parse_yaml(self.yaml_file)
+        config = extract_task_config(config, 'ExtractIdentifiers')
+        self.output_path = config.get('output_directory', '')
+
+    def process_response(self, data):
+        # extract things and default to handling in-element html
+        identifiers = process_identifiers(data, True)
+
+        # TODO: strip in the sha
+        return identifiers

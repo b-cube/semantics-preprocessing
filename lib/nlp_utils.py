@@ -79,7 +79,9 @@ def remove_punctuation(text):
         bag of words to be just words)
     '''
     simple_pattern = r'[;|>+:=.,()/?!\[\]{}]'
-    return re.sub(simple_pattern, ' ', text)
+    text = re.sub(simple_pattern, ' ', text)
+    # catch the singleton hyphens
+    return text.replace(' - ', ' ')
 
 
 def split_words(text):

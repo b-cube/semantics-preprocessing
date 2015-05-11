@@ -2,7 +2,7 @@ import luigi
 import glob
 import os
 from tasks.text_tasks import BagOfWordsFromParsedTask
-from tasks.text_tasks import BagOfWordsFromXML
+from tasks.text_tasks import BagOfWordsFromXMLTask
 from tasks.task_helpers import parse_yaml
 from tasks.task_helpers import run_init
 
@@ -46,7 +46,7 @@ class BowFromXmlWorkflow(luigi.Task):
 
     def requires(self):
         return [
-            BagOfWordsFromXML(
+            BagOfWordsFromXMLTask(
                 input_file=f,
                 yaml_file=self.yaml_file
             ) for f in self._iterator()

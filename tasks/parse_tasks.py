@@ -76,7 +76,7 @@ class ExtractXmlTask(luigi.Task):
     output_path = ''
 
     def requires(self):
-        return []
+        return ResponseTask(input_file=self.input_file, yaml_file=self.yaml_file)
 
     def output(self):
         return luigi.LocalTarget(
