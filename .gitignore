@@ -3,6 +3,8 @@
 *.pyc
 *.xlsx
 
+bcube_owslib
+
 notebooks/*.log
 notebooks/*.sql
 notebooks/*.csv
@@ -17,6 +19,7 @@ local/stanford*
 notebooks/lda/dictionaries/
 notebooks/simhashing
 notebooks/simhashing_near_dupes
+pipeline_tests/
 
 solr_superset/
 
