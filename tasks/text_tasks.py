@@ -15,7 +15,7 @@ from lib.nlp_utils import tokenize, tokenize_text
 from task_helpers import parse_yaml, extract_task_config
 from task_helpers import generate_output_filename
 from task_helpers import read_data
-from lib.unique_identifiers import process_identifiers
+from lib.unique_identifiers import extract_identifiers
 
 '''
 text processing tasks
@@ -317,9 +317,9 @@ class ExtractIdentifiersTask(luigi.Task):
         '''  '''
         self._configure()
 
-        xml_as_string = read_data(self.input_file)
+        data = read_data(self.input_file)
 
-        self.identifiers = self.process_response(xml_as_string)
+        self.identifiers = self.process_response(data)
         if self.identifiers:
             with self.output().open('w') as out_file:
                 out_file.write(json.dumps(self.identifiers, indent=4))
@@ -331,7 +331,9 @@ class ExtractIdentifiersTask(luigi.Task):
 
     def process_response(self, data):
         # extract things and default to handling in-element html
-        identifiers = process_identifiers('', True)
+        url = data['source_url']
+        content = data['content']
+        identifiers = extract_identifiers(url, content, True)
 
-        # TODO: strip in the sha
-        return identifiers
+        data.update({'identifiers': identifiers})
+        return data
