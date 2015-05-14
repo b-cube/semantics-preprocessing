@@ -101,14 +101,21 @@ def remove_stopwords(text):
     return ' '.join([w for w in words if w not in _stopwords and w])
 
 
+def load_token_list(term_file):
+    '''
+    load some stopword list from the corpus
+    '''
+    tokens = WordListCorpusReader(_corpus_root, term_file)
+    return [w.replace('+', '\+') for w in tokens.words()]
+
+
 def remove_tokens(term_file, text):
     '''
     do this before something like tokenize or the
     resplit option will split the mimetypes to not
     be recognizable as such anymore
     '''
-    tokens = WordListCorpusReader(_corpus_root, term_file)
-    words = [w.replace('+', '\+') for w in tokens.words()]
+    words = load_token_list(term_file)
 
     pttn = re.compile('|'.join(words))
     return pttn.sub('', text)

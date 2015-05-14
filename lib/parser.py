@@ -22,7 +22,7 @@ class BasicParser():
         self.handle_html = handle_html
         self.include_html_hrefs = include_html_hrefs
 
-        self._parse_node_attributes
+        self._parse()
 
     def _parse(self):
         try:
@@ -84,7 +84,7 @@ class BasicParser():
                 if self.handle_html and (
                         (t.startswith('<') and t.endswith('>'))
                         or ('<' in t or '>' in t)):
-                    t = self._un_htmlify(self, t)
+                    t = self._un_htmlify(t)
                 if t:
                     yield ('/'.join(tags), t)
 

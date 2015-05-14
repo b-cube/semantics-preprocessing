@@ -9,7 +9,7 @@ from lib.nlp_utils import is_english
 from lib.nlp_utils import collapse_to_bag
 from lib.nlp_utils import remove_punctuation
 from lib.nlp_utils import remove_stopwords
-from lib.nlp_utils import remove_mimetypes
+from lib.nlp_utils import remove_tokens
 from lib.nlp_utils import remove_numeric
 from lib.nlp_utils import tokenize, tokenize_text
 from task_helpers import parse_yaml, extract_task_config
@@ -194,7 +194,7 @@ class BagOfWordsFromParsedTask(luigi.Task):
         # TODO: worry about ordering from the yaml to dict conversion
         for k, v in self.tasks.iteritems():
             if k == 'remove_mimetypes':
-                bag = remove_mimetypes(bag)
+                bag = remove_tokens('mimetypes.txt', bag)
             elif k == 'remove_punctuation':
                 bag = remove_punctuation(bag)
             elif k == 'remove_stopwords':
@@ -331,7 +331,7 @@ class ExtractIdentifiersTask(luigi.Task):
 
     def process_response(self, data):
         # extract things and default to handling in-element html
-        identifiers = process_identifiers(data, True)
+        identifiers = process_identifiers('', True)
 
         # TODO: strip in the sha
         return identifiers
