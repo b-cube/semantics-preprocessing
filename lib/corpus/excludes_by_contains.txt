@@ -1,0 +1,9 @@
+urn:ogc:def
+codeList
+http://www.isotc211.org/2005
+.xsd
+schema
+19115-2
+unknown
+localhost
+urn:oasis:names:tc:ebxml

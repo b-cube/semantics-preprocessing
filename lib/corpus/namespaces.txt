@@ -1143,3 +1143,4 @@ http://www.software.ibm.com/P3P/editor/extension-1.0.html
 http://data.lacity.org/resource/ax8j-dhzm/
 http://hdfgroup.org/DTDs/HDF5-File
 http://stationservice.storet.epa.gov/
+http://www.opengis.net/cat/csw/csdgm

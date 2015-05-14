@@ -1,6 +1,9 @@
 import re
 from lib.parser import BasicParser
 from lib.nlp_utils import load_token_list
+import dateutil.parser as dateparser
+from itertools import chain
+
 
 '''
 widgetry for extracting and handling the
@@ -17,11 +20,10 @@ unknown xml blob of text
 '''
 
 
-# use nlp_utils.remove_tokens('namespaces.txt', text)
-# TODO: the urn captures http: strings (because of the colon)
 _pattern_set = [
     ('url', re.compile(ur"((?:(?:https?|ftp|http)://)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:.\d{1,3}){3})(?!(?:169.254|192.168)(?:.\d{1,3}){2})(?!172.(?:1[6-9]|2\d|3[0-1])(?:.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)(?:.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*(?:.(?:[a-z\\u00a1-\\uffff]{2,})))(?::\d{2,5})?(?:/\S*)?)", re.IGNORECASE)),
-    ('urn', re.compile(ur"(?![http:])(([a-z0-9.][a-z0-9-.]{0,}\S:\S)+[a-z0-9()+,\-.:=@;$_!*'%/?#]+)", re.IGNORECASE)),
+    # trying to remove the :
+    ('urn', re.compile(ur"(?![http://])(([a-z0-9.\S][a-z0-9-.\S]{0,}\S:\S)+[a-z0-9()+,\-.=@;$_!*'%/?#]+)", re.IGNORECASE)),
     # ('urn', re.compile(ur"\burn:[a-z0-9][a-z0-9-]{0,31}:[a-z0-9()+,\-.:=@;$_!*'%/?#]+", re.IGNORECASE)),
     ('uuid', re.compile(ur'([a-f\d]{8}(-[a-f\d]{4}){3}-[a-f\d]{12}?)', re.IGNORECASE)),
     ('doi', re.compile(ur"(10[.][0-9]{4,}(?:[/][0-9]+)*/(?:(?![\"&\\'])\S)+)", re.IGNORECASE))
@@ -49,6 +51,9 @@ def chunk_identifier(identifier):
 
 
 def match(s, p):
+    '''
+    extract from regex
+    '''
     m = re.search(p, s)
     return m.group(0) if m else ''
 
@@ -113,7 +118,7 @@ def extract_by_xpath(xml):
 
 
 # TODO: add the logging to capture what & where
-def process_xml_identifiers(text, handle_html=False, excludes=[]):
+def process_xml_identifiers(text, handle_html=False):
     '''
     run the regex and xpath checks
     starting with the text ? for more
@@ -128,18 +133,36 @@ def process_xml_identifiers(text, handle_html=False, excludes=[]):
     parser = BasicParser(text, handle_html=handle_html, include_html_hrefs=handle_html)
 
     for tag_blob, text_blob in parser.strip_text():
-        for match_tuple in process_string_identifiers(text_blob, excludes):
+        for match_tuple in process_string_identifiers(text_blob,):
             yield match_tuple
 
     for match_type, match_blob in extract_by_xpath(parser.xml):
-        if not any(e in match_blob.lower() for e in excludes):
-            yield (match_type, match_blob)
+        yield (match_type, match_blob)
 
 
-def process_string_identifiers(text, excludes=[]):
+def process_string_identifiers(text):
     for match_type, match_blob in extract_by_regex(text):
-        if not any(e in match_blob.lower() for e in excludes):
-            yield (match_type, match_blob)
+        yield (match_type, match_blob)
+
+
+def tidy_identifiers(text, excludes=[]):
+    '''
+    return an empty string if the text fails any of the
+    cleanup filters (if it's a date, drop it)
+    '''
+    if any(e.lower() in text.lower() for e in excludes):
+        return ''
+
+    try:
+        d = dateparser.parse(text)
+        return ''
+    except ValueError:
+        pass
+
+    if ' ' in text:
+        return ''
+
+    return text
 
 
 def extract_identifiers(source_url, source_xml_as_string, handle_html=False):
@@ -150,20 +173,28 @@ def extract_identifiers(source_url, source_xml_as_string, handle_html=False):
         a probable object identifier
     '''
 
-    # set up the excludes list
+    # set up the excludes lists
+    # the one to one matches
     mimetypes = load_token_list('mimetypes.txt')
     namespaces = load_token_list('namespaces.txt')
-    # TODO: add the CONTAINS excludes (these are 1:1 MATCH excludes)
-    excludes = list(set(mimetypes).union(set(namespaces)))
+    # excludes = list(set(mimetypes).union(set(namespaces)))
+
+    # the substring matches
+    contains = load_token_list('excludes_by_contains.txt')
+
+    excludes = list(chain.from_iterable((mimetypes, namespaces, contains)))
+    excludes = list(set(excludes))
 
     # extract identifiers from the url
-    url_identifiers = list(iter(process_string_identifiers(source_url, excludes=excludes)))
-    url_identifiers = set(url_identifiers)
+    url_identifiers = list(iter(process_string_identifiers(source_url)))
+    url_identifiers = set([u for u in url_identifiers if u
+                           and tidy_identifiers(u[1], excludes)])
 
     # extract the identifiers from the xml
     xml_identifiers = list(iter(
-        process_xml_identifiers(source_xml_as_string, True, excludes=excludes)))
-    xml_identifiers = set(xml_identifiers)
+        process_xml_identifiers(source_xml_as_string, True)))
+    xml_identifiers = set([x for x in xml_identifiers if x
+                           and tidy_identifiers(x[1], excludes)])
 
     # do a little set intersect to see if we
     # can a match between the two
