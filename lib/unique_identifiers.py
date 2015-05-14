@@ -132,6 +132,9 @@ def process_xml_identifiers(text, handle_html=False):
     #       but that might be not the greatest
     parser = BasicParser(text, handle_html=handle_html, include_html_hrefs=handle_html)
 
+    # TODO: use the tag exclude widget. good grief.
+    #       so add ows:Value, schemaLocation
+    #       except it doesn't handle namespace prefixes. ffs.
     for tag_blob, text_blob in parser.strip_text():
         for match_tuple in process_string_identifiers(text_blob,):
             yield match_tuple

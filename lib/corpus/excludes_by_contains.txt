@@ -7,3 +7,4 @@ schema
 unknown
 localhost
 urn:oasis:names:tc:ebxml
+EPSG:
