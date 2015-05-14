@@ -2,7 +2,7 @@ import luigi
 import json
 import re
 from tasks.parse_tasks import ParseTask
-from tasks.parse_tasks import ExtractXmlTask
+# from tasks.parse_tasks import ExtractXmlTask
 from lib.parser import Parser
 from lib.nlp_utils import normalize_subjects
 from lib.nlp_utils import is_english
@@ -301,7 +301,7 @@ class ExtractIdentifiersTask(luigi.Task):
     output_path = ''
 
     def requires(self):
-        return ExtractXmlTask(input_file=self.input_file, yaml_file=self.yaml_file)
+        return []
 
     def output(self):
         return luigi.LocalTarget(

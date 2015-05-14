@@ -7,6 +7,7 @@ from parse_workflow import ParseWorkflow
 from identify_workflow import IdentifyWorkflow
 from bagofwords_workflow import BowWorkflow, BowFromXmlWorkflow
 from triple_workflow import TripleWorkflow
+from extract_identifier_workflow import ExtractIdentifierWorkflow
 
 
 def main():

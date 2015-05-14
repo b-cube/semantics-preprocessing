@@ -13,6 +13,13 @@ The parameters:
 - end: end index for the chunking
 
 
+#### Examples
+
+```
+python workflow_manager.py -i 20 -d pipeline_tests/docs -c pipeline_tests/pipeline_run_through_parse.yaml -w ParseWorkflow
+```
+
+
 ### Notes
 
 This assumes that **any** input directory contains JSON files.
