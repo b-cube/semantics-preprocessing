@@ -1150,3 +1150,4 @@ http://www.opengis.net/wcs
 http://www.opengis.net/wfs
 http://xml.opendap.org/ns/DAP2
 http://xml.opendap.org/ns
+http://www.esri.com/metadata/esriprof80.html

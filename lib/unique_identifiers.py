@@ -187,8 +187,7 @@ def extract_identifiers(source_url, source_xml_as_string, handle_html=False):
     # the substring matches
     contains = load_token_list('excludes_by_contains.txt')
 
-    excludes = list(chain.from_iterable((mimetypes, namespaces, contains)))
-    excludes = list(set(excludes))
+    excludes = list(set(list(chain.from_iterable((mimetypes, namespaces, contains)))))
 
     # extract identifiers from the url
     # but unquote the url first
@@ -196,6 +195,8 @@ def extract_identifiers(source_url, source_xml_as_string, handle_html=False):
 
     # and split it into the path and the query terms
     url, values = break_url(url)
+
+    # TODO: add some grokking of urls by match type for secondary filtering
 
     # to run separately because of the lookbehind
     url_identifiers = list(iter(process_string_identifiers(url))) + \
