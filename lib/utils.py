@@ -3,6 +3,7 @@ import urllib
 import collections
 from uuid import uuid4
 import hashlib
+from itertools import chain
 
 
 '''
@@ -44,6 +45,22 @@ url handling:
 
 def unquote(url):
     return urllib.unquote(url)
+
+
+def break_url(url):
+    parts = urlparse.urlparse(url)
+
+    url = urlparse.urlunparse((
+        parts.scheme,
+        parts.netloc,
+        parts.path,
+        None, None, None
+    ))
+
+    params = urlparse.parse_qs(parts.query)
+    values = list(chain.from_iterable((params.values())))
+
+    return url, ' '.join(values)
 
 
 def parse_url(url):

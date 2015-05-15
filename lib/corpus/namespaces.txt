@@ -1144,3 +1144,9 @@ http://data.lacity.org/resource/ax8j-dhzm/
 http://hdfgroup.org/DTDs/HDF5-File
 http://stationservice.storet.epa.gov/
 http://www.opengis.net/cat/csw/csdgm
+http://www.opengis.net/gml
+http://www.opengis.net/wms
+http://www.opengis.net/wcs
+http://www.opengis.net/wfs
+http://xml.opendap.org/ns/DAP2
+http://xml.opendap.org/ns

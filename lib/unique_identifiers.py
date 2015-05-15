@@ -1,6 +1,7 @@
 import re
 from lib.parser import BasicParser
 from lib.nlp_utils import load_token_list
+from lib.utils import unquote, break_url
 import dateutil.parser as dateparser
 from itertools import chain
 
@@ -135,8 +136,10 @@ def process_xml_identifiers(text, handle_html=False):
     # TODO: use the tag exclude widget. good grief.
     #       so add ows:Value, schemaLocation
     #       except it doesn't handle namespace prefixes. ffs.
-    for tag_blob, text_blob in parser.strip_text():
-        for match_tuple in process_string_identifiers(text_blob,):
+
+    exclude_tags = ['schemaLocation', 'Value', 'template']
+    for tag_blob, text_blob in parser.strip_text(exclude_tags):
+        for match_tuple in process_string_identifiers(text_blob):
             yield match_tuple
 
     for match_type, match_blob in extract_by_xpath(parser.xml):
@@ -180,7 +183,6 @@ def extract_identifiers(source_url, source_xml_as_string, handle_html=False):
     # the one to one matches
     mimetypes = load_token_list('mimetypes.txt')
     namespaces = load_token_list('namespaces.txt')
-    # excludes = list(set(mimetypes).union(set(namespaces)))
 
     # the substring matches
     contains = load_token_list('excludes_by_contains.txt')
@@ -189,15 +191,26 @@ def extract_identifiers(source_url, source_xml_as_string, handle_html=False):
     excludes = list(set(excludes))
 
     # extract identifiers from the url
-    url_identifiers = list(iter(process_string_identifiers(source_url)))
+    # but unquote the url first
+    url = unquote(source_url)
+
+    # and split it into the path and the query terms
+    url, values = break_url(url)
+
+    # to run separately because of the lookbehind
+    url_identifiers = list(iter(process_string_identifiers(url))) + \
+        list(iter(process_string_identifiers(values)))
     url_identifiers = set([u for u in url_identifiers if u
                            and tidy_identifiers(u[1], excludes)])
 
     # extract the identifiers from the xml
+    source_xml_as_string = source_xml_as_string.replace('&quot;', '')
     xml_identifiers = list(iter(
         process_xml_identifiers(source_xml_as_string, True)))
     xml_identifiers = set([x for x in xml_identifiers if x
                            and tidy_identifiers(x[1], excludes)])
+
+    # TODO: make sure the source url is in there unaltered
 
     # do a little set intersect to see if we
     # can a match between the two

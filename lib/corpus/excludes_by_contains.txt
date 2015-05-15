@@ -4,7 +4,14 @@ http://www.isotc211.org/2005
 .xsd
 schema
 19115-2
+ISO19115
 unknown
 localhost
 urn:oasis:names:tc:ebxml
 EPSG:
+CRS:
+SRS:
+mailto
+Cor.1
+gml:
+xs:
