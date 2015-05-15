@@ -335,5 +335,5 @@ class ExtractIdentifiersTask(luigi.Task):
         content = data['content']
         identifiers = extract_identifiers(url, content, True)
 
-        data.update({'identifiers': identifiers})
+        data.update({'identifiers': identifiers[0], 'possible_match': identifiers[1]})
         return data
