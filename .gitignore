@@ -30,3 +30,5 @@ notebooks/Untitled0.ipynb
 notebooks/identifier_extraction.log
 
 *.sqlite
+
+notebooks/harvest_linkrot_20150504-1940_date_processed.sqlite
