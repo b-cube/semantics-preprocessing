@@ -4,6 +4,8 @@ from bcube_owslib.wfs import WebFeatureService
 from bcube_owslib.csw import CatalogueServiceWeb
 from bcube_owslib.sos import SensorObservationService
 from lib.yaml_configs import import_yaml_configs
+import dateutil.parser as dateparser
+from datetime import datetime
 
 
 class OgcReader():
@@ -185,6 +187,36 @@ class OgcReader():
 
         return operations
 
+    def _return_timerange(self, timepositions):
+        '''
+        from a set of timeposition or dimension/extent=temporal elements,
+        try to parse the dates (iso 8601) from each element and return
+        the min/max of the set
+
+        structures:
+            - an iso 8601 timestamp
+            - a comma-delimited list of timestamps
+            - a forward-slash delimited list of timestamps where the last
+              item is the period (not a timestamp)
+        '''
+        timestamps = []
+        for default_time, timeposition in timepositions:
+            if ',' in timeposition:
+                parts = timeposition.split(',')
+            elif '/' in timeposition:
+                parts = timeposition.split('/')[:-1]
+            else:
+                parts = [timeposition]
+
+            for part in parts:
+                try:
+                    d = dateparser.parse(part)
+                    timestamps.append(d)
+                except:
+                    continue
+
+        return min(timestamps), max(timestamps)
+
     def parse_service(self):
         '''
         this is a little unnecessary
@@ -284,6 +316,10 @@ class OgcReader():
 
             if dataset.timepositions:
                 d['temporal'] = dataset.timepositions
+
+                begin_time, end_time = self._return_timerange(dataset.timepositions)
+                d['temporal_extent'] = {"begin": begin_time.isoformat(),
+                                        "end": end_time.isoformat()}
 
             datasets.append(d)
 

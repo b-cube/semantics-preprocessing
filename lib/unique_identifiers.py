@@ -133,22 +133,36 @@ def process_xml_identifiers(text, handle_html=False):
     #       but that might be not the greatest
     parser = BasicParser(text, handle_html=handle_html, include_html_hrefs=handle_html)
 
-    # TODO: use the tag exclude widget. good grief.
-    #       so add ows:Value, schemaLocation
-    #       except it doesn't handle namespace prefixes. ffs.
-
     exclude_tags = ['schemaLocation', 'Value', 'template']
     for tag_blob, text_blob in parser.strip_text(exclude_tags):
         for match_tuple in process_string_identifiers(text_blob):
             yield match_tuple
 
     for match_type, match_blob in extract_by_xpath(parser.xml):
+
         yield (match_type, match_blob)
 
 
 def process_string_identifiers(text):
     for match_type, match_blob in extract_by_regex(text):
+        if match_type == 'url':
+            pass
         yield (match_type, match_blob)
+
+
+def handle_url(source_url):
+    source_url = unquote(source_url)
+
+    # and split it into the path and the query terms
+    url, values = break_url(source_url)
+
+    for match_type, match_blob in process_string_identifiers(url):
+        yield (match_type, match_blob)
+
+    for match_type, match_blob in process_string_identifiers(values):
+        yield (match_type, match_blob)
+
+    yield ('url', source_url)
 
 
 def tidy_identifiers(text, excludes=[]):
@@ -167,6 +181,8 @@ def tidy_identifiers(text, excludes=[]):
 
     if ' ' in text:
         return ''
+
+    # TODO: add the extra quote bits?
 
     return text
 
@@ -191,16 +207,11 @@ def extract_identifiers(source_url, source_xml_as_string, handle_html=False):
 
     # extract identifiers from the url
     # but unquote the url first
-    url = unquote(source_url)
-
-    # and split it into the path and the query terms
-    url, values = break_url(url)
 
     # TODO: add some grokking of urls by match type for secondary filtering
 
     # to run separately because of the lookbehind
-    url_identifiers = list(iter(process_string_identifiers(url))) + \
-        list(iter(process_string_identifiers(values)))
+    url_identifiers = list(iter(process_string_identifiers(source_url)))
     url_identifiers = set([u for u in url_identifiers if u
                            and tidy_identifiers(u[1], excludes)])
 
@@ -210,8 +221,6 @@ def extract_identifiers(source_url, source_xml_as_string, handle_html=False):
         process_xml_identifiers(source_xml_as_string, True)))
     xml_identifiers = set([x for x in xml_identifiers if x
                            and tidy_identifiers(x[1], excludes)])
-
-    # TODO: make sure the source url is in there unaltered
 
     # do a little set intersect to see if we
     # can a match between the two
