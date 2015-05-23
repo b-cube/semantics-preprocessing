@@ -4,6 +4,7 @@ from lib.nlp_utils import load_token_list
 from lib.utils import unquote, break_url
 import dateutil.parser as dateparser
 from itertools import chain
+import json
 
 
 '''
@@ -23,11 +24,11 @@ unknown xml blob of text
 
 _pattern_set = [
     ('url', re.compile(ur"((?:(?:https?|ftp|http)://)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:.\d{1,3}){3})(?!(?:169.254|192.168)(?:.\d{1,3}){2})(?!172.(?:1[6-9]|2\d|3[0-1])(?:.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)(?:.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*(?:.(?:[a-z\\u00a1-\\uffff]{2,})))(?::\d{2,5})?(?:/\S*)?)", re.IGNORECASE)),
-    # trying to remove the :
-    ('urn', re.compile(ur"(?![http://])(([a-z0-9.\S][a-z0-9-.\S]{0,}\S:\S)+[a-z0-9()+,\-.=@;$_!*'%/?#]+)", re.IGNORECASE)),
-    # ('urn', re.compile(ur"\burn:[a-z0-9][a-z0-9-]{0,31}:[a-z0-9()+,\-.:=@;$_!*'%/?#]+", re.IGNORECASE)),
+    # a urn that isn't a url
+    ('urn', re.compile(ur"(?![http://])(?![https://])(?![ftp://])(([a-z0-9.\S][a-z0-9-.\S]{0,}\S:{1,2}\S)+[a-z0-9()+,\-.=@;$_!*'%/?#]+)", re.IGNORECASE)),
     ('uuid', re.compile(ur'([a-f\d]{8}(-[a-f\d]{4}){3}-[a-f\d]{12}?)', re.IGNORECASE)),
-    ('doi', re.compile(ur"(10[.][0-9]{4,}(?:[/][0-9]+)*/(?:(?![\"&\\'])\S)+)", re.IGNORECASE))
+    ('doi', re.compile(ur"(10[.][0-9]{4,}(?:[/][0-9]+)*/(?:(?![\"&\\'])\S)+)", re.IGNORECASE)),
+    ('md5', re.compile(ur"([a-f0-9]{32})", re.IGNORECASE))
 ]
 
 _rule_set = [
@@ -135,6 +136,14 @@ def process_xml_identifiers(text, handle_html=False):
 
     exclude_tags = ['schemaLocation', 'Value', 'template']
     for tag_blob, text_blob in parser.strip_text(exclude_tags):
+        # if it parses as json! bail
+        try:
+            j = json.loads(text_blob)
+        except:
+            continue
+
+        text_blob = text_blob.replace('&quote', ' ')
+
         for match_tuple in process_string_identifiers(text_blob):
             yield match_tuple
 
@@ -146,7 +155,9 @@ def process_xml_identifiers(text, handle_html=False):
 def process_string_identifiers(text):
     for match_type, match_blob in extract_by_regex(text):
         if match_type == 'url':
-            pass
+            for match_tuple in handle_url(match_blob):
+                yield match_tuple
+
         yield (match_type, match_blob)
 
 
@@ -156,10 +167,10 @@ def handle_url(source_url):
     # and split it into the path and the query terms
     url, values = break_url(source_url)
 
-    for match_type, match_blob in process_string_identifiers(url):
+    for match_type, match_blob in extract_by_regex(url):
         yield (match_type, match_blob)
 
-    for match_type, match_blob in process_string_identifiers(values):
+    for match_type, match_blob in extract_by_regex(values):
         yield (match_type, match_blob)
 
     yield ('url', source_url)
@@ -171,6 +182,19 @@ def tidy_identifiers(text, excludes=[]):
     cleanup filters (if it's a date, drop it)
     '''
     if any(e.lower() in text.lower() for e in excludes):
+        return ''
+
+    terminal_punctuation = '(){}[].,~|":'
+    text = text.strip(terminal_punctuation)
+
+    text = text.strip()
+
+    text = text[3:] if text.startswith('NaN') else text
+
+    # check for scale?
+    scale_pttn = ur"(1:[\d]{0,}(,[\d]{3}){1,})"
+    m = match(text, scale_pttn)
+    if m:
         return ''
 
     try:
@@ -199,16 +223,12 @@ def extract_identifiers(source_url, source_xml_as_string, handle_html=False):
     # the one to one matches
     mimetypes = load_token_list('mimetypes.txt')
     namespaces = load_token_list('namespaces.txt')
+    catinterops = load_token_list('cat_interop_urns.txt')
 
     # the substring matches
     contains = load_token_list('excludes_by_contains.txt')
 
-    excludes = list(set(list(chain.from_iterable((mimetypes, namespaces, contains)))))
-
-    # extract identifiers from the url
-    # but unquote the url first
-
-    # TODO: add some grokking of urls by match type for secondary filtering
+    excludes = list(set(list(chain.from_iterable((mimetypes, namespaces, catinterops, contains)))))
 
     # to run separately because of the lookbehind
     url_identifiers = list(iter(process_string_identifiers(source_url)))
@@ -216,7 +236,6 @@ def extract_identifiers(source_url, source_xml_as_string, handle_html=False):
                            and tidy_identifiers(u[1], excludes)])
 
     # extract the identifiers from the xml
-    source_xml_as_string = source_xml_as_string.replace('&quot;', '')
     xml_identifiers = list(iter(
         process_xml_identifiers(source_xml_as_string, True)))
     xml_identifiers = set([x for x in xml_identifiers if x

@@ -38,7 +38,7 @@ class BasicParser():
         soup = BeautifulSoup(text.strip())
 
         # get all of the text and any a/@href values
-        texts = [_handle_bad_html(t) for t in soup.find_all(text=True)]
+        texts = [_handle_bad_html(t.strip('"')) for t in soup.find_all(text=True)]
         if self.include_html_hrefs:
             texts += [unquote(a['href']) for a in soup.find_all('a') if 'href' in a.attrs]
 
@@ -90,7 +90,7 @@ class BasicParser():
 
             for k, v in elem.attrib.iteritems():
                 if v.strip():
-                    yield ('/'.join(tags + ['@' + _extract_tag(k)]), v.strip())
+                    yield ('/'.join(tags + ['@' + _extract_tag(k)]), BeautifulSoup(v.strip())[0])
 
 
 class Parser():
