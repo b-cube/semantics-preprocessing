@@ -6,9 +6,9 @@
     <ows:ServiceIdentification>
         <ows:Title>Louisiana Universities Marine Consortium (LUMCON) SOS</ows:Title>
         <ows:Abstract/>
-        <ows:Keywords1>
+        <ows:Keywords>
 			<ows:Keyword>Ocean Observation</ows:Keyword>
-        </ows:Keywords1>
+        </ows:Keywords>
         <ows:ServiceType codeSpace='http://opengeospatial.net'>OGC:SOS</ows:ServiceType>
         <ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
         <ows:Fees>NONE</ows:Fees>

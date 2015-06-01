@@ -1,5 +1,7 @@
 from lib.base_preprocessors import BaseReader
 from lib.utils import tidy_dict
+from lib.utils import generate_localname_xpath
+import dateutil as dateparser
 
 
 class IsoReader(BaseReader):
@@ -190,3 +192,96 @@ class IsoReader(BaseReader):
                 )
 
         return endpoints
+
+
+'''
+NOTE: for all of the ISO parsers, I am using the local-path "trick". It is a known
+      performance hit but the harmonization across -1, -2, -3, INSPIRE, data.gov,
+      whatever, is a not insignificant chunk of dev time as well. I am willing to
+      make this tradeoff given the ETL workflow.
+'''
+
+
+class MxParser():
+    '''
+    parse an mi or md element (as whole record or some atom/csw/ds child)
+    '''
+
+    def __init__(self, elem):
+        ''' starting at MD_DataIdentification '''
+        self.elem = elem
+
+    def _parse_identification_info(self, elem):
+        xp = generate_localname_xpath(['citation', 'CI_Citation', 'title', 'CharacterString'])
+        title_elem = next(iter(elem.xpath(xp), None))
+        title = '' if title_elem is None else title_elem.text
+
+        xp = generate_localname_xpath(['abstract', 'CharacterString'])
+        abstract_elem = next(iter(elem.xpath(xp), None))
+        abstract = '' if abstract_elem is None else abstract_elem.text
+
+        return title, abstract
+
+    def _parse_keywords(self, elem):
+        '''
+        for each descriptiveKeywords block
+        in an identification block
+        '''
+        keywords = []
+
+        xp = generate_localname_xpath(
+            ['descriptiveKeywords', 'MD_Keywords', 'keyword', 'CharacterString'])
+        keyword_elems = elem.xpath(xp)
+        keywords += [keyword_elem.text for keyword_elem in keyword_elems
+                     if keyword_elem is not None and keyword_elem.text]
+
+        # grab the iso topic categories as well
+        xp = generate_localname_xpath(['topicCategory', 'MD_TopicCategoryCode'])
+        topic_elems = elem.xpath(xp)
+        keywords += [topic_elem.text for topic_elem in topic_elems
+                     if topic_elem is not None and topic_elem.text]
+
+        return keywords
+
+    def _parse_contact(self, elem):
+        '''
+        parse any CI_ResponsibleParty
+        '''
+
+        pass
+
+    def _parse_distribution(self, elem):
+        pass
+
+    def _parse_extent(self, elem):
+        '''
+        handle the spatial and/or temporal extent
+        '''
+        pass
+
+    def _parse_timestamp(self, elem):
+        '''
+        generic handler for any iso date/datetime/time/whatever element
+        '''
+        pass
+
+    def parse(self):
+        pass
+
+
+class SrvParser():
+    '''
+    read a service identification element as
+    19119 or the embedded md/mi element
+    '''
+    def __init__(self, elem):
+        self.elem = elem
+
+
+class DsParser():
+    '''
+    the parent ds parsing (as an mi/md record itself)
+    plus the nested children in composedOf
+    '''
+    def __init__(self, elem):
+        self.elem = elem

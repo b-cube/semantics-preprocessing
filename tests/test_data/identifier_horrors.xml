@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+    <title id=""></title>
+    <!-- check for the json as attribute -->
+    <sometext human_address="{&quot;address&quot;:&quot;1801 Hawthorn Ln.&quot;,&quot;city&quot;:&quot;West Chicago&quot;,&quot;state&quot;:&quot;IL&quot;,&quot;zip&quot;:&quot;60185&quot;}"></sometext>
+    <!-- scale things that are easy -->
+    <sometext>Public Land Survey System data were collected from 1:500,000 and 1:1,000,000 State base maps for the western United States.</sometext>
+    <!-- scale things that are less easy -->
+    <sometext>#1:100,000-scale base maps</sometext>
+    <!-- mostly the same. -->
+    <sometext>In all, 85 corrections were made using 1:100,000-scale base maps.</sometext>
+    <!-- mostly the same but also tilde. -->
+    <sometext>"~1:63,000-scale"</sometext>
+    <sometext>Here's some stuff with a url http://ferret.pmel.noaa.gov/thredds/view/ToolsUI.jnlp in it.</sometext>
+    <sometext>Here's some stuff with a url &lt;http://ferret.pmel.noaa.gov/thredds/view/ToolsUI.jnlp&gt; in it.</sometext>
+    <sometext>Here's some stuff with a url http://ferret.pmel.noaa.gov/thredds/view/ToolsUI.jnlp} in it.</sometext>
+    <sometext>Here's some stuff with a url (http://ferret.pmel.noaa.gov/thredds/view/ToolsUI.jnlp) in it.</sometext>
+    <sometext></sometext>
+    <sometext>ISO 19115-2:2009(E)</sometext>
+    
+    <!-- fun with bad dates -->
+    <somedate>9999-01-01T00:00:00</somedate>
+    <somedate>0001-01-01T00:00:00</somedate>
+    <somedate>NaN-01-01T00:00:00</somedate>
+    <somedate>"1999-01-01T00:00:00"</somedate>
+    <somedate>00:35:00</somedate>
+    <somedate>"00:35:00"</somedate>
+    <somedate></somedate>
+    
+    <!-- exclude by tags or tag-related things -->
+    <someelement>
+        <CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication"></CI_DateTypeCode>
+    </someelement>
+    <someelement template="http://www.blob.com"></someelement>
+    <someelement><Value>blob:ThisIsNot:A:URN</Value></someelement>
+    <someelement schemaLocation="http://www.blob.com/schema.xsd"></someelement>
+    
+    <!-- things with urls in them -->
+    <someurl>&lt;URL: plss_la_usgs_2003.gif&gt;</someurl>
+    <someurl>"http://ferret.pmel.noaa.gov/thredds/view/ToolsUI.jnlp?catalog=http://ferret.pmel.noaa.gov/thredds/catalog/las/NOAA-CIRES-CDC-CDC_Derived_NCEP_Reanalysis_Products_Surface_Level/catalog.xml&amp;dataset=las/NOAA-CIRES-CDC-CDC_Derived_NCEP_Reanalysis_Products_Surface"</someurl>
+    <someurl>http://ferret.pmel.noaa.gov/thredds/view/ToolsUI.jnlp .</someurl>
+    <someurl>(http://ferret.pmel.noaa.gov/thredds/view/ToolsUI.jnlp)</someurl>
+    <someurl>(http://ferret.pmel.noaa.gov/thredds/view/ToolsUI.jnlp):</someurl>
+    <someurl></someurl>
+    <someurl></someurl>
+    
+    <someurn>WWW:SPARQL:1.1</someurn>
+</metadata>
+

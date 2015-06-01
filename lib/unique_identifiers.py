@@ -80,7 +80,7 @@ def extract_by_regex(text):
 def extract_by_xpath(xml):
     '''
     try to pull identifiers based on some
-    common patterns/known patterns
+    common patterns/known patternsh
     '''
     def _get_text(e):
         if isinstance(e, str):

@@ -90,7 +90,8 @@ class BasicParser():
 
             for k, v in elem.attrib.iteritems():
                 if v.strip():
-                    yield ('/'.join(tags + ['@' + _extract_tag(k)]), BeautifulSoup(v.strip())[0])
+                    v = BeautifulSoup(v.strip()) 
+                    yield ('/'.join(tags + ['@' + _extract_tag(k)]), v)
 
 
 class Parser():
