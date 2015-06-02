@@ -253,11 +253,65 @@ class MxParser():
     def _parse_distribution(self, elem):
         pass
 
+    def _handle_bbox(self, bounding_box_elem):
+        xp = generate_localname_xpath(['westBoundLongitude', 'Decimal'])
+        west = next(iter(bounding_box_elem.xpath(xp)), None)
+        west = west.text if west is not None else ''
+
+        xp = generate_localname_xpath(['eastBoundLongitude', 'Decimal'])
+        east = next(iter(bounding_box_elem.xpath(xp)), None)
+        east = east.text if east is not None else ''
+
+        xp = generate_localname_xpath(['southBoundLatitude', 'Decimal'])
+        south = next(iter(bounding_box_elem.xpath(xp)), None)
+        south = south.text if south is not None else ''
+
+        xp = generate_localname_xpath(['northBoundLatitude', 'Decimal'])
+        north = next(iter(bounding_box_elem.xpath(xp)), None)
+        north = north.text if north is not None else ''
+
+        return [west, south, east, north]
+
+    def _handle_polygon(self, polygon_elem):
+        pass
+
+    def _handle_points(self, point_elem):
+        # this may not exist in the -2?
+        pass
+
     def _parse_extent(self, elem):
         '''
         handle the spatial and/or temporal extent
+        starting from the *:extent element
         '''
-        pass
+        xp = generate_localname_xpath(['EX_Extent', 'geographicElement'])
+        geo_elem = next(iter(elem.xpath(xp), None))
+        if geo_elem is not None:
+            # we need to sort out what kind of thing it is bbox, polygon, list of points
+            bbox_elem = next(iter(
+                geo_elem.xpath(generate_localname_xpath(['EX_GeographicBoundingBox'])), None))
+            if bbox_elem is not None:
+                yield self._handle_bbox(bbox_elem)
+
+            poly_elem = next(iter(
+                geo_elem.xpath(generate_localname_xpath(['EX_BoundingPolygon'])), None))
+            if poly_elem is not None:
+                yield self._handle_polygon(poly_elem)
+
+        xp = generate_localname_xpath(['EX_Extent', 'temporalElement', 'extent', 'TimePeriod'])
+        time_elem = next(iter(elem.xpath(xp), None))
+        if time_elem is not None:
+            begin_position = next(iter(
+                time_elem.xpath(generate_localname_xpath(['beginPosition'])), None))
+            end_position = next(iter(
+                time_elem.xpath(generate_localname_xpath(['endPosition'])), None))
+
+            if begin_position is not None and 'indeterminatePosition' not in begin_position.attrib:
+                begin_position = self._parse_timestamp(begin_position.text)
+            if end_position is not None and 'indeterminatePosition' not in end_position.attrib:
+                end_position = self._parse_timestamp(end_position.text)
+
+            yield begin_position, end_position
 
     def _parse_timestamp(self, elem):
         '''
