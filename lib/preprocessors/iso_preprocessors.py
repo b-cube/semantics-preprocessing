@@ -223,8 +223,75 @@ class SrvParser():
     def __init__(self, elem):
         self.elem = elem
 
+    def _handle_parameter(self, elem):
+        ''' parse an sv_parameter element '''
+        param = {}
+
+        xp = generate_localname_xpath(['name', 'aName', 'CharacterString'])
+        e = next(iter(elem.xpath(xp)), None)
+        param['name'] = e.text.strip() if e is not None else ''
+
+        xp = generate_localname_xpath(
+            ['name', 'attributeType', 'TypeName', 'aName', 'CharacterString'])
+        e = next(iter(elem.xpath(xp)), None)
+        param['inputType'] = e.text.strip() if e is not None else ''
+
+        xp = generate_localname_xpath(['direction', 'SV_ParameterDirection'])
+        e = next(iter(elem.xpath(xp)), None)
+        param['direction'] = e.text.strip() if e is not None else ''
+
+        xp = generate_localname_xpath(['optionality', 'CharacterString'])
+        e = next(iter(elem.xpath(xp)), None)
+        param['optional'] = e.text.strip() if e is not None else ''
+
+        xp = generate_localname_xpath(['repeatability', 'Boolean'])
+        e = next(iter(elem.xpath(xp)), None)
+        param['cardinality'] = e.text.strip() if e is not None else ''
+
+        xp = generate_localname_xpath(['valueType', 'TypeName', 'aName', 'CharacterString'])
+        e = next(iter(elem.xpath(xp)), None)
+        param['valueType'] = e.text.strip() if e is not None else ''
+
+        return param
+
+    def _handle_operations(self):
+        xp = generate_localname_xpath(['containsOperations', 'SV_OperationMetadata'])
+        elems = self.elem.xpath(xp)
+
+        ops = []
+        for e in elems:
+            op = {}
+
+            xp = generate_localname_xpath(['operationName', 'CharacterString'])
+            x = next(iter(e.xpath(xp)), None)
+            op['name'] = x.text.strip() if x is not None else ''
+
+            xp = generate_localname_xpath(['DCP', 'DCPList', '@codeListValue'])
+            x = next(iter(e.xpath(xp)), None)
+            op['method'] = x.text.strip() if x is not None else ''
+
+            xp = generate_localname_xpath(['connectPoint', 'CI_OnlineResource', 'linkage', 'URL'])
+            x = next(iter(e.xpath(xp)), None)
+            op['url'] = x.text.strip() if x is not None else ''
+
+            xp = generate_localname_xpath(['parameters', 'SV_Parameter'])
+            param_elems = e.xpath(xp)
+            op['parameters'] = [self._handle_parameter(pe) for pe in param_elems]
+
+        return ops
+
     def parse(self):
-        pass
+        xp = generate_localname_xpath(['SV_ServiceIdentification'])
+        elem = next(iter(self.elem.xpath(xp)), None)
+        if elem is None:
+            return None
+
+        service = {}
+        
+        
+        service['operations'] = self._handle_operations()
+
+        return service
 
 
 class DsParser():
