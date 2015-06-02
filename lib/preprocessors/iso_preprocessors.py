@@ -208,11 +208,38 @@ class MxParser():
     '''
 
     def __init__(self, elem):
-        ''' starting at MD_DataIdentification '''
+        ''' starting at Mx_Metadata
+        which can be within a DS composedOf block, within a
+        CSW result set, as the series descriptor for a dataseries
+        or part of some other catalog service
+        '''
         self.elem = elem
 
     def parse(self):
-        pass
+        '''
+        from the root node, parse:
+            identification (title, abstract, point of contact, keywords, extent)
+            if identificationInfo contains SV_ServiceIdentification, add as child
+            distribution info
+        '''
+        mx = {}
+
+        xp = generate_localname_xpath(['identificationInfo', 'MD_DataIdentification'])
+        id_elem = next(iter(self.elem.xpath(xp)), None)
+        if id_elem is not None:
+            title, abstract = parse_identification_info(id_elem)
+            mx['title'] = title
+            mx['abstract'] = abstract
+
+        # check for the service elements
+        xp = generate_localname_xpath(['identificationInfo', 'SV_ServiceIdentification'])
+        service_elems = self.elem.xpath(xp)
+        mx['services'] = []
+        for service_elem in service_elems:
+            sv = SrvParser(service_elem)
+            mx['services'].append(sv.parse())
+
+        return mx
 
 
 class SrvParser():
@@ -287,8 +314,7 @@ class SrvParser():
             return None
 
         service = {}
-        
-        
+
         service['operations'] = self._handle_operations()
 
         return service
