@@ -1,7 +1,7 @@
 from lib.base_preprocessors import BaseReader
 from lib.utils import tidy_dict
 from lib.utils import generate_localname_xpath
-import dateutil as dateparser
+from lib.preprocessors.iso_helpers import *
 
 
 class IsoReader(BaseReader):
@@ -211,114 +211,6 @@ class MxParser():
         ''' starting at MD_DataIdentification '''
         self.elem = elem
 
-    def _parse_identification_info(self, elem):
-        xp = generate_localname_xpath(['citation', 'CI_Citation', 'title', 'CharacterString'])
-        title_elem = next(iter(elem.xpath(xp), None))
-        title = '' if title_elem is None else title_elem.text
-
-        xp = generate_localname_xpath(['abstract', 'CharacterString'])
-        abstract_elem = next(iter(elem.xpath(xp), None))
-        abstract = '' if abstract_elem is None else abstract_elem.text
-
-        return title, abstract
-
-    def _parse_keywords(self, elem):
-        '''
-        for each descriptiveKeywords block
-        in an identification block
-        '''
-        keywords = []
-
-        xp = generate_localname_xpath(
-            ['descriptiveKeywords', 'MD_Keywords', 'keyword', 'CharacterString'])
-        keyword_elems = elem.xpath(xp)
-        keywords += [keyword_elem.text for keyword_elem in keyword_elems
-                     if keyword_elem is not None and keyword_elem.text]
-
-        # grab the iso topic categories as well
-        xp = generate_localname_xpath(['topicCategory', 'MD_TopicCategoryCode'])
-        topic_elems = elem.xpath(xp)
-        keywords += [topic_elem.text for topic_elem in topic_elems
-                     if topic_elem is not None and topic_elem.text]
-
-        return keywords
-
-    def _parse_contact(self, elem):
-        '''
-        parse any CI_ResponsibleParty
-        '''
-
-        pass
-
-    def _parse_distribution(self, elem):
-        pass
-
-    def _handle_bbox(self, bounding_box_elem):
-        xp = generate_localname_xpath(['westBoundLongitude', 'Decimal'])
-        west = next(iter(bounding_box_elem.xpath(xp)), None)
-        west = west.text if west is not None else ''
-
-        xp = generate_localname_xpath(['eastBoundLongitude', 'Decimal'])
-        east = next(iter(bounding_box_elem.xpath(xp)), None)
-        east = east.text if east is not None else ''
-
-        xp = generate_localname_xpath(['southBoundLatitude', 'Decimal'])
-        south = next(iter(bounding_box_elem.xpath(xp)), None)
-        south = south.text if south is not None else ''
-
-        xp = generate_localname_xpath(['northBoundLatitude', 'Decimal'])
-        north = next(iter(bounding_box_elem.xpath(xp)), None)
-        north = north.text if north is not None else ''
-
-        return [west, south, east, north]
-
-    def _handle_polygon(self, polygon_elem):
-        pass
-
-    def _handle_points(self, point_elem):
-        # this may not exist in the -2?
-        pass
-
-    def _parse_extent(self, elem):
-        '''
-        handle the spatial and/or temporal extent
-        starting from the *:extent element
-        '''
-        xp = generate_localname_xpath(['EX_Extent', 'geographicElement'])
-        geo_elem = next(iter(elem.xpath(xp), None))
-        if geo_elem is not None:
-            # we need to sort out what kind of thing it is bbox, polygon, list of points
-            bbox_elem = next(iter(
-                geo_elem.xpath(generate_localname_xpath(['EX_GeographicBoundingBox'])), None))
-            if bbox_elem is not None:
-                yield self._handle_bbox(bbox_elem)
-
-            poly_elem = next(iter(
-                geo_elem.xpath(generate_localname_xpath(['EX_BoundingPolygon'])), None))
-            if poly_elem is not None:
-                yield self._handle_polygon(poly_elem)
-
-        xp = generate_localname_xpath(['EX_Extent', 'temporalElement', 'extent', 'TimePeriod'])
-        time_elem = next(iter(elem.xpath(xp), None))
-        if time_elem is not None:
-            begin_position = next(iter(
-                time_elem.xpath(generate_localname_xpath(['beginPosition'])), None))
-            end_position = next(iter(
-                time_elem.xpath(generate_localname_xpath(['endPosition'])), None))
-
-            if begin_position is not None and 'indeterminatePosition' not in begin_position.attrib:
-                begin_position = self._parse_timestamp(begin_position.text)
-            if end_position is not None and 'indeterminatePosition' not in end_position.attrib:
-                end_position = self._parse_timestamp(end_position.text)
-
-            yield begin_position, end_position
-
-    def _parse_timestamp(self, elem):
-        '''
-        generic handler for any iso date/datetime/time/whatever element
-        '''
-        pass
-
     def parse(self):
         pass
 
@@ -331,6 +223,9 @@ class SrvParser():
     def __init__(self, elem):
         self.elem = elem
 
+    def parse(self):
+        pass
+
 
 class DsParser():
     '''
@@ -339,3 +234,25 @@ class DsParser():
     '''
     def __init__(self, elem):
         self.elem = elem
+
+    # TODO: check on mi vs md here
+    def parse(self):
+        # get the series
+        xp = generate_localname_xpath(['seriesMetadata', 'MD_Metadata'])
+        md = next(iter(self.elem.xpath(xp)), None)
+        if md is None:
+            return None
+
+        md_parser = MxParser(md)
+        md_dict = md_parser.parse()
+        md_dict['children'] = []
+
+        # get the children
+        xp = generate_localname_xpath(['composedOf', 'DS_Dataset', 'has', 'MD_Metadata'])
+        children = self.elem.xpath(xp)
+        for child in children.iter():
+            child_parser = MxParser(child)
+            child_dict = child_parser.parse()
+            md_dict['children'].append(child_dict)
+
+        return md_dict
