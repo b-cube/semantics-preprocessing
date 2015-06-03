@@ -1,6 +1,11 @@
 # from lxml import etree
-from lib.utils import generate_localname_xpath
+# from lib.utils import generate_localname_xpath
 import dateutil as dateparser
+
+
+def generate_localname_xpath(tags):
+    return '/'.join(['*[local-name()="%s"]' % t if t not in ['*', '..', '.', '//*'] else t
+                    for t in tags])
 
 
 def parse_identification_info(self, elem):
@@ -12,7 +17,9 @@ def parse_identification_info(self, elem):
     abstract_elem = next(iter(elem.xpath(xp), None))
     abstract = '' if abstract_elem is None else abstract_elem.text
 
-    return title, abstract
+    keywords = parse_keywords(elem)
+
+    return title, abstract, keywords
 
 
 def parse_keywords(self, elem):
@@ -63,26 +70,78 @@ def parse_contact(self, elem):
     '''
     parse any CI_Contact
     '''
+    contact = {}
+
     xp = generate_localname_xpath(['phone', 'CI_Telephone', 'voice', 'CharacterString'])
+    e = next(iter(elem.xpath(xp)), None)
+    if e is not None:
+        contact['phone'] = e.text.strip()
 
     xp = generate_localname_xpath(['address', 'CI_Address', 'deliveryPoint', 'CharacterString'])
+    es = elem.xpath(xp)
+    contact['addresses'] = [el.text.strip() for el in es]
 
     xp = generate_localname_xpath(['address', 'CI_Address', 'city', 'CharacterString'])
+    e = next(iter(elem.xpath(xp)), None)
+    if e is not None:
+        contact['city'] = e.text.strip()
 
-    xp = generate_localname_xpath(['address', 'CI_Address', 'administrativeArea', 'CharacterString'])
+    xp = generate_localname_xpath(
+        ['address', 'CI_Address', 'administrativeArea', 'CharacterString'])
+    e = next(iter(elem.xpath(xp)), None)
+    if e is not None:
+        contact['state'] = e.text.strip()
 
     xp = generate_localname_xpath(['address', 'CI_Address', 'postalCode', 'CharacterString'])
+    e = next(iter(elem.xpath(xp)), None)
+    if e is not None:
+        contact['postal'] = e.text.strip()
 
     xp = generate_localname_xpath(['address', 'CI_Address', 'country', 'CharacterString'])
+    e = next(iter(elem.xpath(xp)), None)
+    if e is not None:
+        contact['country'] = e.text.strip()
 
-    xp = generate_localname_xpath(['address', 'CI_Address', 'electronicMailAddress', 'CharacterString'])
+    xp = generate_localname_xpath(
+        ['address', 'CI_Address', 'electronicMailAddress', 'CharacterString'])
+    e = next(iter(elem.xpath(xp)), None)
+    if e is not None:
+        contact['email'] = e.text.strip()
 
-    pass
+    return contact
 
 
 def parse_distribution(self, elem):
     ''' from the distributionInfo element '''
-    xp = generate_localname_xpath([])
+    distributions = []
+    xp = generate_localname_xpath(['MD_Distribution'])
+    dist_elems = elem.xpath(xp)
+    for dist_elem in dist_elems:
+        # this is going to get ugly.
+        dist = {}
+
+        # super ugly
+        # get the transferoptions block
+        # get the url, the name, the description, the size
+        # get the format from a parent node
+        # but where the transferoptions can be in some nested
+        # distributor thing or at the root of the element (NOT
+        # the root of the file)
+        xp = generate_localname_xpath(['//*', 'MD_DigitalTransferOptions'])
+        transfer_elems = dist_elem.xpath(xp)
+        for transfer_elem in transfer_elems:
+            xp = generate_localname_xpath(['..', '..', 'distributorFormat', 'MD_Format'])
+            format_elem = next(iter(transfer_elem.xpath(xp)), None)
+            if format_elem is not None:
+                xp = generate_localname_xpath(['name', 'CharacterString'])
+
+                xp = generate_localname_xpath(['specification', 'CharacterString'])
+
+                xp = generate_localname_xpath(['version'])
+
+        distributions.append(dist)
+
+    return distributions
 
 
 def handle_bbox(self, bounding_box_elem):

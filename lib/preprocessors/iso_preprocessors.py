@@ -1,7 +1,9 @@
 from lib.base_preprocessors import BaseReader
 from lib.utils import tidy_dict
 from lib.utils import generate_localname_xpath
-from lib.preprocessors.iso_helpers import *
+from lib.preprocessors.iso_helpers import parse_identification_info
+from lib.preprocessors.iso_helpers import parse_distribution
+from lib.preprocessors.iso_helpers import parse_responsibleparty
 
 
 class IsoReader(BaseReader):
@@ -227,9 +229,22 @@ class MxParser():
         xp = generate_localname_xpath(['identificationInfo', 'MD_DataIdentification'])
         id_elem = next(iter(self.elem.xpath(xp)), None)
         if id_elem is not None:
-            title, abstract = parse_identification_info(id_elem)
+            title, abstract, keywords = parse_identification_info(id_elem)
             mx['title'] = title
             mx['abstract'] = abstract
+            mx['keywords'] = keywords
+
+        # point of contact from the root node and this might be an issue
+        # in things like the -1/-3 from ngdc
+        xp = generate_localname_xpath(['contact', 'CI_ResponsibleParty'])
+        poc_elem = next(iter(self.elem.xpath(xp)), None)
+        if poc_elem is not None:
+            ind_name, org_name, contact = parse_responsibleparty(poc_elem)
+            mx['contact'] = {
+                'individual_name': ind_name,
+                'organization_name': org_name,
+                'contact': contact
+            }
 
         # check for the service elements
         xp = generate_localname_xpath(['identificationInfo', 'SV_ServiceIdentification'])
@@ -239,6 +254,13 @@ class MxParser():
             sv = SrvParser(service_elem)
             mx['services'].append(sv.parse())
 
+        xp = generate_localname_xpath(['distributionInfo'])
+        dist_elems = self.elem.xpath(xp)
+        mx['endpoints'] = []
+        for dist_elem in dist_elems:
+            mx['distribution'].append(parse_distribution(id_elem))
+
+        mx = tidy_dict(mx)
         return mx
 
 
