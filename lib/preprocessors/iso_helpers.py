@@ -118,7 +118,7 @@ def parse_distribution(self, elem):
     dist_elems = elem.xpath(xp)
     for dist_elem in dist_elems:
         # this is going to get ugly.
-        dist = {}
+        dist = {'endpoints': []}
 
         # super ugly
         # get the transferoptions block
@@ -130,14 +130,38 @@ def parse_distribution(self, elem):
         xp = generate_localname_xpath(['//*', 'MD_DigitalTransferOptions'])
         transfer_elems = dist_elem.xpath(xp)
         for transfer_elem in transfer_elems:
+            transfer = {}
+            xp = generate_localname_xpath(['onLine', 'CI_OnlineResource', 'linkage', 'URL'])
+            e = next(iter(transfer_elem.xpath(xp)), None)
+            transfer['url'] = e.text.strip() if e is not None else ''
+
+            xp = generate_localname_xpath(
+                ['onLine', 'CI_OnlineResource', 'name', 'CharacterString'])
+            e = next(iter(transfer_elem.xpath(xp)), None)
+            transfer['name'] = e.text.strip() if e is not None else ''
+
+            xp = generate_localname_xpath(
+                ['onLine', 'CI_OnlineResource', 'description', 'CharacterString'])
+            e = next(iter(transfer_elem.xpath(xp)), None)
+            transfer['description'] = e.text.strip() if e is not None else ''
+
             xp = generate_localname_xpath(['..', '..', 'distributorFormat', 'MD_Format'])
             format_elem = next(iter(transfer_elem.xpath(xp)), None)
             if format_elem is not None:
+                transfer['format'] = {}
                 xp = generate_localname_xpath(['name', 'CharacterString'])
+                e = next(iter(format_elem.xpath(xp)), None)
+                transfer['format']['name'] = e.text.strip() if e is not None else ''
 
                 xp = generate_localname_xpath(['specification', 'CharacterString'])
+                e = next(iter(format_elem.xpath(xp)), None)
+                transfer['format']['specification'] = e.text.strip() if e is not None else ''
 
                 xp = generate_localname_xpath(['version'])
+                e = next(iter(format_elem.xpath(xp)), None)
+                transfer['format']['version'] = e.text.strip() if e is not None else ''
+
+            dist['endpoints'].append(transfer)
 
         distributions.append(dist)
 
@@ -147,21 +171,21 @@ def parse_distribution(self, elem):
 def handle_bbox(self, bounding_box_elem):
     xp = generate_localname_xpath(['westBoundLongitude', 'Decimal'])
     west = next(iter(bounding_box_elem.xpath(xp)), None)
-    west = west.text if west is not None else ''
+    west = float(west.text) if west is not None else 0
 
     xp = generate_localname_xpath(['eastBoundLongitude', 'Decimal'])
     east = next(iter(bounding_box_elem.xpath(xp)), None)
-    east = east.text if east is not None else ''
+    east = float(east.text) if east is not None else 0
 
     xp = generate_localname_xpath(['southBoundLatitude', 'Decimal'])
     south = next(iter(bounding_box_elem.xpath(xp)), None)
-    south = south.text if south is not None else ''
+    south = float(south.text) if south is not None else 0
 
     xp = generate_localname_xpath(['northBoundLatitude', 'Decimal'])
     north = next(iter(bounding_box_elem.xpath(xp)), None)
-    north = north.text if north is not None else ''
+    north = float(north.text) if north is not None else 0
 
-    return [west, south, east, north]
+    return [west, south, east, north] if east and west and north and south else []
 
 
 def handle_polygon(self, polygon_elem):

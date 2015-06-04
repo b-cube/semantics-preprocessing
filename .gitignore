@@ -22,6 +22,7 @@ notebooks/simhashing_near_dupes
 pipeline_tests/
 
 solr_superset/
+sql/
 
 .ipynb_checkpoints
 

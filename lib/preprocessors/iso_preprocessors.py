@@ -235,9 +235,14 @@ class MxParser():
             mx['keywords'] = keywords
 
         # point of contact from the root node and this might be an issue
-        # in things like the -1/-3 from ngdc
-        xp = generate_localname_xpath(['contact', 'CI_ResponsibleParty'])
+        # in things like the -1/-3 from ngdc so try for an idinfo blob
+        xp = generate_localname_xpath([
+            'identificationInfo', 'MD_DataIdentification', 'pointOfContact', 'CI_ResponsibleParty'])
         poc_elem = next(iter(self.elem.xpath(xp)), None)
+        if poc_elem is None:
+            # and if that fails try for the root-level contact
+            xp = generate_localname_xpath(['contact', 'CI_ResponsibleParty'])
+            poc_elem = next(iter(self.elem.xpath(xp)), None)
         if poc_elem is not None:
             ind_name, org_name, contact = parse_responsibleparty(poc_elem)
             mx['contact'] = {
