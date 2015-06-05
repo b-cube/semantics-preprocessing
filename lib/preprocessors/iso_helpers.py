@@ -50,20 +50,21 @@ def parse_responsibleparty(self, elem):
     '''
     xp = generate_localname_xpath(['individualName'])
     e = next(iter(elem.xpath(xp)), None)
-    if e is not None:
-        individual_name = e.text
+    individual_name = e.text if e is not None else ''
 
     xp = generate_localname_xpath(['organizationName'])
     e = next(iter(elem.xpath(xp)), None)
-    if e is not None:
-        organization_name = e.text
+    organization_name = e.text if e is not None else ''
+
+    xp = generate_localname_xpath(['positionName'])
+    e = next(iter(elem.xpath(xp)), None)
+    position_name = e.text if e is not None else ''
 
     xp = generate_localname_xpath(['contactInfo', 'CI_Contact'])
     e = next(iter(elem.xpath(xp)), None)
-    if e is not None:
-        contact = self._parse_contact(e)
+    contact = self._parse_contact(e)
 
-    return individual_name, organization_name, contact
+    return individual_name, organization_name, position_name, contact
 
 
 def parse_contact(self, elem):
@@ -71,6 +72,9 @@ def parse_contact(self, elem):
     parse any CI_Contact
     '''
     contact = {}
+
+    if elem is None:
+        return contact
 
     xp = generate_localname_xpath(['phone', 'CI_Telephone', 'voice', 'CharacterString'])
     e = next(iter(elem.xpath(xp)), None)

@@ -1,9 +1,14 @@
 from lib.base_preprocessors import BaseReader
 from lib.utils import tidy_dict
-from lib.utils import generate_localname_xpath
+# from lib.utils import generate_localname_xpath
 from lib.preprocessors.iso_helpers import parse_identification_info
 from lib.preprocessors.iso_helpers import parse_distribution
 from lib.preprocessors.iso_helpers import parse_responsibleparty
+
+
+def generate_localname_xpath(tags):
+    return '/'.join(['*[local-name()="%s"]' % t if t not in ['*', '..', '.', '//*'] else t
+                    for t in tags])
 
 
 class IsoReader(BaseReader):
@@ -206,7 +211,7 @@ NOTE: for all of the ISO parsers, I am using the local-path "trick". It is a kno
 
 class MxParser():
     '''
-    parse an mi or md element (as whole record or some atom/csw/ds child)
+    parse an mi or md element (as whole record or some csw/oai-pmh/ds child)
     '''
 
     def __init__(self, elem):
@@ -243,11 +248,13 @@ class MxParser():
             # and if that fails try for the root-level contact
             xp = generate_localname_xpath(['contact', 'CI_ResponsibleParty'])
             poc_elem = next(iter(self.elem.xpath(xp)), None)
+
         if poc_elem is not None:
-            ind_name, org_name, contact = parse_responsibleparty(poc_elem)
+            ind_name, org_name, position, contact = parse_responsibleparty(poc_elem)
             mx['contact'] = {
                 'individual_name': ind_name,
                 'organization_name': org_name,
+                'position': position,
                 'contact': contact
             }
 
