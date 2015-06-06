@@ -1,18 +1,39 @@
+import sys
 from lib.base_preprocessors import BaseReader
 from lib.xml_utils import extract_item, extract_items, generate_localname_xpath
 from lib.utils import tidy_dict
 
 
-class AtomReader(BaseReader):
-    '''
-    for a feed, parse the atom items
-    '''
+class FeedReader():
+    def __init__(self, dialect):
+        # TODO: add the actual xml parsing (ha)
+        self.dialect = dialect
 
-    def _item(self):
-        xp = generate_localname_xpath(['//*', 'entry'])
-        return self.parser.xml.xpath(xp)
+        item_name = 'AtomItem' if self.dialect == 'atom' else 'RssItem'
+        self.item_class = getattr(sys.modules[__name__], item_name)
 
-    def parse_item(self, elem):
+    def parse(self):
+        '''
+        key = entry for atom and item for rss
+        '''
+        key = 'entry' if self.dialect == 'atom' else 'item'
+        xp = generate_localname_xpath(['//*', key])
+        elems = self.parser.xml.xpath(xp)
+        items = [self.item_class(elem) for elem in elems]
+
+        # TODO: add the root level parsing
+
+        return items
+
+
+class AtomItem():
+    '''
+    parse the atom item
+    '''
+    def __init__(self, elem):
+        return self._parse_item(elem)
+
+    def _parse_item(self, elem):
         entry = {}
 
         entry['title'] = extract_item(elem, ['title'])
@@ -42,10 +63,13 @@ class AtomReader(BaseReader):
         return tidy_dict(entry)
 
 
-class RssReader(BaseReader):
+class RssItem():
     '''
     '''
-    def parse_item(self, elem):
+    def __init__(self, elem):
+        return self._parse_item(elem)
+
+    def _parse_item(self, elem):
         item = {}
         item['title'] = extract_item(elem, ['title'])
         item['language'] = extract_item(elem, ['language'])
