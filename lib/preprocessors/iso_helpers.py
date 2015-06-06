@@ -1,22 +1,10 @@
-# from lxml import etree
-# from lib.utils import generate_localname_xpath
 import dateutil as dateparser
-
-
-def generate_localname_xpath(tags):
-    return '/'.join(['*[local-name()="%s"]' % t if t not in ['*', '..', '.', '//*'] else t
-                    for t in tags])
+from lib.xml_utils import extract_item, extract_items, generate_localname_xpath
 
 
 def parse_identification_info(self, elem):
-    xp = generate_localname_xpath(['citation', 'CI_Citation', 'title', 'CharacterString'])
-    title_elem = next(iter(elem.xpath(xp), None))
-    title = '' if title_elem is None else title_elem.text
-
-    xp = generate_localname_xpath(['abstract', 'CharacterString'])
-    abstract_elem = next(iter(elem.xpath(xp), None))
-    abstract = '' if abstract_elem is None else abstract_elem.text
-
+    title = extract_item(elem, ['citation', 'CI_Citation', 'title', 'CharacterString'])
+    abstract = extract_item(elem, ['abstract', 'CharacterString'])
     keywords = parse_keywords(elem)
 
     return title, abstract, keywords
@@ -28,18 +16,11 @@ def parse_keywords(self, elem):
     in an identification block
     '''
     keywords = []
-
-    xp = generate_localname_xpath(
-        ['descriptiveKeywords', 'MD_Keywords', 'keyword', 'CharacterString'])
-    keyword_elems = elem.xpath(xp)
-    keywords += [keyword_elem.text for keyword_elem in keyword_elems
-                 if keyword_elem is not None and keyword_elem.text]
+    keywords += extract_items(
+        elem, ['descriptiveKeywords', 'MD_Keywords', 'keyword', 'CharacterString'])
 
     # grab the iso topic categories as well
-    xp = generate_localname_xpath(['topicCategory', 'MD_TopicCategoryCode'])
-    topic_elems = elem.xpath(xp)
-    keywords += [topic_elem.text for topic_elem in topic_elems
-                 if topic_elem is not None and topic_elem.text]
+    keywords += extract_items(elem, ['topicCategory', 'MD_TopicCategoryCode'])
 
     return keywords
 
@@ -48,17 +29,9 @@ def parse_responsibleparty(self, elem):
     '''
     parse any CI_ResponsibleParty
     '''
-    xp = generate_localname_xpath(['individualName'])
-    e = next(iter(elem.xpath(xp)), None)
-    individual_name = e.text if e is not None else ''
-
-    xp = generate_localname_xpath(['organizationName'])
-    e = next(iter(elem.xpath(xp)), None)
-    organization_name = e.text if e is not None else ''
-
-    xp = generate_localname_xpath(['positionName'])
-    e = next(iter(elem.xpath(xp)), None)
-    position_name = e.text if e is not None else ''
+    individual_name = extract_item(elem, ['individualName'])
+    organization_name = extract_item(elem, ['organizationName'])
+    position_name = extract_item(elem, ['positionName'])
 
     xp = generate_localname_xpath(['contactInfo', 'CI_Contact'])
     e = next(iter(elem.xpath(xp)), None)
@@ -76,42 +49,20 @@ def parse_contact(self, elem):
     if elem is None:
         return contact
 
-    xp = generate_localname_xpath(['phone', 'CI_Telephone', 'voice', 'CharacterString'])
-    e = next(iter(elem.xpath(xp)), None)
-    if e is not None:
-        contact['phone'] = e.text.strip()
-
-    xp = generate_localname_xpath(['address', 'CI_Address', 'deliveryPoint', 'CharacterString'])
-    es = elem.xpath(xp)
-    contact['addresses'] = [el.text.strip() for el in es]
-
-    xp = generate_localname_xpath(['address', 'CI_Address', 'city', 'CharacterString'])
-    e = next(iter(elem.xpath(xp)), None)
-    if e is not None:
-        contact['city'] = e.text.strip()
-
-    xp = generate_localname_xpath(
-        ['address', 'CI_Address', 'administrativeArea', 'CharacterString'])
-    e = next(iter(elem.xpath(xp)), None)
-    if e is not None:
-        contact['state'] = e.text.strip()
-
-    xp = generate_localname_xpath(['address', 'CI_Address', 'postalCode', 'CharacterString'])
-    e = next(iter(elem.xpath(xp)), None)
-    if e is not None:
-        contact['postal'] = e.text.strip()
-
-    xp = generate_localname_xpath(['address', 'CI_Address', 'country', 'CharacterString'])
-    e = next(iter(elem.xpath(xp)), None)
-    if e is not None:
-        contact['country'] = e.text.strip()
-
-    xp = generate_localname_xpath(
-        ['address', 'CI_Address', 'electronicMailAddress', 'CharacterString'])
-    e = next(iter(elem.xpath(xp)), None)
-    if e is not None:
-        contact['email'] = e.text.strip()
-
+    contact['phone'] = extract_item(
+        elem, ['phone', 'CI_Telephone', 'voice', 'CharacterString'])
+    contact['addresses'] = extract_items(
+        elem, ['address', 'CI_Address', 'deliveryPoint', 'CharacterString'])
+    contact['city'] = extract_item(
+        elem, ['address', 'CI_Address', 'city', 'CharacterString'])
+    contact['state'] = extract_item(
+        elem, ['address', 'CI_Address', 'administrativeArea', 'CharacterString'])
+    contact['postal'] = extract_item(
+        elem, ['address', 'CI_Address', 'postalCode', 'CharacterString'])
+    contact['country'] = extract_item(
+        elem, ['address', 'CI_Address', 'country', 'CharacterString'])
+    contact['email'] = extract_item(
+        elem, ['address', 'CI_Address', 'electronicMailAddress', 'CharacterString'])
     return contact
 
 
@@ -135,35 +86,23 @@ def parse_distribution(self, elem):
         transfer_elems = dist_elem.xpath(xp)
         for transfer_elem in transfer_elems:
             transfer = {}
-            xp = generate_localname_xpath(['onLine', 'CI_OnlineResource', 'linkage', 'URL'])
-            e = next(iter(transfer_elem.xpath(xp)), None)
-            transfer['url'] = e.text.strip() if e is not None else ''
-
-            xp = generate_localname_xpath(
-                ['onLine', 'CI_OnlineResource', 'name', 'CharacterString'])
-            e = next(iter(transfer_elem.xpath(xp)), None)
-            transfer['name'] = e.text.strip() if e is not None else ''
-
-            xp = generate_localname_xpath(
-                ['onLine', 'CI_OnlineResource', 'description', 'CharacterString'])
-            e = next(iter(transfer_elem.xpath(xp)), None)
-            transfer['description'] = e.text.strip() if e is not None else ''
+            transfer['url'] = extract_item(
+                transfer_elem, ['onLine', 'CI_OnlineResource', 'linkage', 'URL'])
+            transfer['name'] = extract_item(
+                transfer_elem, ['onLine', 'CI_OnlineResource', 'name', 'CharacterString'])
+            transfer['description'] = extract_item(
+                transfer_elem, ['onLine', 'CI_OnlineResource', 'description', 'CharacterString'])
 
             xp = generate_localname_xpath(['..', '..', 'distributorFormat', 'MD_Format'])
             format_elem = next(iter(transfer_elem.xpath(xp)), None)
             if format_elem is not None:
                 transfer['format'] = {}
-                xp = generate_localname_xpath(['name', 'CharacterString'])
-                e = next(iter(format_elem.xpath(xp)), None)
-                transfer['format']['name'] = e.text.strip() if e is not None else ''
-
-                xp = generate_localname_xpath(['specification', 'CharacterString'])
-                e = next(iter(format_elem.xpath(xp)), None)
-                transfer['format']['specification'] = e.text.strip() if e is not None else ''
-
-                xp = generate_localname_xpath(['version'])
-                e = next(iter(format_elem.xpath(xp)), None)
-                transfer['format']['version'] = e.text.strip() if e is not None else ''
+                transfer['format']['name'] = extract_item(
+                    format_elem, ['name', 'CharacterString'])
+                transfer['format']['specification'] = extract_item(
+                    format_elem, ['specification', 'CharacterString'])
+                transfer['format']['version'] = extract_item(
+                    format_elem, ['version'])
 
             dist['endpoints'].append(transfer)
 
@@ -172,22 +111,18 @@ def parse_distribution(self, elem):
     return distributions
 
 
-def handle_bbox(self, bounding_box_elem):
-    xp = generate_localname_xpath(['westBoundLongitude', 'Decimal'])
-    west = next(iter(bounding_box_elem.xpath(xp)), None)
-    west = float(west.text) if west is not None else 0
+def handle_bbox(self, elem):
+    west = extract_item(elem, ['westBoundLongitude', 'Decimal'])
+    west = float(west) if west else 0
 
-    xp = generate_localname_xpath(['eastBoundLongitude', 'Decimal'])
-    east = next(iter(bounding_box_elem.xpath(xp)), None)
-    east = float(east.text) if east is not None else 0
+    east = extract_item(elem, ['eastBoundLongitude', 'Decimal'])
+    east = float(east) if east else 0
 
-    xp = generate_localname_xpath(['southBoundLatitude', 'Decimal'])
-    south = next(iter(bounding_box_elem.xpath(xp)), None)
-    south = float(south.text) if south is not None else 0
+    south = extract_item(elem, ['southBoundLatitude', 'Decimal'])
+    south = float(south) if south else 0
 
-    xp = generate_localname_xpath(['northBoundLatitude', 'Decimal'])
-    north = next(iter(bounding_box_elem.xpath(xp)), None)
-    north = float(north.text) if north is not None else 0
+    north = extract_item(elem, ['northBoundLatitude', 'Decimal'])
+    north = float(north) if north else 0
 
     return [west, south, east, north] if east and west and north and south else []
 

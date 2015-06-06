@@ -1,6 +1,5 @@
 from lib.base_preprocessors import BaseReader
 from lib.utils import tidy_dict
-# from lib.utils import generate_localname_xpath
 from lib.preprocessors.iso_helpers import parse_identification_info
 from lib.preprocessors.iso_helpers import parse_distribution
 from lib.preprocessors.iso_helpers import parse_responsibleparty
