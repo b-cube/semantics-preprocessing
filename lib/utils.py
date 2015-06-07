@@ -100,6 +100,20 @@ def extract_element_tag(tag):
     return tag.split('}')[-1]
 
 
+def remap_http_method(original_method):
+    '''
+    return the "full" http method from some input
+    '''
+    definition = {
+        "HTTP GET": ['get'],
+        "HTTP POST": ['post']
+    }
+    for k, v in definition.iteritems():
+        if original_method.lower() in v:
+            return k
+    return original_method
+
+
 def generate_qualified_xpath(elem, do_join=True):
     '''
     from some element, iterate through the parents
@@ -108,30 +122,7 @@ def generate_qualified_xpath(elem, do_join=True):
     '''
     tags = [elem.tag] + [e.tag for e in elem.iterancestors()]
     tags.reverse()
-
-    # TODO: handle the comments
-    # check for an assumed comment object
-    # if sum([isinstance(a, str) for a in tags]) != len(tags):
-    #     continue
-
     return '/'.join(tags) if do_join else tags
-
-
-def generate_localname_xpath(tags):
-    '''
-    from some tag "list", generate an xpath using local-names only
-
-    note: this is meant for processing and not for the remainder/excludes
-          functions
-
-    params:
-        tags: list of element names as root/parent/child
-
-    returns:
-        *[local-name()="root"]/*[local-name()="parent"]/*[local-name()="child"]
-    '''
-    return '/'.join(['*[local-name()="%s"]' % t if t not in ['*', '..', '.'] else t
-                    for t in tags.split('/') if t])
 
 
 def tidy_dict(items):

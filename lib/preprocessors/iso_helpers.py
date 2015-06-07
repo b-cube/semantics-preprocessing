@@ -1,5 +1,31 @@
 import dateutil as dateparser
 from lib.xml_utils import extract_item, extract_items, generate_localname_xpath
+from lib.xml_utils import extract_elem, extract_elems
+
+
+def parse_identifiers(elem):
+    # note that this elem is the root iso
+    identifiers = []
+
+    xps = [
+        ['fileIdentifier', 'CharacterString'],
+        ['identificationInfo',
+         'MD_DataIdentification',
+         'citation',
+         'CI_Citation',
+         'identifier',
+         'MD_Identifier',
+         'code',
+         'CharacterString'],
+        ['dataSetURI', 'CharacterString']  # TODO: this can be multiple items
+    ]
+
+    for xp in xps:
+        i = extract_item(elem, xp)
+        if i:
+            identifiers.append(i)
+
+    return identifiers
 
 
 def parse_identification_info(self, elem):
@@ -7,10 +33,13 @@ def parse_identification_info(self, elem):
     abstract = extract_item(elem, ['abstract', 'CharacterString'])
     keywords = parse_keywords(elem)
 
-    return title, abstract, keywords
+    # the rights information from MD_Constraints or MD_LegalConstraints
+    rights = extract_item(elem, ['resourceConstraints', '*', 'useLimitation', 'CharacterString'])
+
+    return title, abstract, keywords, rights
 
 
-def parse_keywords(self, elem):
+def parse_keywords(elem):
     '''
     for each descriptiveKeywords block
     in an identification block
@@ -22,10 +51,13 @@ def parse_keywords(self, elem):
     # grab the iso topic categories as well
     keywords += extract_items(elem, ['topicCategory', 'MD_TopicCategoryCode'])
 
+    # and the newer anchor style
+    keywords += extract_items(elem, ['descriptiveKeywords', 'MD_Keywords', 'keyword', 'Anchor'])
+
     return keywords
 
 
-def parse_responsibleparty(self, elem):
+def parse_responsibleparty(elem):
     '''
     parse any CI_ResponsibleParty
     '''
@@ -33,14 +65,13 @@ def parse_responsibleparty(self, elem):
     organization_name = extract_item(elem, ['organizationName'])
     position_name = extract_item(elem, ['positionName'])
 
-    xp = generate_localname_xpath(['contactInfo', 'CI_Contact'])
-    e = next(iter(elem.xpath(xp)), None)
-    contact = self._parse_contact(e)
+    e = extract_elem(elem, ['contactInfo', 'CI_Contact'])
+    contact = parse_contact(e)
 
     return individual_name, organization_name, position_name, contact
 
 
-def parse_contact(self, elem):
+def parse_contact(elem):
     '''
     parse any CI_Contact
     '''
@@ -66,7 +97,7 @@ def parse_contact(self, elem):
     return contact
 
 
-def parse_distribution(self, elem):
+def parse_distribution(elem):
     ''' from the distributionInfo element '''
     distributions = []
     xp = generate_localname_xpath(['MD_Distribution'])
@@ -111,7 +142,7 @@ def parse_distribution(self, elem):
     return distributions
 
 
-def handle_bbox(self, elem):
+def handle_bbox(elem):
     west = extract_item(elem, ['westBoundLongitude', 'Decimal'])
     west = float(west) if west else 0
 
@@ -127,51 +158,45 @@ def handle_bbox(self, elem):
     return [west, south, east, north] if east and west and north and south else []
 
 
-def handle_polygon(self, polygon_elem):
+def handle_polygon(polygon_elem):
     pass
 
 
-def handle_points(self, point_elem):
+def handle_points(point_elem):
     # this may not exist in the -2?
     pass
 
 
-def parse_extent(self, elem):
+def parse_extent(elem):
     '''
     handle the spatial and/or temporal extent
     starting from the *:extent element
     '''
-    xp = generate_localname_xpath(['EX_Extent', 'geographicElement'])
-    geo_elem = next(iter(elem.xpath(xp), None))
+    geo_elem = extract_elem(elem, ['EX_Extent', 'geographicElement'])
     if geo_elem is not None:
         # we need to sort out what kind of thing it is bbox, polygon, list of points
-        bbox_elem = next(iter(
-            geo_elem.xpath(generate_localname_xpath(['EX_GeographicBoundingBox'])), None))
+        bbox_elem = extract_elem(geo_elem, ['EX_GeographicBoundingBox'])
         if bbox_elem is not None:
-            yield self._handle_bbox(bbox_elem)
+            yield handle_bbox(bbox_elem)
 
-        poly_elem = next(iter(
-            geo_elem.xpath(generate_localname_xpath(['EX_BoundingPolygon'])), None))
+        poly_elem = extract_elem(geo_elem, ['EX_BoundingPolygon'])
         if poly_elem is not None:
-            yield self._handle_polygon(poly_elem)
+            yield handle_polygon(poly_elem)
 
-    xp = generate_localname_xpath(['EX_Extent', 'temporalElement', 'extent', 'TimePeriod'])
-    time_elem = next(iter(elem.xpath(xp), None))
+    time_elem = extract_elem(elem, ['EX_Extent', 'temporalElement', 'extent', 'TimePeriod'])
     if time_elem is not None:
-        begin_position = next(iter(
-            time_elem.xpath(generate_localname_xpath(['beginPosition'])), None))
-        end_position = next(iter(
-            time_elem.xpath(generate_localname_xpath(['endPosition'])), None))
+        begin_position = extract_elem(time_elem, ['beginPosition'])
+        end_position = extract_elem(time_elem, ['endPosition'])
 
         if begin_position is not None and 'indeterminatePosition' not in begin_position.attrib:
-            begin_position = self._parse_timestamp(begin_position.text)
+            begin_position = parse_timestamp(begin_position.text)
         if end_position is not None and 'indeterminatePosition' not in end_position.attrib:
-            end_position = self._parse_timestamp(end_position.text)
+            end_position = parse_timestamp(end_position.text)
 
         yield begin_position, end_position
 
 
-def parse_timestamp(self, text):
+def parse_timestamp(text):
     '''
     generic handler for any iso date/datetime/time/whatever element
     '''

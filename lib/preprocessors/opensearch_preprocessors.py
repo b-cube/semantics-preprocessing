@@ -1,32 +1,21 @@
 import re
 
 from lib.base_preprocessors import BaseReader
-from lib.utils import parse_url, flatten, tidy_dict
+from lib.utils import parse_url, tidy_dict
+from lib.xml_utils import extract_item, extract_items, generate_localname_xpath
+from lib.xml_utils import extract_elem, extract_elems
 
 
 class OpenSearchReader(BaseReader):
     _service_descriptors = {
-        "title": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
-                 "{http://a9.com/-/spec/opensearch/1.1/}ShortName",
-        "abstract": ["/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
-                     "{http://a9.com/-/spec/opensearch/1.1/}LongName",
-                     "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
-                     "{http://a9.com/-/spec/opensearch/1.1/}Description"],
-        "source": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
-                  "{http://a9.com/-/spec/opensearch/1.1/}Attribution",
-        "contact": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
-                   "{http://a9.com/-/spec/opensearch/1.1/}Developer",
-        "rights": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
-                  "{http://a9.com/-/spec/opensearch/1.1/}SyndicationRight",
-        "subject": "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
-                   "{http://a9.com/-/spec/opensearch/1.1/}Tags"
+        "title": ["OpenSearchDescription", "ShortName"],
+        "abstract": [["OpenSearchDescription", "LongName"],
+                     ["OpenSearchDescription", "Description"]],
+        "source": ["OpenSearchDescription", "Attribution"],
+        "contact": ["OpenSearchDescription", "Developer"],
+        "rights": ["OpenSearchDescription", "SyndicationRight"],
+        "subject": ["OpenSearchDescription", "Tags"]
     }
-    _to_exclude = [
-        "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
-        "{http://a9.com/-/spec/opensearch/1.1/}Url",
-        "/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
-        "{http://a9.com/-/spec/opensearch/1.1/}Language/"
-    ]
 
     _parameter_formats = {
         "geo:box": "west, south, east, north",
@@ -34,15 +23,11 @@ class OpenSearchReader(BaseReader):
         "time:stop": "YYYY-MM-DDTHH:mm:ssZ"
     }
 
-    def return_exclude_descriptors(self):
-        return [e[1:] for e in (flatten(self._service_descriptors.values()) + self._to_exclude)]
-
     def parse_endpoints(self):
         '''
 
         '''
-        urls = self.parser.find("/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/" +
-                                "{http://a9.com/-/spec/opensearch/1.1/}Url")
+        urls = extract_elems(self.parser.xml, ["OpenSearchDescription", "Url"])
 
         endpoints = [
             tidy_dict({

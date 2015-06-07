@@ -1,14 +1,15 @@
 from lxml import etree
 
-from lib.parser import Parser
+from lib.parser import BasicParser
 from lib.utils import tidy_dict
 
 '''
-strip out some identified set of elements for the
-triplestore/ontology definitions
+we are doing away with any pretext of namespace-caring
+today. so just a parser that does some tidying and
+then the magic of local-names (where again, not worried
+    about speed so much).
 
-strip out the rest of the text with associated, namespaced xpath
-just in case?
+note: no effs given about py3 either.
 '''
 
 
@@ -29,7 +30,7 @@ class BaseReader():
         self._load_xml()
 
     def _load_xml(self):
-        self.parser = Parser(self._response)
+        self.parser = BasicParser(self._response)
 
     def _remap_http_method(self, original_method):
         '''
@@ -59,15 +60,15 @@ class BaseReader():
         for k, v in self._service_descriptors.iteritems():
             # v can be a list of possible xpaths where we want
             # to keep all returned values from any xpath within
-            elems = []
+            items = []
             xpaths = v if isinstance(v, list) else [v]
             for xp in xpaths:
-                elems += self.parser.find(xp)
+                if '@' in xp[-1]:
+                    items = extract_attribs(self.parser.xml, xp)
+                else:
+                    items += extract_items(self.parser.xml, xp)
 
-            if elems:
-                # return everything as a list for the triplestore
-                service_elements[k] = [e.text if isinstance(e, etree._Element) else e for e in elems] if len(elems) > 1 \
-                    else ([elems[0].text] if isinstance(elems[0], etree._Element) else elems)
+            service_elements[k] = items
 
         endpoints = self.parse_endpoints()
         if endpoints:
@@ -85,14 +86,6 @@ class BaseReader():
         no generic handling for this unfortunately.
         '''
         pass
-
-    def return_everything_else(self, excluded_elements):
-        '''
-        return any text value/attribute that wasn't extracted
-        for the main service definition or endpoint definition
-        or any ontology-related need
-        '''
-        return self.parser.find_nodes(excluded_elements)
 
     def parse_service(self):
         '''
@@ -112,17 +105,6 @@ class BaseReader():
         self.service = tidy_dict(service)
 
         return self.service
-
-    def return_exclude_descriptors(self):
-        '''
-        return a list of fully qualified xpaths used for the service description,
-            endpoint description, etc, to flag those as "excluded" from the
-            rest of the xml parsing
-
-        note:
-            this might have certain nested structures depending on the service
-        '''
-        return []
 
     def parse_endpoints(self):
         return []
