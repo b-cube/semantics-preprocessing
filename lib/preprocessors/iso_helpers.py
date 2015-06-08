@@ -28,7 +28,7 @@ def parse_identifiers(elem):
     return identifiers
 
 
-def parse_identification_info(self, elem):
+def parse_identification_info(elem):
     title = extract_item(elem, ['citation', 'CI_Citation', 'title', 'CharacterString'])
     abstract = extract_item(elem, ['abstract', 'CharacterString'])
     keywords = parse_keywords(elem)
@@ -36,7 +36,12 @@ def parse_identification_info(self, elem):
     # the rights information from MD_Constraints or MD_LegalConstraints
     rights = extract_item(elem, ['resourceConstraints', '*', 'useLimitation', 'CharacterString'])
 
-    return title, abstract, keywords, rights
+    return {
+        "title": title,
+        "abstract": abstract,
+        "keywords": keywords,
+        "rights": rights
+    }
 
 
 def parse_keywords(elem):

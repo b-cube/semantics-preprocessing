@@ -1,7 +1,6 @@
 from lib.base_preprocessors import BaseReader
 from lib.preprocessors.metadata_preprocessors import DcReader
 from lib.xml_utils import extract_items, extract_elems, extract_item, extract_attrib, extract_elem
-from lxml import etree
 
 
 class OaiPmhReader(BaseReader):

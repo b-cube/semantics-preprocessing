@@ -75,13 +75,10 @@ class MxParser():
         '''
         mx = {}
 
-        xp = generate_localname_xpath(['identificationInfo', 'MD_DataIdentification'])
-        id_elem = next(iter(self.elem.xpath(xp)), None)
+        id_elem = extract_elem(self.elem, ['identificationInfo', 'MD_DataIdentification'])
         if id_elem is not None:
-            title, abstract, keywords = parse_identification_info(id_elem)
-            mx['title'] = title
-            mx['abstract'] = abstract
-            mx['keywords'] = keywords
+            identification = parse_identification_info(id_elem)
+            mx.update(identification)
 
         # point of contact from the root node and this might be an issue
         # in things like the -1/-3 from ngdc so try for an idinfo blob
@@ -89,9 +86,8 @@ class MxParser():
             'identificationInfo', 'MD_DataIdentification', 'pointOfContact', 'CI_ResponsibleParty'])
         poc_elem = next(iter(self.elem.xpath(xp)), None)
         if poc_elem is None:
-            # and if that fails try for the root-level contact
-            xp = generate_localname_xpath(['contact', 'CI_ResponsibleParty'])
-            poc_elem = next(iter(self.elem.xpath(xp)), None)
+            # and if that fails try for the root-level contact=
+            poc_elem = extract_elem(self.elem, ['contact', 'CI_ResponsibleParty'])
 
         if poc_elem is not None:
             ind_name, org_name, position, contact = parse_responsibleparty(poc_elem)
@@ -103,18 +99,16 @@ class MxParser():
             }
 
         # check for the service elements
-        xp = generate_localname_xpath(['identificationInfo', 'SV_ServiceIdentification'])
-        service_elems = self.elem.xpath(xp)
+        service_elems = extract_elems(self.elem, ['identificationInfo', 'SV_ServiceIdentification'])
         mx['services'] = []
         for service_elem in service_elems:
             sv = SrvParser(service_elem)
             mx['services'].append(sv.parse())
 
-        xp = generate_localname_xpath(['distributionInfo'])
-        dist_elems = self.elem.xpath(xp)
+        dist_elems = extract_elems(self.elem, ['distributionInfo'])
         mx['endpoints'] = []
         for dist_elem in dist_elems:
-            mx['distribution'].append(parse_distribution(id_elem))
+            mx['endpoints'].append(parse_distribution(id_elem))
 
         mx = tidy_dict(mx)
         return mx
