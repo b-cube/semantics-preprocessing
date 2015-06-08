@@ -10,11 +10,22 @@ class FeedReader():
         self.parser = None
 
         # let's assume today that we have parsed things
-        namespace = 'atom' if [ns for ns in self.parser.namespaces if 'atom' in ns.lower()] else 'rss'
+        namespace = 'atom' if [ns for ns in self.parser.namespaces
+                               if 'atom' in ns.lower()] else 'rss'
         self.dialect = dialect if dialect else namespace
 
         item_name = 'AtomItem' if self.dialect == 'atom' else 'RssItem'
         self.item_class = getattr(sys.modules[__name__], item_name)
+
+    def parse_results_set_info(self):
+        # so if it includes the opensearch namespace,
+        # we can get things like total count and page
+
+        # TODO: convert to numbers
+        total = extract_item(self.parser.xml, ['feed', 'totalResults'])
+        start_index = extract_item(self.parser.xml, ['feed', 'startIndex'])
+        per_page = extract_item(self.parser.xml, ['feed', 'itemsPerPage'])
+        return total, start_index, per_page
 
     def parse(self):
         '''
@@ -26,8 +37,16 @@ class FeedReader():
         items = [self.item_class(elem) for elem in elems]
 
         # TODO: add the root level parsing
+        title = extract_item(self.parser.xml, ['feed', 'title'])
+        updated = extract_item(self.parser.xml, ['feed', 'updated'])
+        author_name = extract_item(self.parser.xml, ['feed', 'author', 'name'])
 
-        return items
+        return {
+            "title": title,
+            "updated": updated,
+            "author": author_name,
+            "items": items
+        }
 
 
 class AtomItem():
