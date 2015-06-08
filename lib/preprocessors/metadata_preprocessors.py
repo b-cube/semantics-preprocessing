@@ -10,11 +10,6 @@ or as some item contained in a results set per CSW or OAI-PMH, etc.
 '''
 
 
-def generate_localname_xpath(tags):
-    return '/'.join(['*[local-name()="%s"]' % t if t not in ['*', '..', '.', '//*'] else t
-                    for t in tags])
-
-
 class DcReader(BaseReader):
     def parse_item(self, elem):
         '''

@@ -1,9 +1,9 @@
 import re
 
 from lib.base_preprocessors import BaseReader
+from lib.preprocessors.feed_preprocessors import FeedReader
 from lib.utils import parse_url, tidy_dict
-from lib.xml_utils import extract_item, extract_items, generate_localname_xpath
-from lib.xml_utils import extract_elem, extract_elems
+from lib.xml_utils import extract_elems
 
 
 class OpenSearchReader(BaseReader):
@@ -85,3 +85,13 @@ class OpenSearchReader(BaseReader):
             })
             for qp in query_params
         ]
+
+    def parse_result_set(self, xml=None, result_url=''):
+        results = []
+        if xml is None:
+            return results
+
+        reader = FeedReader(xml)
+        feed = reader.parse()
+        # TODO: also not this really. get everything
+        return feed.get('items', [])

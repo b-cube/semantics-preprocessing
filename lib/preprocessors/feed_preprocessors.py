@@ -5,9 +5,13 @@ from lib.utils import tidy_dict
 
 
 class FeedReader():
-    def __init__(self, dialect):
+    def __init__(self, dialect=''):
         # TODO: add the actual xml parsing (ha)
-        self.dialect = dialect
+        self.parser = None
+
+        # let's assume today that we have parsed things
+        namespace = 'atom' if [ns for ns in self.parser.namespaces if 'atom' in ns.lower()] else 'rss'
+        self.dialect = dialect if dialect else namespace
 
         item_name = 'AtomItem' if self.dialect == 'atom' else 'RssItem'
         self.item_class = getattr(sys.modules[__name__], item_name)
