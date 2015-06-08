@@ -34,4 +34,4 @@ def extract_elems(elem, tags):
 
 def extract_elem(elem, tags):
     xp = generate_localname_xpath(tags)
-    return next(iter(elem.xpath(xp)), '')
+    return next(iter(elem.xpath(xp)), None)

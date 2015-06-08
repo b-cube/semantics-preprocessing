@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<title>DSpace at utmb</title>
+<link href="http://utmb-ir.tdl.org:80/utmb-ir" rel="alternate"/>
+<subtitle>The DSpace digital repository system captures, stores, indexes, preserves, and distributes digital research material.</subtitle>
+<id xmlns="http://apache.org/cocoon/i18n/2.1">http://utmb-ir.tdl.org:80/utmb-ir</id>
+<updated>2015-05-07T03:47:55Z</updated>
+<dc:date>2015-05-07T03:47:55Z</dc:date>
+<entry>
+<title>Understanding the assembly of simple ssRNA virus nucleocapsids</title>
+<link href="http://hdl.handle.net/2152.3/560" rel="alternate"/>
+<author>
+<name>Lamb, Kristen</name>
+</author>
+<id>http://hdl.handle.net/2152.3/560</id>
+<updated>2014-01-11T08:00:24Z</updated>
+<published>2010-08-28T00:00:00Z</published>
+<summary type="text">Understanding the assembly of simple ssRNA virus nucleocapsids
+Lamb, Kristen
+The assembly of simple ssRNA viruses from the initial interactions critical for nucleocapsid formation until the morphogenesis which occurs at each maturation stage of the virus’s “life” can entail a wide range of possibilities at every given stage. By whatever seeding event initiates the nucleocapsid formation, the nucleocapsid, encasing the nucleic acid, then undergoes changes associated with the virus maturation process, which can involve, becoming enveloped, interacting with additional virus/host proteins, becoming subsequently stripped of its envelope, and/or exposure to changes in ion concentration or pH change. My studies focused on two viruses, Hepatitis C Virus (HCV), focusing on the physical characteristics of core protein and in vitro nucleocapsid assembly; and Venezuelan Equine Encephalitis Virus (VEEV), focusing on in vivo formation of pre-viral nucleocapsid structures and briefly the subsequent post-entry nucleocapsid stage. Experimentally, it was found that H124 expressed better in E. coli expression systems than H158 and H36-169, which was attached to MBP. Purified H158 was found to be largely unstructured and exist as a multimer, even at a concentration of 1 mg/mL, making crystallization attempts with it a vain and unprofitable goal. The nucleocapsid-like-particles produced with H158 or H124 both showed size heterogeneity within the reactions, and given the scale of the reactions, projected purification yields would make cryo-EM reconstructions of these impractical. Therefore, focus shifted to VEE nucleocapasids, formed in vivo, enabling the experimental scale and biological relevance to increase substantially. VEE pre-viral nucleocapsid cryo-EM reconstructions were successfully achieved, but at low resolution. Given, again, the heterogeneity of the system at this maturation stage, it is more an insight into one, maybe two, structures,which exist within the population. Thus, more questions are formed for the formation of ssRNA virus nucleocapsid formation.
+</summary>
+<dc:date>2010-08-28T00:00:00Z</dc:date>
+</entry>
+<entry>
+<title>The Role of Sacsin as a Molecular Chaperone</title>
+<link href="http://hdl.handle.net/2152.3/546" rel="alternate"/>
+<author>
+<name/>
+</author>
+<id>http://hdl.handle.net/2152.3/546</id>
+<updated>2013-06-04T07:01:11Z</updated>
+<published>2013-06-03T00:00:00Z</published>
+<summary type="text">The Role of Sacsin as a Molecular Chaperone
+The central pathological finding in neurodegenerative disease is loss of neurons. In many disorders, this loss of neurons appears to be related to protein misfolding, comprising a large public health burden. For example, the two most common neurodegenerative diseases, Alzheimer’s and Parkinson’s diseases, possess protein misfolding as a core component of their pathology. In order to properly fold, many proteins require the assistance of molecular chaperones. While substantial gains in our knowledge of the function of general chaperones have been made in the last two decades, the role of molecular chaperones in brain-specific processes is not clearly defined. In this study, we examined the function of the protein sacsin, mutated in autosomal recessive spastic ataxia of Charlevoix-Saguenay. Pathologically, these patients demonstrate loss of neurons in the cerebellum and cervical spinal cord along with inclusions reminiscent of misfolded proteins in the remaining neurons. Sacsin contains regions of similarity to both molecular chaperones and co-chaperones. Thus, this disease may represent a useful model to study the role of molecular chaperones in neurodegenerative disease. We performed bioinformatics and biochemical investigations to determine the function of sacsin. We found that this protein contains a novel supra-domain present three times. We show that this domain is both ATPase active and contains molecular chaperone activity. Additionally, we determined that a region of sacsin possesses co-chaperone activity. Thus, sacsin is a novel molecular chaperone, with built-in co-chaperone modules, directly involved in a neurodegenerative disease.
+</summary>
+<dc:date>2013-06-03T00:00:00Z</dc:date>
+</entry>
+<entry>
+<title>ORGAN DONATION IN THE UNITED STATES</title>
+<link href="http://hdl.handle.net/2152.3/545" rel="alternate"/>
+<author>
+<name/>
+</author>
+<id>http://hdl.handle.net/2152.3/545</id>
+<updated>2013-06-04T07:01:02Z</updated>
+<published>2013-06-03T00:00:00Z</published>
+<summary type="text">ORGAN DONATION IN THE UNITED STATES
+Introduction: The demand for donor organs far exceeds the number of donors.  Approximately 18 people in the United States die every day waiting for an organ transplant.  The purpose of this capstone is to describe the demographic characteristics of organ donors, recipients and waitlist populations in the United States.  This information is essential to guide the planning and implementation of focused interventions to improve organ donation participation rates and diminish inequities.   
+
+Methods: We analyzed data from the Organ Procurement and Transplantation Network (OPTN) for the years Jan 1, 1988 – Aug 15, 2012.  We describe characteristics of organ donors, transplant recipients and waiting list candidates by age, gender and race/ethnicity for the United States. 
+
+Results: The rate of organ donation has steadily increased in the United States, from a rate of 2.10 per 100,000 in 1988 to 5.16 per 100,000 in 2010 (R2=0.963).  In 2010, 14,503 individuals donated organs (7,943 (54.7%) deceased donors and 6,560 (45.3%) living donors) and 28,662 individuals received one or more organs.  There are differences in organ donation and transplantation by gender, age and race/ethnicity.  As of August 2012, 114,719 individuals are on the waiting list for an organ transplant.  
+
+Conclusion: Increased awareness of the importance of organ donation and registering as an organ donor is needed among young adults and females.  Males need to be encouraged to be living donors.  Efforts to educate the Hispanic and Asian communities are needed to promote awareness and willingness to be an organ donor. ¬¬
+</summary>
+<dc:date>2013-06-03T00:00:00Z</dc:date>
+</entry>
+<entry>
+<title>Molecular Pathogenesis of Spinocerebellar Ataxia type 10</title>
+<link href="http://hdl.handle.net/2152.3/544" rel="alternate"/>
+<author>
+<name/>
+</author>
+<id>http://hdl.handle.net/2152.3/544</id>
+<updated>2013-06-04T07:01:01Z</updated>
+<published>2013-06-03T00:00:00Z</published>
+<summary type="text">Molecular Pathogenesis of Spinocerebellar Ataxia type 10
+Spinocerebellar ataxia type 10 (SCA10) is a unique autosomal dominant cerebellar ataxia (ADCA) which habors non-coding ATTCT repeat expansion on the 9th intron of the ATXN10 gene. The presence of seizure in addition to pancerebellar ataxia is a characteristic clinical manifestation of SCA10. How this enlarged intronic ATTCT repeat leads to degeneration or dysfunction of the nervous system underlying SCA10 phenotype is not well known. The present study focused on elucidating a molecular pathogenesis of this unique inherited disease. 
+
+In this study, we demonstrated normally transcribed ATTCT-repeats form a lengthy AUUCU pre-mRNA molecule in SCA10 cells, after being completely spliced out. We identified the specific interaction between this AUUCU RNA repeat and a RNA-binding protein, Nova, which leads to the aberrant splicing of Nova target transcripts, including major inhibitory neurotransmitter receptors, glycine and GABA. Our study also indicated that the sequestration of the RNA-binding proteins by toxic expanded repeats result in complex SCA10 phenotype. We clearly showed that aberrant splicing of GABAARγ2 and GlyRα2 causes disruption of inhibitory transmission in Purkinje cells in the SCA10 cerebellum. We demonstrated that abnormal electrophysiology in SCA10 occurs specifically through modulating GABA neurotransmission but not glycine. 
+
+In our current study, we were able to define SCA10 as a toxic RNA disease, and presented one of the possible molecular and electrophysiological mechanisms of SCA10 pathophysiology.
+</summary>
+<dc:date>2013-06-03T00:00:00Z</dc:date>
+</entry>
+</feed>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:taxo="http://purl.org/rss/1.0/modules/taxonomy/" version="2.0">
+  <channel>
+    <title>Unstructured Grid RSS Feed</title>
+    <link>http://www.ngdc.noaa.gov/ugc-manager/unstructuredGrid/feed</link>
+    <description>A news feed powered by Grails</description>
+    <item>
+      <title>Tampa Bay, FL Grid</title>
+      <link>http://www.ngdc.noaa.gov/ugc-manager/unstructuredGrid/download/729</link>
+      <content:encoded>This grid was developed for hydrodynamic simulations in Tampa Bay. Hindcast simulations were tested, and the model was being evaluated for possible nowcast/forecast simulations with the FVCOM model.</content:encoded>
+      <pubDate>Tue, 09 Oct 2012 16:17:19 GMT</pubDate>
+      <guid>http://www.ngdc.noaa.gov/ugc-manager/unstructuredGrid/download/729</guid>
+      <dc:creator>NOAA / NGDC</dc:creator>
+      <dc:date>2012-10-09T16:17:19Z</dc:date>
+    </item>
+    <item>
+      <title>Florida-Southeast, SC/FL/GA Grid</title>
+      <link>http://www.ngdc.noaa.gov/ugc-manager/unstructuredGrid/download/629</link>
+      <content:encoded>This grid was used to simulate tides, the results of which were used in computing tidal datum fields for input to NOAA's VDatum tool.</content:encoded>
+      <pubDate>Thu, 03 May 2012 23:43:49 GMT</pubDate>
+      <guid>http://www.ngdc.noaa.gov/ugc-manager/unstructuredGrid/download/629</guid>
+      <dc:creator>NOAA / NGDC</dc:creator>
+      <dc:date>2012-05-03T23:43:49Z</dc:date>
+    </item>
+    <item>
+      <title>New Orleans, LA Grid</title>
+      <link>http://www.ngdc.noaa.gov/ugc-manager/unstructuredGrid/download/608</link>
+      <content:encoded>This grid was used to simulate tides, the results of which were used in computing tidal datum fields for input to NOAA's VDatum tool.</content:encoded>
+      <pubDate>Thu, 03 May 2012 00:10:54 GMT</pubDate>
+      <guid>http://www.ngdc.noaa.gov/ugc-manager/unstructuredGrid/download/608</guid>
+      <dc:creator>NOAA / NGDC</dc:creator>
+      <dc:date>2012-05-03T00:10:54Z</dc:date>
+    </item>
+    <item>
+      <title>Pensacola, LA/FL/MS/AL Grid</title>
+      <link>http://www.ngdc.noaa.gov/ugc-manager/unstructuredGrid/download/630</link>
+      <content:encoded>This grid was used to simulate tides, the results of which were used in computing tidal datum fields for input to NOAA's VDatum tool.</content:encoded>
+      <pubDate>Thu, 03 May 2012 00:10:49 GMT</pubDate>
+      <guid>http://www.ngdc.noaa.gov/ugc-manager/unstructuredGrid/download/630</guid>
+      <dc:creator>NOAA / NGDC</dc:creator>
+      <dc:date>2012-05-03T00:10:49Z</dc:date>
+    </item>
+    <item>
+      <title>Pensacola Surge,  Grid</title>
+      <link>http://www.ngdc.noaa.gov/ugc-manager/unstructuredGrid/download/607</link>
+      <content:encoded>The model evaluated coastal, estuarine, and inland flooding effects for a comprehensive representation of potential storm surge impacts. Best available topography and bathymetry data was incorporated into the model to account for any recent changes within these coastal areas (e.g., due to the effects of earlier storms such as Ivan in 2004). The model was tested in the demonstration area of Pensacola, Florida.</content:encoded>
+      <pubDate>Thu, 03 May 2012 00:03:52 GMT</pubDate>
+      <guid>http://www.ngdc.noaa.gov/ugc-manager/unstructuredGrid/download/607</guid>
+      <dc:creator>NOAA / NGDC</dc:creator>
+      <dc:date>2012-05-03T00:03:52Z</dc:date>
+    </item>
+    <item>
+      <title>Southern Louisiana, LA Grid</title>
+      <link>http://www.ngdc.noaa.gov/ugc-manager/unstructuredGrid/download/3702</link>
+      <content:encoded>Integrated bathymetric-topographic unstructured DEM of southern Louisiana.</content:encoded>
+      <pubDate>Thu, 16 Feb 2012 18:20:28 GMT</pubDate>
+      <guid>http://www.ngdc.noaa.gov/ugc-manager/unstructuredGrid/download/3702</guid>
+      <dc:creator>NOAA / NGDC</dc:creator>
+      <dc:date>2012-02-16T18:20:28Z</dc:date>
+    </item>
+    <item>
+      <title>Southern Louisiana, LA Grid</title>
+      <link>http://www.ngdc.noaa.gov/ugc-manager/unstructuredGrid/download/3703</link>
+      <content:encoded>Integrated bathymetric-topographic unstructured DEM of southern Louisiana.</content:encoded>
+      <pubDate>Thu, 16 Feb 2012 18:20:04 GMT</pubDate>
+      <guid>http://www.ngdc.noaa.gov/ugc-manager/unstructuredGrid/download/3703</guid>
+      <dc:creator>NOAA / NGDC</dc:creator>
+      <dc:date>2012-02-16T18:20:04Z</dc:date>
+    </item>
+  </channel>
+</rss>
+

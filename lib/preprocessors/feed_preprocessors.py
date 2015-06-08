@@ -1,18 +1,20 @@
 import sys
 from lib.base_preprocessors import BaseReader
-from lib.xml_utils import extract_item, extract_items, generate_localname_xpath
+from lib.xml_utils import extract_item, extract_items, extract_elems
 from lib.utils import tidy_dict
 
 
-class FeedReader():
-    def __init__(self, dialect=''):
-        # TODO: add the actual xml parsing (ha)
-        self.parser = None
+class FeedReader(BaseReader):
+    def __init__(self, response, url, dialect=''):
+        self._response = response
+        self._url = url
+        self._load_xml()
 
-        # let's assume today that we have parsed things
-        namespace = 'atom' if [ns for ns in self.parser.namespaces
-                               if 'atom' in ns.lower()] else 'rss'
-        self.dialect = dialect if dialect else namespace
+        if not dialect:
+            self.dialect = 'atom' if [ns for ns in self.parser.namespaces.values()
+                                      if 'atom' in ns.lower()] else 'rss'
+        else:
+            self.dialect = dialect
 
         item_name = 'AtomItem' if self.dialect == 'atom' else 'RssItem'
         self.item_class = getattr(sys.modules[__name__], item_name)
@@ -32,14 +34,13 @@ class FeedReader():
         key = entry for atom and item for rss
         '''
         key = 'entry' if self.dialect == 'atom' else 'item'
-        xp = generate_localname_xpath(['//*', key])
-        elems = self.parser.xml.xpath(xp)
-        items = [self.item_class(elem) for elem in elems]
+        elems = extract_elems(self.parser.xml, ['//*', key])
+        items = [self.item_class(elem).item for elem in elems]
 
-        # TODO: add the root level parsing
-        title = extract_item(self.parser.xml, ['feed', 'title'])
-        updated = extract_item(self.parser.xml, ['feed', 'updated'])
-        author_name = extract_item(self.parser.xml, ['feed', 'author', 'name'])
+        # TODO: add the root level parsing, ie the difference btwn atom and rss
+        title = extract_item(self.parser.xml, ['title'])
+        updated = extract_item(self.parser.xml, ['updated'])
+        author_name = extract_item(self.parser.xml, ['author', 'name'])
 
         return {
             "title": title,
@@ -54,7 +55,7 @@ class AtomItem():
     parse the atom item
     '''
     def __init__(self, elem):
-        return self._parse_item(elem)
+        self.item = self._parse_item(elem)
 
     def _parse_item(self, elem):
         entry = {}
@@ -67,17 +68,17 @@ class AtomItem():
         entry['updated'] = extract_item(elem, ['updated'])
         entry['published'] = extract_item(elem, ['published'])
 
+        entry['subjects'] = [e.attrib.get('term', '') for e in extract_elems(elem, ['category'])]
+
         entry['contents'] = []
-        xp = generate_localname_xpath(['content'])
-        contents = elem.xpath(xp)
+        contents = extract_elems(elem, ['content'])
         for content in contents:
             text = content.text.strip() if content.text else ''
             content_type = content.attrib.get('type', '')
             entry['contents'].append({'content': text, 'type': content_type})
 
         entry['links'] = []
-        xp = generate_localname_xpath(['link'])
-        links = elem.xpath(xp)
+        links = extract_elems(elem, ['link'])
         for link in links:
             href = link.attrib.get('href', '')
             rel = link.attrib.get('rel', '')
@@ -90,20 +91,23 @@ class RssItem():
     '''
     '''
     def __init__(self, elem):
-        return self._parse_item(elem)
+        self.item = self._parse_item(elem)
 
     def _parse_item(self, elem):
         item = {}
         item['title'] = extract_item(elem, ['title'])
         item['language'] = extract_item(elem, ['language'])
         item['author'] = extract_item(elem, ['author'])
+        # TODO: go sort out what this is: http://purl.org/rss/1.0/modules/content/
+        item['encoded'] = extract_item(elem, ['encoded'])
+        item['id'] = extract_item(elem, ['guid'])
+        item['creator'] = extract_item(elem, ['creator'])
 
         item['subjects'] = extract_items(elem, ['category'])
         item['published'] = extract_item(elem, ['pubDate'])
+        item['timestamp'] = extract_item(elem, ['date'])
 
-        xp = generate_localname_xpath(['link'])
-        item['links'] = [e.text.strip() for e in elem.xpath(xp)]
-        xp = generate_localname_xpath(['docs'])
-        item['links'] += [e.text.strip() for e in elem.xpath(xp)]
+        item['links'] = extract_items(elem, ['link'])
+        item['links'] += extract_items(elem, ['docs'])
 
         return tidy_dict(item)

@@ -18,12 +18,14 @@ class BasicParser():
             ns_clean=True
         )
         self._parse()
+        self._extract_namespaces()
 
     def _parse(self):
         try:
             self.xml = etree.fromstring(self.text, parser=self.parser)
-        except:
-            raise
+        except Exception as ex:
+            print ex
+            raise ex
 
     def _extract_namespaces(self):
         '''
@@ -31,7 +33,7 @@ class BasicParser():
         and generate a list of tuples (prefix, URI) to dict
         '''
         if self.xml is None:
-            return {}
+            self.namespaces = {}
 
         document_namespaces = dict(self.xml.xpath('/*/namespace::*'))
         if None in document_namespaces:
