@@ -28,6 +28,7 @@ class DcReader(BaseReader):
         date = extract_item(elem, ['date'])
         language = extract_item(elem, ['language'])
         publisher = extract_item(elem, ['publisher'])
+        sources = extract_items(elem, ['source'])
         types = extract_items(elem, ['type'])
 
         return tidy_dict({
@@ -38,7 +39,8 @@ class DcReader(BaseReader):
             'language': language,
             'date': date,
             'publisher': publisher,
-            'types': types
+            'types': types,
+            'sources': sources
         })
 
 

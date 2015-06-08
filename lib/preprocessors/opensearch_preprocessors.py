@@ -23,6 +23,11 @@ class OpenSearchReader(BaseReader):
         "time:stop": "YYYY-MM-DDTHH:mm:ssZ"
     }
 
+    def __init__(self, response, url):
+        self._response = response
+        self._url = url
+        self._load_xml()
+
     def parse_endpoints(self):
         '''
 
@@ -86,12 +91,14 @@ class OpenSearchReader(BaseReader):
             for qp in query_params
         ]
 
-    def parse_result_set(self, xml=None, result_url=''):
+    def parse_result_set(self):
+        # so how to know when to call this. and also we
+        # are calling things to parse twice. ick.
         results = []
-        if xml is None:
+        if self.parser.xml is None:
             return results
 
-        reader = FeedReader(xml)
+        reader = FeedReader(self._response, self._url)
         feed = reader.parse()
         # TODO: also not this really. get everything
         return feed.get('items', [])

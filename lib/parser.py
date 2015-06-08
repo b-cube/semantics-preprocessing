@@ -9,7 +9,11 @@ class BasicParser():
     note: these could merge at some point
     '''
     def __init__(self, text):
-        self.text = text.encode('unicode_escape')
+        try:
+            self.text = text.encode('unicode_escape')
+        except UnicodeDecodeError:
+            # TODO: this should be somewhere else and also maybe not this
+            self.text = text.decode('utf-8', 'replace').encode('unicode_escape')
         self.parser = etree.XMLParser(
             remove_blank_text=True,
             remove_comments=True,
@@ -34,6 +38,7 @@ class BasicParser():
         '''
         if self.xml is None:
             self.namespaces = {}
+            return
 
         document_namespaces = dict(self.xml.xpath('/*/namespace::*'))
         if None in document_namespaces:
