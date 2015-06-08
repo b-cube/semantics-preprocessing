@@ -47,4 +47,5 @@ class DifReader(BaseReader):
 
 
 class FgdcReader(BaseReader):
-    pass
+    def parse(self):
+        pass
