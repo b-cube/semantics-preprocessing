@@ -89,13 +89,7 @@ class MxParser():
             poc_elem = extract_elem(self.elem, ['contact', 'CI_ResponsibleParty'])
 
         if poc_elem is not None:
-            ind_name, org_name, position, contact = parse_responsibleparty(poc_elem)
-            mx['contact'] = {
-                'individual_name': ind_name,
-                'organization_name': org_name,
-                'position': position,
-                'contact': contact
-            }
+            mx['contact'] = parse_responsibleparty(poc_elem)
 
         # check for the service elements
         service_elems = extract_elems(self.elem, ['identificationInfo', 'SV_ServiceIdentification'])
@@ -107,7 +101,7 @@ class MxParser():
         dist_elems = extract_elems(self.elem, ['distributionInfo'])
         mx['endpoints'] = []
         for dist_elem in dist_elems:
-            mx['endpoints'].append(parse_distribution(id_elem))
+            mx['endpoints'] = parse_distribution(dist_elem)
 
         mx = tidy_dict(mx)
         return mx

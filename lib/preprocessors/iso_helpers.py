@@ -1,6 +1,7 @@
 import dateutil as dateparser
 from lib.xml_utils import extract_item, extract_items, generate_localname_xpath
 from lib.xml_utils import extract_elem, extract_elems
+from lib.utils import tidy_dict
 
 
 def parse_identifiers(elem):
@@ -73,7 +74,12 @@ def parse_responsibleparty(elem):
     e = extract_elem(elem, ['contactInfo', 'CI_Contact'])
     contact = parse_contact(e)
 
-    return individual_name, organization_name, position_name, contact
+    return tidy_dict({
+        "individual": individual_name,
+        "organization": organization_name,
+        "position": position_name,
+        "contact": contact
+    })
 
 
 def parse_contact(elem):
@@ -99,7 +105,7 @@ def parse_contact(elem):
         elem, ['address', 'CI_Address', 'country', 'CharacterString'])
     contact['email'] = extract_item(
         elem, ['address', 'CI_Address', 'electronicMailAddress', 'CharacterString'])
-    return contact
+    return tidy_dict(contact)
 
 
 def parse_distribution(elem):
@@ -108,8 +114,6 @@ def parse_distribution(elem):
     dist_elems = extract_elems(elem, ['MD_Distribution'])
     for dist_elem in dist_elems:
         # this is going to get ugly.
-        dist = {'endpoints': []}
-
         # super ugly
         # get the transferoptions block
         # get the url, the name, the description, the size
@@ -138,9 +142,7 @@ def parse_distribution(elem):
                 transfer['format']['version'] = extract_item(
                     format_elem, ['version'])
 
-            dist['endpoints'].append(transfer)
-
-        distributions.append(dist)
+            distributions.append(tidy_dict(transfer))
 
     return distributions
 
