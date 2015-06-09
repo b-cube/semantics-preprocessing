@@ -145,15 +145,16 @@ class SrvParser():
             op['url'] = extract_item(e, ['connectPoint', 'CI_OnlineResource', 'linkage', 'URL'])
             op['parameters'] = [self._handle_parameter(pe) for pe in
                                 extract_elems(e, ['parameters', 'SV_Parameter'])]
+            ops.append(op)
 
         return ops
 
     def parse(self):
-        elem = extract_elem(self.elem, ['SV_ServiceIdentification'])
-        if elem is None:
+        # elem = extract_elem(self.elem, ['SV_ServiceIdentification'])
+        if self.elem is None:
             return None
 
-        service = {}
+        service = parse_identification_info(self.elem)
 
         service['operations'] = self._handle_operations()
 
