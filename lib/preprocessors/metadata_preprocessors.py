@@ -46,6 +46,7 @@ class DcReader(BaseReader):
 
 class DifReader(BaseReader):
     def parse_item(self, elem):
+        identifier = extract_item(elem, ['Entry_ID'])
         title = extract_item(elem, ['Entry_Title'])
         keywords = extract_items(elem, ['Keyword'])
         keywords += extract_items(elem, ['ISO_Topic_Category'])
@@ -74,6 +75,7 @@ class DifReader(BaseReader):
             }))
 
         return tidy_dict({
+            "id": identifier,
             "title": title,
             "keywords": keywords,
             "abstract": abstract,
@@ -89,6 +91,8 @@ class FgdcReader(BaseReader):
         # ha. hahahaha. let us now make this even more ridiculous.
         # you are welcome
         elem = self.parser.xml
+
+        identifier = extract_item(elem, ['idinfo', 'datasetid'])
 
         abstract = extract_item(elem, ['idinfo', 'descript', 'abstract'])
         purpose = extract_item(elem, ['idinfo', 'descript', 'purpose'])
@@ -121,7 +125,15 @@ class FgdcReader(BaseReader):
             format = extract_item(distrib_elem, ['digtinfo', 'formname'])
             distributions.append(tidy_dict({"url": link, "format": format}))
 
+        onlink_elems = extract_elems(elem, ['idinfo', 'citation', 'citeinfo', 'onlink'])
+        for onlink_elem in onlink_elems:
+            distributions.append(tidy_dict({
+                "url": onlink_elem.text.strip(),
+                "type": onlink_elem.attrib.get('type', '')
+            }))
+
         return tidy_dict({
+            "id": identifier,
             "title": title,
             "abstract": abstract,
             "purpose": purpose,

@@ -35,5 +35,11 @@ class CswReader(BaseReader):
             if self.schema == 'http://www.isotc211.org/2005/gmd':
                 reader = MxParser(child)
                 results.append(reader.parse())
+            elif self.schema == 'http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/':
+                reader = DifReader()
+                results.append(reader.parse_item(child))
+            elif self.schema == 'http://www.opengis.net/cat/csw/csdgm':
+                reader = FgdcReader(child)
+                results.append(reader.parse_item())
 
         return results
