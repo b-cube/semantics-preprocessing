@@ -3,7 +3,7 @@ from lib.utils import tidy_dict
 from lib.preprocessors.iso_helpers import parse_identification_info
 from lib.preprocessors.iso_helpers import parse_distribution
 from lib.preprocessors.iso_helpers import parse_responsibleparty
-from lib.xml_utils import extract_item, extract_items, generate_localname_xpath
+from lib.xml_utils import extract_item, extract_items
 from lib.xml_utils import extract_elem, extract_elems
 from lib.xml_utils import extract_attrib, extract_attribs
 
@@ -82,9 +82,8 @@ class MxParser():
 
         # point of contact from the root node and this might be an issue
         # in things like the -1/-3 from ngdc so try for an idinfo blob
-        xp = generate_localname_xpath([
+        poc_elem = extract_elem(self.elem, [
             'identificationInfo', 'MD_DataIdentification', 'pointOfContact', 'CI_ResponsibleParty'])
-        poc_elem = next(iter(self.elem.xpath(xp)), None)
         if poc_elem is None:
             # and if that fails try for the root-level contact=
             poc_elem = extract_elem(self.elem, ['contact', 'CI_ResponsibleParty'])
@@ -187,8 +186,9 @@ class DsParser():
         md_dict['children'] = []
 
         # get the children
-        children = extract_elems(self.elem, ['composedOf', 'DS_Dataset', 'has', 'MD_Metadata'])
-        for child in children.iter():
+        children = extract_elems(
+            self.elem, ['composedOf', 'DS_DataSet', 'has', 'MD_Metadata'])
+        for child in children:
             child_parser = MxParser(child)
             child_dict = child_parser.parse()
             md_dict['children'].append(child_dict)

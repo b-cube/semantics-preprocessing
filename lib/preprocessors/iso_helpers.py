@@ -66,9 +66,9 @@ def parse_responsibleparty(elem):
     '''
     parse any CI_ResponsibleParty
     '''
-    individual_name = extract_item(elem, ['individualName'])
-    organization_name = extract_item(elem, ['organizationName'])
-    position_name = extract_item(elem, ['positionName'])
+    individual_name = extract_item(elem, ['individualName', 'CharacterString'])
+    organization_name = extract_item(elem, ['organisationName', 'CharacterString'])
+    position_name = extract_item(elem, ['positionName', 'CharacterString'])
 
     e = extract_elem(elem, ['contactInfo', 'CI_Contact'])
     contact = parse_contact(e)
@@ -105,8 +105,7 @@ def parse_contact(elem):
 def parse_distribution(elem):
     ''' from the distributionInfo element '''
     distributions = []
-    xp = generate_localname_xpath(['MD_Distribution'])
-    dist_elems = elem.xpath(xp)
+    dist_elems = extract_elems(elem, ['MD_Distribution'])
     for dist_elem in dist_elems:
         # this is going to get ugly.
         dist = {'endpoints': []}
@@ -118,8 +117,7 @@ def parse_distribution(elem):
         # but where the transferoptions can be in some nested
         # distributor thing or at the root of the element (NOT
         # the root of the file)
-        xp = generate_localname_xpath(['//*', 'MD_DigitalTransferOptions'])
-        transfer_elems = dist_elem.xpath(xp)
+        transfer_elems = extract_elems(dist_elem, ['//*', 'MD_DigitalTransferOptions'])
         for transfer_elem in transfer_elems:
             transfer = {}
             transfer['url'] = extract_item(

@@ -50,4 +50,11 @@ class DifReader(BaseReader):
 
 class FgdcReader(BaseReader):
     def parse(self):
-        pass
+        # ha. hahahaha. let us now make this even more ridiculous.
+        # you are welcome
+        elem = self.parser.xml
+
+        abstract = extract_item(elem, ['idinfo', 'descript', 'abstract'])
+        title = extract_item(elem, ['idinfo', 'citation', 'citeinfo', 'title'])
+        
+
