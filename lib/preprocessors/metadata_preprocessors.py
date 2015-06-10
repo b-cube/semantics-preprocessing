@@ -97,18 +97,23 @@ class FgdcReader(BaseReader):
         abstract = extract_item(elem, ['idinfo', 'descript', 'abstract'])
         purpose = extract_item(elem, ['idinfo', 'descript', 'purpose'])
         title = extract_item(elem, ['idinfo', 'citation', 'citeinfo', 'title'])
-        bbox_elem = extract_elem(elem, ['idinfo', 'descript', 'spdom', 'bounding'])
+        bbox_elem = extract_elem(elem, ['idinfo', 'spdom', 'bounding'])
 
-        west = extract_item(bbox_elem, ['westbc'])
-        east = extract_item(bbox_elem, ['eastbc'])
-        north = extract_item(bbox_elem, ['northbc'])
-        south = extract_item(bbox_elem, ['southbc'])
-        bbox = [west, south, east, north]
+        if bbox_elem is not None:
+            # that's not even valid
+            west = extract_item(bbox_elem, ['westbc'])
+            east = extract_item(bbox_elem, ['eastbc'])
+            north = extract_item(bbox_elem, ['northbc'])
+            south = extract_item(bbox_elem, ['southbc'])
+            bbox = [west, south, east, north]
+        else:
+            bbox = []
 
-        time_elem = extract_elem(elem, ['idinfo', 'descript', 'timeperd', 'timeinfo'])
-        caldate = extract_item(time_elem, ['sngdate', 'caldate'])
-        if not caldate:
-            pass
+        time_elem = extract_elem(elem, ['idinfo', 'timeperd', 'timeinfo'])
+        if time_elem is not None:
+            caldate = extract_item(time_elem, ['sngdate', 'caldate'])
+            if not caldate:
+                pass
 
         # TODO: finish this for ranges and note ranges and what do we want in the ontology
         time = {}
@@ -123,14 +128,18 @@ class FgdcReader(BaseReader):
                 distrib_elem,
                 ['digtopt', 'onlinopt', 'computer', 'networka', 'networkr'])
             format = extract_item(distrib_elem, ['digtinfo', 'formname'])
-            distributions.append(tidy_dict({"url": link, "format": format}))
+            dist = tidy_dict({"url": link, "format": format})
+            if dist:
+                distributions.append(dist)
 
         onlink_elems = extract_elems(elem, ['idinfo', 'citation', 'citeinfo', 'onlink'])
         for onlink_elem in onlink_elems:
-            distributions.append(tidy_dict({
-                "url": onlink_elem.text.strip(),
+            dist = tidy_dict({
+                "url": onlink_elem.text.strip() if onlink_elem.text else '',
                 "type": onlink_elem.attrib.get('type', '')
-            }))
+            })
+            if dist:
+                distributions.append(dist)
 
         return tidy_dict({
             "id": identifier,
