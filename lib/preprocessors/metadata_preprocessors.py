@@ -56,23 +56,27 @@ class DifReader(BaseReader):
         # temporal extent
         start_date = extract_item(elem, ['Temporal_Coverage', 'Start_Date'])
         end_date = extract_item(elem, ['Temporal_Coverage', 'End_Date'])
+        temporal = [start_date, end_date] if start_date and end_date else []
 
         # spatial extent
-        west = extract_item(elem, ['SpatialCoverage', 'Westernmost_Longitude'])
-        east = extract_item(elem, ['SpatialCoverage', 'Easternmost_Longitude'])
-        south = extract_item(elem, ['SpatialCoverage', 'Southernmost_Latitude'])
-        north = extract_item(elem, ['SpatialCoverage', 'Northernmost_Latitude'])
+        west = extract_item(elem, ['Spatial_Coverage', 'Westernmost_Longitude'])
+        east = extract_item(elem, ['Spatial_Coverage', 'Easternmost_Longitude'])
+        south = extract_item(elem, ['Spatial_Coverage', 'Southernmost_Latitude'])
+        north = extract_item(elem, ['Spatial_Coverage', 'Northernmost_Latitude'])
+        bbox = [west, south, east, north] if west and east and north and south else []
 
         distributions = []
         for related_url in extract_elems(elem, ['Related_URL']):
             url = extract_item(related_url, ['URL'])
             content_type = extract_item(related_url, ['URL_Content_Type', 'Type'])
             description = extract_item(related_url, ['Description'])
-            distributions.append(tidy_dict({
+            dist = tidy_dict({
                 "url": url,
                 "description": description,
                 "content_type": content_type
-            }))
+            })
+            if dist:
+                distributions.append(dist)
 
         return tidy_dict({
             "id": identifier,
@@ -80,18 +84,14 @@ class DifReader(BaseReader):
             "keywords": keywords,
             "abstract": abstract,
             "organization": organization,
-            "bbox": [west, south, east, north],
-            "temporal": [start_date, end_date],
+            "bbox": bbox,
+            "temporal": temporal,
             "distributions": distributions
         })
 
 
 class FgdcReader(BaseReader):
-    def parse_item(self):
-        # ha. hahahaha. let us now make this even more ridiculous.
-        # you are welcome
-        elem = self.parser.xml
-
+    def parse_item(self, elem):
         identifier = extract_item(elem, ['idinfo', 'datasetid'])
 
         abstract = extract_item(elem, ['idinfo', 'descript', 'abstract'])

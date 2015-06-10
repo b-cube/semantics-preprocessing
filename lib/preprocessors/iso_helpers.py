@@ -142,6 +142,8 @@ def parse_distribution(elem):
                 transfer['format']['version'] = extract_item(
                     format_elem, ['version'])
 
+                transfer['format'] = tidy_dict(transfer['format'])
+
             distributions.append(tidy_dict(transfer))
 
     return distributions

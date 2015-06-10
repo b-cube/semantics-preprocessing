@@ -1,9 +1,9 @@
-import sys
+# import sys
 from lib.base_preprocessors import BaseReader
 from lib.xml_utils import extract_attrib, extract_elem
-from lib.utils import tidy_dict
-from lib.preprocessors.iso_preprocessors import IsoParser, MxParser
-from lib.preprocessors.metadata_preprocessors import FgdcReader, DcReader, DifReader
+# from lib.utils import tidy_dict
+from lib.preprocessors.iso_preprocessors import MxParser
+from lib.preprocessors.metadata_preprocessors import FgdcReader, DifReader
 
 
 class CswReader(BaseReader):
@@ -30,16 +30,22 @@ class CswReader(BaseReader):
             return results
 
         result_elem = extract_elem(self.parser.xml, ['SearchResults'])
-        for child in result_elem.iter():
+        for child in result_elem.iterchildren():
             # let's parse based on the recordSchema value
             if self.schema == 'http://www.isotc211.org/2005/gmd':
                 reader = MxParser(child)
-                results.append(reader.parse())
+                item = reader.parse()
+                if item:
+                    results.append(item)
             elif self.schema == 'http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/':
-                reader = DifReader()
-                results.append(reader.parse_item(child))
+                reader = DifReader(self._response, self._url)
+                item = reader.parse_item(child)
+                if item:
+                    results.append(item)
             elif self.schema == 'http://www.opengis.net/cat/csw/csdgm':
-                reader = FgdcReader(child)
-                results.append(reader.parse_item())
+                reader = FgdcReader(self._response, self._url)
+                item = reader.parse_item(child)
+                if item:
+                    results.append(item)
 
         return results

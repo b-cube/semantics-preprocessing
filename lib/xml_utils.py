@@ -19,7 +19,7 @@ def extract_attribs(elem, tags):
 
 def extract_item(elem, tags):
     e = extract_elem(elem, tags)
-    return e.text.strip() if e is not None else ''
+    return e.text.strip() if e is not None and e.text else ''
 
 
 def extract_items(elem, tags):
