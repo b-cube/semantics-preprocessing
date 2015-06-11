@@ -4,6 +4,7 @@ from bcube_owslib.wfs import WebFeatureService
 from bcube_owslib.csw import CatalogueServiceWeb
 from bcube_owslib.sos import SensorObservationService
 from lib.yaml_configs import import_yaml_configs
+from lib.geo_utils import bbox_to_geom, reproject, to_wkt
 import dateutil.parser as dateparser
 from datetime import datetime
 
@@ -298,13 +299,14 @@ class OgcReader():
             if dataset.boundingBoxes:
                 d['bboxes'] = dataset.boundingBoxes
 
-            if dataset.boundingBoxWGS84:
-                d['bbox'] = [dataset.boundingBoxWGS84]
+            # if dataset.boundingBoxWGS84:
+            #     d['bbox'] = [dataset.boundingBoxWGS84]
 
             try:
-                # for the sos
-                if dataset.bbox:
-                    d['bbox'] = [dataset.bbox]
+                # fconvert to wkt (and there's something about sos - maybe not harmonized)
+                if dataset.boundingBoxWGS84:
+                    bbox = bbox_to_geom(dataset.boundingBoxWGS84)
+                    d['bbox'] = [to_wkt(bbox)]
             except AttributeError:
                 pass
 
