@@ -2,6 +2,7 @@ import dateutil as dateparser
 from lib.xml_utils import extract_item, extract_items, generate_localname_xpath
 from lib.xml_utils import extract_elem, extract_elems
 from lib.utils import tidy_dict
+from lib.geo_utils import bbox_to_geom, gml_to_geom, reproject, to_wkt
 
 
 def parse_identifiers(elem):
@@ -37,12 +38,16 @@ def parse_identification_info(elem):
     # the rights information from MD_Constraints or MD_LegalConstraints
     rights = extract_item(elem, ['resourceConstraints', '*', 'useLimitation', 'CharacterString'])
 
-    return {
+    # deal with the extent
+    extents = parse_extent(elem)
+
+    return tidy_dict({
         "title": title,
         "abstract": abstract,
         "keywords": keywords,
-        "rights": rights
-    }
+        "rights": rights,
+        "extents": extents
+    })
 
 
 def parse_keywords(elem):
@@ -162,11 +167,21 @@ def handle_bbox(elem):
     north = extract_item(elem, ['northBoundLatitude', 'Decimal'])
     north = float(north) if north else 0
 
-    return [west, south, east, north] if east and west and north and south else []
+    bbox = [west, south, east, north] if east and west and north and south else []
+
+    geom = bbox_to_geom(bbox)
+    return to_wkt(geom)
 
 
 def handle_polygon(polygon_elem):
-    pass
+    elem = extract_elem(polygon_elem, ['polygon', 'Polygon'])
+    srs_name = elem.attrib.get('srsName', 'EPSG:4326')
+
+    geom = gml_to_geom(elem)
+    if srs_name != '':
+        geom = reproject(geom, srs_name, 'EPSG:4326')
+
+    return to_wkt(geom)
 
 
 def handle_points(point_elem):
@@ -179,16 +194,17 @@ def parse_extent(elem):
     handle the spatial and/or temporal extent
     starting from the *:extent element
     '''
+    extents = {}
     geo_elem = extract_elem(elem, ['EX_Extent', 'geographicElement'])
     if geo_elem is not None:
         # we need to sort out what kind of thing it is bbox, polygon, list of points
         bbox_elem = extract_elem(geo_elem, ['EX_GeographicBoundingBox'])
         if bbox_elem is not None:
-            yield handle_bbox(bbox_elem)
+            extents['geographic'] = handle_bbox(bbox_elem)
 
         poly_elem = extract_elem(geo_elem, ['EX_BoundingPolygon'])
         if poly_elem is not None:
-            yield handle_polygon(poly_elem)
+            extents['polygon'] = handle_polygon(poly_elem)
 
     time_elem = extract_elem(elem, ['EX_Extent', 'temporalElement', 'extent', 'TimePeriod'])
     if time_elem is not None:
@@ -200,7 +216,7 @@ def parse_extent(elem):
         if end_position is not None and 'indeterminatePosition' not in end_position.attrib:
             end_position = parse_timestamp(end_position.text)
 
-        yield begin_position, end_position
+        extents['temporal'] = [begin_position, end_position]
 
 
 def parse_timestamp(text):

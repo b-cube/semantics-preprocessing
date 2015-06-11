@@ -1,6 +1,7 @@
 from lib.base_preprocessors import BaseReader
 from lib.utils import tidy_dict
 from lib.xml_utils import extract_item, extract_items, extract_elem, extract_elems
+from lib.geo_utils import bbox_to_geom, to_wkt
 
 
 '''
@@ -64,6 +65,8 @@ class DifReader(BaseReader):
         south = extract_item(elem, ['Spatial_Coverage', 'Southernmost_Latitude'])
         north = extract_item(elem, ['Spatial_Coverage', 'Northernmost_Latitude'])
         bbox = [west, south, east, north] if west and east and north and south else []
+        bbox = bbox_to_geom(bbox)
+        bbox = to_wkt(bbox)
 
         distributions = []
         for related_url in extract_elems(elem, ['Related_URL']):
@@ -106,8 +109,10 @@ class FgdcReader(BaseReader):
             north = extract_item(bbox_elem, ['northbc'])
             south = extract_item(bbox_elem, ['southbc'])
             bbox = [west, south, east, north]
+            bbox = bbox_to_geom(bbox)
+            bbox = to_wkt(bbox)
         else:
-            bbox = []
+            bbox = ''
 
         time_elem = extract_elem(elem, ['idinfo', 'timeperd', 'timeinfo'])
         if time_elem is not None:

@@ -8,8 +8,12 @@ def identify_epsg(srs_name):
         return srs_name
     elif srs_name.startswith('urn:ogc:def:crs:EPSG'):
         return convert_urn_to_epsg(srs_name)
-    # TODO: add the WxS CRS: options
-    # and this one: urn:ogc:def:crs:OGC:1.3:CRS84
+    elif srs_name.lower() in ['crs:84', 'urn:ogc:def:crs:OGC:1.3:CRS84']:
+        return 'ESPG:4326'
+    elif srs_name.lower() in ['crs:83']:
+        return ''
+    elif srs_name.lower() in ['crs:27']:
+        return ''
 
     return ''
 
@@ -19,11 +23,9 @@ def convert_urn_to_epsg(urn):
     return 'EPSG:' + parts[-1]
 
 
-def define_spref(srs_str):
-    # TODO: something to get at the urn vs code vs whatever
-    #       to get the epsg code
+def define_spref(epsg_code):
     srs = osr.SpatialReference()
-    srs.ImportFromEPSG(srs_str)
+    srs.ImportFromEPSG(int(epsg_code.split(':')[-1]))
     return srs
 
 
@@ -51,6 +53,5 @@ def gml_to_geom(gml):
 
 
 def to_wkt(geom):
-    # TODO: this is clearly wrong but don't care
     # wkt = 'SRID=%s;%s' % (srid, wkt) if srid else wkt
     return geom.ExportAsWkt()
