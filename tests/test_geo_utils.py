@@ -42,7 +42,8 @@ class TestGeoUtils(unittest.TestCase):
         self.assertTrue(isinstance(geom, ogr.Geometry))
 
     def test_gml_to_geom(self):
-        pass
+        geom = gml_to_geom(self.gml)
+        self.assertTrue(geom is not None)
 
     def test_geom_to_wkt(self):
         test_wkt = 'POLYGON ((-79.3 30.0,-79.3 43.6,22.4 43.6,22.4 30.0,-79.3 30.0))'

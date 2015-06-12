@@ -1,7 +1,6 @@
-from lxml import etree
-
 from lib.parser import BasicParser
 from lib.utils import tidy_dict
+from lib.xml_utils import extract_attribs, extract_items
 
 '''
 we are doing away with any pretext of namespace-caring
@@ -108,3 +107,18 @@ class BaseReader():
 
     def parse_endpoints(self):
         return []
+
+
+class NestedReader(BaseReader):
+    def __init__(self, response, url, parent_url=''):
+        self._response = response
+        self._url = url
+        self._parent_url = parent_url
+        self._load_xml()
+
+    def parse_nested(self, elem=None):
+        # if element use that, otherwise assume
+        # the response is the element
+        if elem is None:
+            elem = self.parser.xml
+

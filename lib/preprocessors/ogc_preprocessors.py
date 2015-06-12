@@ -42,6 +42,7 @@ class OgcReader():
         elif self.service == 'WCS' and self.version in ['1.0.0', '1.1.0', '1.1.1', '1.1.2']:
             reader = WebCoverageService('', xml=self.response, version=self.version)
         elif self.service == 'CSW' and self.version in ['2.0.2']:
+            # TODO: add the route to the local parser
             reader = CatalogueServiceWeb('', xml=self.response, version=self.version)
         elif self.service == 'SOS' and self.version in ['1.0.0']:
             reader = SensorObservationService('', xml=self.response, version=self.version)
