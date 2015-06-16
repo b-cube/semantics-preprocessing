@@ -23,9 +23,10 @@ class BaseReader():
 
     _service_descriptors = {}
 
-    def __init__(self, response, url):
+    def __init__(self, response, url, parent_url=''):
         self._response = response
         self._url = url
+        self._parent_url = parent_url
         self._load_xml()
 
     def _load_xml(self):
@@ -92,15 +93,13 @@ class BaseReader():
             pull anything else text/attribute related
 
         returns:
-            dict {service: 'anything ontology-driven', remainder: 'any other text/attribute value'}
+            dict {service: 'anything ontology-driven'}
         '''
         service = {
             "service": self.return_service_descriptors(),
             "dataset": self.return_dataset_descriptors(),
             "metadata": self.return_metadata_descriptors()
         }
-        excluded = self.return_exclude_descriptors()
-        service['remainder'] = self.return_everything_else(excluded)
         self.service = tidy_dict(service)
 
         return self.service
@@ -108,17 +107,6 @@ class BaseReader():
     def parse_endpoints(self):
         return []
 
-
-class NestedReader(BaseReader):
-    def __init__(self, response, url, parent_url=''):
-        self._response = response
-        self._url = url
-        self._parent_url = parent_url
-        self._load_xml()
-
     def parse_nested(self, elem=None):
-        # if element use that, otherwise assume
-        # the response is the element
         if elem is None:
             elem = self.parser.xml
-
