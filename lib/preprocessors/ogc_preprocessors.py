@@ -1,5 +1,6 @@
 from bcube_owslib.wms import WebMapService
 from bcube_owslib.wcs import WebCoverageService
+from bcube_owslib.coverage import DescribeCoverageReader
 from bcube_owslib.wfs import WebFeatureService
 from bcube_owslib.csw import CatalogueServiceWeb
 from bcube_owslib.sos import SensorObservationService
@@ -211,11 +212,16 @@ class OgcReader(Processor):
                 reader = WebMapService('', xml=self.response, version=self.version)
                 self.description['datasets'] = self._parse_getcap_datasets(reader)
             if service == 'WCS' and request == 'DescribeCoverage':
-                reader = None
-            elif service == 'SOS' and request == 'DescribeObservation':
-                reader = None
-            elif service == 'WFS' and request == 'DescribeFeatureType':
-                reader = None
+                # need to get the coverage name(s) from the url
+                reader = DescribeCoverageReader(self.version, '', None, xml=self.response)
+                # TODO: something to serialize that output decently
+                self.description['datasets'] = []
+            elif service == 'SOS' and request == 'GetCapabilities':
+                reader = SensorObservationService('', xml=self.response, version=self.version)
+                self.description['datasets'] = self._parse_getcap_datasets(reader)
+            elif service == 'WFS' and request == 'GetCapabilities':
+                reader = WebFeatureService('', xml=self.response, version=self.version)
+                self.description['datasets'] = self._parse_getcap_datasets(reader)
 
         if 'resultset' in self.identity:
             # assuming csw, run the local csw reader
