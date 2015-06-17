@@ -1,142 +1,162 @@
 import re
 
-from lib.processor import Processor, SubProcessor
-from lib.preprocessors.feed_preprocessors import FeedReader
-from lib.utils import parse_url, tidy_dict
-from lib.xml_utils import extract_elems
+from lib.processor import Processor
+from lib.utils import parse_url, tidy_dict, remap_http_method
+from lib.xml_utils import extract_elems, extract_items, extract_item
 
 
-class OpenSearchReader():
-    _routes = {
-        "service": {
-            "title": ["OpenSearchDescription", "ShortName"],
-            "abstract": [["OpenSearchDescription", "LongName"],
-                         ["OpenSearchDescription", "Description"]],
-            "source": ["OpenSearchDescription", "Attribution"],
-            "contact": ["OpenSearchDescription", "Developer"],
-            "rights": ["OpenSearchDescription", "SyndicationRight"],
-            "subject": ["OpenSearchDescription", "Tags"]
-        },
-        "resultset": []
-    }
-
+class OpenSearchReader(Processor):
     def __init__(self, identify, response, url, parent_url=''):
         self.response = response
         self.url = url
         self.identify = identify
         self.parent_url = parent_url
 
-        # need to override the item tags AND
-        # WE HAVE BROKEN THE SILO!
-        if identify.get() == 'RSS':
-            self._routes['resultset'] = ['//*', 'item']
-        elif identify.get() == 'ATOM':
-            self._routes['resultset'] = ['//*', 'entry']
-
         self._load_xml()
 
-    def _parse_items(self, item=None):
-        if item is None:
-            item = self.parser.xml
-        subprocessor = SubProcessor(item)
-        return subprocessor.parse_children(self._routes['resultset'])
+    def parse(self):
+        self.description = {}
 
-    def _parse_endpoint(self):
-        pass
+        if self.parent_url:
+            # TODO: consider making this a sha
+            self.description['childOf'] = self.parent_url
 
-# class OpenSearchReader(BaseReader):
-#     _service_descriptors = {
-#         "title": ["OpenSearchDescription", "ShortName"],
-#         "abstract": [["OpenSearchDescription", "LongName"],
-#                      ["OpenSearchDescription", "Description"]],
-#         "source": ["OpenSearchDescription", "Attribution"],
-#         "contact": ["OpenSearchDescription", "Developer"],
-#         "rights": ["OpenSearchDescription", "SyndicationRight"],
-#         "subject": ["OpenSearchDescription", "Tags"]
-#     }
+        if 'service' in self.identify:
+            self.description['service'] = self._parse_service()
 
-#     _parameter_formats = {
-#         "geo:box": "west, south, east, north",
-#         "time:start": "YYYY-MM-DDTHH:mm:ssZ",
-#         "time:stop": "YYYY-MM-DDTHH:mm:ssZ"
-#     }
+        if 'resultset' in self.identify:
+            # TODO: get the root stats
+            self.description['children'] = self._parse_children(
+                self.identify['resultset'].get('dialect', ''))
 
-#     def __init__(self, response, url):
-#         self._response = response
-#         self._url = url
-#         self._load_xml()
+        self.description = tidy_dict(self.description)
 
-#     def parse_endpoints(self):
-#         '''
+    def _parse_service(self):
+        output = {}
+        output['title'] = extract_items(self.parser.xml, ["ShortName"])
+        output['abstract'] = extract_items(self.parser.xml, ["LongName"]) + \
+            extract_items(self.parser.xml, ["Description"])
+        output['source'] = extract_items(self.parser.xml, ["Attribution"])
+        output['contact'] = extract_items(self.parser.xml, ["Developer"])
+        output['rights'] = extract_items(self.parser.xml, ["SyndicationRight"])
+        output['subject'] = extract_items(self.parser.xml, ["Tags"])
 
-#         '''
-#         urls = extract_elems(self.parser.xml, ["OpenSearchDescription", "Url"])
+        output['endpoints'] = [self._parse_endpoint(e) for e
+                               in extract_elems(self.parser.xml, ['Url'])]
 
-#         endpoints = [
-#             tidy_dict({
-#                 "protocol": self._remap_http_method(url.get('type', '')),
-#                 "url": url.get('template', ''),
-#                 "parameters": self._extract_url_parameters(url.get('template', '')),
-#                 "actionable": 0 if 'rel' not in url.attrib.keys() else 2
-#             }) for url in urls
-#         ]
+        return tidy_dict(output)
 
-#         return endpoints
+    def _parse_endpoint(self, elem):
+        endpoint = {}
+        endpoint['protocol'] = remap_http_method(elem.get('type', ''))
+        endpoint['template'] = elem.get('template', '')
+        endpoint['parameters'] = self._extract_params(elem)
+        endpoint['actionable'] = 'NOPE'
+        endpoint['url'] = ''
 
-#     def _extract_parameter_type(self, param):
-#         '''
-#         return prefix, type from a string as prefix:type or {prefix:type}
-#         as tuple (prefix, type)
-#         '''
-#         pattern = '\{{0,1}(\S*):([\S][^}]*)'
+        return tidy_dict(endpoint)
 
-#         # TODO: this is probably a bad assumption (that there's just the
-#         #   one item in the list, not that urlparse returns the terms as a list)
-#         if isinstance(param, list):
-#             param = param[0]
+    def _parse_children(self, dialect):
+        ''' i fundamentally do not like this '''
+        if dialect == 'ATOM':
+            reader = OpenSearchAtomReader(None, self.response, self.url)
+        elif dialect == 'RSS':
+            reader = OpenSearchRssReader(None, self.response, self.url)
+        return reader.parse()
 
-#         if ':' not in param:
-#             return ('', param)
+    def _extract_params(self, endpoint):
+        def _extract_prefix(param):
+            pattern = '\{{0,1}(\S*):([\S][^}]*)'
 
-#         m = re.search(pattern, param)
-#         return m.groups()
+            # TODO: this is probably a bad assumption (that there's just the
+            #   one item in the list, not that urlparse returns the terms as a list)
+            if isinstance(param, list):
+                param = param[0]
 
-#     def _extract_url_parameters(self, url):
-#         '''
-#         strip out the osdd url parameters
+            if ':' not in param:
+                return ('', param)
 
-#         note: not always emitted correctly as param={thing?}. could also be param=thing
-#               except the param=thing is probably a hardcoded term SO HOW DO WE MANAGE THAT?
-#               TODO: manage that (ex: ?product=MOD021QA&amp;collection={mp:collection?})
+            m = re.search(pattern, param)
+            return m.groups()
 
-#         tuple: (parameter name, namespace(s), param namespace prefix, param type, format)
-#         '''
-#         assert url, 'No URL'
+        _parameter_formats = {
+            "geo:box": "west, south, east, north",
+            "time:start": "YYYY-MM-DDTHH:mm:ssZ",
+            "time:stop": "YYYY-MM-DDTHH:mm:ssZ"
+        }
+        url = endpoint.get('template', '')
+        query_params = parse_url(url)
 
-#         query_params = parse_url(url)
-#         # deal with the namespaced parameters as [query param key, prefix, type]
-#         query_params = [[k] + list(self._extract_parameter_type(v)) for k, v
-#                         in query_params.iteritems()]
+        # deal with the namespaced parameters as [query param key, prefix, type]
+        query_params = [[k] + list(_extract_prefix(v)) for k, v
+                        in query_params.iteritems()]
 
-#         return [
-#             tidy_dict({
-#                 "name": qp[0],
-#                 "namespaces": self.parser._namespaces,
-#                 "prefix": qp[1],
-#                 "type": qp[2],
-#                 "format": self._parameter_formats.get(':'.join(qp[1:]))
-#             })
-#             for qp in query_params
-#         ]
+        return [
+            tidy_dict({
+                "name": qp[0],
+                "prefix": qp[1],
+                "type": qp[2],
+                "format": _parameter_formats.get(':'.join(qp[1:]))
+            }) for qp in query_params]
 
-#     def parse_result_set(self):
-#         # so how to know when to call this. and also we
-#         # are calling things to parse twice. ick.
-#         results = []
-#         if self.parser.xml is None:
-#             return results
 
-#         reader = FeedReader(self._response, self._url)
-#         feed = reader.parse()
-#         # TODO: also not this really. get everything
-#         return feed.get('items', [])
+class OpenSearchAtomReader(Processor):
+    def parse(self):
+        output = {}
+        output['items'] = [child for child in self.parse_children(tags=['//*', 'entry'])]
+        return tidy_dict(output)
+
+    def _parse_child(self, child):
+        entry = {}
+
+        entry['title'] = extract_item(child, ['title'])
+        entry['id'] = extract_item(child, ['id'])
+        entry['creator'] = extract_item(child, ['creator'])
+        entry['author'] = extract_item(child, ['author', 'name'])
+        entry['date'] = extract_item(child, ['date'])
+        entry['updated'] = extract_item(child, ['updated'])
+        entry['published'] = extract_item(child, ['published'])
+
+        entry['subjects'] = [e.attrib.get('term', '') for e in extract_elems(child, ['category'])]
+
+        entry['contents'] = []
+        contents = extract_elems(child, ['content'])
+        for content in contents:
+            text = content.text.strip() if content.text else ''
+            content_type = content.attrib.get('type', '')
+            entry['contents'].append({'content': text, 'type': content_type})
+
+        entry['links'] = []
+        links = extract_elems(child, ['link'])
+        for link in links:
+            href = link.attrib.get('href', '')
+            rel = link.attrib.get('rel', '')
+            entry['links'].append({'href': href, 'rel': rel})
+
+        return tidy_dict(entry)
+
+
+class OpenSearchRssReader(Processor):
+    def parse(self):
+        output = {}
+        output['items'] = [child for child in self.parse_children(tags=['//*', 'item'])]
+        return tidy_dict(output)
+
+    def _parse_child(self, child):
+        item = {}
+        item['title'] = extract_item(child, ['title'])
+        item['language'] = extract_item(child, ['language'])
+        item['author'] = extract_item(child, ['author'])
+        # TODO: go sort out what this is: http://purl.org/rss/1.0/modules/content/
+        item['encoded'] = extract_item(child, ['encoded'])
+        item['id'] = extract_item(child, ['guid'])
+        item['creator'] = extract_item(child, ['creator'])
+
+        item['subjects'] = extract_items(child, ['category'])
+        item['published'] = extract_item(child, ['pubDate'])
+        item['timestamp'] = extract_item(child, ['date'])
+
+        item['links'] = extract_items(child, ['link'])
+        item['links'] += extract_items(child, ['docs'])
+
+        return tidy_dict(item)
