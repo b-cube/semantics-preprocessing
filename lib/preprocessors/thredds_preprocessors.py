@@ -1,7 +1,7 @@
 from lib.processor import Processor
 from lib.utils import extract_element_tag
 from lib.utils import generate_short_uuid
-from lib.utils import generate_qualified_xpath
+# from lib.utils import generate_qualified_xpath
 from lib.utils import tidy_dict
 from lib.xml_utils import extract_elems, extract_attrib
 
@@ -41,8 +41,6 @@ class ThreddsReader(Processor):
             for a given element, return any text() and any attribute value
             '''
             # run a generated xpath on the given element
-            excludes = [generate_qualified_xpath(elem, True)]
-
             children = elem.xpath('./node()[local-name()!="metadata"' +
                                   'and local-name()!="dataset" and' +
                                   'local-name()!="catalogRef"]')
@@ -53,10 +51,8 @@ class ThreddsReader(Processor):
 
             for child in children:
                 value = child.text
-                xp = generate_qualified_xpath(child, True)
+                # xp = generate_qualified_xpath(child, True)
                 tag = _normalize_key(extract_element_tag(child.tag))
-
-                excludes += [xp] + [xp + '/@' + k for k in child.attrib.keys()]
 
                 if value:
                     element[tag] = value
@@ -86,30 +82,27 @@ class ThreddsReader(Processor):
                 element['url'] = base_url
                 element['actionable'] = 2
 
-            return element, excludes
+            return element
 
         children = elem.xpath('./node()[local-name()="metadata" or ' +
                               'local-name()="dataset" or local-name()="catalogRef"]')
 
-        element, excludes = _run_element(elem, service_bases)
+        element = _run_element(elem, service_bases)
         element_children = []
         for c in children:
-            element_desc, element_excludes = _run_element(c, service_bases)
-            excludes += element_excludes
+            element_desc = _run_element(c, service_bases)
             element_children.append(element_desc)
 
         if element_children:
             element['children'] = element_children
 
-        return element, excludes
+        return element
 
     def _handle_elem(self, elem, child_tags, base_url, service_bases):
-        description, excludes = self._get_items(
+        description = self._get_items(
             extract_element_tag(elem.tag), elem, base_url, service_bases
         )
         description['source'] = extract_element_tag(elem.tag)
-
-        self._to_exclude += excludes
 
         endpoints = []
 
@@ -117,13 +110,12 @@ class ThreddsReader(Processor):
             elems = elem.xpath('*[local-name()="%s"]' % child_tag)
 
             for e in elems:
-                e_desc, e_excludes = self._get_items(
+                e_desc = self._get_items(
                     extract_element_tag(e.tag), e, base_url, service_bases
                 )
 
                 e_desc['childOf'] = description.get('ID', '')
                 e_desc["source"] = extract_element_tag(child_tag)
-                self._to_exclude += e_excludes
 
                 parents = description.get('parentOf', [])
                 parents += [e['ID'] for e in endpoints if 'childOf' in e]
