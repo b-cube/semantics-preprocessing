@@ -3,13 +3,15 @@ from bcube_owslib.wcs import WebCoverageService
 from bcube_owslib.wfs import WebFeatureService
 from bcube_owslib.csw import CatalogueServiceWeb
 from bcube_owslib.sos import SensorObservationService
+from lib.preprocessors import Processor
+from lib.preprocessors.csw_preprocessors import CswReader
 from lib.yaml_configs import import_yaml_configs
 from lib.geo_utils import bbox_to_geom, reproject, to_wkt
+from lib.utils import tidy_dict, remap_http_method
 import dateutil.parser as dateparser
-from datetime import datetime
 
 
-class OgcReader():
+class OgcReader(Processor):
     '''
     base class to handle OWSLib responses
 
@@ -24,17 +26,7 @@ class OgcReader():
                  CSW 2.0.2
                  SOS 1.0.0
     '''
-    def __init__(self, service, version, response_as_string, url):
-        self.service = service
-        self.version = version
-        self.response = response_as_string
-        self.url = url
-
-        # get the owslib object
-        self.reader = self._get_reader()
-        self._get_config()
-
-    def _get_reader(self):
+    def _get_service_reader(self):
         if self.service == 'WMS' and self.version in ['1.1.1', '1.3.0']:
             reader = WebMapService('', xml=self.response, version=self.version)
         elif self.service == 'WFS' and self.version in ['1.0.0', '1.1.0']:
@@ -42,7 +34,6 @@ class OgcReader():
         elif self.service == 'WCS' and self.version in ['1.0.0', '1.1.0', '1.1.1', '1.1.2']:
             reader = WebCoverageService('', xml=self.response, version=self.version)
         elif self.service == 'CSW' and self.version in ['2.0.2']:
-            # TODO: add the route to the local parser
             reader = CatalogueServiceWeb('', xml=self.response, version=self.version)
         elif self.service == 'SOS' and self.version in ['1.0.0']:
             reader = SensorObservationService('', xml=self.response, version=self.version)
@@ -50,25 +41,13 @@ class OgcReader():
             return None
         return reader
 
-    def _get_config(self):
+    def _get_service_config(self):
+        # get the config file
         data = import_yaml_configs(['lib/configs/ogc_parameters.yaml'])
         self.config = next(d for d in data if d['name'] == self.service.upper() +
                            self.version.replace('.', ''))
 
-    def _remap_http_method(self, original_method):
-        '''
-        return the "full" http method from some input
-        '''
-        definition = {
-            "HTTP GET": ['get'],
-            "HTTP POST": ['post']
-        }
-        for k, v in definition.iteritems():
-            if original_method.lower() in v:
-                return k
-        return original_method
-
-    def _get_operations(self):
+    def _get_operations(self, reader):
         '''
         each operation can have more than one endpoint (get and post, ex)
 
@@ -142,19 +121,8 @@ class OgcReader():
                     parameter[key] = param[key]
             return parameter
 
-        def _tidy_endpoint(endpoint):
-            # the perils of dict comprehensions
-            to_remove = []
-            for k, v in endpoint.iteritems():
-                if not v:
-                    to_remove.append(k)
-            for k in to_remove:
-                del endpoint[k]
-
-            return endpoint
-
         operations = []
-        for o in self.reader.operations:
+        for o in reader.operations:
             # TODO: handle the differing formatOptions
 
             # get the parameter values if supported by the service
@@ -174,9 +142,9 @@ class OgcReader():
                 formats = []
 
             endpoints = [
-                _tidy_endpoint({
+                tidy_dict({
                     "name": o.name,
-                    "protocol": self._remap_http_method(m.get('type', '')),
+                    "protocol": remap_http_method(m.get('type', '')),
                     "url": _append_params(m.get('url', ''), o.name),
                     "constraints": m.get('constraints', []),
                     "mimeType": formats,
@@ -219,28 +187,55 @@ class OgcReader():
 
         return min(timestamps), max(timestamps)
 
-    def parse_service(self):
-        '''
-        this is a little unnecessary
-        '''
-        service = {
-            "service": self.return_service_descriptors()
-        }
-        return service
+    def parse(self):
+        self.description = {}
 
-    def return_service_descriptors(self):
-        rights = [self.reader.identification.accessconstraints]
+        if 'service' in self.identity:
+            # run the owslib getcapabilities parsers
+            reader = self._get_reader()
+            if not reader:
+                return {}
+            self._get_config()
+            self.description['service'] = self._parse_service(reader)
+
+        if 'dataset' in self.identity:
+            # run the owslib wcs/wfs describe* parsers
+            request = self.identity['dataset'].get('request', '')
+            service = self.identity['dataset'].get('name', '')
+            if not request or not service:
+                return {}
+
+            if service == 'WMS' and request == 'GetCapabilities':
+                # this is a rehash of the getcap parsing
+                # but *only* returning the layers set
+                reader = WebMapService('', xml=self.response, version=self.version)
+                self.description['datasets'] = self._parse_getcap_datasets(reader)
+            if service == 'WCS' and request == 'DescribeCoverage':
+                reader = None
+            elif service == 'SOS' and request == 'DescribeObservation':
+                reader = None
+            elif service == 'WFS' and request == 'DescribeFeatureType':
+                reader = None
+
+        if 'resultset' in self.identity:
+            # assuming csw, run the local csw reader
+            reader = CswReader(self.identity, self.response, self.url)
+
+        self.description = tidy_dict(self.description)
+
+    def _parse_service(self, reader):
+        rights = [reader.identification.accessconstraints]
         try:
-            contact = [self.reader.provider.contact.name]
+            contact = [reader.provider.contact.name]
         except AttributeError:
             contact = []
 
-        abstract = [self.reader.identification.abstract]
-        keywords = self.reader.identification.keywords
-        endpoints = self._get_operations()
+        abstract = [reader.identification.abstract]
+        keywords = reader.identification.keywords
+        endpoints = self._get_operations(reader)
 
         service = {
-            "title": [self.reader.identification.title],
+            "title": [reader.identification.title]
         }
 
         if rights:
@@ -260,7 +255,7 @@ class OgcReader():
 
         return service
 
-    def return_dataset_descriptors(self):
+    def _parse_getcap_datasets(self, reader):
         '''
         from some content metadata object, get all of the
         layers/features/coverages
@@ -284,10 +279,10 @@ class OgcReader():
         '''
         datasets = []
 
-        if self.reader.contents is None:
+        if reader.contents is None:
             return []
 
-        for name, dataset in self.reader.contents.iteritems():
+        for name, dataset in reader.contents.iteritems():
             d = {}
 
             d['name'] = name

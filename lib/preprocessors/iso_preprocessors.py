@@ -24,22 +24,23 @@ class IsoParser():
         service identification
         mi/md
     '''
-    def __init__(self, text):
+    def __init__(self, text, identity):
         self.text = text
+        self.identity = identity
 
         # parse
         self.parser = BasicParser(text)
 
-    def parse(self, footprint={}):
+    def parse(self):
         '''
         run the routing
         '''
 
-        if not footprint:
+        if not self.identity:
             # we're going to have to sort it out
-            footprint = {}
+            self.identity = {}
 
-        protocol = footprint.get('protocol')
+        protocol = self.identity.get('protocol')
         if protocol == 'Data Series':
             # run the set
             iso = DsParser(self.parser.xml)

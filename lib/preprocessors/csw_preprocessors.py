@@ -1,18 +1,14 @@
 # import sys
-from lib.base_preprocessors import BaseReader
+from lib.preprocessors import Processor
 from lib.xml_utils import extract_attrib, extract_elem
-# from lib.utils import tidy_dict
+from lib.utils import tidy_dict
 from lib.preprocessors.iso_preprocessors import MxParser
-from lib.preprocessors.metadata_preprocessors import FgdcReader, DifReader
+from lib.preprocessors.metadata_preprocessors import FgdcItemReader, DifItemReader
 
 
-class CswReader(BaseReader):
-    def __init__(self, response, url, version='2.0.2'):
-        self._response = response
-        self._url = url
-        self._load_xml()
+class CswReader(Processor):
 
-    def parse_results_set_info(self):
+    def _parse_results_set_info(self):
         result_elem = extract_elem(self.parser.xml, ['SearchResults'])
 
         self.total = extract_attrib(result_elem, ['@numberOfRecordsMatched'])
@@ -20,32 +16,39 @@ class CswReader(BaseReader):
         self.schema = extract_attrib(result_elem, ['@recordSchema'])
 
     def parse(self):
-        self.parse_results_set_info()
-        return self.parse_result_set()
+        self.description = {}
+        self._parse_results_set_info()
+        self.description['total'] = self.total
+        self.description['subtotal'] = self.subtotal
+        self.description['schema'] = self.schema
 
-    def parse_result_set(self):
-        # make sure the info call is made first
-        results = []
-        if self.parser.xml is None:
-            return results
+        if self.parent_url:
+            # TODO: consider making this a sha
+            self.description['childOf'] = self.parent_url
 
+        if 'resultset' in self.identify:
+            self.description['children'] = self._parse_children(self.schema)
+
+        self.description = tidy_dict(self.description)
+
+    def _parse_children(self, dialect):
+        children = []
         result_elem = extract_elem(self.parser.xml, ['SearchResults'])
         for child in result_elem.iterchildren():
-            # let's parse based on the recordSchema value
-            if self.schema == 'http://www.isotc211.org/2005/gmd':
-                reader = MxParser(child)
-                item = reader.parse()
-                if item:
-                    results.append(item)
-            elif self.schema == 'http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/':
-                reader = DifReader(self._response, self._url)
-                item = reader.parse_item(child)
-                if item:
-                    results.append(item)
-            elif self.schema == 'http://www.opengis.net/cat/csw/csdgm':
-                reader = FgdcReader(self._response, self._url)
-                item = reader.parse_item(child)
-                if item:
-                    results.append(item)
+            item = self._parse_child(child, dialect)
+            if item:
+                children.append(item)
+        return children
 
-        return results
+    def _parse_child(self, child, dialect):
+        if dialect == 'http://www.isotc211.org/2005/gmd':
+            reader = MxParser(child)
+            return reader.parse()
+        elif dialect == 'http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/':
+            reader = DifItemReader(child)
+            return reader.parse_item()
+        elif dialect == 'http://www.opengis.net/cat/csw/csdgm':
+            reader = FgdcItemReader(child)
+            return reader.parse_item()
+        else:
+            return {}
