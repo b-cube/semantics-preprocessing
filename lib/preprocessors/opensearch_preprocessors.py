@@ -1,7 +1,9 @@
 import re
-
+import urlparse
+import urllib
+from itertools import chain
 from lib.processor import Processor
-from lib.utils import parse_url, tidy_dict, remap_http_method
+from lib.utils import parse_url, tidy_dict
 from lib.xml_utils import extract_elems, extract_items, extract_item
 
 
@@ -11,6 +13,7 @@ class OpenSearchReader(Processor):
         self.url = url
         self.identify = identify
         self.parent_url = parent_url
+        self.description = {}
 
         self._load_xml()
 
@@ -48,13 +51,75 @@ class OpenSearchReader(Processor):
 
     def _parse_endpoint(self, elem):
         endpoint = {}
-        endpoint['protocol'] = remap_http_method(elem.get('type', ''))
+        endpoint['mimetype'] = elem.get('type', '')
         endpoint['template'] = elem.get('template', '')
         endpoint['parameters'] = self._extract_params(elem)
         endpoint['actionable'] = 'NOPE'
-        endpoint['url'] = ''
+        endpoint['url'] = self._generate_url(endpoint['mimetype'], endpoint['template'])
 
         return tidy_dict(endpoint)
+
+    # NOTE: this is duplicated from the link builder because idk
+    def _extract_parameter_key(self, value, params):
+        # sort out the query parameter name for a parameter
+        # and don't send curly bracketed things, please
+        return {k: v.split(':')[-1].replace('?', '') for k, v
+                in params.iteritems()
+                if value in v}
+
+    def _extract_template(self, template_url, append_limit):
+        parts = urlparse.urlparse(template_url)
+        if not parts.scheme:
+            return '', '', {}
+
+        base_url = urlparse.urlunparse((
+            parts.scheme,
+            parts.netloc,
+            parts.path,
+            None,
+            None,
+            None
+        ))
+
+        qp = {k: v[0] for k, v in urlparse.parse_qs(parts.query).iteritems()}
+
+        # get the hard-coded params
+        defaults = {k: v for k, v in qp.iteritems()
+                    if not v.startswith('{')
+                    and not v.endswith('}')}
+
+        # get the rest (and ignore the optional/namespaces)
+        parameters = {k: v[1:-1] for k, v in qp.iteritems()
+                      if v.startswith('{')
+                      and v.endswith('}')}
+
+        if append_limit:
+            terms = self._extract_parameter_key('count', parameters)
+            if terms:
+                defaults = dict(
+                    chain(defaults.items(), {k: 5 for k in terms.keys()}.items())
+                )
+
+        # note: not everyone manages url-encoded query parameter delimiters
+        #       and not everyone manages non-url-encoded values so yeah. we are
+        #       ignoring the non-url-encoded group.
+        return base_url, defaults, parameters
+
+    def _generate_url(self, mimetype, template):
+        url_base, defaults, params = self._extract_template(template)
+        if not url_base:
+            return ''
+
+        search_terms = self._extract_parameter_key('searchTerms', params)
+        if search_terms:
+            qps = dict(
+                chain(
+                    defaults.items(),
+                    {search_terms.keys()[0]: ''}.items()
+                )
+            )
+
+        return url_base + '?' + urllib.urlencode(qps.items())
 
     def _parse_children(self, dialect):
         ''' i fundamentally do not like this '''

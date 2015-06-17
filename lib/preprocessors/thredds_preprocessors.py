@@ -1,19 +1,12 @@
-from lib.base_preprocessors import BaseReader
-# from itertools import chain
+from lib.processor import Processor
 from lib.utils import extract_element_tag
 from lib.utils import generate_short_uuid
 from lib.utils import generate_qualified_xpath
 from lib.utils import tidy_dict
-from lib.xml_utils import extract_elems
+from lib.xml_utils import extract_elems, extract_attrib
 
 
-class ThreddsReader(BaseReader):
-    _service_descriptors = {
-        "title": "@name",
-        "version": "@version"
-    }
-    _to_exclude = []
-
+class ThreddsReader(Processor):
     def _manage_id(self, obj):
         if 'ID' not in obj:
             obj.update({"ID": generate_short_uuid()})
@@ -140,57 +133,58 @@ class ThreddsReader(BaseReader):
 
         return description, endpoints
 
-    def return_dataset_descriptors(self):
+    def parse(self):
+        self.description = {}
+
+        if 'service' in self.identify:
+            self.description = {
+                "title": extract_attrib(self.parser.xml, ['@name']),
+                "version": extract_attrib(self.parser.xml, ['@version'])
+            }
+
+        if 'dataset' in self.identify:
+            # TODO: this is really not right but it is not
+            # a proper web service so meh
+            self.description['datasets'] = self._parse_datasets()
+
+        if 'metadata' in self.identify:
+            self.description['metadata'] = self._parse_metadata()
+
+        self.description = tidy_dict(self.description)
+
+    def _parse_datasets(self):
         dataset_xpath = "/{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/" + \
                         "{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}dataset"
 
         # get the level-one children (catalog->child)
         endpoints = []
         datasets = self.parser.find(dataset_xpath)
-        if datasets:
-            self._to_exclude.append(dataset_xpath[1:])
-            self._to_exclude += [dataset_xpath[1:] + '/@name', dataset_xpath[1:] + '/@ID']
-
-            for dataset in datasets:
-                description, child_endpoints = self._handle_elem(
-                    dataset, ['dataset', 'metadata', 'catalogRef'],
-                    self._url,
-                    self.service_bases
-                )
-                endpoints += [description] + child_endpoints
+        for dataset in datasets:
+            description, child_endpoints = self._handle_elem(
+                dataset, ['dataset', 'metadata', 'catalogRef'],
+                self._url,
+                self.service_bases
+            )
+            endpoints += [description] + child_endpoints
 
         return {"endpoints": endpoints}
 
-    def return_metadata_descriptors(self):
+    def _parse_metadata(self):
         metadata_xpath = "/{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/" + \
                          "{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}metadata"
 
         endpoints = []
         metadatas = self.parser.find(metadata_xpath)
-        if metadatas:
-            self._to_exclude.append(metadata_xpath[1:])
-            for key in metadatas[0].attrib.keys():
-                self._to_exclude.append(metadata_xpath[1:] + '/@' + key)
-
-            for metadata in metadatas:
-                description, child_endpoints = self._handle_elem(
-                    metadata,
-                    [],
-                    self._url,
-                    self.service_bases
-                )
-                endpoints += [description] + child_endpoints
+        for metadata in metadatas:
+            description, child_endpoints = self._handle_elem(
+                metadata,
+                [],
+                self._url,
+                self.service_bases
+            )
+            endpoints += [description] + child_endpoints
 
         return {"endpoints": endpoints}
-
-    def return_exclude_descriptors(self):
-        '''
-        need to return the fully qualified structure for the root
-        attributes for the remainder processing
-        '''
-        excluded = self._service_descriptors.values()
-        return ['{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/' + e
-                for e in excluded] + list(set(self._to_exclude))
 
     def parse_endpoints(self):
         '''
@@ -213,40 +207,32 @@ class ThreddsReader(BaseReader):
 
         services = self.parser.find(svc_xpath)
         # ffs, services can be nested too
-        if services:
-            self._to_exclude.append(svc_xpath[1:])
-            for key in services[0].attrib.keys():
-                self._to_exclude.append(svc_xpath[1:] + '/@' + key)
-
-            for service in services:
-                description, child_endpoints = self._handle_elem(
-                    service,
-                    ['service'],
-                    self._url,
-                    {}
-                )
-                endpoints += [description]
-                if child_endpoints:
-                    endpoints += child_endpoints
+        for service in services:
+            description, child_endpoints = self._handle_elem(
+                service,
+                ['service'],
+                self._url,
+                {}
+            )
+            endpoints += [description]
+            if child_endpoints:
+                endpoints += child_endpoints
 
         catrefs = self.parser.find(catref_xpath)
-        if catrefs:
-            self._to_exclude.append(catref_xpath[1:])
-            self._to_exclude.append(catref_xpath[1:] + '/@title')
-            self._to_exclude.append(catref_xpath[1:] + '/@href')
-            for catref in catrefs:
-                description, child_endpoints = self._handle_elem(
-                    catref,
-                    ['catalogRef', 'metadata'],
-                    self._url,
-                    {}  # TODO: so dap or file base path only? (not the full set, that makes no sense)
-                )
-                endpoints += [description] + child_endpoints
+        for catref in catrefs:
+            description, child_endpoints = self._handle_elem(
+                catref,
+                ['catalogRef', 'metadata'],
+                self._url,
+                {}  # TODO: so dap or file base path only? (not the full set,
+                    # that makes no sense)
+            )
+            endpoints += [description] + child_endpoints
 
         return endpoints
 
 
-class NcmlReader(BaseReader):
+class NcmlReader(Processor):
     def parse(self):
         elem = self.parser.xml
         ncml = {'variables': []}

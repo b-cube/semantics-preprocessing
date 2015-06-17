@@ -28,7 +28,10 @@ class OpenSearchLinkBuilder(object):
             self.xml = None
 
     def _extract_urls(self, mimetype='atom+xml'):
-        return self.xml.xpath('//*[local-name()="Url" and (@*[local-name()="type"]="application/%(mimetype)s" or @*[local-name()="type"]="text/%(mimetype)s")]' % {'mimetype': mimetype})
+        return self.xml.xpath(
+            '//*[local-name()="Url" and ' +
+            '(@*[local-name()="type"]="application/%(mimetype)s" or ' +
+            '@*[local-name()="type"]="text/%(mimetype)s")]' % {'mimetype': mimetype})
 
     def _extract_parameter_key(self, value, params):
         # sort out the query parameter name for a parameter
