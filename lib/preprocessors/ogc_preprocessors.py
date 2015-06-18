@@ -226,6 +226,9 @@ class OgcReader(Processor):
         if 'resultset' in self.identity:
             # assuming csw, run the local csw reader
             reader = CswReader(self.identity, self.response, self.url)
+            reader.parse()
+            # TODO: this is not a good key (children->children)
+            self.description['children'] = reader.description
 
         self.description = tidy_dict(self.description)
 
@@ -298,6 +301,9 @@ class OgcReader(Processor):
             if dataset.abstract:
                 d['abstract'] = [dataset.abstract]
 
+            if dataset.metadataUrls:
+                d['metadata_urls'] = dataset.metadataUrls
+
             if dataset.boundingBoxes:
                 d['bboxes'] = dataset.boundingBoxes
 
@@ -305,7 +311,7 @@ class OgcReader(Processor):
             #     d['bbox'] = [dataset.boundingBoxWGS84]
 
             try:
-                # fconvert to wkt (and there's something about sos - maybe not harmonized)
+                # convert to wkt (and there's something about sos - maybe not harmonized)
                 if dataset.boundingBoxWGS84:
                     bbox = bbox_to_geom(dataset.boundingBoxWGS84)
                     d['bbox'] = [to_wkt(bbox)]
@@ -325,24 +331,72 @@ class OgcReader(Processor):
                 d['temporal_extent'] = {"begin": begin_time.isoformat(),
                                         "end": end_time.isoformat()}
 
+            # SOS 2.0.2 specific attributes
+            if 'temporal_extent' not in d:
+                d['temporal_extent'] = {}
+            try:
+                # because it has support for different time element names
+                if dataset.begin_position:
+                    d['temporal_extent']['begin'] = dataset.begin_position
+            except AttributeError:
+                pass
+
+            try:
+                # because it has support for different time element names
+                if dataset.end_position:
+                    d['temporal_extent']['end'] = dataset.end_position
+            except AttributeError:
+                pass
+
+            try:
+                if dataset.observed_properties:
+                    d['observed_properties'] = dataset.observed_properties
+            except AttributeError:
+                pass
+
+            try:
+                if dataset.procedures:
+                    d['procedures'] = dataset.procedures
+            except AttributeError:
+                pass
+
+            try:
+                if dataset.procedure_description_formats:
+                    d['procedure_description_formats'] = dataset.procedure_description_formats
+            except AttributeError:
+                pass
+
+            try:
+                if dataset.features_of_interest:
+                    d['features_of_interest'] = dataset.features_of_interest
+            except AttributeError:
+                pass
+
+            try:
+                if dataset.observation_models:
+                    d['observation_models'] = dataset.observation_models
+            except AttributeError:
+                pass
+
+            # and some of the WFS-specific bits
+            try:
+                if dataset.verbOptions:
+                    d['verbs'] = dataset.verbOptions
+            except AttributeError:
+                pass
+
+            # handling the sos vs wfs output formats (ows related)
+            try:
+                if dataset.outputFormats:
+                    d['output_formats'] = dataset.outputFormats
+            except AttributeError:
+                pass
+            try:
+                if dataset.response_formats:
+                    d['output_formats'] = dataset.response_formats
+            except AttributeError:
+                pass
+
             datasets.append(d)
 
         return datasets
-
-    def return_metadata_descriptors(self):
-        '''
-        children of the content widget
-        '''
-        if self.reader.contents is None:
-            return []
-
-        metadatas = []
-        for name, dataset in self.reader.contents.iteritems():
-            d = {}
-
-            if dataset.metadataUrls:
-                d['name'] = name
-                d['metadata_urls'] = dataset.metadataUrls
-                metadatas.append(d)
-
-        return metadatas
