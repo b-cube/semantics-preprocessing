@@ -1,28 +1,21 @@
 - name: RDF
-  subtype: dataset
-  filters:
-    ands:
-      - type: xpath
-        object: content
-        value: '/*[local-name()="RDF"]'
-      - type: simple
-        object: content
-        value: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
-  service_description:
-  datasets:
-    - name: Dataset
+  dataset:
+    - name: RDF
+      request: ''
       filters:
-        ors:
+        ands:
+          - type: xpath
+            object: content
+            value: '/*[local-name()="RDF"]'
+          - type: simple
+            object: content
+            value: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
           - type: simple
             object: content
             value: '<dcat:Dataset rdf:about='
-  metadatas:
-  errors:
-  versions:
-  language:
-    checks:
-      ors:
-        - type: xpath
-          object: content
-          value: '@xml:lang'
-
+      language:
+        checks:
+          ors:
+            - type: xpath
+              object: content
+              value: '@xml:lang'

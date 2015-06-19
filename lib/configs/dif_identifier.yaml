@@ -1,11 +1,20 @@
 - name: DIF
-  subtype: metadata
-  filters:
-    ors:
-      - type: simple
-        object: content
-        value: 'http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/'
-  datasets:
-  metadatas:
-  errors:
-  versions:
+  metadata:
+    - name: DIF
+      filters:
+        ands:
+          - type: simple
+            object: content
+            value: 'http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/'
+          - type: xpath
+            object: content
+            value: '/*[local-name()="DIF"]'
+          - type: simple
+            object: content
+            value: '<Entry_ID>'
+      versions:
+        checks:
+          ors:
+            - type: xpath
+              object: content
+              value: 'concat(/*/*[local-name()="Metadata_Name"], /*/*[local-name()="Metadata_Version"])'

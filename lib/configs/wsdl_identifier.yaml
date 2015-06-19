@@ -1,18 +1,9 @@
 - name: WSDL
-  subtype: service
-  filters:
-    ors:
-      - type: simple
-        object: content
-        value: 'http://schemas.xmlsoap.org/wsdl/'
-  service_description:
+  service:
     - name: WSDL
+      request: ''
       filters:
         ors:
           - type: simple
             object: content
             value: 'http://schemas.xmlsoap.org/wsdl/'
-  datasets:
-  metadatas:
-  errors:
-  versions:

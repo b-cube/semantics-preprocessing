@@ -1,4 +1,8 @@
 - name: UNIDATA
+  service: 
+    - name: 'THREDDS'
+
+
   subtype: service
   filters:
     ors:

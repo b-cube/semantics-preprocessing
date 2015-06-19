@@ -1,66 +1,58 @@
 - name: OPeNDAP
-  subtype: dataset
-  filters:
-    ors:
-      - type: simple
-        object: content
-        value: 'http://xml.opendap.org/ns/DAP2'
-  service_description:
-  datasets:
-  metadatas:
-  errors:
-  versions:
-- name: OPeNDAP:NCML
-  subtype: dataset
-  filters:
-    ands:
-      - type: simple
-        object: content
-        value: 'http://www.unidata.ucar.edu/namespaces/netcdf/ncml-'
-      - type: xpath
-        object: content
-        value: '/*[local-name()="netcdf"]'
-  errors:
-    # this is not technically an error but it is 
-    # an invalid service response
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: '<property name="requires_authorization"'
-        - type: simple
-          object: content
-          value: '<variables vocabulary='
-        - type: simple
-          object: content
-          value: '<dap:Error'
-        - type: xpath
-          object: content
-          value: '/*[local-name()="Error"]'
-- name: OPeNDAP:DDX
-  subtype: metadata
-  filters:
-    ands:
-      - type: simple
-        object: content
-        value: 'http://xml.opendap.org/ns/DAP'
-      - type: xpath
-        object: content
-        value: '/*[local-name()="Dataset"]'
-  errors:
-    # this is not technically an error but it is 
-    # an invalid service response
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: '<property name="requires_authorization"'
-        - type: simple
-          object: content
-          value: '<variables vocabulary='
-        - type: simple
-          object: content
-          value: '<dap:Error'
-        - type: xpath
-          object: content
-          value: '/*[local-name()="Error"]'
+  dataset:
+    - name: NCML
+      filters:
+        ands:
+          - type: simple
+            object: content
+            value: 'http://xml.opendap.org/ns/DAP'
+          - type: simple
+            object: content
+            value: 'http://www.unidata.ucar.edu/namespaces/netcdf/ncml-'
+          - type: xpath
+            object: content
+            value: '/*[local-name()="netcdf"]'
+      errors:
+        # this is not technically an error but it is 
+        # an invalid service response
+        filters:
+          ors:
+            - type: simple
+              object: content
+              value: '<property name="requires_authorization"'
+            - type: simple
+              object: content
+              value: '<variables vocabulary='
+            - type: simple
+              object: content
+              value: '<dap:Error'
+            - type: xpath
+              object: content
+              value: '/*[local-name()="Error"]'
+  metadata:
+    - name: DDX
+      filters:
+        ands:
+          - type: simple
+            object: content
+            value: 'http://xml.opendap.org/ns/DAP'
+          - type: xpath
+            object: content
+            value: '/*[local-name()="Dataset"]'
+        errors:
+          # this is not technically an error but it is 
+          # an invalid service response
+          filters:
+            ors:
+              - type: simple
+                object: content
+                value: '<property name="requires_authorization"'
+              - type: simple
+                object: content
+                value: '<variables vocabulary='
+              - type: simple
+                object: content
+                value: '<dap:Error'
+              - type: xpath
+                object: content
+                value: '/*[local-name()="Error"]'

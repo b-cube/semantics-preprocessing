@@ -1,30 +1,18 @@
 - name: FGDC
-  subtype: metadata
-  filters:
-    ors:
-      # these suffer from whitespace issues
-      # - type: simple
-      #   object: content
-      #   value: '<metstdv>FGDC-STD-001-1998'
-      # - type: simple
-      #   object: content
-      #   value: '<metstdv>FGDC-STD-012-2002'
-      - type: xpath
-        object: content
-        value: '/metadata/metainfo/metstdv[text()="FGDC-STD-001-1998"]'
-      - type: xpath
-        object: content
-        value: '/metadata/metainfo/metstdv[text()="FGDC-STD-012-2002"]'
-  #     - type: xpath
-  #       object: content
-  #       # a very generic structure-based filter with known required fgdc tags
-  #       value: '/metadata and //citeinfo and //spdom/bounding'
-  datasets:
-  metadatas:
-  errors:
-  versions:
-    checks:
-      ors:
-        - type: xpath
-          object: content
-          value: 'concat(//metstdn/text(), ", ", //metstdv/text())'
+  metadata:
+    - name: FGDC
+      filters:
+        ors:
+          - type: xpath
+            object: content
+            value: '/metadata/metainfo/metstdv[text()="FGDC-STD-001-1998"]'
+          - type: xpath
+            object: content
+            value: '/metadata/metainfo/metstdv[text()="FGDC-STD-012-2002"]'
+      versions:
+        checks:
+          ors:
+            - type: xpath
+              object: content
+              value: 'concat(//metstdn/text(), ", ", //metstdv/text())'
+  

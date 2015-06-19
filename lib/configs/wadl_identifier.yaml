@@ -1,18 +1,10 @@
 - name: WADL
-  subtype: service
-  filters:
-    ors:
-      - type: simple
-        object: content
-        value: 'http://wadl.dev.java.net'
-  service_description:
+  service:
     - name: WADL
+      request: ''
       filters:
         ors:
           - type: simple
             object: content
             value: 'http://wadl.dev.java.net'
-  datasets:
-  metadatas:
-  errors:
-  versions:
+  
