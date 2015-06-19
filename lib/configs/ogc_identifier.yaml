@@ -55,37 +55,161 @@
       request: GetCapabilities
       filters:
         ors:
-          - type:
-            object:
-            value:
+          - type: simple
+            object: content
+            value: 'http://www.opengis.net/wfs'
+
+          - type: simple
+            object: url
+            value: 'REQUEST=GETCAPABILITIES'
+          - type: simple
+            object: content
+            value: '<GetCapabilities>'
+          - type: simple
+            object: content
+            value: 'name="GetCapabilities"'
     - name: SOS
       request: GetCapabilities
       filters:
         ors:
-          - type:
-            object:
-            value:
+          - type: simple
+            object: content
+            value: 'http://www.opengis.net/sos'
+          - type: simple
+            object: content
+            value: 'Operation name="DescribeSensor"'
+
+          - type: simple
+            object: url
+            value: 'REQUEST=GETCAPABILITIES'
+          - type: simple
+            object: content
+            value: '<GetCapabilities>'
+          - type: simple
+            object: content
+            value: 'name="GetCapabilities"'
     - name: CSW
       request: GetCapabilities
       filters:
         ors:
-          - type:
-            object:
-            value:
+          - type: complex
+            operator: ands
+            filters:
+              - type: simple
+                object: content
+                value: 'http://www.opengis.net/cat/csw'
+              - type: simple
+                object: content
+                value: '<csw:Capabilities'
+          - type: complex
+            operator: ands
+            filters:
+              - type: simple
+                object: content
+                value: 'http://www.opengis.net/cat/csw'
+              - type: simple
+                object: url
+                value: 'SERVICE=CSW'
+
+          - type: simple
+            object: url
+            value: 'REQUEST=GETCAPABILITIES'
+          - type: simple
+            object: content
+            value: '<GetCapabilities>'
+          - type: simple
+            object: content
+            value: 'name="GetCapabilities"'
   dataset: 
     - name: WMS
-    - name: WCS
-    - name: WFS
-    - name: SOS
-
-  resultset:
-    - name: CSW
-      dialect: ''
+      request: GetCapabilities
       filters:
         ors:
-          - type: 
-            object:
-            value:
+          - type: simple
+            object: content
+            value: 'http://www.opengis.net/wms'
+          - type: simple
+            object: content
+            value: '<!DOCTYPE WMT_MS_Capabilities SYSTEM "http://schemas.opengis.net/wms/1.1.1/WMS_MS_Capabilities.dtd"'
+            
+            # we are assuming that we are starting with a 
+            # correctly identified wxs response
+          - type: simple
+            object: url
+            value: 'REQUEST=GETCAPABILITIES'
+          - type: simple
+            object: content
+            value: '<GetCapabilities>'
+          - type: simple
+            object: content
+            value: 'name="GetCapabilities"'
+    - name: WCS
+      request: DescribeCoverage
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://www.opengis.net/wcs'
+
+          - type: simple
+            object: url
+            value: 'REQUEST=DESCRIBECOVERAGE'
+          - type: simple
+            object: content
+            value: '<CoverageDescription'
+    - name: WFS
+      request: GetCapabilities
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://www.opengis.net/wfs'
+
+          - type: simple
+            object: url
+            value: 'REQUEST=GETCAPABILITIES'
+          - type: simple
+            object: content
+            value: '<GetCapabilities>'
+          - type: simple
+            object: content
+            value: 'name="GetCapabilities"'
+    - name: SOS
+      request: GetCapabilities
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://www.opengis.net/sos'
+          - type: simple
+            object: content
+            value: 'Operation name="DescribeSensor"'
+
+          - type: simple
+            object: url
+            value: 'REQUEST=GETCAPABILITIES'
+          - type: simple
+            object: content
+            value: '<GetCapabilities>'
+          - type: simple
+            object: content
+            value: 'name="GetCapabilities"'
+  resultset:
+    - name: CSW
+      request: GetRecords
+      dialect: 
+        checks:
+          ors:
+            - type: xpath
+              value: '//*/*[local-name()="SearchResults"]/@*[local-name()="recordSchema"]'
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'GetRecordsResponse'
+          - type: simple
+            object: content
+            value: 'http://www.opengis.net/cat/csw/'
 
 
 - name: OGC:error
