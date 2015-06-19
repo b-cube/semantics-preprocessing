@@ -1,3 +1,93 @@
+- name: OGC
+  service:
+    - name: WMS
+      request: GetCapabilities
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://www.opengis.net/wms'
+          - type: simple
+            object: content
+            value: '<!DOCTYPE WMT_MS_Capabilities SYSTEM "http://schemas.opengis.net/wms/1.1.1/WMS_MS_Capabilities.dtd"'
+            
+            # we are assuming that we are starting with a 
+            # correctly identified wxs response
+          - type: simple
+            object: url
+            value: 'REQUEST=GETCAPABILITIES'
+          - type: simple
+            object: content
+            value: '<GetCapabilities>'
+          - type: simple
+            object: content
+            value: 'name="GetCapabilities"'
+      versions:
+        checks:
+          ors:
+            - type: xpath
+              # fully qualified xpath which is lovely and short here
+              value: '@version'
+    - name: WCS
+      request: GetCapabilities
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://www.opengis.net/wcs'
+
+          - type: simple
+            object: url
+            value: 'REQUEST=GETCAPABILITIES'
+          - type: simple
+            object: content
+            value: '<GetCapabilities>'
+          - type: simple
+            object: content
+            value: 'name="GetCapabilities"'
+      versions:
+        checks:
+          ors:
+            - type: xpath
+              # fully qualified xpath which is lovely and short here
+              value: '@version'
+    - name: WFS
+      request: GetCapabilities
+      filters:
+        ors:
+          - type:
+            object:
+            value:
+    - name: SOS
+      request: GetCapabilities
+      filters:
+        ors:
+          - type:
+            object:
+            value:
+    - name: CSW
+      request: GetCapabilities
+      filters:
+        ors:
+          - type:
+            object:
+            value:
+  dataset: 
+    - name: WMS
+    - name: WCS
+    - name: WFS
+    - name: SOS
+
+  resultset:
+    - name: CSW
+      dialect: ''
+      filters:
+        ors:
+          - type: 
+            object:
+            value:
+
+
 - name: OGC:error
   subtype: service
   filters:
