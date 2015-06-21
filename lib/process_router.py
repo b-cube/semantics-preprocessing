@@ -7,7 +7,7 @@ from lib.preprocessors.ogc_preprocessors import OgcReader
 from lib.preprocessors.rdf_preprocessors import RdfReader
 
 
-class Processor():
+class Router():
     '''
     just a little router for all of the preprocessors
     we have
