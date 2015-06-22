@@ -1,14 +1,14 @@
-from bcube_owslib.wms import WebMapService
-from bcube_owslib.wcs import WebCoverageService
-from bcube_owslib.coverage import DescribeCoverageReader
-from bcube_owslib.wfs import WebFeatureService
-from bcube_owslib.csw import CatalogueServiceWeb
-from bcube_owslib.sos import SensorObservationService
-from lib.preprocessors import Processor
-from lib.preprocessors.csw_preprocessors import CswReader
-from lib.yaml_configs import import_yaml_configs
-from lib.geo_utils import bbox_to_geom, reproject, to_wkt
-from lib.utils import tidy_dict, remap_http_method
+from owscapable.wms import WebMapService
+from owscapable.wcs import WebCoverageService
+from owscapable.coverage import DescribeCoverageReader
+from owscapable.wfs import WebFeatureService
+from owscapable.csw import CatalogueServiceWeb
+from owscapable.sos import SensorObservationService
+from semproc.preprocessors import Processor
+from semproc.preprocessors.csw_preprocessors import CswReader
+from semproc.yaml_configs import import_yaml_configs
+from semproc.geo_utils import bbox_to_geom, reproject, to_wkt
+from semproc.utils import tidy_dict, remap_http_method
 import dateutil.parser as dateparser
 
 

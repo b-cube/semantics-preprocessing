@@ -1,5 +1,5 @@
-from lib.parser import Parser
-from lib.xml_utils import extract_elems
+from semproc.parser import Parser
+from semproc.xml_utils import extract_elems
 
 
 class Processor(object):

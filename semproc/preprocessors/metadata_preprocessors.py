@@ -1,6 +1,6 @@
-from lib.utils import tidy_dict
-from lib.xml_utils import extract_item, extract_items, extract_elem, extract_elems
-from lib.geo_utils import bbox_to_geom, to_wkt
+from semproc.utils import tidy_dict
+from semproc.xml_utils import extract_item, extract_items, extract_elem, extract_elems
+from semproc.geo_utils import bbox_to_geom, to_wkt
 
 
 '''

@@ -1,6 +1,6 @@
-from lib.parser import BasicParser
-from lib.utils import tidy_dict
-from lib.xml_utils import extract_attribs, extract_items
+from semproc.parser import Parser
+from semproc.utils import tidy_dict
+from semproc.xml_utils import extract_attribs, extract_items
 
 '''
 we are doing away with any pretext of namespace-caring
@@ -30,7 +30,7 @@ class BaseReader():
         self._load_xml()
 
     def _load_xml(self):
-        self.parser = BasicParser(self._response)
+        self.parser = Parser(self._response)
 
     def _remap_http_method(self, original_method):
         '''

@@ -1,7 +1,7 @@
-from lib.processor import Processor
-from lib.preprocessors.metadata_preprocessors import DcItemReader
-from lib.xml_utils import extract_items, extract_elems, extract_item, extract_elem
-from lib.utils import tidy_dict
+from semproc.processor import Processor
+from semproc.preprocessors.metadata_preprocessors import DcItemReader
+from semproc.xml_utils import extract_items, extract_elems, extract_item, extract_elem
+from semproc.utils import tidy_dict
 from itertools import chain
 
 
@@ -46,31 +46,3 @@ class OaiPmhReader(Processor):
                     dc_parser.parse().items()
                 )
             )
-
-
-    # def parse_result_set(self):
-    #     results = []
-    #     if self.parser.xml is None:
-    #         return results
-
-    #     metadata_prefix = extract_attrib(self.parser.xml, ['request', '@metadataPrefix'])
-    #     if metadata_prefix not in ['oai_dc']:
-    #         return results
-
-    #     elems = extract_elems(self.parser.xml, ['ListRecords', 'record'])
-    #     for elem in elems:
-    #         # get a few bits from the header
-    #         identifier = extract_item(elem, ['header', 'identifier'])
-    #         timestamp = extract_item(elem, ['header', 'datestamp'])
-
-    #         # send the actual record to a simple parser
-    #         if metadata_prefix == 'oai_dc':
-    #             dc_elem = extract_elem(elem, ['metadata', 'dc'])
-    #             parser = DcReader(self._response, self._url)  # TODO: again not this
-    #             results.append({
-    #                 "identifier": identifier,
-    #                 "timestamp": timestamp,
-    #                 "metadata": parser.parse_item(dc_elem)
-    #             })
-
-    #     return results

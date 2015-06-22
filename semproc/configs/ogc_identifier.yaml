@@ -3,7 +3,7 @@
     - name: WMS
       request: GetCapabilities
       filters:
-        ors:
+        ands:
           - type: simple
             object: content
             value: 'http://www.opengis.net/wms'

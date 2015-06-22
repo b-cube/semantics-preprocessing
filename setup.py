@@ -1,5 +1,5 @@
 from setuptools import setup, find_packages
-import lib
+import semproc
 from setuptools.command.test import test as TestCommand
 import sys
 
@@ -16,10 +16,10 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 readme = open('README.md').read()
-reqs = [line.strip() for line in open('requirements.txt')]
+reqs = [line.strip() for line in open('basic_requirements.txt')]
 
 setup(name='Semantics-Preprocessing',
-      version=lib.__version__,
+      version=semproc.__version__,
       description='Web Service Parsers for B-Cube pipelines',
       long_description=readme,
       license='MIT',

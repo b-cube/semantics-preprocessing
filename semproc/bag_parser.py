@@ -1,7 +1,7 @@
-from lib.parser import Parser
+from semproc.parser import Parser
 from bs4 import BeautifulSoup
 import re
-from lib.utils import unquote
+from semproc.utils import unquote
 
 
 # TODO: finish this

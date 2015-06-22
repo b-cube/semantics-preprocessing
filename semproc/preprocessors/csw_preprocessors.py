@@ -1,9 +1,9 @@
 # import sys
-from lib.preprocessors import Processor
-from lib.xml_utils import extract_attrib, extract_elem
-from lib.utils import tidy_dict
-from lib.preprocessors.iso_preprocessors import MxParser
-from lib.preprocessors.metadata_preprocessors import FgdcItemReader, DifItemReader
+from semproc.preprocessors import Processor
+from semproc.xml_utils import extract_attrib, extract_elem
+from semproc.utils import tidy_dict
+from semproc.preprocessors.iso_preprocessors import MxParser
+from semproc.preprocessors.metadata_preprocessors import FgdcItemReader, DifItemReader
 
 
 class CswReader(Processor):

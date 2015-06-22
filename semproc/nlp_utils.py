@@ -1,6 +1,6 @@
 import re
 import HTMLParser
-from lib.utils import flatten
+from semproc.utils import flatten
 import langid
 import nltk
 from nltk.tokenize import word_tokenize

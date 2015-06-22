@@ -1,4 +1,4 @@
-from lib.base_preprocessors import BaseReader
+from semproc.base_preprocessors import BaseReader
 
 
 class RdfReader(BaseReader):
@@ -7,4 +7,4 @@ class RdfReader(BaseReader):
     '''
 
     def parse(self):
-        return {}
+        self.description = {}

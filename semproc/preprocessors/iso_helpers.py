@@ -1,8 +1,8 @@
 import dateutil as dateparser
-from lib.xml_utils import extract_item, extract_items, generate_localname_xpath
-from lib.xml_utils import extract_elem, extract_elems
-from lib.utils import tidy_dict
-from lib.geo_utils import bbox_to_geom, gml_to_geom, reproject, to_wkt
+from semproc.xml_utils import extract_item, extract_items, generate_localname_xpath
+from semproc.xml_utils import extract_elem, extract_elems
+from semproc.utils import tidy_dict
+from semproc.geo_utils import bbox_to_geom, gml_to_geom, reproject, to_wkt
 
 
 def parse_identifiers(elem):

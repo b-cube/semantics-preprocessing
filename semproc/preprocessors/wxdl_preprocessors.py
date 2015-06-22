@@ -1,4 +1,4 @@
-from lib.base_preprocessors import BaseReader
+from semproc.base_preprocessors import BaseReader
 
 
 class WadlReader(BaseReader):

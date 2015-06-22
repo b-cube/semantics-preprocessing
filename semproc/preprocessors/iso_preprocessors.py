@@ -1,11 +1,11 @@
-from lib.parser import BasicParser
-from lib.utils import tidy_dict
-from lib.preprocessors.iso_helpers import parse_identification_info
-from lib.preprocessors.iso_helpers import parse_distribution
-from lib.preprocessors.iso_helpers import parse_responsibleparty
-from lib.xml_utils import extract_item, extract_items
-from lib.xml_utils import extract_elem, extract_elems
-from lib.xml_utils import extract_attrib, extract_attribs
+from semproc.parser import Parser
+from semproc.utils import tidy_dict
+from semproc.preprocessors.iso_helpers import parse_identification_info
+from semproc.preprocessors.iso_helpers import parse_distribution
+from semproc.preprocessors.iso_helpers import parse_responsibleparty
+from semproc.xml_utils import extract_item, extract_items
+from semproc.xml_utils import extract_elem, extract_elems
+from semproc.xml_utils import extract_attrib, extract_attribs
 
 
 '''
@@ -29,7 +29,7 @@ class IsoParser():
         self.identity = identity
 
         # parse
-        self.parser = BasicParser(text)
+        self.parser = Parser(text)
 
     def parse(self):
         '''

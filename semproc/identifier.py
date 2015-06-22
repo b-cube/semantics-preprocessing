@@ -1,7 +1,7 @@
 # import yaml
 import re
 from itertools import chain
-from lib.yaml_configs import import_yaml_configs
+from semproc.yaml_configs import import_yaml_configs
 
 
 class Identify():
@@ -26,8 +26,6 @@ class Identify():
         self.source_url = source_url
         self.options = options
         self.yaml = import_yaml_configs(self.yaml_files)
-
-        self.ignore_case = options['ignore_case'] if 'ignore_case' in options else False
 
     def _filter(self, operator, filters, clauses):
         '''

@@ -1,7 +1,7 @@
 from lxml import etree
 import urllib
 import urlparse
-from lib.utils import extract_element_tag
+from semproc.utils import extract_element_tag
 
 
 class ThreddsLinkBuilder(object):

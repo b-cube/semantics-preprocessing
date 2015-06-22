@@ -1,10 +1,10 @@
-from lib.preprocessors.opensearch_preprocessors import OpenSearchReader
-from lib.preprocessors.iso_preprocessors import IsoReader
-from lib.preprocessors.oaipmh_preprocessors import OaiPmhReader
-from lib.preprocessors.thredds_preprocessors import ThreddsReader
-from lib.preprocessors.xml_preprocessors import XmlReader
-from lib.preprocessors.ogc_preprocessors import OgcReader
-from lib.preprocessors.rdf_preprocessors import RdfReader
+from semproc.preprocessors.opensearch_preprocessors import OpenSearchReader
+from semproc.preprocessors.iso_preprocessors import IsoReader
+from semproc.preprocessors.oaipmh_preprocessors import OaiPmhReader
+from semproc.preprocessors.thredds_preprocessors import ThreddsReader
+from semproc.preprocessors.xml_preprocessors import XmlReader
+from semproc.preprocessors.ogc_preprocessors import OgcReader
+from semproc.preprocessors.rdf_preprocessors import RdfReader
 
 
 class Router():

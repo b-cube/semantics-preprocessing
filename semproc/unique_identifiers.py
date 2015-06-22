@@ -1,7 +1,7 @@
 import re
-from lib.parser import BasicParser
-from lib.nlp_utils import load_token_list
-from lib.utils import unquote, break_url
+from semproc.parser import BasicParser
+from semproc.nlp_utils import load_token_list
+from semproc.utils import unquote, break_url
 import dateutil.parser as dateparser
 from itertools import chain
 import json

@@ -1,9 +1,9 @@
-from lib.processor import Processor
-from lib.utils import extract_element_tag
-from lib.utils import generate_short_uuid
-# from lib.utils import generate_qualified_xpath
-from lib.utils import tidy_dict
-from lib.xml_utils import extract_elems, extract_attrib
+from semproc.processor import Processor
+from semproc.utils import extract_element_tag
+from semproc.utils import generate_short_uuid
+# from lsemproc.utils import generate_qualified_xpath
+from semproc.utils import tidy_dict
+from semproc.xml_utils import extract_elems, extract_attrib
 
 
 class ThreddsReader(Processor):

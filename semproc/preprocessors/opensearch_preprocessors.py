@@ -2,9 +2,9 @@ import re
 import urlparse
 import urllib
 from itertools import chain
-from lib.processor import Processor
-from lib.utils import parse_url, tidy_dict
-from lib.xml_utils import extract_elems, extract_items, extract_item
+from semproc.processor import Processor
+from semproc.utils import parse_url, tidy_dict
+from semproc.xml_utils import extract_elems, extract_items, extract_item
 
 
 class OpenSearchReader(Processor):

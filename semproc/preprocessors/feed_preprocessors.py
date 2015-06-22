@@ -1,7 +1,7 @@
 import sys
-from lib.base_preprocessors import BaseReader
-from lib.xml_utils import extract_item, extract_items, extract_elems
-from lib.utils import tidy_dict
+from semproc.base_preprocessors import BaseReader
+from semproc.xml_utils import extract_item, extract_items, extract_elems
+from semproc.utils import tidy_dict
 
 
 class FeedReader(BaseReader):

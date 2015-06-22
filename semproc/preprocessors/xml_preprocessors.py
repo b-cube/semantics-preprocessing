@@ -1,5 +1,5 @@
-from lib.base_preprocessors import BaseReader
-from lib.utils import generate_qualified_xpath
+from semproc.base_preprocessors import BaseReader
+from semproc.utils import generate_qualified_xpath
 
 
 class XmlReader(BaseReader):
@@ -32,6 +32,7 @@ class XmlReader(BaseReader):
         '''
         # run through the nodes
         # making sure we also pull the attribute information
+        self.description = {}
         nodes = []
         for elem in self.parser.xml.iter():
             t = elem.text.strip() if elem.text else ''
@@ -47,4 +48,4 @@ class XmlReader(BaseReader):
                     "value": t
                 })
 
-        return nodes
+        self.description['nodes'] = nodes
