@@ -23,6 +23,7 @@ pipeline_tests/
 
 solr_superset/
 sql/
+local/
 
 .ipynb_checkpoints
 
