@@ -4,6 +4,7 @@ import collections
 from uuid import uuid4
 import hashlib
 from itertools import chain
+from HTMLParser import HTMLParser
 
 
 '''
@@ -170,3 +171,42 @@ def flatten(items, excluded_keys=[]):
         return list(_flatten(arr))
 
     return arr
+
+
+def strip_whitespace_from_xml(xml):
+    ''' do not remember if this is necessary, but here it is '''
+    for elem in xml.iter():
+        t = elem.text.strip() if elem.text else ''
+        if not t:
+            continue
+        elem.text = ' '.join(t.split())
+
+    return xml
+
+
+def strip_html(xml):
+    for elem in xml.iter():
+        t = elem.text.strip() if elem.text else ''
+        if not t:
+            continue
+
+        hparser = TextParser()
+        hparser.feed(t)
+        elem.text = hparser.get_data()
+
+    return xml
+
+
+class TextParser(HTMLParser):
+    '''
+    basic html parsing for text with html-encoded tags
+    '''
+    def __init__(self):
+        self.reset()
+        self.fed = []
+
+    def handle_data(self, d):
+        self.fed.append(d)
+
+    def get_data(self):
+        return ''.join(self.fed)

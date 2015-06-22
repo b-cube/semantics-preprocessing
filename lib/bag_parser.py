@@ -1,4 +1,4 @@
-from lib.parser import BasicParser
+from lib.parser import Parser
 from bs4 import BeautifulSoup
 import re
 from lib.utils import unquote
@@ -10,7 +10,7 @@ from lib.utils import unquote
 class BagParser():
     def __init__(self, text, handle_html=False, include_html_hrefs=False):
         self.text = text
-        self.parser = BasicParser(text)
+        self.parser = Parser(text)
 
         self.handle_html = handle_html
         self.include_html_hrefs = include_html_hrefs

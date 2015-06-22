@@ -6,5 +6,5 @@ class RdfReader(BaseReader):
     rdf parser (if dataset)
     '''
 
-    def parse_service(self):
+    def parse(self):
         return {}

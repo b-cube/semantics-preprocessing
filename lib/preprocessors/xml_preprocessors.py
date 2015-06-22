@@ -1,4 +1,5 @@
 from lib.base_preprocessors import BaseReader
+from lib.utils import generate_qualified_xpath
 
 
 class XmlReader(BaseReader):
@@ -9,12 +10,41 @@ class XmlReader(BaseReader):
     retained in the system, ie. how to model no's
     '''
 
-    def return_exclude_descriptors(self):
-        pass
+    def _parse_attributes(self, elem, tags, ignore_root=True):
+        if not elem.attrib:
+            return []
 
-    def parse_service(self):
+        atts = []
+        for k, v in elem.attrib.iteritems():
+            att_tags = tags + ['@' + k]
+            if v.strip():
+                atts.append({
+                    "xpath": '/'.join(att_tags),
+                    "value": v.strip()
+                })
+
+        return atts
+
+    def parse(self):
         '''
         where we have no service info, no endpoints
-        and it's basically just the remainders element
+        and it's basically just the text and attribute bits
         '''
-        return {'remainder': self.return_everything_else([])}
+        # run through the nodes
+        # making sure we also pull the attribute information
+        nodes = []
+        for elem in self.parser.xml.iter():
+            t = elem.text.strip() if elem.text else ''
+            tags = generate_qualified_xpath(elem, False)
+
+            atts = self._parse_attributes(elem, tags)
+            if atts:
+                nodes += atts
+
+            if t:
+                nodes.append({
+                    "xpath": '/'.join(tags),
+                    "value": t
+                })
+
+        return nodes

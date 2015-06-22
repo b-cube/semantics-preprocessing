@@ -33,15 +33,15 @@ class Router():
             self.reader = XmlReader(response, url)
 
         if protocol == 'OpenSearch':
-            self.reader = OpenSearchReader(response, url)
+            self.reader = OpenSearchReader(self.identity, response, url)
         elif protocol == 'OAI-PMH':
-            self.reader = OaiPmhReader(response, url)
+            self.reader = OaiPmhReader(self.identity, response, url)
         elif protocol == 'UNIDATA':
-            self.reader = ThreddsReader(response, url)
-        elif protocol in ['ISO-19115']:
+            self.reader = ThreddsReader(self.identity, response, url)
+        elif protocol in ['ISO']:
             # TODO: update this for the data series and service metadata
-            self.reader = IsoReader(response, url)
-        elif protocol.startswith('OGC:') and 'error' not in protocol:
-            self.reader = OgcReader(protocol.split(':')[-1], version, response, url)
+            self.reader = IsoReader(self.identity, response, url)
+        elif protocol in ['OGC'] and 'error' not in protocol:
+            self.reader = OgcReader(self.identity, protocol, version, response, url)
         elif protocol == 'RDF':
-            self.reader = RdfReader(response, url)
+            self.reader = RdfReader(self.identity, response, url)

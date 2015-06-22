@@ -1,4 +1,4 @@
-from lib.parser import BasicParser
+from lib.parser import Parser
 from lib.xml_utils import extract_elems
 
 
@@ -40,7 +40,7 @@ class Processor(object):
                 yield parsed
 
     def _load_xml(self):
-        self.parser = BasicParser(self.response)
+        self.parser = Parser(self.response)
 
     def _parse_child(self, child):
         pass
