@@ -8,18 +8,83 @@ XML and text parsing for the pipeline between Nutch/Solr and a triplestore or NL
 
 ```
 {
-	"solr_identifier": "",
+	"solr_identifier": "",  // sha256 of the source url
 	"source_url": "",
 	"harvested_date": "",
 	"modified_date": "",
 	"identity": {
 		"protocol": "",  // base type of the response, ex OGC or OAI-PMH
-		"service": "", // service type, ex Catalog, WFS
-		"version": "", // version identifier
-		"subtype": "", // type of service (service | dataset | metadata)
-		"has_dataset": False, // response contains secondary dataset metadata
-		"has_metadata": False // response contains secondary metadata metadata
+		"service": {  // service type, ex Catalog, WFS
+			"name": "",
+			"request": "",
+			"version": "",
+			"language": ""
+		}, 
+		"dataset": {
+			"name": "",
+			"request": "",
+			"version": "",
+			"language": ""
+		},
+		"metadata": {
+			"name": "",
+			"request": "",
+			"version": "",
+			"language": ""
+		},
+		"resultset": {
+			"name": "",
+			"request": "",
+			"dialect": "",
+			"version": "",
+			"language": ""
+		}
 	},
+	"service_description": {
+		"title": "",
+		"description": "", 
+		"subjects": [],
+		"contact": {},
+		"rights": "",
+		"language": "",
+		"endpoints": [
+			{
+				"url": "",
+				"name": "",
+				"description": "",
+				"actionable": "",
+				"method": "",
+				"mimetype": "",
+				"format": "",
+				"parameters": []
+			}
+		],
+		"parentOf": [],
+		"isDescribedBy": ""
+	},
+	"datasets": [
+		{
+			"childOf": "",  // reference to the parent service profile
+			"title": "",
+			"description": "",
+			"spatial_extent": "",  // wgs84 WKT string for geosparql support in parliament
+			"temporal_extent": {
+				"start": "",
+				"end": ""
+			},
+			"subjects": [],
+			"rights": "",
+			"formats": [],
+			"isDescribedBy": ""  // a reference to the metadata record
+		}
+	],
+	"metadata": {
+		"describes": "",
+		""
+	}
+
+
+
 	"service": {
 		"title": [],
 		"abstract": [],
@@ -45,24 +110,7 @@ XML and text parsing for the pipeline between Nutch/Solr and a triplestore or NL
 				]
 			}
 		]
-	},
-	"remainder": [
-		// a list of tuples containing any text from an element or 
-		// attribute not captured in the service set
-		// note that the text value can be empty if the element
-		// only has attribute values
-		(
-			"text",
-			"fully qualified xpath to element",
-			"attributes": [
-				// array of tuples for any attributes on the parent element
-				(
-					"text",
-					"fully qualified xpath to attribute"
-				)
-			]
-		), ...
-	]
+	}
 }
 ```
 
