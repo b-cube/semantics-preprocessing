@@ -1,5 +1,0 @@
-init:
-
-Triple:
-  input_directory: 'testdata/test_triples'
-  output_directory: 'testdata/test_triples'
