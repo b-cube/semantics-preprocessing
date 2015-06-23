@@ -1,11 +1,11 @@
-from semproc.base_preprocessors import BaseReader
+from semproc.processor import Processor
 
 
-class WadlReader(BaseReader):
+class WadlReader(Processor):
     def __init__(self):
         pass
 
 
-class WsdlReader(BaseReader):
+class WsdlReader(Processor):
     def __init__(self):
         pass

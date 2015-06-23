@@ -1,10 +1,10 @@
 from owscapable.wms import WebMapService
 from owscapable.wcs import WebCoverageService
-from owscapable.coverage import DescribeCoverageReader
+from owscapable.coverage.wcsBase import DescribeCoverageReader
 from owscapable.wfs import WebFeatureService
 from owscapable.csw import CatalogueServiceWeb
 from owscapable.sos import SensorObservationService
-from semproc.preprocessors import Processor
+from semproc.processor import Processor
 from semproc.preprocessors.csw_preprocessors import CswReader
 from semproc.yaml_configs import import_yaml_configs
 from semproc.geo_utils import bbox_to_geom, reproject, to_wkt
@@ -27,28 +27,28 @@ class OgcReader(Processor):
                  CSW 2.0.2
                  SOS 1.0.0
     '''
-    def _get_service_reader(self):
-        if self.service == 'WMS' and self.version in ['1.1.1', '1.3.0']:
-            reader = WebMapService('', xml=self.response, version=self.version)
-        elif self.service == 'WFS' and self.version in ['1.0.0', '1.1.0']:
-            reader = WebFeatureService('', xml=self.response, version=self.version)
-        elif self.service == 'WCS' and self.version in ['1.0.0', '1.1.0', '1.1.1', '1.1.2']:
-            reader = WebCoverageService('', xml=self.response, version=self.version)
-        elif self.service == 'CSW' and self.version in ['2.0.2']:
-            reader = CatalogueServiceWeb('', xml=self.response, version=self.version)
-        elif self.service == 'SOS' and self.version in ['1.0.0']:
-            reader = SensorObservationService('', xml=self.response, version=self.version)
+    def _get_service_reader(self, service, version):
+        if service == 'WMS' and version in ['1.1.1', '1.3.0']:
+            reader = WebMapService('', xml=self.response, version=version)
+        elif service == 'WFS' and version in ['1.0.0', '1.1.0']:
+            reader = WebFeatureService('', xml=self.response, version=version)
+        elif service == 'WCS' and version in ['1.0.0', '1.1.0', '1.1.1', '1.1.2']:
+            reader = WebCoverageService('', xml=self.response, version=version)
+        elif service == 'CSW' and version in ['2.0.2']:
+            reader = CatalogueServiceWeb('', xml=self.response, version=version)
+        elif service == 'SOS' and version in ['1.0.0']:
+            reader = SensorObservationService('', xml=self.response, version=version)
         else:
             return None
         return reader
 
-    def _get_service_config(self):
+    def _get_service_config(self, service, version):
         # get the config file
-        data = import_yaml_configs(['lib/configs/ogc_parameters.yaml'])
-        self.config = next(d for d in data if d['name'] == self.service.upper() +
-                           self.version.replace('.', ''))
+        data = import_yaml_configs(['../semproc/configs/ogc_parameters.yaml'])
+        self.config = next(d for d in data if d['name'] == service.upper() +
+                           version.replace('.', ''))
 
-    def _get_operations(self, reader):
+    def _get_operations(self, reader, service, version):
         '''
         each operation can have more than one endpoint (get and post, ex)
 
@@ -79,8 +79,8 @@ class OgcReader(Processor):
         def _append_params(base_url, operation):
             if not base_url[-1] == '?':
                 base_url += '?'
-            return base_url + 'SERVICE=%s&VERSION=%s&REQUEST=%s' % (self.service,
-                                                                    self.version,
+            return base_url + 'SERVICE=%s&VERSION=%s&REQUEST=%s' % (service,
+                                                                    version,
                                                                     operation)
 
         def _merge_params(op_name, found_params):
@@ -191,39 +191,42 @@ class OgcReader(Processor):
     def parse(self):
         self.description = {}
 
-        if 'service' in self.identity:
+        if 'service' in self.identify:
             # run the owslib getcapabilities parsers
-            reader = self._get_reader()
+            service = self.identify['service'].get('name', '')
+            version = self.identify['service'].get('version', '')
+            reader = self._get_service_reader(service, version)
             if not reader:
                 return {}
-            self._get_config()
-            self.description['service'] = self._parse_service(reader)
+            self._get_service_config(service, version)
+            self.description['service'] = self._parse_service(reader, service, version)
 
-        if 'dataset' in self.identity:
+        if 'dataset' in self.identify:
             # run the owslib wcs/wfs describe* parsers
-            request = self.identity['dataset'].get('request', '')
-            service = self.identity['dataset'].get('name', '')
+            request = self.identify['dataset'].get('request', '')
+            service = self.identify['dataset'].get('name', '')
+            version = self.identify['dataset'].get('version', '')
             if not request or not service:
                 return {}
 
             if service == 'WMS' and request == 'GetCapabilities':
                 # this is a rehash of the getcap parsing
                 # but *only* returning the layers set
-                reader = WebMapService('', xml=self.response, version=self.version)
+                reader = WebMapService('', xml=self.response, version=version)
                 self.description['datasets'] = self._parse_getcap_datasets(reader)
             if service == 'WCS' and request == 'DescribeCoverage':
                 # need to get the coverage name(s) from the url
-                reader = DescribeCoverageReader(self.version, '', None, xml=self.response)
+                reader = DescribeCoverageReader(version, '', None, xml=self.response)
                 # TODO: something to serialize that output decently
                 self.description['datasets'] = []
             elif service == 'SOS' and request == 'GetCapabilities':
-                reader = SensorObservationService('', xml=self.response, version=self.version)
+                reader = SensorObservationService('', xml=self.response, version=version)
                 self.description['datasets'] = self._parse_getcap_datasets(reader)
             elif service == 'WFS' and request == 'GetCapabilities':
-                reader = WebFeatureService('', xml=self.response, version=self.version)
+                reader = WebFeatureService('', xml=self.response, version=version)
                 self.description['datasets'] = self._parse_getcap_datasets(reader)
 
-        if 'resultset' in self.identity:
+        if 'resultset' in self.identify:
             # assuming csw, run the local csw reader
             reader = CswReader(self.identity, self.response, self.url)
             reader.parse()
@@ -232,7 +235,7 @@ class OgcReader(Processor):
 
         self.description = tidy_dict(self.description)
 
-    def _parse_service(self, reader):
+    def _parse_service(self, reader, service, version):
         rights = [reader.identification.accessconstraints]
         try:
             contact = [reader.provider.contact.name]
@@ -241,7 +244,7 @@ class OgcReader(Processor):
 
         abstract = [reader.identification.abstract]
         keywords = reader.identification.keywords
-        endpoints = self._get_operations(reader)
+        endpoints = self._get_operations(reader, service, version)
 
         service = {
             "title": [reader.identification.title]

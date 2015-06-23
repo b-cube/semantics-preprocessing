@@ -51,8 +51,8 @@ class OpenSearchReader(Processor):
 
     def _parse_endpoint(self, elem):
         endpoint = {}
-        endpoint['mimetype'] = elem.get('type', '')
-        endpoint['template'] = elem.get('template', '')
+        endpoint['mimetype'] = elem.attrib.get('type', '')
+        endpoint['template'] = elem.attrib.get('template', '')
         endpoint['parameters'] = self._extract_params(elem)
         endpoint['actionable'] = 'NOPE'
         endpoint['url'] = self._generate_url(endpoint['mimetype'], endpoint['template'])
@@ -106,7 +106,7 @@ class OpenSearchReader(Processor):
         return base_url, defaults, parameters
 
     def _generate_url(self, mimetype, template):
-        url_base, defaults, params = self._extract_template(template)
+        url_base, defaults, params = self._extract_template(template, None)
         if not url_base:
             return ''
 
@@ -118,6 +118,8 @@ class OpenSearchReader(Processor):
                     {search_terms.keys()[0]: ''}.items()
                 )
             )
+        else:
+            qps = {}
 
         return url_base + '?' + urllib.urlencode(qps.items())
 

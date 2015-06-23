@@ -43,6 +43,6 @@ class OaiPmhReader(Processor):
             return dict(
                 chain(
                     {"identifier": identifier, "timestamp": timestamp}.items(),
-                    dc_parser.parse().items()
+                    dc_parser.parse_item().items()
                 )
             )

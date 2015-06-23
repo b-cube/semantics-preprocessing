@@ -1,5 +1,5 @@
 # import sys
-from semproc.preprocessors import Processor
+from semproc.processor import Processor
 from semproc.xml_utils import extract_attrib, extract_elem
 from semproc.utils import tidy_dict
 from semproc.preprocessors.iso_preprocessors import MxParser

@@ -1,10 +1,10 @@
 import sys
-from semproc.base_preprocessors import BaseReader
+from semproc.processor import Processor
 from semproc.xml_utils import extract_item, extract_items, extract_elems
 from semproc.utils import tidy_dict
 
 
-class FeedReader(BaseReader):
+class FeedReader(Processor):
     def __init__(self, response, url, dialect=''):
         self._response = response
         self._url = url

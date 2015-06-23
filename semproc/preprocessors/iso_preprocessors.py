@@ -16,7 +16,7 @@ NOTE: for all of the ISO parsers, I am using the local-path "trick". It is a kno
 '''
 
 
-class IsoParser():
+class IsoReader():
     '''
     this assumes we're reading from a response as the root
     and will iterate over whatever that flavor of iso is:

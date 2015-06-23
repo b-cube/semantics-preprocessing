@@ -1,8 +1,8 @@
-from semproc.base_preprocessors import BaseReader
+from semproc.processor import Processor
 from semproc.utils import generate_qualified_xpath
 
 
-class XmlReader(BaseReader):
+class XmlReader(Processor):
     '''
     a very basic processor for any valid xml
     response that is not identified (or not identified

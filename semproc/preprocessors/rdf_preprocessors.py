@@ -1,7 +1,7 @@
-from semproc.base_preprocessors import BaseReader
+from semproc.processor import Processor
 
 
-class RdfReader(BaseReader):
+class RdfReader(Processor):
     '''
     rdf parser (if dataset)
     '''

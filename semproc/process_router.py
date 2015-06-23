@@ -26,7 +26,6 @@ class Router():
         set up the router
         '''
         protocol = self.identity['protocol']
-        version = self.identity['version']
 
         if not protocol:
             # we will try a generic xml parser
@@ -42,6 +41,6 @@ class Router():
             # TODO: update this for the data series and service metadata
             self.reader = IsoReader(self.identity, response, url)
         elif protocol in ['OGC'] and 'error' not in protocol:
-            self.reader = OgcReader(self.identity, protocol, version, response, url)
+            self.reader = OgcReader(self.identity, response, url)
         elif protocol == 'RDF':
             self.reader = RdfReader(self.identity, response, url)
