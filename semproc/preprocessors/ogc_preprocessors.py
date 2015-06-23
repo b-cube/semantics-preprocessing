@@ -227,7 +227,7 @@ class OgcReader(Processor):
 
         if 'resultset' in self.identify:
             # assuming csw, run the local csw reader
-            reader = CswReader(self.identity, self.response, self.url)
+            reader = CswReader(self.identify, self.response, self.url)
             reader.parse()
             # TODO: this is not a good key (children->children)
             self.description['children'] = reader.description
@@ -299,8 +299,10 @@ class OgcReader(Processor):
                 min_coord = map(float, min_pos.split())
                 max_coord = map(float, max_pos.split())
 
-                bbox = bbox_to_geom([min_coord[0], min_coord[1], max_coord[0], max_coord[1]])
-                bbox = reproject(bbox, crs_urn, 'EPSG:4326')
+                bbox = bbox_to_geom(min_coord + max_coord)
+                # TODO: there's an issue with the gdal_data path
+                #       where it is not finding the epsg registry
+                # bbox = reproject(bbox, crs_urn, 'EPSG:4326')
 
                 d['bbox'] = to_wkt(bbox)
 
