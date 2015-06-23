@@ -84,8 +84,12 @@ class ThreddsReader(Processor):
 
             return element
 
-        children = elem.xpath('./node()[local-name()="metadata" or ' +
-                              'local-name()="dataset" or local-name()="catalogRef"]')
+        children = extract_elems(elem, ['metadata']) + \
+            extract_elems(elem, ['dataset']) + \
+            extract_elems(elem, ['catalogRef'])
+
+        # elem.xpath('./node()[local-name()="metadata" or ' +
+        #                       'local-name()="dataset" or local-name()="catalogRef"]')
 
         element = _run_element(elem, service_bases)
         element_children = []
@@ -136,6 +140,9 @@ class ThreddsReader(Processor):
                 "version": extract_attrib(self.parser.xml, ['@version'])
             }
 
+        service_bases = self.parser.xml.xpath('//*[local-name()="service" and @base != ""]')
+        self.service_bases = {s.attrib.get('name'): s.attrib.get('base') for s in service_bases}
+
         if 'dataset' in self.identify:
             # TODO: this is really not right but it is not
             # a proper web service so meh
@@ -153,12 +160,12 @@ class ThreddsReader(Processor):
         # get the level-one children (catalog->child)
         endpoints = []
 
-        datasets = extract_elems(self.parser.xml, ['catalog', 'dataset'])
+        datasets = extract_elems(self.parser.xml, ['dataset'])
         # datasets = self.parser.find(dataset_xpath)
         for dataset in datasets:
             description, child_endpoints = self._handle_elem(
                 dataset, ['dataset', 'metadata', 'catalogRef'],
-                self._url,
+                self.url,
                 self.service_bases
             )
             endpoints += [description] + child_endpoints
@@ -166,16 +173,17 @@ class ThreddsReader(Processor):
         return {"endpoints": endpoints}
 
     def _parse_metadata(self):
-        metadata_xpath = "/{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/" + \
-                         "{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}metadata"
+        # metadata_xpath = "/{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/" + \
+        #                  "{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}metadata"
 
         endpoints = []
-        metadatas = self.parser.find(metadata_xpath)
+        # metadatas = self.parser.find(metadata_xpath)
+        metadatas = extract_elems(self.parser.xml, ['metadata'])
         for metadata in metadatas:
             description, child_endpoints = self._handle_elem(
                 metadata,
                 [],
-                self._url,
+                self.url,
                 self.service_bases
             )
             endpoints += [description] + child_endpoints
@@ -190,36 +198,33 @@ class ThreddsReader(Processor):
         element or catalogRef elements, parse those as endpoints (relative paths
             and all of the tagging issues)
         '''
-        svc_xpath = "/{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/" + \
-                    "{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}service"
+        # svc_xpath = "/{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/" + \
+        #             "{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}service"
 
-        catref_xpath = "/{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/" + \
-                       "{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalogRef"
+        # catref_xpath = "/{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/" + \
+        #                "{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalogRef"
 
         endpoints = []
 
-        service_bases = self.parser.find('//*[local-name()="service" and @base != ""]')
-        self.service_bases = {s.attrib.get('name'): s.attrib.get('base') for s in service_bases}
-
-        services = self.parser.find(svc_xpath)
+        services = extract_elems(self.parser.xml, ['service'])
         # ffs, services can be nested too
         for service in services:
             description, child_endpoints = self._handle_elem(
                 service,
                 ['service'],
-                self._url,
+                self.url,
                 {}
             )
             endpoints += [description]
             if child_endpoints:
                 endpoints += child_endpoints
 
-        catrefs = self.parser.find(catref_xpath)
+        catrefs = extract_elems(self.parser.xml, ['catalogRef'])
         for catref in catrefs:
             description, child_endpoints = self._handle_elem(
                 catref,
                 ['catalogRef', 'metadata'],
-                self._url,
+                self.url,
                 {}  # TODO: so dap or file base path only? (not the full set,
                     # that makes no sense)
             )
