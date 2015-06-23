@@ -217,8 +217,7 @@ class OgcReader(Processor):
             if service == 'WCS' and request == 'DescribeCoverage':
                 # need to get the coverage name(s) from the url
                 reader = DescribeCoverageReader(version, '', None, xml=self.response)
-                # TODO: something to serialize that output decently
-                self.description['datasets'] = []
+                self.description['datasets'] = self._parse_coverages(reader)
             elif service == 'SOS' and request == 'GetCapabilities':
                 reader = SensorObservationService('', xml=self.response, version=version)
                 self.description['datasets'] = self._parse_getcap_datasets(reader)
@@ -266,6 +265,71 @@ class OgcReader(Processor):
             service['endpoints'] = endpoints
 
         return service
+
+    def _parse_coverages(self, reader):
+        def _return_timerange(start_range, end_range):
+            try:
+                start_date = dateparser.parse(start_range)
+            except:
+                start_date = None
+            try:
+                end_date = dateparser.parse(end_range)
+            except:
+                end_date = None
+
+            return start_date, end_date
+
+        datasets = []
+
+        if reader.coverages is None:
+            return []
+
+        for coverage in reader.coverages:
+            d = {}
+            d['name'] = coverage.name
+            if coverage.description:
+                d['abstract'] = coverage.description
+
+            if coverage.min_pos and coverage.max_pos:
+                # TODO: translate this to a bbox
+                min_pos = coverage.min_pos
+                max_pos = coverage.max_pos
+                crs_urn = coverage.srs_urn
+
+                min_coord = map(float, min_pos.split())
+                max_coord = map(float, max_pos.split())
+
+                bbox = bbox_to_geom([min_coord[0], min_coord[1], max_coord[0], max_coord[1]])
+                bbox = reproject(bbox, crs_urn, 'EPSG:4326')
+
+                d['bbox'] = to_wkt(bbox)
+
+            # TODO: what to do about the main envelope vs all the domainSet bboxes?
+            try:
+                if coverage.temporal_domain:
+                    begin_range = coverage.temporal_domain.get('begin_position', '')
+                    end_range = coverage.temporal_domain.get('end_position', '')
+                    begin_time, end_time = _return_timerange(begin_range, end_range)
+                    d['temporal_extent'] = {"begin": begin_time.isoformat(),
+                                            "end": end_time.isoformat()}
+            except AttributeError:
+                pass
+
+            try:
+                if coverage.supported_formats:
+                    d['formats'] = coverage.supported_formats
+            except AttributeError:
+                pass
+
+            try:
+                if coverage.supported_crs:
+                    d['spatial_refs'] = coverage.supported_crs
+            except AttributeError:
+                pass
+
+            datasets.append(d)
+
+        return datasets
 
     def _parse_getcap_datasets(self, reader):
         '''
