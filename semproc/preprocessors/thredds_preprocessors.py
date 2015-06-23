@@ -3,7 +3,7 @@ from semproc.utils import extract_element_tag
 from semproc.utils import generate_short_uuid
 # from lsemproc.utils import generate_qualified_xpath
 from semproc.utils import tidy_dict
-from semproc.xml_utils import extract_elems, extract_attrib
+from semproc.xml_utils import extract_elems, extract_elem, extract_attrib, extract_attrib
 
 
 class ThreddsReader(Processor):
@@ -107,7 +107,9 @@ class ThreddsReader(Processor):
         endpoints = []
 
         for child_tag in child_tags:
-            elems = elem.xpath('*[local-name()="%s"]' % child_tag)
+            elems = extract_elems(elem, [child_tag])
+
+            # elems = elem.xpath('*[local-name()="%s"]' % child_tag)
 
             for e in elems:
                 e_desc = self._get_items(
@@ -145,12 +147,14 @@ class ThreddsReader(Processor):
         self.description = tidy_dict(self.description)
 
     def _parse_datasets(self):
-        dataset_xpath = "/{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/" + \
-                        "{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}dataset"
+        # dataset_xpath = "/{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/" + \
+        #                 "{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}dataset"
 
         # get the level-one children (catalog->child)
         endpoints = []
-        datasets = self.parser.find(dataset_xpath)
+
+        datasets = extract_elems(self.parser.xml, ['catalog', 'dataset'])
+        # datasets = self.parser.find(dataset_xpath)
         for dataset in datasets:
             description, child_endpoints = self._handle_elem(
                 dataset, ['dataset', 'metadata', 'catalogRef'],

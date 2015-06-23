@@ -24,12 +24,13 @@ class IsoReader():
         service identification
         mi/md
     '''
-    def __init__(self, text, identity):
+    def __init__(self, identity, text, url):
         self.text = text
         self.identity = identity
 
         # parse
         self.parser = Parser(text)
+        self.parse()
 
     def parse(self):
         '''
@@ -40,21 +41,30 @@ class IsoReader():
             # we're going to have to sort it out
             self.identity = {}
 
-        protocol = self.identity.get('protocol')
-        if protocol == 'Data Series':
+        metadata = self.identity.get('metadata', {})
+        if not metadata:
+            return {}
+
+        metadata_type = metadata.get('name', '')
+        if not metadata_type:
+            return {}
+
+        if metadata_type == 'Data Series':
             # run the set
-            iso = DsParser(self.parser.xml)
-        elif protocol == 'ServiceIdentification':
+            self.reader = DsParser(self.parser.xml)
+        elif metadata_type == '19119':
             # run that
-            iso = SrvParser(self.parser.xml)
-        elif protocol == 'Metadata':
+            self.reader = SrvParser(self.parser.xml)
+        elif metadata_type == '19115':
             # it's a mi/md so run that
-            iso = MxParser(self.parser.xml)
+            self.reader = MxParser(self.parser.xml)
 
-        return iso.parse()
+        self.reader.parse()
+        # pass it back up the chain a bit
+        self.description = self.reader.description
 
 
-class MxParser():
+class MxParser(object):
     '''
     parse an mi or md element (as whole record or some csw/oai-pmh/ds child)
     '''
@@ -74,12 +84,12 @@ class MxParser():
             if identificationInfo contains SV_ServiceIdentification, add as child
             distribution info
         '''
-        mx = {}
+        self.description = {}
 
         id_elem = extract_elem(self.elem, ['identificationInfo', 'MD_DataIdentification'])
         if id_elem is not None:
             identification = parse_identification_info(id_elem)
-            mx.update(identification)
+            self.description.update(identification)
 
         # point of contact from the root node and this might be an issue
         # in things like the -1/-3 from ngdc so try for an idinfo blob
@@ -90,25 +100,24 @@ class MxParser():
             poc_elem = extract_elem(self.elem, ['contact', 'CI_ResponsibleParty'])
 
         if poc_elem is not None:
-            mx['contact'] = parse_responsibleparty(poc_elem)
+            self.description['contact'] = parse_responsibleparty(poc_elem)
 
         # check for the service elements
         service_elems = extract_elems(self.elem, ['identificationInfo', 'SV_ServiceIdentification'])
-        mx['services'] = []
+        self.description['services'] = []
         for service_elem in service_elems:
             sv = SrvParser(service_elem)
-            mx['services'].append(sv.parse())
+            self.description['services'].append(sv.parse())
 
         dist_elems = extract_elems(self.elem, ['distributionInfo'])
-        mx['endpoints'] = []
+        self.description['endpoints'] = []
         for dist_elem in dist_elems:
-            mx['endpoints'] = parse_distribution(dist_elem)
+            self.description['endpoints'] = parse_distribution(dist_elem)
 
-        mx = tidy_dict(mx)
-        return mx
+        self.description = tidy_dict(self.description)
 
 
-class SrvParser():
+class SrvParser(object):
     '''
     read a service identification element as
     19119 or the embedded md/mi element
@@ -153,16 +162,17 @@ class SrvParser():
     def parse(self):
         # elem = extract_elem(self.elem, ['SV_ServiceIdentification'])
         if self.elem is None:
-            return None
+            self.description = {}
+            return
 
-        service = parse_identification_info(self.elem)
+        self.description = parse_identification_info(self.elem)
 
-        service['operations'] = self._handle_operations()
+        self.description['operations'] = self._handle_operations()
 
-        return service
+        self.description = tidy_dict(self.description)
 
 
-class DsParser():
+class DsParser(object):
     '''
     the parent ds parsing (as an mi/md record itself)
     plus the nested children in composedOf
@@ -173,20 +183,23 @@ class DsParser():
     # TODO: check on mi vs md here
     def parse(self):
         # get the series
+        self.description = {}
         md = extract_elem(self.elem, ['seriesMetadata', 'MD_Metadata'])
         if md is None:
-            return None
+            return
 
         md_parser = MxParser(md)
-        md_dict = md_parser.parse()
-        md_dict['children'] = []
+        md_parser.parse()
+        self.description = md_parser.description
+        self.description['children'] = []
 
         # get the children
         children = extract_elems(
             self.elem, ['composedOf', 'DS_DataSet', 'has', 'MD_Metadata'])
         for child in children:
             child_parser = MxParser(child)
-            child_dict = child_parser.parse()
-            md_dict['children'].append(child_dict)
+            child_parser.parse()
+            if child_parser.description:
+                self.description['children'].append(child_parser.description)
 
-        return md_dict
+        self.description = tidy_dict(self.description)
