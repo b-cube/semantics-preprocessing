@@ -1,0 +1,9 @@
+- name: WSDL
+  service:
+    - name: WSDL
+      request: ''
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://schemas.xmlsoap.org/wsdl/'

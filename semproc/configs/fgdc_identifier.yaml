@@ -1,0 +1,18 @@
+- name: FGDC
+  metadata:
+    - name: FGDC
+      filters:
+        ors:
+          - type: xpath
+            object: content
+            value: '/metadata/metainfo/metstdv[text()="FGDC-STD-001-1998"]'
+          - type: xpath
+            object: content
+            value: '/metadata/metainfo/metstdv[text()="FGDC-STD-012-2002"]'
+      versions:
+        checks:
+          ors:
+            - type: xpath
+              object: content
+              value: 'concat(//metstdn/text(), ", ", //metstdv/text())'
+  

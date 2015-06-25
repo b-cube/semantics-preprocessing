@@ -1,0 +1,37 @@
+- name: UNIDATA
+  service: 
+    - name: 'THREDDS-Catalog'
+      filters: 
+        ors:
+          - type: simple
+            object: content
+            value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
+      errors:
+        # this is not technically an error but it is 
+        # an invalid service response
+        filters:
+          ors:
+            - type: simple
+              object: content
+              value: '<property name="requires_authorization"'
+            - type: simple
+              object: content
+              value: '<variables vocabulary='
+            - type: simple
+              object: content
+              value: '<dap:Error'
+            - type: xpath
+              object: content
+              value: '/*[local-name()="Error"]'
+      versions:
+        checks:
+          ors: 
+            - type: xpath
+              object: content
+              value: '@version'
+        defaults:
+          ors:
+            - type: simple
+              object: content
+              value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
+              text: '1.0'

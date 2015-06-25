@@ -1,0 +1,1203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" location="/opendap/hyrax/Aqua_AIRS_Level3/AIRS3STD.005/2007/AIRS.2007.06.09.L3.RetStd_IR001.v5.0.14.0.G07257231325.hdf">
+  <dimension name="TempPrsLvls" length="24" />
+  <dimension name="H2OPrsLvls" length="12" />
+  <dimension name="CoarseCldLyrs" length="3" />
+  <dimension name="CO_Layers" length="7" />
+  <dimension name="CH4_Layers" length="3" />
+  <dimension name="EmisLvls" length="4" />
+  <dimension name="TempPrsLvls_1" length="24" />
+  <dimension name="H2OPrsLvls_1" length="12" />
+  <dimension name="CoarseCldLyrs_1" length="3" />
+  <dimension name="CO_Layers_1" length="7" />
+  <dimension name="CH4_Layers_1" length="3" />
+  <dimension name="EmisLvls_1" length="4" />
+  <dimension name="TempPrsLvls_2" length="24" />
+  <dimension name="H2OPrsLvls_2" length="12" />
+  <dimension name="CoarseCldLyrs_2" length="3" />
+  <dimension name="CO_Layers_2" length="7" />
+  <dimension name="CH4_Layers_2" length="3" />
+  <dimension name="MWEmisLvls_2" length="3" />
+  <dimension name="TempPrsLvls_3" length="24" />
+  <dimension name="H2OPrsLvls_3" length="12" />
+  <dimension name="CoarseCldLyrs_3" length="3" />
+  <dimension name="CO_Layers_3" length="7" />
+  <dimension name="CH4_Layers_3" length="3" />
+  <dimension name="MWEmisLvls_3" length="3" />
+  <variable name="TotalCounts_A">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="TotCldLiqH2O_A">
+    <attribute name="standard_name" type="String" value="atmosphere_cloud_liquid_water_content" />
+    <attribute name="long_name" type="String" value="atmosphere_cloud_liquid_water_content" />
+    <attribute name="units" type="String" value="kg/m2" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TotCldLiqH2O_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="TotCldLiqH2O_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TotCldLiqH2O_A_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TotH2OVap_A">
+    <attribute name="standard_name" type="String" value="atmosphere_water_vapor_content" />
+    <attribute name="long_name" type="String" value="atmosphere_water_vapor_content" />
+    <attribute name="units" type="String" value="kg/m2" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TotH2OVap_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="TotH2OVap_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TotH2OVap_A_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TotO3_A">
+    <attribute name="standard_name" type="String" value="atmosphere_moles_of_ozone" />
+    <attribute name="long_name" type="String" value="atmosphere_moles_of_ozone" />
+    <attribute name="units" type="String" value="mol" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TotO3_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="TotO3_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TotO3_A_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="SurfAirTemp_A">
+    <attribute name="standard_name" type="String" value="surface_temperature" />
+    <attribute name="long_name" type="String" value="surface_temperature" />
+    <attribute name="units" type="String" value="K" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="SurfAirTemp_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="SurfAirTemp_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="SurfAirTemp_A_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="SurfSkinTemp_A">
+    <attribute name="standard_name" type="String" value="sea_surface_skin_temperature" />
+    <attribute name="long_name" type="String" value="sea_surface_skin_temperature" />
+    <attribute name="units" type="String" value="K" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="SurfSkinTemp_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="SurfSkinTemp_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="SurfSkinTemp_A_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="SurfPres_A">
+    <attribute name="standard_name" type="String" value="surface_air_pressure" />
+    <attribute name="long_name" type="String" value="surface_air_pressure" />
+    <attribute name="units" type="String" value="Pa" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="SurfPres_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="SurfPres_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="OLR_A">
+    <attribute name="standard_name" type="String" value="toa_outgoing_longwave_flux" />
+    <attribute name="long_name" type="String" value="toa_outgoing_longwave_flux" />
+    <attribute name="units" type="String" value="W/m2" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="OLR_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="OLR_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="ClrOLR_A">
+    <attribute name="standard_name" type="String" value="toa_outgoing_longwave_flux_assuming_clear_sky" />
+    <attribute name="long_name" type="String" value="toa_outgoing_longwave_flux_assuming_clear_sky" />
+    <attribute name="units" type="String" value="W/m2" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="ClrOLR_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="ClrOLR_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="EmisIR_A">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="IREmisLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="EmisIR_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="IREmisLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="EmisIR_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="IREmisLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="EmisIR_A_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="IREmisLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="GPHeight_A">
+    <attribute name="standard_name" type="String" value="geopotential_height" />
+    <attribute name="long_name" type="String" value="geopotential_height" />
+    <attribute name="units" type="String" value="m" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="GPHeight_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="GPHeight_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="CloudFrc_A">
+    <attribute name="standard_name" type="String" value="cloud_area_fraction" />
+    <attribute name="long_name" type="String" value="cloud_area_fraction" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CloudFrc_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="CloudFrc_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CloudFrc_A_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CloudTopPres_A">
+    <attribute name="standard_name" type="String" value="air_pressure_at_cloud_top" />
+    <attribute name="long_name" type="String" value="air_pressure_at_cloud_top" />
+    <attribute name="units" type="String" value="Pa" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CloudTopPres_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="CloudTopPres_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CloudTopPres_A_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="RelHumid_A">
+    <attribute name="standard_name" type="String" value="relative_humidity" />
+    <attribute name="long_name" type="String" value="relative_humidity" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="RelHumid_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="RelHumid_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="H2OVapMMR_A">
+    <attribute name="standard_name" type="String" value="humidity_mixing_ratio" />
+    <attribute name="long_name" type="String" value="humidity_mixing_ratio" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="H2OVapMMR_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="H2OVapMMR_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="H2OVapMMR_A_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="Temperature_A">
+    <attribute name="standard_name" type="String" value="air_temperature" />
+    <attribute name="long_name" type="String" value="air_temperature" />
+    <attribute name="units" type="String" value="K" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="Temperature_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="Temperature_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="Temperature_A_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="CO_total_column_A">
+    <attribute name="standard_name" type="String" value="atmosphere_moles_of_carbon_monoxide" />
+    <attribute name="long_name" type="String" value="atmosphere_moles_of_carbon_monoxide" />
+    <attribute name="units" type="String" value="mol" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CO_total_column_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="CO_total_column_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CH4_VMR_eff_A">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CH4_Layers_A Latitude Longitude" />
+  </variable>
+  <variable name="CH4_VMR_eff_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="CH4_Layers_A Latitude Longitude" />
+  </variable>
+  <variable name="CH4_VMR_eff_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CH4_Layers_A Latitude Longitude" />
+  </variable>
+  <variable name="CH4_VMR_eff_A_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CH4_Layers_A Latitude Longitude" />
+  </variable>
+  <variable name="CO_VMR_eff_A">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CO_Layers_A Latitude Longitude" />
+  </variable>
+  <variable name="CO_VMR_eff_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="CO_Layers_A Latitude Longitude" />
+  </variable>
+  <variable name="CO_VMR_eff_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CO_Layers_A Latitude Longitude" />
+  </variable>
+  <variable name="CO_VMR_eff_A_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CO_Layers_A Latitude Longitude" />
+  </variable>
+  <variable name="CO_dof_A">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CO_dof_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="CO_dof_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CH4_dof_A">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CH4_dof_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="CH4_dof_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CoarseCloudFrc_A">
+    <attribute name="standard_name" type="String" value="cloud_area_fraction_in_atmosphere_layer" />
+    <attribute name="long_name" type="String" value="cloud_area_fraction_in_atmosphere_layer" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_A Latitude Longitude" />
+  </variable>
+  <variable name="CoarseCloudFrc_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_A Latitude Longitude" />
+  </variable>
+  <variable name="CoarseCloudFrc_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_A Latitude Longitude" />
+  </variable>
+  <variable name="CoarseCloudTemp_A">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_A Latitude Longitude" />
+  </variable>
+  <variable name="CoarseCloudTemp_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_A Latitude Longitude" />
+  </variable>
+  <variable name="CoarseCloudTemp_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_A Latitude Longitude" />
+  </variable>
+  <variable name="CoarseCloudPres_A">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_A Latitude Longitude" />
+  </variable>
+  <variable name="CoarseCloudPres_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_A Latitude Longitude" />
+  </variable>
+  <variable name="CoarseCloudPres_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_A Latitude Longitude" />
+  </variable>
+  <variable name="FineCloudFrc_A">
+    <attribute name="standard_name" type="String" value="cloud_area_fraction_in_atmosphere_layer" />
+    <attribute name="long_name" type="String" value="cloud_area_fraction_in_atmosphere_layer" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="FineCloudFrc_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="FineCloudFrc_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="CloudTopTemp_A">
+    <attribute name="standard_name" type="String" value="air_temperature_at_cloud_top" />
+    <attribute name="long_name" type="String" value="air_temperature_at_cloud_top" />
+    <attribute name="units" type="String" value="K" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CloudTopTemp_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="CloudTopTemp_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CloudTopTemp_A_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TropPres_A">
+    <attribute name="standard_name" type="String" value="tropopause_air_pressure" />
+    <attribute name="long_name" type="String" value="tropopause_air_pressure" />
+    <attribute name="units" type="String" value="Pa" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TropPres_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="TropPres_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TropHeight_A">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TropHeight_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="TropHeight_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TropTemp_A">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TropTemp_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="TropTemp_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CO_Verticality_A">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CO_Layers_A Latitude Longitude" />
+  </variable>
+  <variable name="CO_Verticality_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="CO_Layers_A Latitude Longitude" />
+  </variable>
+  <variable name="CO_Verticality_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CO_Layers_A Latitude Longitude" />
+  </variable>
+  <variable name="RelHumidLiq_A">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="RelHumidLiq_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="RelHumidLiq_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="CO_Eff_Press_A">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CO_Layers_A Latitude Longitude" />
+  </variable>
+  <variable name="CO_Eff_Press_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="CO_Layers_A Latitude Longitude" />
+  </variable>
+  <variable name="CO_Eff_Press_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CO_Layers_A Latitude Longitude" />
+  </variable>
+  <variable name="CH4_Eff_Press_A">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_A Latitude Longitude" />
+  </variable>
+  <variable name="CH4_Eff_Press_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_A Latitude Longitude" />
+  </variable>
+  <variable name="CH4_Eff_Press_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_A Latitude Longitude" />
+  </variable>
+  <variable name="TotalCounts_D">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="TotCldLiqH2O_D">
+    <attribute name="standard_name" type="String" value="atmosphere_cloud_liquid_water_content" />
+    <attribute name="long_name" type="String" value="atmosphere_cloud_liquid_water_content" />
+    <attribute name="units" type="String" value="kg/m2" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TotCldLiqH2O_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="TotCldLiqH2O_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TotCldLiqH2O_D_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TotH2OVap_D">
+    <attribute name="standard_name" type="String" value="atmosphere_water_vapor_content" />
+    <attribute name="long_name" type="String" value="atmosphere_water_vapor_content" />
+    <attribute name="units" type="String" value="kg/m2" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TotH2OVap_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="TotH2OVap_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TotH2OVap_D_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TotO3_D">
+    <attribute name="standard_name" type="String" value="atmosphere_moles_of_ozone" />
+    <attribute name="long_name" type="String" value="atmosphere_moles_of_ozone" />
+    <attribute name="units" type="String" value="mol" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TotO3_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="TotO3_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TotO3_D_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="SurfAirTemp_D">
+    <attribute name="standard_name" type="String" value="surface_temperature" />
+    <attribute name="long_name" type="String" value="surface_temperature" />
+    <attribute name="units" type="String" value="K" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="SurfAirTemp_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="SurfAirTemp_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="SurfAirTemp_D_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="SurfSkinTemp_D">
+    <attribute name="standard_name" type="String" value="sea_surface_skin_temperature" />
+    <attribute name="long_name" type="String" value="sea_surface_skin_temperature" />
+    <attribute name="units" type="String" value="K" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="SurfSkinTemp_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="SurfSkinTemp_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="SurfSkinTemp_D_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="SurfPres_D">
+    <attribute name="standard_name" type="String" value="surface_air_pressure" />
+    <attribute name="long_name" type="String" value="surface_air_pressure" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="SurfPres_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="SurfPres_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="OLR_D">
+    <attribute name="standard_name" type="String" value="toa_outgoing_longwave_flux" />
+    <attribute name="long_name" type="String" value="toa_outgoing_longwave_flux" />
+    <attribute name="units" type="String" value="W/m2" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="OLR_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="OLR_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="ClrOLR_D">
+    <attribute name="standard_name" type="String" value="toa_outgoing_longwave_flux_assuming_clear_sky" />
+    <attribute name="long_name" type="String" value="toa_outgoing_longwave_flux_assuming_clear_sky" />
+    <attribute name="units" type="String" value="W/m2" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="ClrOLR_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="ClrOLR_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="EmisIR_D">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="IREmisLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="EmisIR_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="IREmisLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="EmisIR_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="IREmisLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="EmisIR_D_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="IREmisLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="GPHeight_D">
+    <attribute name="standard_name" type="String" value="geopotential_height" />
+    <attribute name="long_name" type="String" value="geopotential_height" />
+    <attribute name="units" type="String" value="m" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="GPHeight_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="GPHeight_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="CloudFrc_D">
+    <attribute name="standard_name" type="String" value="cloud_area_fraction" />
+    <attribute name="long_name" type="String" value="cloud_area_fraction" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CloudFrc_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="CloudFrc_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CloudFrc_D_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CloudTopPres_D">
+    <attribute name="standard_name" type="String" value="air_pressure_at_cloud_top" />
+    <attribute name="long_name" type="String" value="air_pressure_at_cloud_top" />
+    <attribute name="units" type="String" value="Pa" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CloudTopPres_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="CloudTopPres_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CloudTopPres_D_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="RelHumid_D">
+    <attribute name="standard_name" type="String" value="relative_humidity" />
+    <attribute name="long_name" type="String" value="relative_humidity" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="RelHumid_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="RelHumid_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="H2OVapMMR_D">
+    <attribute name="standard_name" type="String" value="humidity_mixing_ratio" />
+    <attribute name="long_name" type="String" value="humidity_mixing_ratio" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="H2OVapMMR_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="H2OVapMMR_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="H2OVapMMR_D_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="Temperature_D">
+    <attribute name="standard_name" type="String" value="air_temperature" />
+    <attribute name="long_name" type="String" value="air_temperature" />
+    <attribute name="units" type="String" value="K" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="Temperature_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="Temperature_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="Temperature_D_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="CO_total_column_D">
+    <attribute name="standard_name" type="String" value="atmosphere_moles_of_carbon_monoxide" />
+    <attribute name="long_name" type="String" value="atmosphere_moles_of_carbon_monoxide" />
+    <attribute name="units" type="String" value="mol" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CO_total_column_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="CO_total_column_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CH4_VMR_eff_D">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CH4_Layers_D Latitude Longitude" />
+  </variable>
+  <variable name="CH4_VMR_eff_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="CH4_Layers_D Latitude Longitude" />
+  </variable>
+  <variable name="CH4_VMR_eff_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CH4_Layers_D Latitude Longitude" />
+  </variable>
+  <variable name="CH4_VMR_eff_D_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CH4_Layers_D Latitude Longitude" />
+  </variable>
+  <variable name="CO_VMR_eff_D">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CO_Layers_D Latitude Longitude" />
+  </variable>
+  <variable name="CO_VMR_eff_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="CO_Layers_D Latitude Longitude" />
+  </variable>
+  <variable name="CO_VMR_eff_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CO_Layers_D Latitude Longitude" />
+  </variable>
+  <variable name="CO_VMR_eff_D_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CO_Layers_D Latitude Longitude" />
+  </variable>
+  <variable name="CO_dof_D">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CO_dof_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="CO_dof_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CH4_dof_D">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CH4_dof_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="CH4_dof_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CoarseCloudFrc_D">
+    <attribute name="standard_name" type="String" value="cloud_area_fraction_in_atmosphere_layer" />
+    <attribute name="long_name" type="String" value="cloud_area_fraction_in_atmosphere_layer" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_D Latitude Longitude" />
+  </variable>
+  <variable name="CoarseCloudFrc_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_D Latitude Longitude" />
+  </variable>
+  <variable name="CoarseCloudFrc_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_D Latitude Longitude" />
+  </variable>
+  <variable name="CoarseCloudTemp_D">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_D Latitude Longitude" />
+  </variable>
+  <variable name="CoarseCloudTemp_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_D Latitude Longitude" />
+  </variable>
+  <variable name="CoarseCloudTemp_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_D Latitude Longitude" />
+  </variable>
+  <variable name="CoarseCloudPres_D">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_D Latitude Longitude" />
+  </variable>
+  <variable name="CoarseCloudPres_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_D Latitude Longitude" />
+  </variable>
+  <variable name="CoarseCloudPres_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_D Latitude Longitude" />
+  </variable>
+  <variable name="FineCloudFrc_D">
+    <attribute name="standard_name" type="String" value="cloud_area_fraction_in_atmosphere_layer" />
+    <attribute name="long_name" type="String" value="cloud_area_fraction_in_atmosphere_layer" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="FineCloudFrc_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="FineCloudFrc_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="CloudTopTemp_D">
+    <attribute name="standard_name" type="String" value="air_temperature_at_cloud_top" />
+    <attribute name="long_name" type="String" value="air_temperature_at_cloud_top" />
+    <attribute name="units" type="String" value="K" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CloudTopTemp_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="CloudTopTemp_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CloudTopTemp_D_err">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TropPres_D">
+    <attribute name="standard_name" type="String" value="tropopause_air_pressure" />
+    <attribute name="long_name" type="String" value="tropopause_air_pressure" />
+    <attribute name="units" type="String" value="Pa" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TropPres_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="TropPres_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TropHeight_D">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TropHeight_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="TropHeight_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TropTemp_D">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TropTemp_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="TropTemp_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="CO_Verticality_D">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CO_Layers_D Latitude Longitude" />
+  </variable>
+  <variable name="CO_Verticality_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="CO_Layers_D Latitude Longitude" />
+  </variable>
+  <variable name="CO_Verticality_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CO_Layers_D Latitude Longitude" />
+  </variable>
+  <variable name="RelHumidLiq_D">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="RelHumidLiq_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="RelHumidLiq_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="H2OPrsLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="CO_Eff_Press_D">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CO_Layers_D Latitude Longitude" />
+  </variable>
+  <variable name="CO_Eff_Press_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="CO_Layers_D Latitude Longitude" />
+  </variable>
+  <variable name="CO_Eff_Press_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CO_Layers_D Latitude Longitude" />
+  </variable>
+  <variable name="CH4_Eff_Press_D">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_D Latitude Longitude" />
+  </variable>
+  <variable name="CH4_Eff_Press_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_D Latitude Longitude" />
+  </variable>
+  <variable name="CH4_Eff_Press_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="CoarseCldLyrs_D Latitude Longitude" />
+  </variable>
+  <variable name="TotalCounts_MW_A">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="TotH2OVap_MW_A">
+    <attribute name="standard_name" type="String" value="atmosphere_water_vapor_content" />
+    <attribute name="long_name" type="String" value="atmosphere_water_vapor_content" />
+    <attribute name="units" type="String" value="kg/m2" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TotH2OVap_MW_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="TotH2OVap_MW_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="EmisMW_MW_A">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="MWEmisLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="EmisMW_MW_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="MWEmisLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="EmisMW_MW_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="MWEmisLvls_A Latitude Longitude" />
+  </variable>
+  <variable name="GPHeight_MW_A">
+    <attribute name="standard_name" type="String" value="geopotential_height" />
+    <attribute name="long_name" type="String" value="geopotential_height" />
+    <attribute name="units" type="String" value="m" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_A_MW Latitude Longitude" />
+  </variable>
+  <variable name="GPHeight_MW_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_A_MW Latitude Longitude" />
+  </variable>
+  <variable name="GPHeight_MW_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_A_MW Latitude Longitude" />
+  </variable>
+  <variable name="Temperature_MW_A">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_A_MW Latitude Longitude" />
+  </variable>
+  <variable name="Temperature_MW_A_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_A_MW Latitude Longitude" />
+  </variable>
+  <variable name="Temperature_MW_A_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_A_MW Latitude Longitude" />
+  </variable>
+  <variable name="TotalCounts_MW_D">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="TotH2OVap_MW_D">
+    <attribute name="standard_name" type="String" value="atmosphere_water_vapor_content" />
+    <attribute name="long_name" type="String" value="atmosphere_water_vapor_content" />
+    <attribute name="units" type="String" value="kg/m2" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TotH2OVap_MW_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="TotH2OVap_MW_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="EmisMW_MW_D">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="MWEmisLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="EmisMW_MW_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="MWEmisLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="EmisMW_MW_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="MWEmisLvls_D Latitude Longitude" />
+  </variable>
+  <variable name="GPHeight_MW_D">
+    <attribute name="standard_name" type="String" value="geopotential_height" />
+    <attribute name="long_name" type="String" value="geopotential_height" />
+    <attribute name="units" type="String" value="m" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_D_MW Latitude Longitude" />
+  </variable>
+  <variable name="GPHeight_MW_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_D_MW Latitude Longitude" />
+  </variable>
+  <variable name="GPHeight_MW_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_D_MW Latitude Longitude" />
+  </variable>
+  <variable name="Temperature_MW_D">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_D_MW Latitude Longitude" />
+  </variable>
+  <variable name="Temperature_MW_D_ct">
+    <attribute name="missing_value" type="int" value="0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_D_MW Latitude Longitude" />
+  </variable>
+  <variable name="Temperature_MW_D_sdev">
+    <attribute name="missing_value" type="float" value="-9999.0" />
+    <attribute name="coordinates" type="String" value="TempPrsLvls_D_MW Latitude Longitude" />
+  </variable>
+  <variable name="Latitude">
+    <attribute name="standard_name" type="String" value="latitude" />
+    <attribute name="long_name" type="String" value="latitude" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="Longitude">
+    <attribute name="standard_name" type="String" value="longitude" />
+    <attribute name="long_name" type="String" value="longitude" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="LandSeaMask">
+    <attribute name="standard_name" type="String" value="land_binary_mask" />
+    <attribute name="long_name" type="String" value="land_binary_mask" />
+    <attribute name="missing_value" type="int" value="0" />
+  </variable>
+  <variable name="Topography">
+    <attribute name="standard_name" type="String" value="height_above_reference_ellipsoid" />
+    <attribute name="long_name" type="String" value="height_above_reference_ellipsoid" />
+    <attribute name="units" type="String" value="m" />
+    <attribute name="missing_value" type="float" value="-9999.0" />
+  </variable>
+  <variable name="TempPrsLvls_A" shape="TempPrsLvls" type="float">
+    <attribute name="standard_name" type="String" value="Pressure" />
+    <attribute name="long_name" type="String" value="Pressure levels temperature profile" />
+    <attribute name="units" type="String" value="hPa" />
+    <attribute name="positive" type="String" value="down" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>1000.000000 925.000000 850.000000 700.000000 600.000000 500.000000 400.000000 300.000000 250.000000 200.000000 150.000000 100.000000 70.000000 50.000000 30.000000 20.000000 15.000000 10.000000 7.000000 5.000000 3.000000 2.000000 1.500000 1.000000 </values>
+  </variable>
+  <variable name="H2OPrsLvls_A" shape="H2OPrsLvls" type="float">
+    <attribute name="standard_name" type="String" value="Pressure" />
+    <attribute name="long_name" type="String" value="Pressure layers water vapor profile" />
+    <attribute name="units" type="String" value="hPa" />
+    <attribute name="positive" type="String" value="down" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>1000.000000 925.000000 850.000000 700.000000 600.000000 500.000000 400.000000 300.000000 250.000000 200.000000 150.000000 100.000000</values>
+  </variable>
+  <variable name="CoarseCldLyrs_A" shape="CoarseCldLyrs" type="int">
+    <attribute name="standard_name" type="String" value="Altitude_indices" />
+    <attribute name="long_name" type="String" value="Altitude indices of Cloud Layer" />
+    <attribute name="comment" type="String" value="0-low, 1-middle, 2-high" />
+    <attribute name="positive" type="String" value="up" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>0 1 2</values>
+  </variable>
+  <variable name="CO_Layers_A" shape="CO_Layers" type="int">
+    <attribute name="standard_name" type="String" value="Pressure_support_indices" />
+    <attribute name="long_name" type="String" value="Pressure support indices" />
+    <attribute name="positive" type="String" value="down" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>45 56 63 70 81 89 93</values>
+  </variable>
+  <variable name="CH4_Layers_A" shape="CH4_Layers" type="int">
+    <attribute name="standard_name" type="String" value="Pressure_support_indices" />
+    <attribute name="long_name" type="String" value="Pressure support indices" />
+    <attribute name="positive" type="String" value="down" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>51 60 67</values>
+  </variable>
+  <variable name="IREmisLvls_A" shape="EmisLvls" type="float">
+    <attribute name="standard_name" type="String" value="Frequency" />
+    <attribute name="long_name" type="String" value="Frequency of reported IR emissivity" />
+    <attribute name="units" type="String" value="1/cm" />
+    <attribute name="positive" type="String" value="up" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>832.000000 961.000000 1203.000000 2616.000000</values>
+  </variable>
+  <variable name="TempPrsLvls_D" shape="TempPrsLvls_1" type="float">
+    <attribute name="standard_name" type="String" value="Pressure" />
+    <attribute name="long_name" type="String" value="Pressure levels temperature profile" />
+    <attribute name="units" type="String" value="hPa" />
+    <attribute name="positive" type="String" value="down" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>1000.000000 925.000000 850.000000 700.000000 600.000000 500.000000 400.000000 300.000000 250.000000 200.000000 150.000000 100.000000 70.000000 50.000000 30.000000 20.000000 15.000000 10.000000 7.000000 5.000000 3.000000 2.000000 1.500000 1.000000 </values>
+  </variable>
+  <variable name="H2OPrsLvls_D" shape="H2OPrsLvls_1" type="float">
+    <attribute name="standard_name" type="String" value="Pressure" />
+    <attribute name="long_name" type="String" value="Pressure layers water vapor profile" />
+    <attribute name="units" type="String" value="hPa" />
+    <attribute name="positive" type="String" value="down" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>1000.000000 925.000000 850.000000 700.000000 600.000000 500.000000 400.000000 300.000000 250.000000 200.000000 150.000000 100.000000</values>
+  </variable>
+  <variable name="CoarseCldLyrs_D" shape="CoarseCldLyrs_1" type="int">
+    <attribute name="standard_name" type="String" value="Altitude_indices" />
+    <attribute name="long_name" type="String" value="Altitude indices of Cloud Layer" />
+    <attribute name="comment" type="String" value="0-low, 1-middle, 2-high" />
+    <attribute name="positive" type="String" value="up" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>0 1 2</values>
+  </variable>
+  <variable name="CO_Layers_D" shape="CO_Layers_1" type="int">
+    <attribute name="standard_name" type="String" value="Pressure_support_indices" />
+    <attribute name="long_name" type="String" value="Pressure support indices" />
+    <attribute name="positive" type="String" value="down" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>45 56 63 70 81 89 93</values>
+  </variable>
+  <variable name="CH4_Layers_D" shape="CH4_Layers_1" type="int">
+    <attribute name="standard_name" type="String" value="Pressure_support_indices" />
+    <attribute name="long_name" type="String" value="Pressure support indices" />
+    <attribute name="positive" type="String" value="down" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>51 60 67</values>
+  </variable>
+  <variable name="IREmisLvls_D" shape="EmisLvls_1" type="float">
+    <attribute name="standard_name" type="String" value="Frequency" />
+    <attribute name="long_name" type="String" value="Frequency of reported IR emissivity" />
+    <attribute name="units" type="String" value="1/cm" />
+    <attribute name="positive" type="String" value="up" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>832.000000 961.000000 1203.000000 2616.000000</values>
+  </variable>
+  <variable name="TempPrsLvls_A_MW" shape="TempPrsLvls_2" type="float">
+    <attribute name="standard_name" type="String" value="Pressure" />
+    <attribute name="long_name" type="String" value="Pressure levels temperature profile" />
+    <attribute name="units" type="String" value="hPa" />
+    <attribute name="positive" type="String" value="down" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>1000.000000 925.000000 850.000000 700.000000 600.000000 500.000000 400.000000 300.000000 250.000000 200.000000 150.000000 100.000000 70.000000 50.000000 30.000000 20.000000 15.000000 10.000000 7.000000 5.000000 3.000000 2.000000 1.500000 1.000000 </values>
+  </variable>
+  <variable name="H2OPrsLvls_A_MW" shape="H2OPrsLvls_2" type="float">
+    <attribute name="standard_name" type="String" value="Pressure" />
+    <attribute name="long_name" type="String" value="Pressure layers water vapor profile" />
+    <attribute name="units" type="String" value="hPa" />
+    <attribute name="positive" type="String" value="down" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>1000.000000 925.000000 850.000000 700.000000 600.000000 500.000000 400.000000 300.000000 250.000000 200.000000 150.000000 100.000000</values>
+  </variable>
+  <variable name="CoarseCldLyrs_A_MW" shape="CoarseCldLyrs_2" type="int">
+    <attribute name="standard_name" type="String" value="Altitude_indices" />
+    <attribute name="long_name" type="String" value="Altitude indices of Cloud Layer" />
+    <attribute name="comment" type="String" value="0-low, 1-middle, 2-high" />
+    <attribute name="positive" type="String" value="up" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>0 1 2</values>
+  </variable>
+  <variable name="CO_Layers_A_MW" shape="CO_Layers_2" type="int">
+    <attribute name="standard_name" type="String" value="Pressure_support_indices" />
+    <attribute name="long_name" type="String" value="Pressure support indices" />
+    <attribute name="positive" type="String" value="down" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>45 56 63 70 81 89 93</values>
+  </variable>
+  <variable name="CH4_Layers_A_MW" shape="CH4_Layers_2" type="int">
+    <attribute name="standard_name" type="String" value="Pressure_support_indices" />
+    <attribute name="long_name" type="String" value="Pressure support indices" />
+    <attribute name="positive" type="String" value="down" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>51 60 67</values>
+  </variable>
+  <variable name="MWEmisLvls_A" shape="MWEmisLvls_2" type="float">
+    <attribute name="standard_name" type="String" value="Frequency" />
+    <attribute name="long_name" type="String" value="Frequency of reported MW emissivity" />
+    <attribute name="units" type="String" value="GHz" />
+    <attribute name="positive" type="String" value="up" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>23.799999 50.299999 89.000000</values>
+  </variable>
+  <variable name="TempPrsLvls_D_MW" shape="TempPrsLvls_3" type="float">
+    <attribute name="standard_name" type="String" value="Pressure" />
+    <attribute name="long_name" type="String" value="Pressure levels temperature profile" />
+    <attribute name="units" type="String" value="hPa" />
+    <attribute name="positive" type="String" value="down" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>1000.000000 925.000000 850.000000 700.000000 600.000000 500.000000 400.000000 300.000000 250.000000 200.000000 150.000000 100.000000 70.000000 50.000000 30.000000 20.000000 15.000000 10.000000 7.000000 5.000000 3.000000 2.000000 1.500000 1.000000 </values>
+  </variable>
+  <variable name="H2OPrsLvls_D_MW" shape="H2OPrsLvls_3" type="float">
+    <attribute name="standard_name" type="String" value="Pressure" />
+    <attribute name="long_name" type="String" value="Pressure layers water vapor profile" />
+    <attribute name="units" type="String" value="hPa" />
+    <attribute name="positive" type="String" value="down" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>1000.000000 925.000000 850.000000 700.000000 600.000000 500.000000 400.000000 300.000000 250.000000 200.000000 150.000000 100.000000</values>
+  </variable>
+  <variable name="CoarseCldLyrs_D_MW" shape="CoarseCldLyrs_3" type="int">
+    <attribute name="standard_name" type="String" value="Altitude_indices" />
+    <attribute name="long_name" type="String" value="Altitude indices of Cloud Layer" />
+    <attribute name="comment" type="String" value="0-low, 1-middle, 2-high" />
+    <attribute name="positive" type="String" value="up" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>0 1 2</values>
+  </variable>
+  <variable name="CO_Layers_D_MW" shape="CO_Layers_3" type="int">
+    <attribute name="standard_name" type="String" value="Pressure_support_indices" />
+    <attribute name="long_name" type="String" value="Pressure support indices" />
+    <attribute name="positive" type="String" value="down" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>45 56 63 70 81 89 93</values>
+  </variable>
+  <variable name="CH4_Layers_D_MW" shape="CH4_Layers_3" type="int">
+    <attribute name="standard_name" type="String" value="Pressure_support_indices" />
+    <attribute name="long_name" type="String" value="Pressure support indices" />
+    <attribute name="positive" type="String" value="down" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>51 60 67</values>
+  </variable>
+  <variable name="MWEmisLvls_D" shape="MWEmisLvls_3" type="float">
+    <attribute name="standard_name" type="String" value="Frequency" />
+    <attribute name="long_name" type="String" value="Frequency of reported MW emissivity" />
+    <attribute name="units" type="String" value="GHz" />
+    <attribute name="positive" type="String" value="up" />
+    <attribute name="_CoordinateAxisType" type="String" value="GeoZ" />
+    <values>23.799999 50.299999 89.000000</values>
+  </variable>
+</netcdf>

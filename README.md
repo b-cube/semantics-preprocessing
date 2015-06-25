@@ -8,85 +8,103 @@ XML and text parsing for the pipeline between Nutch/Solr and a triplestore or NL
 
 ```
 {
-	"solr_identifier": "",
+	"solr_identifier": "",  // sha256 of the source url
 	"source_url": "",
 	"harvested_date": "",
 	"modified_date": "",
 	"identity": {
 		"protocol": "",  // base type of the response, ex OGC or OAI-PMH
-		"service": "", // service type, ex Catalog, WFS
-		"version": "", // version identifier
-		"subtype": "", // type of service (service | dataset | metadata)
-		"has_dataset": False, // response contains secondary dataset metadata
-		"has_metadata": False // response contains secondary metadata metadata
+		"service": {  // service type, ex Catalog, WFS
+			"name": "",
+			"request": "",
+			"version": "",
+			"language": ""
+		}, 
+		"dataset": {
+			"name": "",
+			"request": "",
+			"version": "",
+			"language": ""
+		},
+		"metadata": {
+			"name": "",
+			"request": "",
+			"version": "",
+			"language": ""
+		},
+		"resultset": {
+			"name": "",
+			"request": "",
+			"dialect": "",
+			"version": "",
+			"language": ""
+		}
 	},
-	"service": {
-		"title": [],
-		"abstract": [],
-		"source": [],
-		"contact": [],
-		"rights": [], // access, usage rights (this is conflating a variety of "rights" concepts)
-		"language": [],
-		"subject": [], // keywords as normalized string and then split
+	"service_description": {
+		"title": "",
+		"description": "", 
+		"subjects": [],
+		"contact": {},
+		"rights": "",
+		"language": "",
 		"endpoints": [
 			{
-				"type": "", 
-				"url": "", 
-				"http_method": "", // get | post
-				"parameters": [
-					// for the parameter descriptions
-					{
-						"name": "parameter name",
-						"namespace": {"uri": "", "prefix": ""},
-						"type",
-						"format",
-						"values": [""]
-					}
-				]
+				"url": "",
+				"name": "",
+				"description": "",
+				"actionable": "",
+				"method": "",
+				"mimetype": "",
+				"format": "",
+				"parameters": [],
+				"status": "",  // for reference re: the triples later (this may not be in the JSON)
+				"status_checked": ""  // for reference re: the triples later (this may not be in the JSON)
 			}
-		]
+		],
+		"parentOf": [],
+		"isDescribedBy": ""
 	},
-	"remainder": [
-		// a list of tuples containing any text from an element or 
-		// attribute not captured in the service set
-		// note that the text value can be empty if the element
-		// only has attribute values
-		(
-			"text",
-			"fully qualified xpath to element",
-			"attributes": [
-				// array of tuples for any attributes on the parent element
-				(
-					"text",
-					"fully qualified xpath to attribute"
-				)
-			]
-		), ...
-	]
+	"datasets": [
+		{
+			"childOf": "",  // reference to the parent service profile
+			"title": "",
+			"description": "",
+			"spatial_extent": "",  // wgs84 WKT string for geosparql support in parliament
+			"temporal_extent": {
+				"start": "",
+				"end": ""
+			},
+			"subjects": [],
+			"rights": "",
+			"formats": [],
+			"isDescribedBy": "",  // a reference to the metadata record(s)
+			"parameters": [],
+			"endpoints": []  // see the previously described endpoint
+		}
+	],
+	"metadata": {
+		"describes": "",  // some reference 
+		"parentOf": "",  // for a ds record, we have the Mx series info
+		"childOf": "",  // for a ds record, include a metadata object linked to the seriesMetadata
+		"title": "",
+		"description": "",
+		"subjects": [],
+		"spatial_extent": "",  // wgs84 WKT string for geosparql support in parliament
+		"temporal_extent": {
+			"start": "",
+			"end": ""
+		},
+		"contact": {}, 
+		"rights": "",
+		"language": "",
+		"endpoints": []  // see the previously described endpoint
+	}
 }
 ```
 
 Notes:
 
 The service elements are based on the DCTerms supported in the ontology. 
-
-####Currently Supported Service Descriptions
-
-- [x] OpenSearch
-- [x] THREDDS Catalog
-- [x] OAI-PMH Identify
-- [ ] WxS GetCapabilities
-- [ ] ATOM (OpenSearch?/GeoRSS?)
-- [ ] WADL
-- [ ] WSDL
-
-This is contigent on those service types having service-level descriptions. 
-
-####Currently Supported Dataset Descriptions
-
-- [x] ISO 19115
-- [ ] FGDC
-- [ ] Dif (?)
 
 
 ### Sample Extraction

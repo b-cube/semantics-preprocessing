@@ -1,0 +1,270 @@
+- name: PDS
+  service:
+    - name: PDS
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://pds.nasa.gov/pds4/pds/v1'
+
+- name: CAP-ALERT
+  service:
+    - name: CAP-ALERT
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://www.incident.com/cap/1.0'
+          - type: simple
+            object: content
+            value: 'urn:oasis:names:tc:emergency:cap:'
+
+- name: 'MARC 21 Format'
+  metadata:
+    - name: 'MARC 21 Format'
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://www.loc.gov/MARC21/slim'
+
+- name: DDI
+  metadata:
+    - name: DDI
+      filters:
+        ands:
+          - type: simple
+            object: content
+            value: 'http://www.ddialliance.org/Specification/DDI-Codebook'
+          - type: xpath
+            object: content
+            value: '/*[local-name()="codeBook"]'
+
+- name: KML
+  dataset:
+    - name: KML
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://earth.google.com/kml'
+
+- name: ArcGISExplorerDocument
+  service:
+    - name: ArcGISExplorerDocument
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://www.esri.com/schemas/ArcGIS/'
+
+- name: ESRI MapServer Info
+  # i have no idea what this is particularly
+  service:
+    - name: ESRI MapServer Info
+      filters:
+        ands:
+          - type: simple
+            object: content
+            value: 'EsriPropertyType='
+          - type: simple
+            object: content
+            value: 'ArcGISFormat'
+          - type: simple
+            object: content
+            value: '<Esri>'
+
+- name: Microsoft
+  dataset:
+    - name: Microsoft Document
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'urn:schemas-microsoft-com:office:office'
+
+- name: WordPress
+  service:
+    - name: WordPress
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://archipelago.phrasewise.com/rsd'
+          - type: simple
+            object: url
+            value: '?rsd'
+          - type: simple
+            object: url
+            value: 'rsd.xml'
+
+- name: LOC-METS
+  metadata:
+    - name: LOC-METS
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://www.loc.gov/METS_Profile/'
+
+- name: DataCite
+  metadata:
+    - name: DataCite
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://datacite.org/schema/'
+
+- name: EML
+  metadata:
+    - name: EML
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'eml://ecoinformatics.org/eml-'
+
+- name: QuakeML
+  service:
+    - name: QuakeML
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://anss.org/xmlns/catalog'
+          - type: simple
+            object: content
+            value: 'http://anss.org/xmlns/tensor'
+          - type: simple
+            object: content
+            value: 'http://quakeml.org/xmlns/bed/'
+
+- name: NIEM
+  metadata:
+    - name: NIEM
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://niem.gov/'
+
+- name: Disco
+  metadata:
+    - name: Disco
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://schemas.xmlsoap.org/disco/'
+
+- name: SOAP
+  service:
+    - name: SOAP
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://schemas.xmlsoap.org/soap'
+
+- name: Sitemap
+  metadata:
+    - name: Sitemap
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://www.google.com/geo/schemas/sitemap/'
+          - type: simple
+            object: content
+            value: 'http://www.sitemaps.org/schemas/sitemap/'
+
+- name: iTunes
+  service:
+    - name: iTunes
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://www.itunes.com/dtds/podcast-1.0.dtd'
+
+- name: waterML
+  service:
+    - name: waterML
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://www.cuahsi.org/waterML/'
+
+- name: ECHO
+  service:
+    - name: ECHO
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://echo.nasa.gov/'
+
+- name: MODAPS
+  service:
+    - name: MODAPS
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://modapsws.gsfc.nasa.gov/xsd'
+
+- name: IOOS
+  service:
+    - name: IOOS
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: 'http://www.noaa.gov/ioos/'
+
+- name: Zenodo
+  # these have no internal structure to map effectively
+  service:
+    - name: Zenodo
+      filters:
+        ors:
+          - type: simple
+            object: url
+            value: 'zenodo.org/'
+
+- name: Ferret ToolsUi
+  # there are so many of these, may as well tag them.
+  service:
+    - name: Ferret ToolsUI
+      filters:
+        ors:
+          - type: simple
+            object: url
+            value: http://ferret.pmel.noaa.gov/thredds/view/ToolsUI.jnlp?
+
+- name: XSD
+  file:
+    - name: XSD
+      filters:
+        ands:
+          - type: simple
+            object: content
+            value: 'xmlns:xs="http://www.w3.org/2001/XMLSchema'
+          - type: xpath
+            object: content
+            value: '/*[local-name()="schema"] and //*[local-name()="element"]'
+
+- name: HDF-XML
+  file:
+    - name: HDF-XML
+      filters:
+        ands:
+          - type: xpath
+            object: content
+            value: '/*[local-name()="HDF5-File"]'
+          - type: simple
+            object: content
+            value: 'xmlns:hdf5="http://hdfgroup.org/DTDs/HDF5-File'
+

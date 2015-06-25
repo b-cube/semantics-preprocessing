@@ -1,0 +1,101 @@
+- name: ISO
+  metadata:
+      # for the mi/md -1, -2, -3 (? not yet)
+    - name: '19115'
+      filters:
+        ors:
+          # this is making kind of a lot of assumptions
+          - type: complex
+            operator: ands
+            filters:
+              - type: xpath
+                object: content
+                value: '/*[local-name() = "MI_Metadata"]'
+              - type: simple
+                object: content
+                value: 'xmlns="http://www.isotc211.org/2005/gmi'
+          - type: complex
+            operator: ands
+            filters:
+              - type: xpath
+                object: content
+                value: '/*[local-name() = "MD_Metadata"]'
+              - type: simple
+                object: content
+                value: 'xmlns="http://www.isotc211.org/2005/gmd'
+          - type: complex
+            operator: ands
+            filters:
+              - type: xpath
+                object: content
+                value: '/*[local-name() = "MI_Metadata"]'
+              - type: simple
+                object: content
+                value: 'xmlns:gmi="http://www.isotc211.org/2005/gmi"'
+          - type: complex
+            operator: ands
+            filters:
+              - type: xpath
+                object: content
+                value: '/*[local-name() = "MD_Metadata"]'
+              - type: simple
+                object: content
+                value: 'xmlns:gmd="http://www.isotc211.org/2005/gmd"'
+      versions:
+        checks:
+          ors:
+            - type: xpath
+              object: content
+              # run against mi_metadata or md_metadata (or any iso root)
+              # and we are concatenating name and version (note, this does not manage whitespace issues!)
+              value: 'concat(/*/*[local-name()="metadataStandardName"]/*[local-name()="CharacterString"]/text(), " ", /*/*[local-name()="metadataStandardVersion"]/*[local-name()="CharacterString"]/text())'
+      language:
+        checks:
+          ors:
+            - type: xpath
+              object: content
+              value: '/*/*[local-name()="language"]/*[local-name()="CharacterString"]/text()'
+
+      # the larger dataseries result set
+    - name: 'Data Series'
+      filters:
+        ors:
+          - type: complex
+            operator: ands
+            filters:
+              - type: xpath
+                object: content
+                value: '/*[local-name() = "DS_Series"]'
+              - type: simple
+                object: content
+                value: 'xmlns="http://www.isotc211.org/2005/gmi"'
+          - type: complex
+            operator: ands
+            filters:
+              - type: xpath
+                object: content
+                value: '/*[local-name() = "DS_Series"]'
+              - type: simple
+                object: content
+                value: 'xmlns="http://www.isotc211.org/2005/gmd"'
+      versions:
+        checks:
+          ors:
+            - type: xpath
+              object: content
+              # and we are concatenating name and version (note, this does not manage whitespace issues!)
+              value: 'concat(/*/*[local-name()="seriesMetadata"]/*[local-name()="MD_Metadata" or local-name()="MI_Metadata"]/*[local-name()="metadataStandardName"]/*[local-name()="CharacterString"]/text(), " ", /*/*[local-name()="seriesMetadata"]/*[local-name()="MD_Metadata" or local-name()="MI_Metadata"]/*[local-name()="metadataStandardVersion"]/*[local-name()="CharacterString"]/text())'
+      language:
+        checks:
+          ors:
+            - type: xpath
+              object: content
+              value: '/*/*[local-name()="language"]/*[local-name()="CharacterString"]/text()'
+
+      # a standalone service (19119)
+    - name: '19119'
+      filters:
+      versions:
+
+
+

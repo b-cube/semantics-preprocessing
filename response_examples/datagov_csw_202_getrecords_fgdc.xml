@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- pycsw 1.10.1 -->
+<csw:GetRecordsResponse 
+    xmlns:dc="http://purl.org/dc/elements/1.1/" 
+    xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0" 
+    xmlns:atom="http://www.w3.org/2005/Atom" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    xmlns:dct="http://purl.org/dc/terms/" 
+    xmlns:ows="http://www.opengis.net/ows" 
+    xmlns:apiso="http://www.opengis.net/cat/csw/apiso/1.0" 
+    xmlns:gml="http://www.opengis.net/gml" 
+    xmlns:dif="http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/" 
+    xmlns:xlink="http://www.w3.org/1999/xlink" 
+    xmlns:gco="http://www.isotc211.org/2005/gco" 
+    xmlns:gmd="http://www.isotc211.org/2005/gmd" 
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+    xmlns:srv="http://www.isotc211.org/2005/srv" 
+    xmlns:ogc="http://www.opengis.net/ogc" 
+    xmlns:fgdc="http://www.opengis.net/cat/csw/csdgm" 
+    xmlns:inspire_ds="http://inspire.ec.europa.eu/schemas/inspire_ds/1.0" 
+    xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:os="http://a9.com/-/spec/opensearch/1.1/" 
+    xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" 
+    xmlns:sitemap="http://www.sitemaps.org/schemas/sitemap/0.9" version="2.0.2" xsi:schemaLocation="http://www.opengis.net/cat/csw/2.0.2 http://schemas.opengis.net/csw/2.0.2/CSW-discovery.xsd">
+    <csw:SearchStatus timestamp="2015-06-10T01:05:35Z"/>
+    <csw:SearchResults nextRecord="3" numberOfRecordsMatched="104067" numberOfRecordsReturned="2" recordSchema="http://www.opengis.net/cat/csw/csdgm" elementSet="full">
+        <metadata xsi:noNamespaceSchemaLocation="http://www.fgdc.gov/metadata/fgdc-std-001-1998.xsd">
+            <idinfo>
+                <datasetid>gov.noaa.nodc:6200313</datasetid>
+                <citation>
+                    <citeinfo>
+                        <title>Temperature profiles from mechanical bathythermograph casts by the USS KENNETH D. BAILEY in the North Atlantic and Mediterranean Sea, June 5 - December 27, 1962 (NODC Accession 6200313)</title>
+                        <publinfo>
+                            <publish></publish>
+                        </publinfo>
+                        <origin></origin>
+                        <geoform></geoform>
+                        <onlink></onlink>
+                        <onlink type="HTTP">http://accession.nodc.noaa.gov/6200313</onlink>
+                        <onlink type="HTTP">http://accession.nodc.noaa.gov/oas/6200313</onlink>
+                        <onlink type="HTTP">http://accession.nodc.noaa.gov/download/6200313</onlink>
+                        <onlink type="FTP">ftp://ftp.nodc.noaa.gov/nodc/archive/arc0001/6200313/</onlink>
+                    </citeinfo>
+                </citation>
+                <keywords>
+                    <theme>
+                        <themekey>oceanography</themekey>
+                    </theme>
+                </keywords>
+                <accconst>otherRestrictions</accconst>
+                <descript>
+                    <abstract></abstract>
+                </descript>
+                <timeperd>
+                    <timeinfo>
+                        <timeinfo>
+                            <begdate>1962-06-05</begdate>
+                            <enddate>1962-12-27</enddate>
+                        </timeinfo>
+                    </timeinfo>
+                </timeperd>
+                <spdom>
+                    <bounding>
+                        <westbc>-79.3</westbc>
+                        <eastbc>22.4</eastbc>
+                        <northbc>43.6</northbc>
+                        <southbc>30.0</southbc>
+                    </bounding>
+                </spdom>
+                <datacred></datacred>
+                <spdoinfo>
+                    <direct>dataset</direct>
+                </spdoinfo>
+            </idinfo>
+            <distinfo>
+                <stdorder>
+                    <digform>
+                        <digtinfo>
+                            <formname></formname>
+                        </digtinfo>
+                    </digform>
+                </stdorder>
+            </distinfo>
+            <lineage>
+                <srcinfo>
+                    <srccite>
+                        <citeinfo>
+                            <title></title>
+                        </citeinfo>
+                    </srccite>
+                </srcinfo>
+            </lineage>
+            <metainfo>
+                <metd>2013-06-03T16:01:17</metd>
+            </metainfo>
+        </metadata>
+        <metadata xsi:noNamespaceSchemaLocation="http://www.fgdc.gov/metadata/fgdc-std-001-1998.xsd">
+            <idinfo>
+                <datasetid>TECHPORT_7270</datasetid>
+                <citation>
+                    <citeinfo>
+                        <title>Novel Biodegradable Food Packaging Material Project</title>
+                        <publinfo>
+                            <publish></publish>
+                        </publinfo>
+                        <origin></origin>
+                        <geoform></geoform>
+                        <onlink></onlink>
+                    </citeinfo>
+                </citation>
+                <keywords>
+                    <theme>
+                        <themekey>Johnson Space Center</themekey>
+                        <themekey>Project</themekey>
+                        <themekey>completed</themekey>
+                    </theme>
+                </keywords>
+                <accconst></accconst>
+                <descript>
+                    <abstract>As manned-space exploration missions are pursued further beyond low-Earth orbit, such as to the Moon or Mars, crewmembers must be supplied with good quality food to provide a complete diet over a period of three years or more. Current food-packaging materials result in major solid-waste management issues. Novel food packaging materials that will eliminate or reduce solid waste while preserving the quality of the food are required for long-term space travel and stay.  Materials Modification, Inc. (MMI) proposes to develop a biodegradable packaging material that can be used to transport and store foodstuff during extended space travel and stay.  A nanocomposite will be developed that will be mechanically strong, resistant to microbes and possess good barrier properties during period of use, biodegradable beyond the useful period, and microwave-safe.</abstract>
+                </descript>
+                <datacred></datacred>
+                <spdoinfo>
+                    <direct>dataset</direct>
+                </spdoinfo>
+            </idinfo>
+            <distinfo>
+                <stdorder>
+                    <digform>
+                        <digtinfo>
+                            <formname></formname>
+                        </digtinfo>
+                    </digform>
+                </stdorder>
+            </distinfo>
+            <lineage>
+                <srcinfo>
+                    <srccite>
+                        <citeinfo>
+                            <title></title>
+                        </citeinfo>
+                    </srccite>
+                </srcinfo>
+            </lineage>
+            <metainfo>
+                <metd>2015-03-12</metd>
+            </metainfo>
+        </metadata>
+    </csw:SearchResults>
+</csw:GetRecordsResponse>

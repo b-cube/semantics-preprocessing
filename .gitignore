@@ -23,6 +23,8 @@ pipeline_tests/
 
 solr_superset/
 sql/
+local/
+src/
 
 .ipynb_checkpoints
 
@@ -33,3 +35,5 @@ notebooks/identifier_extraction.log
 *.sqlite
 
 notebooks/harvest_linkrot_20150504-1940_date_processed.sqlite
+
+Semantics_Preprocessing.egg-info/

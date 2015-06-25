@@ -1,0 +1,54 @@
+- name: OpenSearch
+  service:
+    - name: 'OpenSearchDescription'
+      filters: 
+        ands:
+          - type: simple
+            object: content
+            value: 'xmlns="http://a9.com/-/spec/opensearch/1.1/"'
+          - type: xpath
+            object: content
+            value: '/*[local-name()="OpenSearchDescription"]'
+      errors:
+        filters:
+          ors:
+              # these are based on the cwic best practices and may 
+              # not be in widespread use
+            - type: simple
+              object: content
+              value: 'OpenSearch Exception'
+            - type: simple
+              object: content
+              value: 'REQUEST_EXCEPTION:'
+      versions:
+        defaults:
+          ors:
+            - type: simple
+              object: content
+              value: 'http://a9.com/-/spec/opensearch/1.1/'
+              text: '1.1'
+      language:
+        checks:
+          ors:
+            - type: xpath
+              object: content
+              value: '/*/*[local-name()="Language"]/text()'
+  resultset:
+    - name: OpenSearch
+      dialect: 
+        - text: ATOM
+      filters:
+        ands:
+          - type: simple
+            object: content
+            value: 'http://a9.com/-/spec/opensearch/1.1/'
+          - type: simple
+            object: content
+            value: 'http://www.w3.org/2005/Atom'
+          - type: simple
+            object: content
+            value: '<feed'
+          - type: xpath
+            object: content
+            value: '//*[local-name()="itemsPerPage"]'
+

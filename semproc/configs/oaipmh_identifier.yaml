@@ -1,0 +1,49 @@
+- name: OAI-PMH
+  service: 
+    - name: 'Identify'
+      request: 'Identify'
+      filters:
+        ands:
+          - type: simple
+            object: content
+            value: 'xmlns="http://www.openarchives.org/OAI/'
+          # - type: simple
+          #   object: url
+          #   value: 'VERB=IDENTIFY'
+          - type: simple
+            object: content
+            value: '<Identify>'
+      errors:
+        filters:
+          ors:
+            - type:  simple
+              object: content
+              # note that this should probably be an xpath search
+              # for the error element
+              value: '<error code="'
+      versions:
+        checks:
+          ors:
+            - type: xpath
+              object: content
+              value: '/*/*[local-name()="Identify"]/*[local-name()="protocolVersion"]/text()'  
+
+  resultset:
+    - name: 'OAI-PMH'
+      request: 'ListRecords'
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: '<ListRecords>'
+          - type: simple
+            object: url
+            value: 'verb="ListRecords"'
+
+      dialect:
+        checks:
+          ors:
+            - type: xpath
+              object: content
+              value: '/*/*[local-name()="request"]/@*[local-name()="metadataPrefix"]'
+
