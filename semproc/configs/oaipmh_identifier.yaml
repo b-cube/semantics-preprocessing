@@ -7,16 +7,12 @@
           - type: simple
             object: content
             value: 'xmlns="http://www.openarchives.org/OAI/'
-
-          - type: complex
-            operator: ors
-            filters:
-              - type: simple
-                object: url
-                value: 'VERB=IDENTIFY'
-              - type: simple
-                object: content
-                value: '<Identify>'
+          # - type: simple
+          #   object: url
+          #   value: 'VERB=IDENTIFY'
+          - type: simple
+            object: content
+            value: '<Identify>'
       errors:
         filters:
           ors:
@@ -41,7 +37,7 @@
             object: content
             value: '<ListRecords>'
           - type: simple
-            object: content
+            object: url
             value: 'verb="ListRecords"'
 
       dialect:

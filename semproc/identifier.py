@@ -193,13 +193,14 @@ class Identify():
                     if is_match:
                         matches.append({
                             "protocol": protocol_name,
-                            "type": k,
-                            "type_name": option.get('name', ''),
-                            "request": option.get('request', ''),
-                            "dialect": dialect,
-                            "version": versions,
-                            "error": is_error,
-                            "language": languages
+                            k: {
+                                "name": option.get('name', ''),
+                                "request": option.get('request', ''),
+                                "dialect": dialect,
+                                "version": versions,
+                                "error": is_error,
+                                "language": languages
+                            }
                         })
 
         return matches
