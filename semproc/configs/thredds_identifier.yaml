@@ -1,76 +1,37 @@
 - name: UNIDATA
   service: 
-    - name: 'THREDDS'
-
-
-  subtype: service
-  filters:
-    ors:
-      - type: simple
-        object: content
-        value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
-  service_description:
-    - name: THREDDS-Catalog
+    - name: 'THREDDS-Catalog'
       filters: 
         ors:
           - type: simple
             object: content
             value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
-  datasets:
-    - name: Dataset
-      filters:
-        ors:
-          - type: xpath
-            object: content
-            value: '//*[local-name()="dataset"]'
-  metadatas:
-    filters:
-      # one of the service endpoints plus the right dataset endpoint
-      ors:
-        - type: xpath
-          object: content
-          value: '//*[local-name()="service" and @serviceType="ISO"] and //*[local-name()="dataset" and @urlPath]'
-        - type: xpath
-          object: content
-          value: '//*[local-name()="service" and @serviceType="ISO"] and //*[local-name()="dataset"]/*[local-name()="access" and @urlPath]'
-        - type: xpath
-          object: content
-          value: '//*[local-name()="service" and @serviceType="NCML"] and //*[local-name()="dataset" and @urlPath]'
-        - type: xpath
-          object: content
-          value: '//*[local-name()="service" and @serviceType="NCML"] and //*[local-name()="dataset"]/*[local-name()="access" and @urlPath]'
-        - type: xpath
-          object: content
-          value: '//*[local-name()="service" and @serviceType="UDDC"] and //*[local-name()="dataset" and @urlPath]'
-        - type: xpath
-          object: content
-          value: '//*[local-name()="service" and @serviceType="UDDC"] and //*[local-name()="dataset"]/*[local-name()="access" and @urlPath]'
-  errors:
-    # this is not technically an error but it is 
-    # an invalid service response
-    filters:
-      ors:
-        - type: simple
-          object: content
-          value: '<property name="requires_authorization"'
-        - type: simple
-          object: content
-          value: '<variables vocabulary='
-        - type: simple
-          object: content
-          value: '<dap:Error'
-        - type: xpath
-          object: content
-          value: '/*[local-name()="Error"]'
-  versions:
-    checks:
-      ors: 
-        - type: xpath
-          object: content
-          value: '@version'
-    defaults:
-      ors:
-        - type: simple
-          object: content
-          value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
-          text: '1.0'
+      errors:
+        # this is not technically an error but it is 
+        # an invalid service response
+        filters:
+          ors:
+            - type: simple
+              object: content
+              value: '<property name="requires_authorization"'
+            - type: simple
+              object: content
+              value: '<variables vocabulary='
+            - type: simple
+              object: content
+              value: '<dap:Error'
+            - type: xpath
+              object: content
+              value: '/*[local-name()="Error"]'
+      versions:
+        checks:
+          ors: 
+            - type: xpath
+              object: content
+              value: '@version'
+        defaults:
+          ors:
+            - type: simple
+              object: content
+              value: 'http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'
+              text: '1.0'

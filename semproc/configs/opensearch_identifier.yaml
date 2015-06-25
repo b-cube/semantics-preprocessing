@@ -8,7 +8,7 @@
             value: 'xmlns="http://a9.com/-/spec/opensearch/1.1/"'
           - type: xpath
             object: content
-            value: '/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription'
+            value: '/*[local-name()="OpenSearchDescription"]'
       errors:
         filters:
           ors:
@@ -32,7 +32,7 @@
           ors:
             - type: xpath
               object: content
-              value: '/{http://a9.com/-/spec/opensearch/1.1/}OpenSearchDescription/{http://a9.com/-/spec/opensearch/1.1/}Language/text()'
+              value: '/*/*[local-name()="Language"]/text()'
   resultset:
     - dialect: ATOM
       filters:

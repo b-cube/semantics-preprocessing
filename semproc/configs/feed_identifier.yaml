@@ -1,0 +1,39 @@
+- name: RSS
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: '<rss version="'
+      - type: simple
+        object: content
+        value: 'http://api.npr.org/nprml'
+
+- name: ATOM
+  resultset:
+    - name: ATOM
+      filters:
+        ands:
+          - type: simple
+            object: content
+            value: 'http://www.w3.org/2005/Atom'
+          - type: simple
+            object: content
+            value: '<feed'
+            # exclude the opensearch namespaced ones?
+          - type: xpath
+            object: content
+            value: ''
+
+
+  subtype: service
+  filters:
+    ors:
+      - type: simple
+        object: content
+        value: 'http://www.w3.org/2005/Atom'
+  service_description:
+  datasets:
+  metadatas:
+  errors:
+  versions:

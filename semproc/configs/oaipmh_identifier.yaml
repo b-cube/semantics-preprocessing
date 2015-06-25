@@ -27,7 +27,7 @@
           ors:
             - type: xpath
               object: content
-              value: '/{http://www.openarchives.org/OAI/2.0/}OAI-PMH/{http://www.openarchives.org/OAI/2.0/}Identify/{http://www.openarchives.org/OAI/2.0/}protocolVersion/text()'  
+              value: '/*/[local-name()="Identify"]/*[lcoal-name()"protocolVersion"]/text()'  
 
   resultset:
     - name: ''

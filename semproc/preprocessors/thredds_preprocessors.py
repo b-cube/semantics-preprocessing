@@ -154,8 +154,6 @@ class ThreddsReader(Processor):
         self.description = tidy_dict(self.description)
 
     def _parse_datasets(self):
-        # dataset_xpath = "/{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/" + \
-        #                 "{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}dataset"
 
         # get the level-one children (catalog->child)
         endpoints = []
@@ -173,9 +171,6 @@ class ThreddsReader(Processor):
         return {"endpoints": endpoints}
 
     def _parse_metadata(self):
-        # metadata_xpath = "/{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/" + \
-        #                  "{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}metadata"
-
         endpoints = []
         # metadatas = self.parser.find(metadata_xpath)
         metadatas = extract_elems(self.parser.xml, ['metadata'])
@@ -198,12 +193,6 @@ class ThreddsReader(Processor):
         element or catalogRef elements, parse those as endpoints (relative paths
             and all of the tagging issues)
         '''
-        # svc_xpath = "/{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/" + \
-        #             "{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}service"
-
-        # catref_xpath = "/{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalog/" + \
-        #                "{http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0}catalogRef"
-
         endpoints = []
 
         services = extract_elems(self.parser.xml, ['service'])
