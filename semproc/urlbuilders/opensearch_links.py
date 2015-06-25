@@ -33,6 +33,43 @@ class OpenSearchLinkBuilder(object):
             '(@*[local-name()="type"]="application/%(mimetype)s" or ' +
             '@*[local-name()="type"]="text/%(mimetype)s")]' % {'mimetype': mimetype})
 
+    def generate_urls(self):
+        template_urls = self._extract_urls('atom+xml') + self._extract_urls('rss+xml')
+        template_urls = list(set(template_urls))
+
+        urls = []
+
+        if not template_urls:
+            return urls
+
+        for template_url in template_urls:
+            osl = OpenSearchLink(template_url)
+            if osl.url:
+                urls.append(osl.url)
+
+        return urls
+
+
+class OpenSearchLink():
+    def __init__(self, template_elem):
+        self.elem = template_elem
+        self._generate()
+
+    def _generate(self):
+        url_base, defaults, params = self._extract_template(self.elem.attrib.get('template'))
+        if not url_base:
+            return ''
+        search_terms = self._extract_parameter_key('searchTerms', params)
+        if search_terms:
+            qps = dict(
+                chain(
+                    defaults.items(),
+                    {search_terms.keys()[0]: ''}.items()
+                )
+            )
+
+        self.url = url_base + '?' + urllib.urlencode(qps.items())
+
     def _extract_parameter_key(self, value, params):
         # sort out the query parameter name for a parameter
         # and don't send curly bracketed things, please
@@ -77,29 +114,3 @@ class OpenSearchLinkBuilder(object):
         #       and not everyone manages non-url-encoded values so yeah. we are
         #       ignoring the non-url-encoded group.
         return base_url, defaults, parameters
-
-    def generate_urls(self):
-        template_urls = self._extract_urls('atom+xml') + self._extract_urls('rss+xml')
-        template_urls = list(set(template_urls))
-
-        urls = []
-
-        if not template_urls:
-            return urls
-
-        for template_url in template_urls:
-            url_base, defaults, params = self._extract_template(template_url.attrib.get('template'))
-            if not url_base:
-                continue
-            search_terms = self._extract_parameter_key('searchTerms', params)
-            if search_terms:
-                qps = dict(
-                    chain(
-                        defaults.items(),
-                        {search_terms.keys()[0]: ''}.items()
-                    )
-                )
-
-                urls.append(url_base + '?' + urllib.urlencode(qps.items()))
-
-        return urls
