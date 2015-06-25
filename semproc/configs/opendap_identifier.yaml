@@ -39,20 +39,20 @@
           - type: xpath
             object: content
             value: '/*[local-name()="Dataset"]'
-        errors:
-          # this is not technically an error but it is 
-          # an invalid service response
-          filters:
-            ors:
-              - type: simple
-                object: content
-                value: '<property name="requires_authorization"'
-              - type: simple
-                object: content
-                value: '<variables vocabulary='
-              - type: simple
-                object: content
-                value: '<dap:Error'
-              - type: xpath
-                object: content
-                value: '/*[local-name()="Error"]'
+      errors:
+        # this is not technically an error but it is 
+        # an invalid service response
+        filters:
+          ors:
+            - type: simple
+              object: content
+              value: '<property name="requires_authorization"'
+            - type: simple
+              object: content
+              value: '<variables vocabulary='
+            - type: simple
+              object: content
+              value: '<dap:Error'
+            - type: xpath
+              object: content
+              value: '/*[local-name()="Error"]'

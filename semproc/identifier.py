@@ -2,6 +2,7 @@
 import re
 from itertools import chain
 from semproc.yaml_configs import import_yaml_configs
+from semproc.parser import Parser
 
 
 class Identify():
@@ -15,7 +16,7 @@ class Identify():
                  of a protocol, identify if it's a dataset service
                  for a protocol
     '''
-    def __init__(self, yaml_files, source_content, source_url, **options):
+    def __init__(self, yaml_files, source_content, source_url):
         '''
         **options:
             parser: Parser from source_content
@@ -24,8 +25,8 @@ class Identify():
         self.yaml_files = yaml_files
         self.source_content = source_content
         self.source_url = source_url
-        self.options = options
         self.yaml = import_yaml_configs(self.yaml_files)
+        self.parser = Parser(source_content)
 
     def _filter(self, operator, filters, clauses):
         '''
@@ -42,10 +43,10 @@ class Identify():
                 filter_object = self.source_content if f['object'] == 'content' else self.source_url
                 filter_value = f['value']
 
-                if self.ignore_case:
-                    # TODO: a better solution than this
-                    filter_value = filter_value.upper()
-                    filter_object = filter_object.upper()
+                # TODO: a better solution than this
+                filter_value = filter_value.upper()
+                filter_object = filter_object.upper()
+
                 clauses.append(filter_value in filter_object)
             elif filter_type == 'regex':
                 filter_object = self.source_content if f['object'] == 'content' else self.source_url
@@ -100,217 +101,110 @@ class Identify():
 
         return sums
 
-    def _identify_protocol(self):
-        for protocol in self.yaml:
-            protocol_filters = protocol['filters']
-
-            for k, v in protocol_filters.iteritems():
-                is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
-                if is_match:
-                    return protocol['name'], protocol['subtype']
-
-        return '', ''
-
-    def _identify_service_of_protocol(self, protocol):
-        if 'service_description' not in protocol:
-            return ''
-        if not protocol['service_description']:
-            return ''
-
-        for service in protocol['service_description']:
-            for k, v in service['filters'].iteritems():
-                is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
-                if is_match:
-                    return service['name']
-
-        return ''
-
-    def _identify_within(self, protocol, subtype='dataset'):
+    def identify(self):
         '''
-        for a service, identify if the response contains
-        a subtype (dataset, metadata, viz) structure
-
-        ex: ogc:wfs contains dataset information at the feature
-            level
-        ex: oai-pmh contains metadata information as dc.
-
-        return identifier for subtype if found
+        it is within a protocol if *any* set of filters
         '''
-        pass
-
-    def _identify_dataset_service(self, protocol):
-        '''
-        TODO: sort out if this needs to be a named
-              response or just the boolean
-
-        this will depend on the service type and version
-        '''
-        if 'datasets' not in protocol:
-            return False
-        if not protocol['datasets']:
-            return False
-
-        for option in protocol['datasets']:
-            for k, v in option['filters'].iteritems():
-                is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
-                if is_match:
+        def _test_option(filters):
+            '''where filters is the set of filters as booleans'''
+            for i, j in filters.iteritems():
+                if self._evaluate({i: self._filter(i, j, [])}, 0):
                     return True
 
-        return False
-
-    def _identify_metadata_service(self, protocol):
-        '''
-        TODO: sort out if this needs to be a named
-              response or just the boolean (prob a named
-              response to handle oai-pmh:dc situations)
-        '''
-        if 'metadatas' not in protocol:
-            return False
-        if not protocol['metadatas']:
             return False
 
-        for k, v in protocol['metadatas']['filters'].iteritems():
-            is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
-            if is_match:
-                return True
+        def _extract_option(filters):
+            '''
+            where filters is the set of things to return a value
+            this assumes that you have concatenated the defaults and/or checks set
+            '''
+            items = []
+            for check in filters:
+                for c in check[1]:
+                    item = ''
+                    if c['type'] == 'simple':
+                        # TODO: this is still not a safe assumption re: casing
+                        filter_value = c['value'].upper()
+                        filter_object = self.source_content if c['object'] == 'content' \
+                            else self.source_url
+                        filter_object = filter_object.upper()
 
-        return False
+                        if filter_value in filter_object:
+                            item = [c.get('text', '')]  # just for the xpath handling later
+                    elif c['type'] == 'xpath':
+                        if not self.parser.xml:
+                            print 'Parser FAIL'
+                            continue
 
-    def _is_protocol_error(self, protocol):
-        '''
-        check to see if this is an error response for a protocol
-        '''
-        if 'errors' not in protocol:
-            # we don't know how to determine error here
-            return False
-        if not protocol['errors']:
-            return False
+                        try:
+                            values = self.parser.xml.xpath(c['value'])
+                            item = [v.strip() for v in values if v is not None]
+                        except Exception as ex:
+                            print 'XPATH FAIL: ', ex
+                            continue
 
-        filters = protocol['errors']['filters']
-        for k, v in filters.iteritems():
-            is_match = self._evaluate({k: self._filter(k, v, [])}, 0)
-            if is_match:
-                return True
+                    if item:
+                        items += item
 
-        return False
+            return items
 
-    def _identify_version(self, protocol, source_as_parser):
-        '''
-        this is likely to be some xml action, so xpaths and
-        the parsed xml (as a Parser obj)
+        def _chain(source_dict, keys):
+            return list(chain.from_iterable(
+                [source_dict.get(key, {}).items() for key in keys]
+            ))
 
-        and not using the _filter method - we need to return
-        the value from the source, not just an existence flag
-        '''
-        if 'versions' not in protocol:
-            return ''
+        matches = []
+        for protocol in self.yaml:
+            protocol_name = protocol['name']
+            # print protocol_name
 
-        versions = protocol['versions']
-        if not versions:
-            return ''
+            for k, v in protocol.iteritems():
+                if k in ['name'] or v is None:
+                    continue
 
-        def _process_type(f):
-            if f['type'] == 'simple':
-                filter_value = f['value']
-                filter_object = self.source_content if f['object'] == 'content' \
-                    else self.source_url
+                for option in v:
+                    is_match = _test_option(option['filters'])
 
-                if self.ignore_case:
-                    filter_value = filter_value.upper()
-                    filter_object = filter_object.upper()
+                    # check the error filters
+                    errors = option.get('errors', {})
+                    is_error = _test_option(errors.get('filters', {})) if errors else False
 
-                if filter_value in filter_object:
-                    return f['text']
+                    # check the language filters
+                    language_filters = option.get('language', {})
+                    _filters = _chain(language_filters, ["defaults", "checks"])
+                    languages = _extract_option(_filters)
 
-            elif f['type'] == 'xpath':
-                if not source_as_parser:
-                    # TODO: log this
-                    return ''
-                try:
-                    value = source_as_parser.find(f['value'])
-                except:
-                    # the xpath failed (namespace reasons or otherwise?)
-                    return ''
-                if value:
-                    return value[0] if isinstance(value, list) else value.strip()
+                    # check the version filters
+                    version_filters = option.get('versions', {})
+                    _filters = _chain(version_filters, ["defaults", "checks"])
+                    versions = _extract_option(_filters)
 
-            return ''
+                    # and the dialect if there's a key
+                    dialect_filters = option.get('dialect', {})
+                    if dialect_filters:
+                        if 'text' in dialect_filters:
+                            dialect = dialect_filters.get('text')
+                        else:
+                            # it's in the response somewhere
+                            _filters = _chain(dialect_filters, ["defaults", "checks"])
+                            dialect = _extract_option(_filters)
 
-        # check against either set of things (default vs check)
-        to_check = list(chain(versions.get('defaults', {}).items(),
-                        versions.get('checks', {}).items()))
+                    # dump it out
+                    if is_match:
+                        matches.append({
+                            "protocol": protocol_name,
+                            "type": k,
+                            "type_name": option.get('name', ''),
+                            "request": option.get('request', ''),
+                            "dialect": dialect,
+                            "version": versions,
+                            "error": is_error,
+                            "language": languages
+                        })
 
-        found_versions = []
-        for c in to_check:
-            for f in c[1]:
-                version = _process_type(f)
-                if version:
-                    found_versions.append(version)
+        return matches
 
-        return max(found_versions) if found_versions else ''
-
-    def _identify_language(self, protocol, source_as_parser):
-        '''
-        check for some language abbreviation in case the header/etc
-        failed to filter it out of the harvest
-        '''
-        if 'language' not in protocol:
-            return ''
-
-        languages = protocol['language']
-        if not languages:
-            return ''
-
-        def _process_type(f):
-            if f['type'] == 'simple':
-                filter_value = f['value']
-                filter_object = self.source_content if f['object'] == 'content' \
-                    else self.source_url
-
-                if self.ignore_case:
-                    filter_value = filter_value.upper()
-                    filter_object = filter_object.upper()
-
-                if filter_value in filter_object:
-                    return f['text']
-
-            elif f['type'] == 'xpath':
-                if not source_as_parser:
-                    # TODO: log this
-                    return ''
-                try:
-                    value = source_as_parser.find(f['value'])
-                except:
-                    # the xpath failed (namespace reasons or otherwise?)
-                    return ''
-                if value:
-                    return value[0] if isinstance(value, list) else value.strip()
-
-            return ''
-
-        to_check = list(chain(languages.get('defaults', {}).items(),
-                        languages.get('checks', {}).items()))
-
-        for c in to_check:
-            for f in c[1]:
-                language = _process_type(f)
-                if language:
-                    return language
-        return ''
-
-    def to_json(self):
-        return {
-            "protocol": self.protocol,
-            "service": self.service,
-            "version": self.version,
-            "has_dataset": self.has_dataset,
-            "has_metadata": self.has_metadata,
-            "is_error": self.is_error,
-            "subtype": self.subtype,
-            "language": self.language
-        }
-
-    def generate_urn(self):
+    def generate_urn(self, identity_dict):
         '''
         this assumes that it is a good identification
 
@@ -318,55 +212,13 @@ class Identify():
 
         any unknown is represented as UNK (that is terrible)
         '''
-        if not self.protocol:
-            return ''
+        # if not self.protocol:
+        #     return ''
 
-        return ':'.join([
-            'urn',
-            self.protocol,
-            self.service if self.service else 'UNK',
-            self.version if self.service else 'UNK'
-        ])
-
-    def identify(self):
-        '''
-        execute all of the identification options
-        '''
-        # determine the protocol
-        protocol, subtype = self._identify_protocol()
-
-        self.protocol = protocol
-        self.service = ''
-        self.version = ''
-        self.has_dataset = False
-        self.has_metadata = False
-        self.is_error = False
-        self.subtype = subtype
-        self.language = ''
-
-        if not protocol:
-            return
-
-        protocol_data = next(p for p in self.yaml if p['name'] == protocol)
-        if not protocol_data:
-            return
-
-        # and if it's a service description (and which)
-        self.service = self._identify_service_of_protocol(protocol_data)
-
-        # make sure it's not an error response (we still
-        #    like knowing which service)
-        self.is_error = self._is_protocol_error(protocol_data)
-
-        # determine if it contains dataset-level info
-        self.has_dataset = self._identify_dataset_service(protocol_data)
-
-        # determine if it contains metadata-level info
-        self.has_metadata = self._identify_metadata_service(protocol_data)
-
-        # extract the version
-        parser = self.options.get('parser', None)
-        self.version = self._identify_version(protocol_data, parser)
-
-        # extract the language
-        self.language = self._identify_language(protocol_data, parser)
+        # return ':'.join([
+        #     'urn',
+        #     self.protocol,
+        #     self.service if self.service else 'UNK',
+        #     self.version if self.service else 'UNK'
+        # ])
+        return ''
