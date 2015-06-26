@@ -1,9 +1,9 @@
 from semproc.processor import Processor
 from semproc.utils import extract_element_tag
 from semproc.utils import generate_short_uuid
-# from lsemproc.utils import generate_qualified_xpath
 from semproc.utils import tidy_dict
-from semproc.xml_utils import extract_elems, extract_elem, extract_attrib, extract_attrib
+from semproc.xml_utils import extract_elems, extract_attrib
+from semproc.urlbuilders.thredds_links import ThreddsLink
 
 
 class ThreddsReader(Processor):
@@ -75,11 +75,17 @@ class ThreddsReader(Processor):
                 # for service urls, if catalog.xml isn't appended it will resolve to
                 # the html endpoint (not desired). so if the path equals the/a path in
                 # the service bases, append catalog.xml to the path
-                elem_url = element[url_key]
-                if elem_url in sbs or not sbs:
-                    elem_url += ('' if elem_url.endswith('/') else '/') + 'catalog.xml'
-                # element['url'] = intersect_url(base_url, elem_url, sbs)
-                element['url'] = base_url
+
+                # elem_url = element[url_key]
+                # if elem_url in sbs or not sbs:
+                #     elem_url += ('' if elem_url.endswith('/') else '/') + 'catalog.xml'
+                # # element['url'] = intersect_url(base_url, elem_url, sbs)
+                # # element['url'] = base_url
+
+                # let's generate the link
+                tl = ThreddsLink(elem, self.url, sbs)
+                element['url'] = tl.urls
+
                 element['actionable'] = 2
 
             return element
@@ -112,8 +118,6 @@ class ThreddsReader(Processor):
 
         for child_tag in child_tags:
             elems = extract_elems(elem, [child_tag])
-
-            # elems = elem.xpath('*[local-name()="%s"]' % child_tag)
 
             for e in elems:
                 e_desc = self._get_items(

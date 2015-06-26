@@ -64,6 +64,8 @@ class ThreddsLink():
         self.source_url = source_url
         self.source_parts = urlparse.urlparse(source_url)
 
+        self._generate()
+
     def _generate(self):
         tag = extract_element_tag(self.elem.tag)
 
