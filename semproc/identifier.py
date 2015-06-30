@@ -88,12 +88,8 @@ class Identify():
             if isinstance(v, dict):
                 return sums + self._evaluate(v, 0)
             elif isinstance(v, list) and not all(isinstance(i, bool) for i in v):
-                # TODO: this is not a good assumption
+                # rollup the list of bools and bool-like things
                 intermediate_list = [self._evaluate(i, 0) for i in v]
-                # for i in v:
-                #     sums += self._evaluate(i, 0)
-                # return sums
-
                 v = intermediate_list
 
             if k == 'ands':
@@ -141,7 +137,9 @@ class Identify():
                             continue
 
                         try:
+                            # todo: this is returning the chars as array it is awesome
                             values = self.parser.xml.xpath(c['value'])
+                            values = values if isinstance(values, list) else [values]
                             item = [v.strip() for v in values if v is not None]
                         except Exception as ex:
                             print 'XPATH FAIL: ', ex
