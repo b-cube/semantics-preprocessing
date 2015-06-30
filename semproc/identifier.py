@@ -89,9 +89,13 @@ class Identify():
                 return sums + self._evaluate(v, 0)
             elif isinstance(v, list) and not all(isinstance(i, bool) for i in v):
                 # TODO: this is not a good assumption
-                for i in v:
-                    sums += self._evaluate(i, 0)
-                return sums
+                intermediate_list = [self._evaluate(i, 0) for i in v]
+                # for i in v:
+                #     sums += self._evaluate(i, 0)
+                # return sums
+
+                v = intermediate_list
+
             if k == 'ands':
                 # everything must be true
                 sums += sum(v) == len(v)

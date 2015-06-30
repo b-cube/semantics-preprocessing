@@ -1,0 +1,88 @@
+- name: OGC
+  service:
+    - name: WMS
+      request: GetCapabilities
+      filters:
+        ands:
+          - type: complex
+            operator: ors
+            filters:
+              - type: simple
+                object: content
+                value: 'http://www.opengis.net/wms'
+              - type: simple
+                object: content
+                value: '<!DOCTYPE WMT_MS_Capabilities SYSTEM "http://schemas.opengis.net/wms/1.1.1/WMS_MS_Capabilities.dtd"'
+            
+            # we are assuming that we are starting with a 
+            # correctly identified wxs response
+          - type: complex
+            operator: ors
+            filters:
+              - type: simple
+                object: url
+                value: 'REQUEST=GETCAPABILITIES'
+              - type: simple
+                object: content
+                value: '<GetCapabilities>'
+              - type: simple
+                object: content
+                value: 'name="GetCapabilities"'
+      versions:
+        checks:
+          ors:
+            - type: xpath
+              # fully qualified xpath which is lovely and short here
+              value: '@version'
+    - name: CSW
+      request: GetCapabilities
+      filters:
+        ands:
+          - type: simple
+            object: content
+            value: 'http://www.opengis.net/cat/csw'
+
+          - type: complex
+            operator: ors
+            filters:
+              - type: simple
+                object: url
+                value: 'SERVICE=CSW'
+              - type: simple
+                object: content
+                value: '<csw:Capabilities'
+              
+          - type: complex
+            operator: ors
+            filters:
+              - type: simple
+                object: url
+                value: 'REQUEST=GETCAPABILITIES'
+              - type: simple
+                object: content
+                value: '<GetCapabilities>'
+              - type: simple
+                object: content
+                value: 'name="GetCapabilities"'
+
+  resultset:
+    - name: CSW
+      request: GetRecords
+      dialect: 
+        checks:
+          ors:
+            - type: xpath
+              value: '//*/*[local-name()="SearchResults"]/@*[local-name()="recordSchema"]'
+      filters:
+        ands:
+          - type: simple
+            object: content
+            value: 'GetRecordsResponse'
+          - type: simple
+            object: content
+            value: 'http://www.opengis.net/cat/csw/'
+
+
+
+
+
