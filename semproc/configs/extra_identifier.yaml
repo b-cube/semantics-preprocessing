@@ -170,23 +170,31 @@
 - name: Sitemap
   metadata:
     - name: Sitemap
+      # this structure is probably unnecessarily "complex"
       filters:
-        ors:
-          - type: simple
-            object: content
-            value: 'http://www.google.com/geo/schemas/sitemap/'
+        ands:
+          # - type: complex
+          #   operator: ors
+          #   filters:
+          #     - type: simple
+          #       object: content
+          #       value: 'http://www.google.com/geo/schemas/sitemap/'
           - type: simple
             object: content
             value: 'http://www.sitemaps.org/schemas/sitemap/'
-
-- name: iTunes
-  service:
-    - name: iTunes
-      filters:
-        ors:
           - type: simple
             object: content
-            value: 'http://www.itunes.com/dtds/podcast-1.0.dtd'
+            value: '<urlset'
+
+# dropping this as just another modifier of rss
+# - name: iTunes
+#   service:
+#     - name: iTunes
+#       filters:
+#         ors:
+#           - type: simple
+#             object: content
+#             value: 'http://www.itunes.com/dtds/podcast-1.0.dtd'
 
 - name: waterML
   service:
@@ -244,17 +252,18 @@
             object: url
             value: http://ferret.pmel.noaa.gov/thredds/view/ToolsUI.jnlp?
 
-- name: XSD
-  file:
-    - name: XSD
-      filters:
-        ands:
-          - type: simple
-            object: content
-            value: 'xmlns:xs="http://www.w3.org/2001/XMLSchema'
-          - type: xpath
-            object: content
-            value: '/*[local-name()="schema"] and //*[local-name()="element"]'
+# should be filtered by nutch now (although this is not a good set of filters, fyi)
+# - name: XSD
+#   file:
+#     - name: XSD
+#       filters:
+#         ands:
+#           - type: simple
+#             object: content
+#             value: 'xmlns:xs="http://www.w3.org/2001/XMLSchema'
+#           - type: xpath
+#             object: content
+#             value: '/*[local-name()="schema"] and //*[local-name()="element"]'
 
 - name: HDF-XML
   file:

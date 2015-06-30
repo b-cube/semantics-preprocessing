@@ -38,7 +38,24 @@
             value: '<ListRecords>'
           - type: simple
             object: url
-            value: 'verb="ListRecords"'
+            value: 'verb=ListRecords'
+
+      dialect:
+        checks:
+          ors:
+            - type: xpath
+              object: content
+              value: '/*/*[local-name()="request"]/@*[local-name()="metadataPrefix"]'
+    - name: 'OAI-PMH'
+      request: 'GetRecord'
+      filters:
+        ors:
+          - type: simple
+            object: content
+            value: '<GetRecord>'
+          - type: simple
+            object: url
+            value: 'verb=GetRecord'
 
       dialect:
         checks:

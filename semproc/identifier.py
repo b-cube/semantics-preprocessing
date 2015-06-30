@@ -3,6 +3,7 @@ import re
 from itertools import chain
 from semproc.yaml_configs import import_yaml_configs
 from semproc.parser import Parser
+from semproc.utils import tidy_dict
 
 
 class Identify():
@@ -57,16 +58,15 @@ class Identify():
                 # the provided xml (parser) and ONLY evaluate for existence
                 # ie the xpath returned some element, list, text value
                 # but we don't care what it returned
-                parser = self.options.get('parser', None)
                 xpath = f['value']
-                if not parser:
+                if self.parser.xml is None:
                     # nothing to find, this is an incorrect filter
                     clauses.append(False)
 
                 # try the xpath but there could be namespace or
                 # other issues (also false negatives!)
                 try:
-                    clause = parser.find(xpath) not in [None, '', []]
+                    clause = self.parser.xml.xpath(xpath) not in [None, '', []]
                 except:
                     clause = False
 
@@ -132,7 +132,7 @@ class Identify():
                         if filter_value in filter_object:
                             item = [c.get('text', '')]  # just for the xpath handling later
                     elif c['type'] == 'xpath':
-                        if not self.parser.xml:
+                        if self.parser.xml is None:
                             print 'Parser FAIL'
                             continue
 
@@ -149,9 +149,13 @@ class Identify():
             return items
 
         def _chain(source_dict, keys):
-            return list(chain.from_iterable(
-                [source_dict.get(key, {}).items() for key in keys]
-            ))
+            try:
+                return list(chain.from_iterable(
+                    [source_dict.get(key, {}).items() for key in keys]
+                ))
+            except:
+                print source_dict
+                return []
 
         matches = []
         for protocol in self.yaml:
@@ -163,6 +167,9 @@ class Identify():
                     continue
 
                 for option in v:
+                    if 'filters' not in option or option['filters'] is None:
+                        continue
+
                     is_match = _test_option(option['filters'])
 
                     # check the error filters
@@ -188,19 +195,21 @@ class Identify():
                             # it's in the response somewhere
                             _filters = _chain(dialect_filters, ["defaults", "checks"])
                             dialect = _extract_option(_filters)
+                    else:
+                        dialect = []
 
                     # dump it out
                     if is_match:
                         matches.append({
                             "protocol": protocol_name,
-                            k: {
+                            k: tidy_dict({
                                 "name": option.get('name', ''),
                                 "request": option.get('request', ''),
                                 "dialect": dialect,
                                 "version": versions,
                                 "error": is_error,
                                 "language": languages
-                            }
+                            })
                         })
 
         return matches

@@ -36,7 +36,7 @@
   resultset:
     - name: OpenSearch
       dialect: 
-        - text: ATOM
+        text: ATOM
       filters:
         ands:
           - type: simple
