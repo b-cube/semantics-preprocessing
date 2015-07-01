@@ -1,5 +1,5 @@
 import re
-from semproc.parser import BasicParser
+from semproc.parser import Parser
 from semproc.nlp_utils import load_token_list
 from semproc.utils import unquote, break_url
 import dateutil.parser as dateparser
@@ -132,7 +132,7 @@ def process_xml_identifiers(text, handle_html=False):
     '''
     # TODO: we are starting with the html handling for both options
     #       but that might be not the greatest
-    parser = BasicParser(text, handle_html=handle_html, include_html_hrefs=handle_html)
+    parser = Parser(text, handle_html=handle_html, include_html_hrefs=handle_html)
 
     exclude_tags = ['schemaLocation', 'Value', 'template']
     for tag_blob, text_blob in parser.strip_text(exclude_tags):

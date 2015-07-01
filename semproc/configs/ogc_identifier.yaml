@@ -265,6 +265,21 @@
           - type: simple
             object: content
             value: 'http://www.opengis.net/cat/csw/'
+    - name: CSW
+      request: GetRecordById
+      dialect: 
+        checks:
+          ors:
+            - type: xpath
+              value: '//*/*[local-name()="SearchResults"]/@*[local-name()="recordSchema"]'
+      filters:
+        ands:
+          - type: simple
+            object: content
+            value: 'GetRecordsByIdResponse'
+          - type: simple
+            object: content
+            value: 'http://www.opengis.net/cat/csw/'
 
 
 

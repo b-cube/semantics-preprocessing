@@ -137,10 +137,9 @@ class Identify():
                             continue
 
                         try:
-                            # todo: this is returning the chars as array it is awesome
                             values = self.parser.xml.xpath(c['value'])
                             values = values if isinstance(values, list) else [values]
-                            item = [v.strip() for v in values if v is not None]
+                            item = [' '.join(v.strip().split()) for v in values if v is not None]
                         except Exception as ex:
                             print 'XPATH FAIL: ', ex
                             continue
