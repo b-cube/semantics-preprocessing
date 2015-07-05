@@ -1,4 +1,5 @@
 import re
+import os
 import HTMLParser
 from semproc.utils import flatten
 import langid
@@ -10,7 +11,7 @@ from nltk.stem.wordnet import WordNetLemmatizer
 from itertools import chain
 
 
-_corpus_root = 'lib/corpus'
+_corpus_root = 'corpus'
 
 
 '''
@@ -105,7 +106,9 @@ def load_token_list(term_file):
     '''
     load some stopword list from the corpus
     '''
-    tokens = WordListCorpusReader(_corpus_root, term_file)
+    __location__ = os.path.join(
+        os.path.abspath(os.path.dirname(__file__)), _corpus_root)
+    tokens = WordListCorpusReader(__location__, term_file)
     return [w.replace('+', '\+') for w in tokens.words()]
 
 

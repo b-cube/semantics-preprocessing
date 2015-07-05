@@ -23,9 +23,11 @@ class BagParser():
         soup = BeautifulSoup(text.strip())
 
         # get all of the text and any a/@href values
-        texts = [_handle_bad_html(t.strip('"')) for t in soup.find_all(text=True)]
+        texts = [_handle_bad_html(t.strip('"'))
+                 for t in soup.find_all(text=True)]
         if self.include_html_hrefs:
-            texts += [unquote(a['href']) for a in soup.find_all('a') if 'href' in a.attrs]
+            texts += [unquote(a['href'])
+                      for a in soup.find_all('a') if 'href' in a.attrs]
 
         try:
             text = ' '.join(texts)
@@ -58,7 +60,7 @@ class BagParser():
             except:
                 return []
 
-        for elem in self.xml.iter():
+        for elem in self.parser.xml.iter():
             t = elem.text.strip() if elem.text else ''
             tags = _taggify(elem)
 
@@ -76,4 +78,4 @@ class BagParser():
             for k, v in elem.attrib.iteritems():
                 if v.strip():
                     v = BeautifulSoup(v.strip())
-                    yield ('/'.join(tags + ['@' + _extract_tag(k)]), v)
+                    yield ('/'.join(tags + ['@' + _extract_tag(k)]), v.text)
