@@ -1,5 +1,6 @@
-from semproc.utils import tidy_dict
-from semproc.xml_utils import extract_item, extract_items, extract_elem, extract_elems
+from semproc.utils import tidy_dict, extract_element_tag
+from semproc.xml_utils import extract_item, extract_items
+from semproc.xml_utils import extract_elem, extract_elems
 from semproc.geo_utils import bbox_to_geom, to_wkt
 
 
@@ -60,23 +61,30 @@ class DifItemReader():
         organization = extract_item(self.elem, ['Originating_Center'])
 
         # temporal extent
-        start_date = extract_item(self.elem, ['Temporal_Coverage', 'Start_Date'])
+        start_date = extract_item(
+            self.elem, ['Temporal_Coverage', 'Start_Date'])
         end_date = extract_item(self.elem, ['Temporal_Coverage', 'End_Date'])
         temporal = [start_date, end_date] if start_date and end_date else []
 
         # spatial extent
-        west = extract_item(self.elem, ['Spatial_Coverage', 'Westernmost_Longitude'])
-        east = extract_item(self.elem, ['Spatial_Coverage', 'Easternmost_Longitude'])
-        south = extract_item(self.elem, ['Spatial_Coverage', 'Southernmost_Latitude'])
-        north = extract_item(self.elem, ['Spatial_Coverage', 'Northernmost_Latitude'])
-        bbox = [west, south, east, north] if west and east and north and south else []
+        west = extract_item(
+            self.elem, ['Spatial_Coverage', 'Westernmost_Longitude'])
+        east = extract_item(
+            self.elem, ['Spatial_Coverage', 'Easternmost_Longitude'])
+        south = extract_item(
+            self.elem, ['Spatial_Coverage', 'Southernmost_Latitude'])
+        north = extract_item(
+            self.elem, ['Spatial_Coverage', 'Northernmost_Latitude'])
+        bbox = [west, south, east, north] if \
+            west and east and north and south else []
         bbox = bbox_to_geom(bbox)
         bbox = to_wkt(bbox)
 
         distributions = []
         for related_url in extract_elems(self.elem, ['Related_URL']):
             url = extract_item(related_url, ['URL'])
-            content_type = extract_item(related_url, ['URL_Content_Type', 'Type'])
+            content_type = extract_item(
+                related_url, ['URL_Content_Type', 'Type'])
             description = extract_item(related_url, ['Description'])
             dist = tidy_dict({
                 "url": url,
@@ -107,7 +115,8 @@ class FgdcItemReader():
 
         abstract = extract_item(self.elem, ['idinfo', 'descript', 'abstract'])
         purpose = extract_item(self.elem, ['idinfo', 'descript', 'purpose'])
-        title = extract_item(self.elem, ['idinfo', 'citation', 'citeinfo', 'title'])
+        title = extract_item(
+            self.elem, ['idinfo', 'citation', 'citeinfo', 'title'])
         bbox_elem = extract_elem(self.elem, ['idinfo', 'spdom', 'bounding'])
 
         if bbox_elem is not None:
@@ -128,15 +137,32 @@ class FgdcItemReader():
             if not caldate:
                 pass
 
-        # TODO: finish this for ranges and note ranges and what do we want in the ontology
+        # TODO: finish this for ranges and note ranges
+        # and what do we want in the ontology
         time = {}
 
-        keywords = extract_items(
-            self.elem, ['idinfo', 'descript', 'keywords', 'theme', 'themekey'])
-        keywords += extract_items(
-            self.elem, ['idinfo', 'descript', 'keywords', 'place', 'placekey'])
+        # retain the keyword sets with type, thesaurus name and split
+        # the terms as best we can
+        keywords = []
+        key_elem = extract_elem(self.elem, ['idinfo', 'descript', 'keywords'])
+        for child in key_elem.iterchildren():
+            key_type = extract_element_tag(child)
+            thesaurus = extract_item(child, ['%skt' % key_type])
 
-        distrib_elems = extract_elems(self.elem, ['distinfo', 'distrib', 'stdorder', 'digform'])
+            # TODO: split these up
+            terms = extract_items(child, ['%skey' % key_type])
+
+            # TODO: add something for a set without a thesaurus name
+            keywords.append(
+                tidy_dict({
+                    "thesaurus": thesaurus,
+                    "type": key_type,
+                    "terms": terms
+                })
+            )
+
+        distrib_elems = extract_elems(
+            self.elem, ['distinfo', 'distrib', 'stdorder', 'digform'])
         distributions = []
         for distrib_elem in distrib_elems:
             link = extract_item(
@@ -147,7 +173,8 @@ class FgdcItemReader():
             if dist:
                 distributions.append(dist)
 
-        onlink_elems = extract_elems(self.elem, ['idinfo', 'citation', 'citeinfo', 'onlink'])
+        onlink_elems = extract_elems(
+            self.elem, ['idinfo', 'citation', 'citeinfo', 'onlink'])
         for onlink_elem in onlink_elems:
             dist = tidy_dict({
                 "url": onlink_elem.text.strip() if onlink_elem.text else '',
