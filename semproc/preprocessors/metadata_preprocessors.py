@@ -1,6 +1,7 @@
 from semproc.utils import tidy_dict, extract_element_tag
 from semproc.xml_utils import extract_item, extract_items
 from semproc.xml_utils import extract_elem, extract_elems
+from semproc.xml_utils import extract_attrib
 from semproc.geo_utils import bbox_to_geom, to_wkt
 
 
@@ -121,7 +122,8 @@ class FgdcItemReader():
         output['catalog_record'] = {
             "url": "",  # WE DO NOT HAVE THE URL HERE
             "harvestDate": "",  # NOR DO WE HAVE THE DATE
-            "conformsTo": self.elem.attrib.get('schemaLocation', '')
+            "conformsTo": extract_attrib(
+                self.elem, ['@noNamespaceSchemaLocation'])
         }
 
         output['dataset'] = {
@@ -182,9 +184,9 @@ class FgdcItemReader():
         # retain the keyword sets with type, thesaurus name and split
         # the terms as best we can
         keywords = []
-        key_elem = extract_elem(self.elem, ['idinfo', 'descript', 'keywords'])
+        key_elem = extract_elem(self.elem, ['idinfo', 'keywords'])
         for child in key_elem.iterchildren():
-            key_type = extract_element_tag(child)
+            key_type = extract_element_tag(child.tag)
             thesaurus = extract_item(child, ['%skt' % key_type])
 
             # TODO: split these up
