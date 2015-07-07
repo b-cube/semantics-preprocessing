@@ -107,18 +107,43 @@ class DifItemReader():
 
 
 class FgdcItemReader():
+    '''
+    spitballing.
+
+    an fgdc metadata record has one dataset entity.
+    the dataset entity *may* have an identifier (datsetid).
+    '''
     def __init__(self, elem):
         self.elem = elem
 
     def parse_item(self):
-        identifier = extract_item(self.elem, ['idinfo', 'datasetid'])
+        output = {}
+        output['catalog_record'] = {
+            "url": "",  # WE DO NOT HAVE THE URL HERE
+            "harvestDate": "",  # NOR DO WE HAVE THE DATE
+            "conformsTo": self.elem.attrib.get('schemaLocation', '')
+        }
 
-        abstract = extract_item(self.elem, ['idinfo', 'descript', 'abstract'])
-        purpose = extract_item(self.elem, ['idinfo', 'descript', 'purpose'])
-        title = extract_item(
-            self.elem, ['idinfo', 'citation', 'citeinfo', 'title'])
+        output['dataset'] = {
+            "identifier": extract_item(self.elem, ['idinfo', 'datasetid']),
+            "abstract": extract_item(
+                self.elem, ['idinfo', 'descript', 'abstract']),
+            "title": extract_item(
+                self.elem, ['idinfo', 'citation', 'citeinfo', 'title'])
+        }
+
+        publisher = extract_item(
+            self.elem,
+            ['idinfo', 'citation', 'citeinfo', 'pubinfo', 'publish'])
+        pubplace = extract_item(
+            self.elem,
+            ['idinfo', 'citation', 'citeinfo', 'pubinfo', 'pubplace'])
+        output['publisher'] = {
+            "name": publisher,
+            "location": pubplace
+        }
+
         bbox_elem = extract_elem(self.elem, ['idinfo', 'spdom', 'bounding'])
-
         if bbox_elem is not None:
             # that's not even valid
             west = extract_item(bbox_elem, ['westbc'])
@@ -128,18 +153,31 @@ class FgdcItemReader():
             bbox = [west, south, east, north]
             bbox = bbox_to_geom(bbox)
             bbox = to_wkt(bbox)
-        else:
-            bbox = ''
 
+            output['dataset'].update({
+                "spatial_extent": {
+                    "wkt": bbox,
+                    "west": west,
+                    "east": east,
+                    "north": north,
+                    "south": south
+                }})
+
+        time = {}
         time_elem = extract_elem(self.elem, ['idinfo', 'timeperd', 'timeinfo'])
         if time_elem is not None:
             caldate = extract_item(time_elem, ['sngdate', 'caldate'])
-            if not caldate:
-                pass
+            if caldate:
+                # TODO: we should see if it's at least a valid date
+                time['startDate'] = caldate
 
-        # TODO: finish this for ranges and note ranges
-        # and what do we want in the ontology
-        time = {}
+            rngdate = extract_elem(time_elem, ['rngdates'])
+            if rngdate is not None:
+                time['startDate'] = extract_item(rngdate, ['begdate'])
+                time['endDate'] = extract_item(rngdate, ['enddate'])
+            # TODO: add the min/max of the list of dates
+
+        output['temporal_extent'] = tidy_dict(time)
 
         # retain the keyword sets with type, thesaurus name and split
         # the terms as best we can
@@ -160,10 +198,11 @@ class FgdcItemReader():
                     "terms": terms
                 })
             )
+        output['keywords'] = keywords
 
         distrib_elems = extract_elems(
             self.elem, ['distinfo', 'distrib', 'stdorder', 'digform'])
-        distributions = []
+        webpages = []
         for distrib_elem in distrib_elems:
             link = extract_item(
                 distrib_elem,
@@ -171,7 +210,7 @@ class FgdcItemReader():
             format = extract_item(distrib_elem, ['digtinfo', 'formname'])
             dist = tidy_dict({"url": link, "format": format})
             if dist:
-                distributions.append(dist)
+                webpages.append(dist)
 
         onlink_elems = extract_elems(
             self.elem, ['idinfo', 'citation', 'citeinfo', 'onlink'])
@@ -181,15 +220,8 @@ class FgdcItemReader():
                 "type": onlink_elem.attrib.get('type', '')
             })
             if dist:
-                distributions.append(dist)
+                webpages.append(dist)
 
-        return tidy_dict({
-            "id": identifier,
-            "title": title,
-            "abstract": abstract,
-            "purpose": purpose,
-            "subjects": keywords,
-            "date": time,
-            "bbox": bbox,
-            "distributions": distributions
-        })
+        output['webpages'] = webpages
+
+        return tidy_dict(output)
