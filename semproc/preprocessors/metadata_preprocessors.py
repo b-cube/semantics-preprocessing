@@ -289,20 +289,26 @@ class FgdcItemReader(BaseItemReader):
         key_elem = extract_elem(self.elem, ['idinfo', 'keywords'])
         for child in key_elem.iterchildren():
             key_type = extract_element_tag(child.tag)
-            thesaurus = extract_item(child, ['%skt' % key_type])
+            key_tag = 'strat' if key_type == 'stratum' else key_type
+            key_tag = 'temp' if key_tag == 'temporal' else key_tag
+            thesaurus = extract_item(child, ['%skt' % key_tag])
 
             # TODO: split these up
-            terms = extract_items(child, ['%skey' % key_type])
+            terms = extract_items(child, ['%skey' % key_tag])
 
-            # TODO: add something for a set without a thesaurus name
-            keywords.append(
-                tidy_dict({
-                    "object_id": generate_uuid_urn(),
-                    "thesaurus": thesaurus,
-                    "type": key_type,
-                    "terms": terms
-                })
-            )
+            if not terms:
+                from lxml import etree
+                print 'wtf', etree.tostring(child)
+            else:
+                # TODO: add something for a set without a thesaurus name
+                keywords.append(
+                    tidy_dict({
+                        "object_id": generate_uuid_urn(),
+                        "thesaurus": thesaurus,
+                        "type": key_type,
+                        "terms": terms
+                    })
+                )
         output['keywords'] = keywords
         for keyword in keywords:
             dataset['relationships'].append(
