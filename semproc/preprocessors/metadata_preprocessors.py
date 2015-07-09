@@ -296,10 +296,8 @@ class FgdcItemReader(BaseItemReader):
             # TODO: split these up
             terms = extract_items(child, ['%skey' % key_tag])
 
-            if not terms:
-                from lxml import etree
-                print 'wtf', etree.tostring(child)
-            else:
+            if terms:
+                # if there's a parsing error (bad cdata, etc) may not have
                 # TODO: add something for a set without a thesaurus name
                 keywords.append(
                     tidy_dict({
