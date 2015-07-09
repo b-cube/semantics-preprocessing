@@ -145,7 +145,7 @@ class FgdcItemReader(BaseItemReader):
     '''
     def _convert_date(self, datestr):
         # convert the 4-8 char to an iso date and deal with unknowns
-        if datestr.lower() == 'unknown':
+        if datestr.lower() in ['unknown', 'none']:
             return ''
 
         year = datestr[:4]
