@@ -3,6 +3,9 @@ from semproc.xml_utils import extract_item, extract_items
 from semproc.xml_utils import extract_elem, extract_elems
 from semproc.xml_utils import extract_attrib
 from semproc.geo_utils import bbox_to_geom, to_wkt
+from semproc.utils import generate_sha_urn, generate_uuid_urn
+from rdflib.namespace import DC, DCTERMS, FOAF, XSD, OWL
+from datetime import datetime
 
 
 '''
@@ -107,42 +110,77 @@ class DifItemReader():
         })
 
 
-class FgdcItemReader():
+class BaseItemReader():
+    _technical_debt = {
+        'bcube': 'http://purl.org/BCube/#',
+        'vcard': 'http://www.w3.org/TR/vcard-rdf/#',
+        'esip': 'http://purl.org/esip/#',
+        'vivo': 'http://vivo.ufl.edu/ontology/vivo-ufl/#',
+        'bibo': 'http://purl.org/ontology/bibo/#',
+        'dcat': 'http://www.w3.org/TR/vocab-dcat/#',
+        'dc': str(DC),
+        'dct': str(DCTERMS),
+        'foaf': str(FOAF),
+        'xsd': str(XSD),
+        'owl': str(OWL)
+    }
+
+    def __init__(self, elem, url, harvest_date):
+        self.elem = elem
+        self.url = url
+        self.harvest_date = harvest_date
+
+    def parse_item(self):
+        pass
+
+
+class FgdcItemReader(BaseItemReader):
     '''
     spitballing.
 
     an fgdc metadata record has one dataset entity.
     the dataset entity *may* have an identifier (datsetid).
+
+    TODO: probably not a lot of this across the suite of parsers
     '''
-    def __init__(self, elem):
-        self.elem = elem
+    def _convert_date(self, datestr):
+        # convert the 4-8 char to an iso date and deal with unknowns
+        if datestr.lower() == 'unknown':
+            return ''
+
+        year = datestr[:4]
+        month = datestr[4:6] if len(datestr) > 4 else '1'
+        day = datestr[6:] if len(datestr) > 6 else '1'
+        try:
+            d = datetime(int(year), int(month), int(day))
+            return d.isoformat()
+        except:
+            return ''
 
     def parse_item(self):
         output = {}
+
+        catalog_object_id = generate_sha_urn(self.url)
+
         output['catalog_record'] = {
-            "url": "",  # WE DO NOT HAVE THE URL HERE
-            "harvestDate": "",  # NOR DO WE HAVE THE DATE
+            "object_id": catalog_object_id,
+            "url": self.url,
+            "harvestDate": self.harvest_date,
             "conformsTo": extract_attrib(
                 self.elem, ['@noNamespaceSchemaLocation'])
         }
 
-        output['dataset'] = {
-            "identifier": extract_item(self.elem, ['idinfo', 'datasetid']),
+        datsetid = extract_item(self.elem, ['idinfo', 'datsetid'])
+        dataset_object_id = generate_sha_urn(datsetid) if datsetid \
+            else generate_uuid_urn()
+
+        dataset = {
+            "object_id": dataset_object_id,
+            "identifier": datsetid,
             "abstract": extract_item(
                 self.elem, ['idinfo', 'descript', 'abstract']),
             "title": extract_item(
                 self.elem, ['idinfo', 'citation', 'citeinfo', 'title'])
-        }
-
-        publisher = extract_item(
-            self.elem,
-            ['idinfo', 'citation', 'citeinfo', 'pubinfo', 'publish'])
-        pubplace = extract_item(
-            self.elem,
-            ['idinfo', 'citation', 'citeinfo', 'pubinfo', 'pubplace'])
-        output['publisher'] = {
-            "name": publisher,
-            "location": pubplace
         }
 
         bbox_elem = extract_elem(self.elem, ['idinfo', 'spdom', 'bounding'])
@@ -156,7 +194,7 @@ class FgdcItemReader():
             bbox = bbox_to_geom(bbox)
             bbox = to_wkt(bbox)
 
-            output['dataset'].update({
+            dataset.update({
                 "spatial_extent": {
                     "wkt": bbox,
                     "west": west,
@@ -171,15 +209,79 @@ class FgdcItemReader():
             caldate = extract_item(time_elem, ['sngdate', 'caldate'])
             if caldate:
                 # TODO: we should see if it's at least a valid date
-                time['startDate'] = caldate
+                time['startDate'] = self._convert_date(caldate)
 
             rngdate = extract_elem(time_elem, ['rngdates'])
             if rngdate is not None:
-                time['startDate'] = extract_item(rngdate, ['begdate'])
-                time['endDate'] = extract_item(rngdate, ['enddate'])
+                time['startDate'] = self._convert_date(
+                    extract_item(rngdate, ['begdate']))
+                time['endDate'] = self._convert_date(
+                    extract_item(rngdate, ['enddate']))
             # TODO: add the min/max of the list of dates
 
-        output['temporal_extent'] = tidy_dict(time)
+        dataset['temporal_extent'] = tidy_dict(time)
+
+        dataset['relationships'] = [
+            {
+                "relate": "description",
+                "object_id": catalog_object_id
+            }
+        ]
+
+        publisher = {
+            "object_id": generate_uuid_urn(),
+            "name": extract_item(
+                self.elem,
+                ['idinfo', 'citation', 'citeinfo', 'pubinfo', 'publish']),
+            "location": extract_item(
+                self.elem,
+                ['idinfo', 'citation', 'citeinfo', 'pubinfo', 'pubplace'])
+        }
+        output['publisher'] = publisher
+        dataset['relationships'].append({
+            "relate": "publisher",
+            "object_id": publisher['object_id']
+        })
+
+        # TODO: is the distribution bit working? not in the example
+        distrib_elems = extract_elems(
+            self.elem, ['distinfo', 'distrib', 'stdorder', 'digform'])
+        webpages = []
+        for distrib_elem in distrib_elems:
+            link = extract_item(
+                distrib_elem,
+                ['digtopt', 'onlinopt', 'computer', 'networka', 'networkr'])
+            format = extract_item(distrib_elem, ['digtinfo', 'formname'])
+            dist = tidy_dict(
+                {
+                    "object_id": generate_sha_urn(link),
+                    "url": link,
+                    "format": format
+                }
+            )
+            if dist:
+                webpages.append(dist)
+
+        onlink_elems = extract_elems(
+            self.elem, ['idinfo', 'citation', 'citeinfo', 'onlink'])
+        for onlink_elem in onlink_elems:
+            link = onlink_elem.text.strip() if onlink_elem.text else ''
+            if not link:
+                continue
+            dist = tidy_dict({
+                "object_id": generate_sha_urn(link),
+                "url": link,
+                "type": onlink_elem.attrib.get('type', '')
+            })
+            if dist:
+                webpages.append(dist)
+
+        output['webpages'] = webpages
+        for webpage in webpages:
+            dataset['relationships'].append({
+                "relate": "relation",
+                "object_id": webpage['object_id']
+            })
 
         # retain the keyword sets with type, thesaurus name and split
         # the terms as best we can
@@ -195,35 +297,29 @@ class FgdcItemReader():
             # TODO: add something for a set without a thesaurus name
             keywords.append(
                 tidy_dict({
+                    "object_id": generate_uuid_urn(),
                     "thesaurus": thesaurus,
                     "type": key_type,
                     "terms": terms
                 })
             )
         output['keywords'] = keywords
+        for keyword in keywords:
+            dataset['relationships'].append(
+                {
+                    "relate": "conformsTo",
+                    "object_id": keyword['object_id']
+                }
+            )
 
-        distrib_elems = extract_elems(
-            self.elem, ['distinfo', 'distrib', 'stdorder', 'digform'])
-        webpages = []
-        for distrib_elem in distrib_elems:
-            link = extract_item(
-                distrib_elem,
-                ['digtopt', 'onlinopt', 'computer', 'networka', 'networkr'])
-            format = extract_item(distrib_elem, ['digtinfo', 'formname'])
-            dist = tidy_dict({"url": link, "format": format})
-            if dist:
-                webpages.append(dist)
+        output['dataset'] = dataset
 
-        onlink_elems = extract_elems(
-            self.elem, ['idinfo', 'citation', 'citeinfo', 'onlink'])
-        for onlink_elem in onlink_elems:
-            dist = tidy_dict({
-                "url": onlink_elem.text.strip() if onlink_elem.text else '',
-                "type": onlink_elem.attrib.get('type', '')
-            })
-            if dist:
-                webpages.append(dist)
-
-        output['webpages'] = webpages
+        # add the metadata relate
+        output['catalog_record']['relationships'] = [
+            {
+                "relate": "primaryTopic",
+                "object_id": dataset_object_id
+            }
+        ]
 
         return tidy_dict(output)

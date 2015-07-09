@@ -56,8 +56,16 @@ def generate_short_uuid():
     return str(uuid4()).split('-')[0]
 
 
+def generate_uuid_urn():
+    return uuid4().urn
+
+
 def generate_sha(text):
     return hashlib.sha224(text).hexdigest()
+
+
+def generate_sha_urn(text):
+    return 'urn:sha:%s' % generate_sha(text)
 
 
 def extract_element_tag(tag):
@@ -125,7 +133,8 @@ def flatten(items, excluded_keys=[]):
                 yield list(_flatten(v))
         elif isinstance(item, list):
             for i in item:
-                if isinstance(i, collections.Iterable) and not isinstance(i, basestring):
+                if isinstance(i, collections.Iterable) \
+                        and not isinstance(i, basestring):
                     for subitem in _flatten(i):
                         yield subitem
                 else:
