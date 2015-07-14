@@ -36,13 +36,6 @@ class BagParser():
         return text
 
     def strip_text(self, exclude_tags=[]):
-        # pull any text() and attribute. again.
-        # bag of words BUT we care about where in
-        # the tree it was found (just for thinking)
-        # except do not care about namespace prefixed
-        # why am i not stripping out the prefixes? no idea.
-        # just don't want to install pparse/saxonb really
-        #
         # exclude_patterns = list of element tag strings
         # to ignore (ie schemaLocation, etc)
 
