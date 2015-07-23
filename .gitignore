@@ -25,6 +25,8 @@ solr_superset/
 sql/
 local/
 src/
+build/
+dist/
 
 .ipynb_checkpoints
 
