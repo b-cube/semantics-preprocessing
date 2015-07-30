@@ -74,7 +74,7 @@ class IdentifierExtractor(object):
         self.source_xml_as_str = source_xml_as_str
         
         self.identifieds = []
-        self.texts = []
+        self.texts = [self.source_url]
         self.seen_texts = []
         
         self._parse()
