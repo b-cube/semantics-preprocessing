@@ -237,11 +237,17 @@ class NcmlReader(Processor):
             v['name'] = variable.attrib.get('name', '')
             v['attributes'] = []
             for att in extract_elems(variable, ['attribute']):
-                # TODO: resolve this to be, generally, better
-                if 'standard_name' in att.attrib.keys() or 'long_name' in att.attrib.keys():
-                    att_text = att.attrib.get('standard_name', '')
-                    att_text += ' ' + att.attrib.get('long_name', '')
-                    v['attributes'].append(att_text)
+                a = {}
+                for key, value in att.attrib.iteritems():
+                    tag = extract_element_tag(key)
+                    if tag == 'values':
+                        continue
+                    
+                    a[tag] = value.strip()
+                    
+                if a:
+                    v['attributes'] += [a]
+
             v = tidy_dict(v)
             if v:
                 ncml['variables'].append(v)
