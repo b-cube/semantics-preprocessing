@@ -2,6 +2,8 @@
 !notebooks/opensearch_hrefs_stats.csv
 *.pyc
 *.xlsx
+*.log
+env.sh
 
 bcube_owslib
 
@@ -12,6 +14,7 @@ notebooks/*.sqlite
 
 test.txt
 testdata/
+fgdc_triples/
 we_hate_xml*
 notebooks/.ipynb_checkpoints/*
 local/stanford*
@@ -27,6 +30,7 @@ local/
 src/
 build/
 dist/
+gdal/
 
 .ipynb_checkpoints
 

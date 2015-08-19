@@ -1,5 +1,6 @@
 import rdflib
 import hashlib
+import json
 from uuid import uuid4
 from rdflib import Graph, Literal, RDF, RDFS, Namespace, URIRef
 from rdflib.namespace import DC, DCTERMS, FOAF, XSD, OWL
@@ -29,6 +30,7 @@ class RdfGrapher():
         'foaf': str(FOAF),
         'xsd': str(XSD),
         'owl': str(OWL)
+    }
 
     def __init__(self, data):
         self.graph = Graph()
