@@ -132,7 +132,7 @@ class MxParser(object):
         poc_elem = extract_elem(self.elem, [
             'identificationInfo', 'MD_DataIdentification', 'pointOfContact', 'CI_ResponsibleParty'])
         if poc_elem is None:
-            # and if that fails try for the root-level contact=
+            # and if that fails try for the root-level contact
             poc_elem = extract_elem(self.elem, ['contact', 'CI_ResponsibleParty'])
 
         # TODO: point of contact is not necessarily the publisher

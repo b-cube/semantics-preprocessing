@@ -1,10 +1,9 @@
-import dateutil as dateparser
+import dateutil.parser as dateparser
 from semproc.xml_utils import extract_item, extract_items, generate_localname_xpath
 from semproc.xml_utils import extract_elem, extract_elems, extract_attrib
 from semproc.utils import tidy_dict
 from semproc.geo_utils import bbox_to_geom, gml_to_geom, reproject, to_wkt
 from semproc.utils import generate_sha_urn, generate_uuid_urn
-from itertools import chain
 
 
 def parse_identifiers(elem):
@@ -54,9 +53,7 @@ def parse_identification_info(elem):
 
     # deal with the extent
     extents = parse_extent(elem)
-    dataset = dict(
-        chain(dataset.items(), extents.items())
-    )
+    dataset.update(extents)
 
     keywords = parse_keywords(elem)
     for keyword in keywords:
@@ -243,7 +240,7 @@ def parse_extent(elem):
     starting from the *:extent element
     '''
     extents = {}
-    geo_elem = extract_elem(elem, ['EX_Extent', 'geographicElement'])
+    geo_elem = extract_elem(elem, ['extent', 'EX_Extent', 'geographicElement'])
     if geo_elem is not None:
         # we need to sort out what kind of thing it is bbox, polygon, list of points
         bbox_elem = extract_elem(geo_elem, ['EX_GeographicBoundingBox'])
@@ -255,7 +252,7 @@ def parse_extent(elem):
         if poly_elem is not None:
             extents['spatial_extent'] = handle_polygon(poly_elem)
 
-    time_elem = extract_elem(elem, ['EX_Extent', 'temporalElement', 'extent', 'TimePeriod'])
+    time_elem = extract_elem(elem, ['extent', 'EX_Extent', 'temporalElement', 'EX_TemporalExtent', 'extent', 'TimePeriod'])
     if time_elem is not None:
         begin_position = extract_elem(time_elem, ['beginPosition'])
         end_position = extract_elem(time_elem, ['endPosition'])
@@ -266,11 +263,12 @@ def parse_extent(elem):
             end_position = parse_timestamp(end_position.text)
 
         extents['temporal_extent'] = {
-            "startDate": begin_position,
-            "endDate": end_position
+            "startDate": begin_position.isoformat(),
+            "endDate": end_position.isoformat()
         }
 
     return extents
+
 
 def parse_timestamp(text):
     '''
