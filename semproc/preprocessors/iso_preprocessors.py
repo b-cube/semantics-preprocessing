@@ -8,6 +8,7 @@ from semproc.xml_utils import extract_elem, extract_elems
 from semproc.xml_utils import extract_attrib
 from semproc.utils import generate_sha_urn, generate_uuid_urn
 from rdflib.namespace import DC, DCTERMS, FOAF, XSD, OWL
+from itertools import chain
 
 
 '''
@@ -43,6 +44,7 @@ class IsoReader():
     def __init__(self, identity, text, url, harvest_date):
         self.text = text
         self.identity = identity
+        self.url = url
         self.harvest_date = harvest_date
 
         # parse
@@ -73,7 +75,7 @@ class IsoReader():
             "object_id": generate_sha_urn(self.url),
             "url": self.url,
             "harvestDate": self.harvest_date,
-            "conformsTo": extract_item(self.parser.xml, ['@schemaLocation'])
+            "conformsTo": extract_attrib(self.parser.xml, ['@schemaLocation'])
         }
 
         if metadata_type == 'Data Series':
@@ -103,7 +105,7 @@ class MxParser(object):
         or part of some other catalog service
         '''
         self.elem = elem
-        self.output = {"catalog_record": catalog_record}
+        self.output = {"catalog_record": catalog_record, "relationships": []}
 
     def parse(self):
         '''
@@ -115,7 +117,10 @@ class MxParser(object):
         id_elem = extract_elem(self.elem, ['identificationInfo', 'MD_DataIdentification'])
         if id_elem is not None:
             identification = parse_identification_info(id_elem)
-            # self.description.update(identification)
+            identification['dataset']['relationships'].append({
+                "relate": "description",
+                "object_id": self.output['catalog_record']['object_id']
+            })
             self.output.update(identification)
             self.output['relationships'].append({
                 "relate": "primaryTopic",
@@ -130,22 +135,38 @@ class MxParser(object):
             # and if that fails try for the root-level contact=
             poc_elem = extract_elem(self.elem, ['contact', 'CI_ResponsibleParty'])
 
+        # TODO: point of contact is not necessarily the publisher
         if poc_elem is not None:
-            self.description['contact'] = parse_responsibleparty(poc_elem)
+            poc = parse_responsibleparty(poc_elem)
+            self.output['publisher'] = {
+                "object_id": generate_uuid_urn(),
+                "name": poc.get('organization_name', ''),
+                "location": ', '.join([poc['contact'].get('city', ''), poc['contact'].get('country', '')]) if 'contact' in poc else ''
+            }
+            self.output['dataset']['relationships'].append({
+                "relate": "publisher",
+                "object_id": self.output['publisher']['object_id']
+            })
 
-        # check for the service elements
-        service_elems = extract_elems(self.elem, ['identificationInfo', 'SV_ServiceIdentification'])
-        self.description['services'] = []
-        for service_elem in service_elems:
-            sv = SrvParser(service_elem)
-            self.description['services'].append(sv.parse())
+        # TODO: removing this until we have a definition for SERVICE
+        # # check for the service elements
+        # service_elems = extract_elems(self.elem, ['identificationInfo', 'SV_ServiceIdentification'])
+        # self.description['services'] = []
+        # for service_elem in service_elems:
+        #     sv = SrvParser(service_elem)
+        #     self.description['services'].append(sv.parse())
 
         dist_elems = extract_elems(self.elem, ['distributionInfo'])
-        self.description['endpoints'] = []
+        self.output['webpages'] = []
         for dist_elem in dist_elems:
-            self.description['endpoints'] = parse_distribution(dist_elem)
+            self.output['webpages'] = list(chain(self.output['webpages'], parse_distribution(dist_elem)))
+        for webpage in self.output['webpages']:
+            self.output['dataset']['relationships'].append({
+                "relate": "relation",
+                "object_id": webpage['object_id']
+            })
 
-        self.description = tidy_dict(self.description)
+        self.description = tidy_dict(self.output)
 
 
 class SrvParser(object):

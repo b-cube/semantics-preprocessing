@@ -1,6 +1,6 @@
 import dateutil as dateparser
 from semproc.xml_utils import extract_item, extract_items, generate_localname_xpath
-from semproc.xml_utils import extract_elem, extract_elems
+from semproc.xml_utils import extract_elem, extract_elems, extract_attrib
 from semproc.utils import tidy_dict
 from semproc.geo_utils import bbox_to_geom, gml_to_geom, reproject, to_wkt
 from semproc.utils import generate_sha_urn, generate_uuid_urn
@@ -80,7 +80,7 @@ def parse_keywords(elem):
         terms = extract_items(
             key_elem,
             ['MD_Keywords', 'keyword', 'CharacterString'])
-        key_type = extract_item(
+        key_type = extract_attrib(
             key_elem,
             ['MD_Keywords', 'type', 'MD_KeywordTypeCode', '@codeListValue'])
         thesaurus = extract_item(
@@ -103,13 +103,13 @@ def parse_keywords(elem):
     # add a generic set for the iso topic category
     isotopics = extract_items(elem, ['topicCategory', 'MD_TopicCategoryCode'])
     if isotopics:
-        keywords.append({
+        keywords.append(
             tidy_dict({
                 "object_id": generate_uuid_urn(),
                 "thesaurus": 'IsoTopicCategories',
                 "terms": isotopics
             })
-        })
+        )
 
     return keywords
 
@@ -270,6 +270,7 @@ def parse_extent(elem):
             "endDate": end_position
         }
 
+    return extents
 
 def parse_timestamp(text):
     '''
