@@ -138,11 +138,12 @@ class MxParser(object):
         # TODO: point of contact is not necessarily the publisher
         if poc_elem is not None:
             poc = parse_responsibleparty(poc_elem)
-            self.output['publisher'] = {
+            location = (' '.join([poc['contact'].get('city', ''), poc['contact'].get('country', '')])).strip() if poc.get('contact', {}) else ''
+            self.output['publisher'] = tidy_dict({
                 "object_id": generate_uuid_urn(),
-                "name": poc.get('organization_name', ''),
-                "location": ', '.join([poc['contact'].get('city', ''), poc['contact'].get('country', '')]) if 'contact' in poc else ''
-            }
+                "name": poc.get('organization', ''),
+                "location": location
+            })
             self.output['dataset']['relationships'].append({
                 "relate": "publisher",
                 "object_id": self.output['publisher']['object_id']

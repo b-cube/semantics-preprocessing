@@ -184,8 +184,8 @@ def parse_distribution(elem):
             if format_elem is not None:
                 transfer['format'] = ' '.join([
                     extract_item(format_elem,
-                                 ['specification', 'CharacterString']),
-                    extract_item(format_elem, ['version'])])
+                                 ['name', 'CharacterString']),
+                    extract_item(format_elem, ['version', 'CharacterString'])])
 
             webpages.append(tidy_dict(transfer))
 
