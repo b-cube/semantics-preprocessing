@@ -3,9 +3,11 @@ from semproc.utils import tidy_dict
 from semproc.preprocessors.iso_helpers import parse_identification_info
 from semproc.preprocessors.iso_helpers import parse_distribution
 from semproc.preprocessors.iso_helpers import parse_responsibleparty
-from semproc.xml_utils import extract_item, extract_items
+from semproc.xml_utils import extract_item
 from semproc.xml_utils import extract_elem, extract_elems
-from semproc.xml_utils import extract_attrib, extract_attribs
+from semproc.xml_utils import extract_attrib
+from semproc.utils import generate_sha_urn, generate_uuid_urn
+from rdflib.namespace import DC, DCTERMS, FOAF, XSD, OWL
 
 
 '''
@@ -24,9 +26,24 @@ class IsoReader():
         service identification
         mi/md
     '''
-    def __init__(self, identity, text, url):
+    _technical_debt = {
+        'bcube': 'http://purl.org/BCube/#',
+        'vcard': 'http://www.w3.org/TR/vcard-rdf/#',
+        'esip': 'http://purl.org/esip/#',
+        'vivo': 'http://vivo.ufl.edu/ontology/vivo-ufl/#',
+        'bibo': 'http://purl.org/ontology/bibo/#',
+        'dcat': 'http://www.w3.org/TR/vocab-dcat/#',
+        'dc': str(DC),
+        'dct': str(DCTERMS),
+        'foaf': str(FOAF),
+        'xsd': str(XSD),
+        'owl': str(OWL)
+    }
+
+    def __init__(self, identity, text, url, harvest_date):
         self.text = text
         self.identity = identity
+        self.harvest_date = harvest_date
 
         # parse
         self.parser = Parser(text)
@@ -49,15 +66,25 @@ class IsoReader():
         if not metadata_type:
             return {}
 
+        # TODO: this is unlikely to be correct, given the ds record
+        #       but we're not going there just yet
+        # TODO: deal with conformsTo (multiple schemaLocations, etc)
+        catalog_record = {
+            "object_id": generate_sha_urn(self.url),
+            "url": self.url,
+            "harvestDate": self.harvest_date,
+            "conformsTo": extract_item(self.parser.xml, ['@schemaLocation'])
+        }
+
         if metadata_type == 'Data Series':
             # run the set
-            self.reader = DsParser(self.parser.xml)
+            self.reader = DsParser(self.parser.xml, catalog_record)
         elif metadata_type == '19119':
             # run that
-            self.reader = SrvParser(self.parser.xml)
+            self.reader = SrvParser(self.parser.xml, catalog_record)
         elif metadata_type == '19115':
             # it's a mi/md so run that
-            self.reader = MxParser(self.parser.xml)
+            self.reader = MxParser(self.parser.xml, catalog_record)
 
         self.reader.parse()
         # pass it back up the chain a bit
@@ -69,13 +96,14 @@ class MxParser(object):
     parse an mi or md element (as whole record or some csw/oai-pmh/ds child)
     '''
 
-    def __init__(self, elem):
+    def __init__(self, elem, catalog_record):
         ''' starting at Mx_Metadata
         which can be within a DS composedOf block, within a
         CSW result set, as the series descriptor for a dataseries
         or part of some other catalog service
         '''
         self.elem = elem
+        self.output = {"catalog_record": catalog_record}
 
     def parse(self):
         '''
@@ -122,8 +150,9 @@ class SrvParser(object):
     read a service identification element as
     19119 or the embedded md/mi element
     '''
-    def __init__(self, elem):
+    def __init__(self, elem, catalog_record):
         self.elem = elem
+        self.output = {"catalog_record": catalog_record}
 
     def _handle_parameter(self, elem):
         ''' parse an sv_parameter element '''
@@ -177,8 +206,9 @@ class DsParser(object):
     the parent ds parsing (as an mi/md record itself)
     plus the nested children in composedOf
     '''
-    def __init__(self, elem):
+    def __init__(self, elem, catalog_record):
         self.elem = elem
+        self.output = {"catalog_record": catalog_record}
 
     # TODO: check on mi vs md here
     def parse(self):

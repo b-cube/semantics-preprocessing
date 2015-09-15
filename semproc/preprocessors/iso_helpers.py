@@ -3,6 +3,8 @@ from semproc.xml_utils import extract_item, extract_items, generate_localname_xp
 from semproc.xml_utils import extract_elem, extract_elems
 from semproc.utils import tidy_dict
 from semproc.geo_utils import bbox_to_geom, gml_to_geom, reproject, to_wkt
+from semproc.utils import generate_sha_urn, generate_uuid_urn
+from itertools import chain
 
 
 def parse_identifiers(elem):
@@ -31,23 +33,34 @@ def parse_identifiers(elem):
 
 
 def parse_identification_info(elem):
-    title = extract_item(elem, ['citation', 'CI_Citation', 'title', 'CharacterString'])
-    abstract = extract_item(elem, ['abstract', 'CharacterString'])
-    keywords = parse_keywords(elem)
+    # ignoring the larger get all the identifiers above
+    # in favor of, hopefully, getting a better dataset id
+    dataset_identifier = extract_item(elem, [
+        'citation', 'CI_Citation', 'identifier', 'MD_Identifier', 'code', 'CharacterString'
+    ])
 
+    dataset = {
+        "object_id": generate_sha_urn(dataset_identifier)
+            if dataset_identifier else generate_uuid_urn(),
+        "identifier": dataset_identifier,
+        "abstract": extract_item(elem, ['abstract', 'CharacterString']),
+        "title": extract_item(elem, ['citation', 'CI_Citation', 'title', 'CharacterString'])
+    }
+
+    # TODO: i think the rights blob is not in the ontology prototypes
     # the rights information from MD_Constraints or MD_LegalConstraints
-    rights = extract_item(elem, ['resourceConstraints', '*', 'useLimitation', 'CharacterString'])
+    # rights = extract_item(elem, ['resourceConstraints', '*', 'useLimitation', 'CharacterString'])
 
     # deal with the extent
     extents = parse_extent(elem)
+    dataset = dict(
+        chain(dataset.items(), extents.items())
+    )
 
-    return tidy_dict({
-        "title": title,
-        "abstract": abstract,
-        "keywords": keywords,
-        "rights": rights,
-        "extents": extents
-    })
+    # TODO: this is in the wrong place for the relationship
+    dataset['keywords'] = parse_keywords(elem)
+
+    return tidy_dict(dataset)
 
 
 def parse_keywords(elem):
@@ -56,14 +69,42 @@ def parse_keywords(elem):
     in an identification block
     '''
     keywords = []
-    keywords += extract_items(
-        elem, ['descriptiveKeywords', 'MD_Keywords', 'keyword', 'CharacterString'])
 
-    # grab the iso topic categories as well
-    keywords += extract_items(elem, ['topicCategory', 'MD_TopicCategoryCode'])
+    for key_elem in extract_elems(elem, ['descriptiveKeywords']):
+        # TODO: split these up (if *-delimited in some way)
+        terms = extract_items(
+            key_elem,
+            ['MD_Keywords', 'keyword', 'CharacterString'])
+        key_type = extract_item(
+            key_elem,
+            ['MD_Keywords', 'type', 'MD_KeywordTypeCode', '@codeListValue'])
+        thesaurus = extract_item(
+            key_elem,
+            ['MD_Keywords', 'thesaurusName', 'CI_Citation', 'title', 'CharacterString'])
 
-    # and the newer anchor style
-    keywords += extract_items(elem, ['descriptiveKeywords', 'MD_Keywords', 'keyword', 'Anchor'])
+        if terms:
+            keywords.append(
+                tidy_dict({
+                    "object_id": generate_uuid_urn(),
+                    "thesaurus": thesaurus,
+                    "type": key_type,
+                    "terms": terms
+                })
+            )
+
+    # TODO: add the Anchor element handling
+    #       ['descriptiveKeywords', 'MD_Keywords', 'keyword', 'Anchor']
+
+    # add a generic set for the iso topic category
+    isotopics = extract_items(elem, ['topicCategory', 'MD_TopicCategoryCode'])
+    if isotopics:
+        keywords.append({
+            tidy_dict({
+                "object_id": generate_uuid_urn(),
+                "thesaurus": 'IsoTopicCategories',
+                "terms": isotopics
+            })
+        })
 
     return keywords
 
@@ -170,7 +211,13 @@ def handle_bbox(elem):
     bbox = [west, south, east, north] if east and west and north and south else []
 
     geom = bbox_to_geom(bbox)
-    return to_wkt(geom)
+    return {
+        "wkt": to_wkt(geom),
+        "west": west,
+        "east": east,
+        "south": south,
+        "north": north
+    }
 
 
 def handle_polygon(polygon_elem):
@@ -181,7 +228,8 @@ def handle_polygon(polygon_elem):
     if srs_name != '':
         geom = reproject(geom, srs_name, 'EPSG:4326')
 
-    return to_wkt(geom)
+    # TODO: generate the envelope?
+    return {"wkt": to_wkt(geom)}
 
 
 def handle_points(point_elem):
@@ -200,11 +248,12 @@ def parse_extent(elem):
         # we need to sort out what kind of thing it is bbox, polygon, list of points
         bbox_elem = extract_elem(geo_elem, ['EX_GeographicBoundingBox'])
         if bbox_elem is not None:
-            extents['geographic'] = handle_bbox(bbox_elem)
+            extents['spatial_extent'] = handle_bbox(bbox_elem)
 
+        # NOTE: this will obv overwrite the above
         poly_elem = extract_elem(geo_elem, ['EX_BoundingPolygon'])
         if poly_elem is not None:
-            extents['polygon'] = handle_polygon(poly_elem)
+            extents['spatial_extent'] = handle_polygon(poly_elem)
 
     time_elem = extract_elem(elem, ['EX_Extent', 'temporalElement', 'extent', 'TimePeriod'])
     if time_elem is not None:
@@ -216,7 +265,10 @@ def parse_extent(elem):
         if end_position is not None and 'indeterminatePosition' not in end_position.attrib:
             end_position = parse_timestamp(end_position.text)
 
-        extents['temporal'] = [begin_position, end_position]
+        extents['temporal_extent'] = {
+            "startDate": begin_position,
+            "endDate": end_position
+        }
 
 
 def parse_timestamp(text):
