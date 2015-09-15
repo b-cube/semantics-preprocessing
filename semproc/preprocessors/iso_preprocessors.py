@@ -112,12 +112,15 @@ class MxParser(object):
             if identificationInfo contains SV_ServiceIdentification, add as child
             distribution info
         '''
-        self.description = {}
-
         id_elem = extract_elem(self.elem, ['identificationInfo', 'MD_DataIdentification'])
         if id_elem is not None:
             identification = parse_identification_info(id_elem)
-            self.description.update(identification)
+            # self.description.update(identification)
+            self.output.update(identification)
+            self.output['relationships'].append({
+                "relate": "primaryTopic",
+                "object_id": identification['dataset']['object_id']
+            })
 
         # point of contact from the root node and this might be an issue
         # in things like the -1/-3 from ngdc so try for an idinfo blob

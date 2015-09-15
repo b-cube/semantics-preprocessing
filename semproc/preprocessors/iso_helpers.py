@@ -44,7 +44,8 @@ def parse_identification_info(elem):
             if dataset_identifier else generate_uuid_urn(),
         "identifier": dataset_identifier,
         "abstract": extract_item(elem, ['abstract', 'CharacterString']),
-        "title": extract_item(elem, ['citation', 'CI_Citation', 'title', 'CharacterString'])
+        "title": extract_item(elem, ['citation', 'CI_Citation', 'title', 'CharacterString']),
+        "relationships": []
     }
 
     # TODO: i think the rights blob is not in the ontology prototypes
@@ -57,10 +58,14 @@ def parse_identification_info(elem):
         chain(dataset.items(), extents.items())
     )
 
-    # TODO: this is in the wrong place for the relationship
-    dataset['keywords'] = parse_keywords(elem)
+    keywords = parse_keywords(elem)
+    for keyword in keywords:
+        dataset['relationships'].append({
+            "relate": "conformsTo",
+            "object_id": keyword['object_id']
+        })
 
-    return tidy_dict(dataset)
+    return {"dataset": tidy_dict(dataset), "keywords": keywords}
 
 
 def parse_keywords(elem):
@@ -156,9 +161,9 @@ def parse_contact(elem):
 
 def parse_distribution(elem):
     ''' from the distributionInfo element '''
-    distributions = []
-    dist_elems = extract_elems(elem, ['MD_Distribution'])
-    for dist_elem in dist_elems:
+    webpages = []
+
+    for dist_elem in extract_elems(elem, ['MD_Distribution']):
         # this is going to get ugly.
         # super ugly
         # get the transferoptions block
@@ -167,32 +172,27 @@ def parse_distribution(elem):
         # but where the transferoptions can be in some nested
         # distributor thing or at the root of the element (NOT
         # the root of the file)
-        transfer_elems = extract_elems(dist_elem, ['//*', 'MD_DigitalTransferOptions'])
+        transfer_elems = extract_elems(dist_elem,
+                                       ['//*', 'MD_DigitalTransferOptions'])
         for transfer_elem in transfer_elems:
             transfer = {}
             transfer['url'] = extract_item(
-                transfer_elem, ['onLine', 'CI_OnlineResource', 'linkage', 'URL'])
-            transfer['name'] = extract_item(
-                transfer_elem, ['onLine', 'CI_OnlineResource', 'name', 'CharacterString'])
-            transfer['description'] = extract_item(
-                transfer_elem, ['onLine', 'CI_OnlineResource', 'description', 'CharacterString'])
+                transfer_elem,
+                ['onLine', 'CI_OnlineResource', 'linkage', 'URL'])
+            transfer['object_id'] = generate_sha_urn(transfer['url'])
 
-            xp = generate_localname_xpath(['..', '..', 'distributorFormat', 'MD_Format'])
+            xp = generate_localname_xpath(
+                ['..', '..', 'distributorFormat', 'MD_Format'])
             format_elem = next(iter(transfer_elem.xpath(xp)), None)
             if format_elem is not None:
-                transfer['format'] = {}
-                transfer['format']['name'] = extract_item(
-                    format_elem, ['name', 'CharacterString'])
-                transfer['format']['specification'] = extract_item(
-                    format_elem, ['specification', 'CharacterString'])
-                transfer['format']['version'] = extract_item(
-                    format_elem, ['version'])
+                transfer['format'] = ' '.join([
+                    extract_item(format_elem,
+                                 ['specification', 'CharacterString']),
+                    extract_item(format_elem, ['version'])])
 
-                transfer['format'] = tidy_dict(transfer['format'])
+            webpages.append(tidy_dict(transfer))
 
-            distributions.append(tidy_dict(transfer))
-
-    return distributions
+    return webpages
 
 
 def handle_bbox(elem):
