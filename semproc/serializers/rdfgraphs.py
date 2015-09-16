@@ -1,8 +1,6 @@
-import rdflib
-import hashlib
 import json
 from uuid import uuid4
-from rdflib import Graph, Literal, RDF, RDFS, Namespace, URIRef
+from rdflib import Graph, Literal, Namespace, URIRef
 from rdflib.namespace import DC, DCTERMS, FOAF, XSD, OWL
 
 '''
@@ -73,74 +71,132 @@ class RdfGrapher():
         return resource
 
     def _process_catalog(self, entity):
-        catalog_record = self._create_resource('dcat', 'CatalogRecord', entity['object_id'])
-        catalog_record.add(self._generate_predicate('vcard', 'hasURL'), Literal(entity['url']))
-        catalog_record.add(self._generate_predicate('vivo', 'harvestDate'), Literal(entity['harvestDate']))
+        catalog_record = self._create_resource(
+            'dcat', 'CatalogRecord', entity['object_id'])
+        catalog_record.add(
+            self._generate_predicate('vcard', 'hasURL'),
+            Literal(entity['url']))
+        catalog_record.add(
+            self._generate_predicate('vivo', 'harvestDate'),
+            Literal(entity['harvestDate']))
         if entity['conformsTo']:
             catalog_record.add(DC.conformsTo, Literal(entity['conformsTo']))
 
         for relationship in entity['relationships']:
             # so. current object, verb, id of object, existence unknown
-            self.relates.append((catalog_record, relationship['relate'], relationship['object_id']))
+            self.relates.append(
+                (catalog_record, relationship['relate'],
+                    relationship['object_id'])
+            )
+
+    def _process_service(self, entity):
+        service = self._create_resource('sioc', 'Service', entity['object_id'])
+        if entity['identifier']:
+            service.add(DCTERMS.identifier, Literal(entity['identifier']))
+        service.add(
+            DCTERMS.title, Literal(self._stringify(entity['title'])))
+        service.add(
+            DC.description, Literal(self._stringify(entity['abstract'])))
 
     def _process_dataset(self, entity):
         dataset = self._create_resource('dcat', 'Dataset', entity['object_id'])
         if entity['identifier']:
             dataset.add(DCTERMS.identifier, Literal(entity['identifier']))
-        dataset.add(DCTERMS.title, Literal(self._stringify(entity['title'])))
-        dataset.add(DC.description, Literal(self._stringify(entity['abstract'])))
+        dataset.add(
+            DCTERMS.title, Literal(self._stringify(entity['title'])))
+        dataset.add(
+            DC.description, Literal(self._stringify(entity['abstract'])))
 
         if 'temporal_extent' in entity:
             # NOTE: make these iso 8601 first
             begdate = entity['temporal_extent'].get('startDate')
             enddate = entity['temporal_extent'].get('endDate')
 
-            dataset.add(self._generate_predicate('esip', 'startDate'), Literal(begdate, datatype=XSD.date))
-            dataset.add(self._generate_predicate('esip', 'endDate'), Literal(enddate, datatype=XSD.date))
+            dataset.add(
+                self._generate_predicate('esip', 'startDate'),
+                Literal(begdate, datatype=XSD.date)
+            )
+            dataset.add(
+                self._generate_predicate('esip', 'endDate'),
+                Literal(enddate, datatype=XSD.date)
+            )
 
         if 'spatial_extent' in entity:
             dataset.add(DC.spatial, Literal(entity['spatial_extent']['wkt']))
 
             # a small not good thing.
-            dataset.add(self._generate_predicate('esip', 'westBound'),
-                        Literal(float(entity['spatial_extent']['west']), datatype=XSD.float))
+            dataset.add(
+                self._generate_predicate('esip', 'westBound'),
+                Literal(
+                    float(entity['spatial_extent']['west']),
+                    datatype=XSD.float)
+            )
 
-            dataset.add(self._generate_predicate('esip', 'eastBound'),
-                        Literal(float(entity['spatial_extent']['east']), datatype=XSD.float))
+            dataset.add(
+                self._generate_predicate('esip', 'eastBound'),
+                Literal(
+                    float(entity['spatial_extent']['east']),
+                    datatype=XSD.float)
+            )
 
-            dataset.add(self._generate_predicate('esip', 'southBound'),
-                        Literal(float(entity['spatial_extent']['south']), datatype=XSD.float))
+            dataset.add(
+                self._generate_predicate('esip', 'southBound'),
+                Literal(
+                    float(entity['spatial_extent']['south']),
+                    datatype=XSD.float)
+            )
 
-            dataset.add(self._generate_predicate('esip', 'northBound'),
-                        Literal(float(entity['spatial_extent']['north']), datatype=XSD.float))
-        
+            dataset.add(
+                self._generate_predicate('esip', 'northBound'),
+                Literal(
+                    float(entity['spatial_extent']['north']),
+                    datatype=XSD.float)
+            )
+
         for relationship in entity['relationships']:
-            self.relates.append((dataset, relationship['relate'], relationship['object_id']))
-        
+            self.relates.append(
+                (dataset, relationship['relate'], relationship['object_id']))
+
     def _process_keywords(self, entity):
         for keywords in entity:
-            keyset = self._create_resource('bcube', 'thesaurusSubset', keywords['object_id'])
+            keyset = self._create_resource(
+                'bcube', 'thesaurusSubset', keywords['object_id'])
             if 'type' in keywords:
-                keyset.add(DC.hasType, Literal(self._stringify(keywords['type'])))
+                keyset.add(
+                    DC.hasType,
+                    Literal(self._stringify(keywords['type']))
+                )
             if 'thesaurus' in keywords:
-                keyset.add(DC.partOf, Literal(self._stringify(keywords['thesaurus'])))
+                keyset.add(
+                    DC.partOf,
+                    Literal(self._stringify(keywords['thesaurus']))
+                )
 
             try:
                 for term in keywords['terms']:
-                    keyset.add(self._generate_predicate('bcube', 'hasValue'), Literal(self._stringify(term)))
+                    keyset.add(
+                        self._generate_predicate('bcube', 'hasValue'),
+                        Literal(self._stringify(term))
+                    )
             except:
                 print keywords
 
     def _process_publisher(self, entity):
-        publisher = self._create_resource('dcat', 'publisher', entity['object_id'])
+        publisher = self._create_resource(
+            'dcat', 'publisher', entity['object_id'])
         if 'location' in entity:
-            publisher.add(DC.location, Literal(self._stringify(entity['location'])))
+            publisher.add(
+                DC.location, Literal(self._stringify(entity['location'])))
         publisher.add(FOAF.name, Literal(self._stringify(entity['name'])))
 
     def _process_webpages(self, entity):
         for webpage in entity:
-            relation = self._create_resource('bibo', 'WebPage', webpage['object_id'])
-            relation.add(self._generate_predicate('vcard', 'hasURL'), Literal(webpage['url']))
+            relation = self._create_resource(
+                'bibo', 'WebPage', webpage['object_id'])
+            relation.add(
+                self._generate_predicate('vcard', 'hasURL'),
+                Literal(webpage['url'])
+            )
 
     def emit_format(self):
         return self.graph.serialize(format='turtle')
@@ -162,8 +218,12 @@ class RdfGrapher():
         for entity_type, entity in self.data.iteritems():
             if entity_type == 'catalog_record':
                 self._process_catalog(entity)
-            elif entity_type == 'dataset':
-                self._process_dataset(entity)
+            elif entity_type == 'datasets':
+                for dataset in entity:
+                    self._process_dataset(dataset)
+            elif entity_type == 'services':
+                for service in entity:
+                    self._process_service(service)
             elif entity_type == 'publisher':
                 self._process_publisher(entity)
             elif entity_type == 'keywords':

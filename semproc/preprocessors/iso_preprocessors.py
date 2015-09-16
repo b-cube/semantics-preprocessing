@@ -86,14 +86,18 @@ class IsoReader():
             self.reader = DsParser(self.parser.xml, catalog_record)
         elif metadata_type == '19119':
             # run that
-            self.reader = SrvParser(self.parser.xml, catalog_record)
+            for srv in extract_elems(
+                self.parser.xml,
+                    ['identificationInfo', 'SV_ServiceIdentification']):
+                reader = SrvParser(srv, catalog_record)
+                reader.parse()
         elif metadata_type == '19115':
             # it's a mi/md so run that
             self.reader = MxParser(self.parser.xml, catalog_record)
 
-        self.reader.parse()
-        # pass it back up the chain a bit
-        self.description = self.reader.description
+        # self.reader.parse()
+        # # pass it back up the chain a bit
+        # self.description = self.reader.description
 
 
 class MxParser(object):
@@ -241,9 +245,8 @@ class SrvParser(object):
         return ops
 
     def parse(self):
-        # elem = extract_elem(self.elem, ['SV_ServiceIdentification'])
         if self.elem is None:
-            self.description = {}
+            self.description = self.output
             return
 
         self.description = parse_identification_info(self.elem)
