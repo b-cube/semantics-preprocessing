@@ -9,6 +9,7 @@ from rdflib.namespace import DC, DCTERMS, FOAF, XSD, OWL
 json serializer?
 '''
 
+
 class RdfGrapher():
     '''
     take our json output from a preprocessor and
@@ -52,14 +53,14 @@ class RdfGrapher():
             "dcat": ["publisher"],
             "foaf": ["primaryTopic"]
         }
-        
+
         for k, v in debt.iteritems():
             if predicate in v:
                 return k
         return ''
-    
+
     def _stringify(self, text):
-        # TODO: this still has encoding issues! 
+        # TODO: this still has encoding issues!
         return json.dumps(text)
 
     def _create_resource(self, resource_prefix, resource_type, identifier=''):
@@ -77,18 +78,18 @@ class RdfGrapher():
         catalog_record.add(self._generate_predicate('vivo', 'harvestDate'), Literal(entity['harvestDate']))
         if entity['conformsTo']:
             catalog_record.add(DC.conformsTo, Literal(entity['conformsTo']))
-        
+
         for relationship in entity['relationships']:
             # so. current object, verb, id of object, existence unknown
             self.relates.append((catalog_record, relationship['relate'], relationship['object_id']))
-            
+
     def _process_dataset(self, entity):
         dataset = self._create_resource('dcat', 'Dataset', entity['object_id'])
         if entity['identifier']:
             dataset.add(DCTERMS.identifier, Literal(entity['identifier']))
         dataset.add(DCTERMS.title, Literal(self._stringify(entity['title'])))
         dataset.add(DC.description, Literal(self._stringify(entity['abstract'])))
-        
+
         if 'temporal_extent' in entity:
             # NOTE: make these iso 8601 first
             begdate = entity['temporal_extent'].get('startDate')
@@ -129,25 +130,26 @@ class RdfGrapher():
                     keyset.add(self._generate_predicate('bcube', 'hasValue'), Literal(self._stringify(term)))
             except:
                 print keywords
-        
+
     def _process_publisher(self, entity):
         publisher = self._create_resource('dcat', 'publisher', entity['object_id'])
-        publisher.add(DC.location, Literal(self._stringify(entity['location'])))
+        if 'location' in entity:
+            publisher.add(DC.location, Literal(self._stringify(entity['location'])))
         publisher.add(FOAF.name, Literal(self._stringify(entity['name'])))
-        
+
     def _process_webpages(self, entity):
         for webpage in entity:
             relation = self._create_resource('bibo', 'WebPage', webpage['object_id'])
             relation.add(self._generate_predicate('vcard', 'hasURL'), Literal(webpage['url']))
-    
+
     def emit_format(self):
         return self.graph.serialize(format='turtle')
-    
+
     def serialize(self):
         '''
         not a word
         so from our json.
-        
+
         this. is. idk. an ordering thing. i suspect the graph borks
         when you try to add a triple for a non-existent object.
         years of experience. also, i am wrong - it will add anything.
@@ -170,11 +172,10 @@ class RdfGrapher():
                 self._process_webpages(entity)
             else:
                 continue
-        
+
         for resource, verb, object_id in self.relates:
             resource.add(
                 self._generate_predicate(
                     self._identify_prefix(verb), verb),
                 URIRef(object_id)
             )
-

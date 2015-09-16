@@ -75,7 +75,8 @@ class IsoReader():
             "object_id": generate_sha_urn(self.url),
             "url": self.url,
             "harvestDate": self.harvest_date,
-            "conformsTo": extract_attrib(self.parser.xml, ['@schemaLocation'])
+            "conformsTo": extract_attrib(self.parser.xml, ['@schemaLocation']),
+            "relationships": []
         }
 
         if metadata_type == 'Data Series':
@@ -122,7 +123,7 @@ class MxParser(object):
                 "object_id": self.output['catalog_record']['object_id']
             })
             self.output.update(identification)
-            self.output['relationships'].append({
+            self.output['catalog_record']['relationships'].append({
                 "relate": "primaryTopic",
                 "object_id": identification['dataset']['object_id']
             })
