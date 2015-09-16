@@ -5,6 +5,7 @@ from uuid import uuid4
 import hashlib
 from itertools import chain
 from HTMLParser import HTMLParser
+import re
 
 
 '''
@@ -46,6 +47,11 @@ def parse_url(url):
 '''
 general utils
 '''
+
+
+def match(s, p):
+    m = re.search(p, s)
+    return m.group(0) if m else ''
 
 
 def generate_short_uuid():
