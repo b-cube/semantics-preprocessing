@@ -12,10 +12,11 @@ from itertools import chain
 
 
 '''
-NOTE: for all of the ISO parsers, I am using the local-path "trick". It is a known
-      performance hit but the harmonization across -1, -2, -3, INSPIRE, data.gov,
-      whatever, is a not insignificant chunk of dev time as well. I am willing to
-      make this tradeoff given the ETL workflow.
+NOTE: for all of the ISO parsers, I am using the local-path "trick".
+      It is a known performance hit but the harmonization across -1,
+      -2, -3, INSPIRE, data.gov, whatever, is a not insignificant chunk
+      of dev time as well. I am willing to make this tradeoff given
+      the ETL workflow.
 '''
 
 
@@ -34,6 +35,7 @@ class IsoReader():
         'vivo': 'http://vivo.ufl.edu/ontology/vivo-ufl/#',
         'bibo': 'http://purl.org/ontology/bibo/#',
         'dcat': 'http://www.w3.org/TR/vocab-dcat/#',
+        "sioc": "http://rdfs.org/sioc/services#",
         'dc': str(DC),
         'dct': str(DCTERMS),
         'foaf': str(FOAF),
@@ -111,11 +113,13 @@ class MxParser(object):
     def parse(self):
         '''
         from the root node, parse:
-            identification (title, abstract, point of contact, keywords, extent)
-            if identificationInfo contains SV_ServiceIdentification, add as child
-            distribution info
+            identification (title, abstract, point of contact, keywords,
+            extent) if identificationInfo contains SV_ServiceIdentification,
+            add as child distribution info
         '''
-        id_elem = extract_elem(self.elem, ['identificationInfo', 'MD_DataIdentification'])
+        id_elem = extract_elem(
+            self.elem,
+            ['identificationInfo', 'MD_DataIdentification'])
         if id_elem is not None:
             identification = parse_identification_info(id_elem)
             identification['dataset']['relationships'].append({
@@ -131,15 +135,25 @@ class MxParser(object):
         # point of contact from the root node and this might be an issue
         # in things like the -1/-3 from ngdc so try for an idinfo blob
         poc_elem = extract_elem(self.elem, [
-            'identificationInfo', 'MD_DataIdentification', 'pointOfContact', 'CI_ResponsibleParty'])
+            'identificationInfo',
+            'MD_DataIdentification',
+            'pointOfContact',
+            'CI_ResponsibleParty'])
         if poc_elem is None:
             # and if that fails try for the root-level contact
-            poc_elem = extract_elem(self.elem, ['contact', 'CI_ResponsibleParty'])
+            poc_elem = extract_elem(
+                self.elem,
+                ['contact', 'CI_ResponsibleParty'])
 
         # TODO: point of contact is not necessarily the publisher
         if poc_elem is not None:
             poc = parse_responsibleparty(poc_elem)
-            location = (' '.join([poc['contact'].get('city', ''), poc['contact'].get('country', '')])).strip() if poc.get('contact', {}) else ''
+            location = (
+                ' '.join(
+                    [poc['contact'].get('city', ''),
+                     poc['contact'].get('country', '')])
+            ).strip() if poc.get('contact', {}) else ''
+
             self.output['publisher'] = tidy_dict({
                 "object_id": generate_uuid_urn(),
                 "name": poc.get('organization', ''),
@@ -152,7 +166,8 @@ class MxParser(object):
 
         # TODO: removing this until we have a definition for SERVICE
         # # check for the service elements
-        # service_elems = extract_elems(self.elem, ['identificationInfo', 'SV_ServiceIdentification'])
+        # service_elems = extract_elems(self.elem,
+        #     ['identificationInfo', 'SV_ServiceIdentification'])
         # self.description['services'] = []
         # for service_elem in service_elems:
         #     sv = SrvParser(service_elem)
@@ -161,7 +176,8 @@ class MxParser(object):
         dist_elems = extract_elems(self.elem, ['distributionInfo'])
         self.output['webpages'] = []
         for dist_elem in dist_elems:
-            self.output['webpages'] = list(chain(self.output['webpages'], parse_distribution(dist_elem)))
+            self.output['webpages'] = list(
+                chain(self.output['webpages'], parse_distribution(dist_elem)))
         for webpage in self.output['webpages']:
             self.output['dataset']['relationships'].append({
                 "relate": "relation",
@@ -178,7 +194,7 @@ class SrvParser(object):
     '''
     def __init__(self, elem, catalog_record):
         self.elem = elem
-        self.output = {"catalog_record": catalog_record}
+        self.output = {"catalog_record": catalog_record, "relationships": []}
 
     def _handle_parameter(self, elem):
         ''' parse an sv_parameter element '''
@@ -187,7 +203,8 @@ class SrvParser(object):
         param['name'] = extract_item(
             elem, ['name', 'aName', 'CharacterString'])
         param['inputType'] = extract_item(
-            elem, ['name', 'attributeType', 'TypeName', 'aName', 'CharacterString'])
+            elem,
+            ['name', 'attributeType', 'TypeName', 'aName', 'CharacterString'])
         param['direction'] = extract_item(
             elem, ['direction', 'SV_ParameterDirection'])
         param['optional'] = extract_item(
@@ -200,16 +217,25 @@ class SrvParser(object):
         return param
 
     def _handle_operations(self):
-        elems = extract_elems(self.elem, ['containsOperations', 'SV_OperationMetadata'])
+        elems = extract_elems(
+            self.elem,
+            ['containsOperations', 'SV_OperationMetadata'])
 
         ops = []
         for e in elems:
             op = {}
-            op['name'] = extract_item(e, ['operationName', 'CharacterString'])
-            op['method'] = extract_attrib(e, ['DCP', 'DCPList', '@codeListValue'])
-            op['url'] = extract_item(e, ['connectPoint', 'CI_OnlineResource', 'linkage', 'URL'])
-            op['parameters'] = [self._handle_parameter(pe) for pe in
-                                extract_elems(e, ['parameters', 'SV_Parameter'])]
+            op['name'] = extract_item(
+                e,
+                ['operationName', 'CharacterString'])
+            op['method'] = extract_attrib(
+                e,
+                ['DCP', 'DCPList', '@codeListValue'])
+            op['url'] = extract_item(
+                e,
+                ['connectPoint', 'CI_OnlineResource', 'linkage', 'URL'])
+            op['parameters'] = [
+                self._handle_parameter(pe) for pe in
+                extract_elems(e, ['parameters', 'SV_Parameter'])]
             ops.append(op)
 
         return ops
