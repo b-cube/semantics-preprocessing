@@ -24,6 +24,7 @@ class RdfGrapher():
         'vivo': 'http://vivo.ufl.edu/ontology/vivo-ufl/#',
         'bibo': 'http://purl.org/ontology/bibo/#',
         'dcat': 'http://www.w3.org/TR/vocab-dcat/#',
+        "prov": "http://purl.org/net/provenance/ns#",
         'dc': str(DC),
         'dct': str(DCTERMS),
         'foaf': str(FOAF),
@@ -117,16 +118,19 @@ class RdfGrapher():
 
             pred = self._generate_predicate(
                 predicate.split(':')[0], predicate.split(':')[-1]
-            ) if isinstance(predicate, str) else predicate
+            ) if key != 'wkt' else predicate
 
-            yield (
-                pred, Literal(
-                    float(blob), datatype=XSD.float
-                )
+            literal = Literal(blob) if key == 'wkt' else Literal(
+                float(blob), datatype=XSD.float
             )
+            yield (pred, literal)
 
     def _process_service(self, entity):
-        service = self._create_resource('sioc', 'Service', entity['object_id'])
+        service = self._create_resource(
+            'prov',
+            'DataProvidingService',
+            entity['object_id']
+        )
         if entity['identifier']:
             service.add(DCTERMS.identifier, Literal(entity['identifier']))
         service.add(
@@ -137,14 +141,14 @@ class RdfGrapher():
         # TODO: at some point, this might have operations, params, etc
 
         if 'temporal_extent' in entity:
-            for temporal_triple in self._handle_temporal(
+            for temporal_predicate, temporal_value in self._handle_temporal(
                     entity['temporal_extent']):
-                service.add(temporal_triple)
+                service.add(temporal_predicate, temporal_value)
 
         if 'spatial_extent' in entity:
-            for spatial_triple in self._handle_spatial(
+            for spatial_predicate, spatial_value in self._handle_spatial(
                     entity['spatial_extent']):
-                service.add(spatial_triple)
+                service.add(spatial_predicate, spatial_value)
 
         for relationship in entity['relationships']:
             self.relates.append(
@@ -160,14 +164,14 @@ class RdfGrapher():
             DC.description, Literal(self._stringify(entity['abstract'])))
 
         if 'temporal_extent' in entity:
-            for temporal_triple in self._handle_temporal(
+            for temporal_predicate, temporal_value in self._handle_temporal(
                     entity['temporal_extent']):
-                dataset.add(temporal_triple)
+                dataset.add(temporal_predicate, temporal_value)
 
         if 'spatial_extent' in entity:
-            for spatial_triple in self._handle_spatial(
+            for spatial_predicate, spatial_value in self._handle_spatial(
                     entity['spatial_extent']):
-                dataset.add(spatial_triple)
+                dataset.add(spatial_predicate, spatial_value)
 
         for relationship in entity['relationships']:
             self.relates.append(

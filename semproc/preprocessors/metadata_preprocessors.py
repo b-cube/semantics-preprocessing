@@ -118,6 +118,7 @@ class BaseItemReader():
         'vivo': 'http://vivo.ufl.edu/ontology/vivo-ufl/#',
         'bibo': 'http://purl.org/ontology/bibo/#',
         'dcat': 'http://www.w3.org/TR/vocab-dcat/#',
+        "prov": "http://purl.org/net/provenance/ns#",
         'dc': str(DC),
         'dct': str(DCTERMS),
         'foaf': str(FOAF),
