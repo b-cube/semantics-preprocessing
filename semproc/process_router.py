@@ -25,7 +25,7 @@ class Router():
         '''
         set up the router
         '''
-        protocol = list(next(iter(self.identity), []))
+        protocol = next(iter(self.identity), {})
         protocol = protocol.get('protocol', '')
 
         if not protocol:
