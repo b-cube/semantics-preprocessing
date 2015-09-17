@@ -25,7 +25,8 @@ class Router():
         '''
         set up the router
         '''
-        protocol = self.identity['protocol']
+        protocol = next(iter(self.identity), {})
+        protocol = protocol.get('protocol', '')
 
         if not protocol:
             # we will try a generic xml parser
