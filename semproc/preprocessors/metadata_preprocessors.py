@@ -168,7 +168,7 @@ class FgdcItemReader(BaseItemReader):
             "url": self.url,
             "harvestDate": self.harvest_date,
             "conformsTo": extract_attrib(
-                self.elem, ['@noNamespaceSchemaLocation'])
+                self.elem, ['@noNamespaceSchemaLocation']).split()
         }
 
         datsetid = extract_item(self.elem, ['idinfo', 'datsetid'])
@@ -317,7 +317,7 @@ class FgdcItemReader(BaseItemReader):
                 }
             )
 
-        output['dataset'] = dataset
+        output['datasets'] = [dataset]
 
         # add the metadata relate
         output['catalog_record']['relationships'] = [

@@ -19,7 +19,7 @@ class Router():
     def __init__(self, identification, response, source_url):
         self.identity = identification
         self.source_url = source_url
-        self._instantiate(response, source_url)
+        self.reader = self._instantiate(response, source_url)
 
     def _instantiate(self, response, url):
         '''
@@ -30,18 +30,20 @@ class Router():
 
         if not protocol:
             # we will try a generic xml parser
-            self.reader = XmlReader(response, url)
+            return XmlReader(response, url)
 
         if protocol == 'OpenSearch':
-            self.reader = OpenSearchReader(self.identity, response, url)
+            return OpenSearchReader(self.identity, response, url)
         elif protocol == 'OAI-PMH':
-            self.reader = OaiPmhReader(self.identity, response, url)
+            return OaiPmhReader(self.identity, response, url)
         elif protocol == 'UNIDATA':
-            self.reader = ThreddsReader(self.identity, response, url)
+            return ThreddsReader(self.identity, response, url)
         elif protocol in ['ISO']:
             # TODO: update this for the data series and service metadata
-            self.reader = IsoReader(self.identity, response, url)
+            return IsoReader(self.identity, response, url)
         elif protocol in ['OGC'] and 'error' not in protocol:
-            self.reader = OgcReader(self.identity, response, url)
+            return OgcReader(self.identity, response, url)
         elif protocol == 'RDF':
-            self.reader = RdfReader(self.identity, response, url)
+            return RdfReader(self.identity, response, url)
+
+        raise Exception('failed to identify parser for %s' % protocol)
