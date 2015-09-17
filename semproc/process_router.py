@@ -46,4 +46,4 @@ class Router():
         elif protocol == 'RDF':
             return RdfReader(self.identity, response, url)
 
-        raise Exception('failed to identify parser for %s' % protocol)
+        return XmlReader(response, url)
