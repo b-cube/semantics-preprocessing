@@ -79,14 +79,50 @@ class RdfGrapher():
         catalog_record.add(
             self._generate_predicate('vivo', 'harvestDate'),
             Literal(entity['harvestDate']))
-        if entity['conformsTo']:
-            catalog_record.add(DC.conformsTo, Literal(entity['conformsTo']))
+        for conforms in entity.get('conformsTo', []):
+            catalog_record.add(DC.conformsTo, Literal(conforms))
 
         for relationship in entity['relationships']:
             # so. current object, verb, id of object, existence unknown
             self.relates.append(
                 (catalog_record, relationship['relate'],
                     relationship['object_id'])
+            )
+
+    def _handle_temporal(self, temporal):
+        for option in ['startDate', 'endDate']:
+            # NOTE: make these iso 8601 first
+            d = temporal.get(option)
+            if not d:
+                continue
+
+            yield (
+                self._generate_predicate('esip', option),
+                Literal(d, datatype=XSD.date)
+            )
+
+    def _handle_spatial(self, spatial):
+        options = [
+            ('wkt', DC.spatial),
+            ('west', 'esip:westBound'),
+            ('east', 'esip:eastBound'),
+            ('north', 'esip:northBound'),
+            ('south', 'esip:southBound')
+        ]
+
+        for key, predicate in options:
+            blob = spatial.get(key)
+            if not blob:
+                continue
+
+            pred = self._generate_predicate(
+                predicate.split(':')[0], predicate.split(':')[-1]
+            ) if isinstance(predicate, str) else predicate
+
+            yield (
+                pred, Literal(
+                    float(blob), datatype=XSD.float
+                )
             )
 
     def _process_service(self, entity):
@@ -98,6 +134,22 @@ class RdfGrapher():
         service.add(
             DC.description, Literal(self._stringify(entity['abstract'])))
 
+        # TODO: at some point, this might have operations, params, etc
+
+        if 'temporal_extent' in entity:
+            for temporal_triple in self._handle_temporal(
+                    entity['temporal_extent']):
+                service.add(temporal_triple)
+
+        if 'spatial_extent' in entity:
+            for spatial_triple in self._handle_spatial(
+                    entity['spatial_extent']):
+                service.add(spatial_triple)
+
+        for relationship in entity['relationships']:
+            self.relates.append(
+                (service, relationship['relate'], relationship['object_id']))
+
     def _process_dataset(self, entity):
         dataset = self._create_resource('dcat', 'Dataset', entity['object_id'])
         if entity['identifier']:
@@ -108,50 +160,14 @@ class RdfGrapher():
             DC.description, Literal(self._stringify(entity['abstract'])))
 
         if 'temporal_extent' in entity:
-            # NOTE: make these iso 8601 first
-            begdate = entity['temporal_extent'].get('startDate')
-            enddate = entity['temporal_extent'].get('endDate')
-
-            dataset.add(
-                self._generate_predicate('esip', 'startDate'),
-                Literal(begdate, datatype=XSD.date)
-            )
-            dataset.add(
-                self._generate_predicate('esip', 'endDate'),
-                Literal(enddate, datatype=XSD.date)
-            )
+            for temporal_triple in self._handle_temporal(
+                    entity['temporal_extent']):
+                dataset.add(temporal_triple)
 
         if 'spatial_extent' in entity:
-            dataset.add(DC.spatial, Literal(entity['spatial_extent']['wkt']))
-
-            # a small not good thing.
-            dataset.add(
-                self._generate_predicate('esip', 'westBound'),
-                Literal(
-                    float(entity['spatial_extent']['west']),
-                    datatype=XSD.float)
-            )
-
-            dataset.add(
-                self._generate_predicate('esip', 'eastBound'),
-                Literal(
-                    float(entity['spatial_extent']['east']),
-                    datatype=XSD.float)
-            )
-
-            dataset.add(
-                self._generate_predicate('esip', 'southBound'),
-                Literal(
-                    float(entity['spatial_extent']['south']),
-                    datatype=XSD.float)
-            )
-
-            dataset.add(
-                self._generate_predicate('esip', 'northBound'),
-                Literal(
-                    float(entity['spatial_extent']['north']),
-                    datatype=XSD.float)
-            )
+            for spatial_triple in self._handle_spatial(
+                    entity['spatial_extent']):
+                dataset.add(spatial_triple)
 
         for relationship in entity['relationships']:
             self.relates.append(
