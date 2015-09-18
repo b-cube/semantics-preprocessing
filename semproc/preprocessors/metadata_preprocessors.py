@@ -160,7 +160,7 @@ class FgdcItemReader(BaseItemReader):
 
     # TODO: this is possibly the worst plan of the day
     def parse(self):
-        return self.parse_item()
+        self.parse_item()
 
     def parse_item(self):
         output = {}
