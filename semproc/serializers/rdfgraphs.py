@@ -3,12 +3,8 @@ from uuid import uuid4
 from rdflib import Graph, Literal, Namespace, URIRef
 from rdflib.namespace import DC, DCTERMS, FOAF, XSD, OWL
 
-'''
-json serializer?
-'''
 
-
-class RdfGrapher():
+class RdfGrapher(object):
     '''
     take our json output from a preprocessor and
     generate an rdf graph to serialize as json-ld or turtle?
