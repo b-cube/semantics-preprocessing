@@ -331,4 +331,4 @@ class FgdcItemReader(BaseItemReader):
             }
         ]
 
-        return tidy_dict(output)
+        self.description = tidy_dict(output)
