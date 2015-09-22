@@ -22,7 +22,8 @@ class Router():
                  identification,
                  response,
                  source_url,
-                 parse_as_xml=True):
+                 parse_as_xml=True,
+                 ignore_protocols=[]):
         self.identity = identification
         self.source_url = source_url
         self.parse_as_xml = parse_as_xml
@@ -35,9 +36,8 @@ class Router():
         protocol = next(iter(self.identity), {})
         protocol = protocol.get('protocol', '')
 
-        if not protocol and self.parse_as_xml:
-            # we will try a generic xml parser
-            return XmlReader(response, url)
+        if protocol and protocol in self.ignore_protocols():
+            return None
 
         if protocol == 'OpenSearch':
             return OpenSearchReader(self.identity, response, url)
@@ -60,6 +60,6 @@ class Router():
             return RdfReader(self.identity, response, url)
 
         if self.parse_as_xml:
-            return XmlReader(response, url)
+            return XmlReader(self.identity, response, url)
 
-        raise Exception('Parser not instantiated.')
+        return None
