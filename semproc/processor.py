@@ -9,11 +9,15 @@ class Processor(object):
     tag lists (in case we have different locations for y) and the
     resultset list is the tag list to the result children
     '''
-    def __init__(self, identify, response, url, parent_url=''):
+    def __init__(self,
+                 identify,
+                 response,
+                 url,
+                 harvest_details):
         self.response = response
         self.url = url
         self.identify = identify
-        self.parent_url = parent_url
+        self.harvest_details = harvest_details
 
         self._load_xml()
 

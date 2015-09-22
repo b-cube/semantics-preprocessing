@@ -126,10 +126,10 @@ class BaseItemReader():
         'owl': str(OWL)
     }
 
-    def __init__(self, elem, url, harvest_date):
+    def __init__(self, elem, url, harvest_details):
         self.elem = elem
         self.url = url
-        self.harvest_date = harvest_date
+        self.harvest_details = harvest_details
 
     def parse_item(self):
         pass
@@ -170,7 +170,7 @@ class FgdcItemReader(BaseItemReader):
         output['catalog_record'] = {
             "object_id": catalog_object_id,
             "url": self.url,
-            "harvestDate": self.harvest_date,
+            "harvestDate": self.harvest_details.get('tstamp', ''),
             "conformsTo": extract_attrib(
                 self.elem, ['@noNamespaceSchemaLocation']).split()
         }

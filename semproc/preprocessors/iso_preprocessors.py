@@ -43,11 +43,11 @@ class IsoReader():
         'owl': str(OWL)
     }
 
-    def __init__(self, identity, text, url, harvest_date):
+    def __init__(self, identity, text, url, harvest_details):
         self.text = text
         self.identity = identity
         self.url = url
-        self.harvest_date = harvest_date
+        self.harvest_details = harvest_details
 
         # parse
         self.parser = Parser(text)
@@ -76,7 +76,7 @@ class IsoReader():
         catalog_record = {
             "object_id": generate_sha_urn(self.url),
             "url": self.url,
-            "harvestDate": self.harvest_date,
+            "harvestDate": self.harvest_details.get('tstamp', ''),
             "conformsTo": extract_attrib(self.parser.xml, ['@schemaLocation']),
             "relationships": []
         }
