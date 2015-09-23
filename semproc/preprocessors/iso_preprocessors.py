@@ -7,8 +7,10 @@ from semproc.xml_utils import extract_item
 from semproc.xml_utils import extract_elem, extract_elems
 from semproc.xml_utils import extract_attrib
 from semproc.utils import generate_sha_urn, generate_uuid_urn
-from rdflib.namespace import DC, DCTERMS, FOAF, XSD, OWL
 from itertools import chain
+# leaving this here for potential use in the json keys
+# from semproc.ontology import _ontology_uris
+# from rdflib.namespace import DC, DCTERMS, FOAF, XSD, OWL
 
 
 '''
@@ -28,21 +30,6 @@ class IsoReader():
         service identification
         mi/md
     '''
-    _technical_debt = {
-        'bcube': 'http://purl.org/BCube/#',
-        'vcard': 'http://www.w3.org/TR/vcard-rdf/#',
-        'esip': 'http://purl.org/esip/#',
-        'vivo': 'http://vivo.ufl.edu/ontology/vivo-ufl/#',
-        'bibo': 'http://purl.org/ontology/bibo/#',
-        'dcat': 'http://www.w3.org/TR/vocab-dcat/#',
-        "prov": "http://purl.org/net/provenance/ns#",
-        'dc': str(DC),
-        'dct': str(DCTERMS),
-        'foaf': str(FOAF),
-        'xsd': str(XSD),
-        'owl': str(OWL)
-    }
-
     def __init__(self, identity, text, url, harvest_details):
         self.text = text
         self.identity = identity
@@ -76,7 +63,8 @@ class IsoReader():
         catalog_record = {
             "object_id": generate_sha_urn(self.url),
             "url": self.url,
-            "harvestDate": self.harvest_details.get('tstamp', ''),
+            "dateCreated": self.harvest_details.get('tstamp', ''),
+            "lastUpdated": self.harvest_details.get('tstamp', ''),
             "conformsTo": extract_attrib(self.parser.xml, ['@schemaLocation']),
             "relationships": []
         }
@@ -93,7 +81,11 @@ class IsoReader():
                 reader.parse()
         elif metadata_type == '19115':
             # it's a mi/md so run that
-            self.reader = MxParser(self.parser.xml, catalog_record)
+            self.reader = MxParser(
+                self.parser.xml,
+                catalog_record,
+                self.harvest_details
+            )
 
         # self.reader.parse()
         # # pass it back up the chain a bit
@@ -105,7 +97,7 @@ class MxParser(object):
     parse an mi or md element (as whole record or some csw/oai-pmh/ds child)
     '''
 
-    def __init__(self, elem, catalog_record):
+    def __init__(self, elem, catalog_record, harvest_details):
         ''' starting at Mx_Metadata
         which can be within a DS composedOf block, within a
         CSW result set, as the series descriptor for a dataseries
@@ -113,6 +105,7 @@ class MxParser(object):
         '''
         self.elem = elem
         self.output = {"catalog_record": catalog_record, "relationships": []}
+        self.harvest_details = harvest_details
 
     def parse(self):
         '''
@@ -121,6 +114,7 @@ class MxParser(object):
             extent) if identificationInfo contains SV_ServiceIdentification,
             add as child distribution info
         '''
+        # TODO: this is just some unfortunate nesting
         id_elem = extract_elem(
             self.elem,
             ['identificationInfo', 'MD_DataIdentification'])
@@ -130,6 +124,11 @@ class MxParser(object):
                 "relate": "description",
                 "object_id": self.output['catalog_record']['object_id']
             })
+            identification['dataset'].update({
+                "dateCreated": self.harvest_details.get('tstamp', ''),
+                "lastUpdated": self.harvest_details.get('tstamp', '')
+            })
+
             self.output.update(identification)
             self.output['catalog_record']['relationships'].append({
                 "relate": "primaryTopic",

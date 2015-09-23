@@ -4,8 +4,10 @@ from semproc.xml_utils import extract_elem, extract_elems
 from semproc.xml_utils import extract_attrib
 from semproc.geo_utils import bbox_to_geom, to_wkt
 from semproc.utils import generate_sha_urn, generate_uuid_urn
-from rdflib.namespace import DC, DCTERMS, FOAF, XSD, OWL
 from datetime import datetime
+# leaving this here for potential use in the json keys
+# from semproc.ontology import _ontology_uris
+# from rdflib.namespace import DC, DCTERMS, FOAF, XSD, OWL
 
 
 '''
@@ -111,21 +113,6 @@ class DifItemReader():
 
 
 class BaseItemReader():
-    _technical_debt = {
-        'bcube': 'http://purl.org/BCube/#',
-        'vcard': 'http://www.w3.org/TR/vcard-rdf/#',
-        'esip': 'http://purl.org/esip/#',
-        'vivo': 'http://vivo.ufl.edu/ontology/vivo-ufl/#',
-        'bibo': 'http://purl.org/ontology/bibo/#',
-        'dcat': 'http://www.w3.org/TR/vocab-dcat/#',
-        "prov": "http://purl.org/net/provenance/ns#",
-        'dc': str(DC),
-        'dct': str(DCTERMS),
-        'foaf': str(FOAF),
-        'xsd': str(XSD),
-        'owl': str(OWL)
-    }
-
     def __init__(self, elem, url, harvest_details):
         self.elem = elem
         self.url = url
@@ -170,7 +157,8 @@ class FgdcItemReader(BaseItemReader):
         output['catalog_record'] = {
             "object_id": catalog_object_id,
             "url": self.url,
-            "harvestDate": self.harvest_details.get('tstamp', ''),
+            "dateCreated": self.harvest_details.get('tstamp', ''),
+            "lastUpdated": self.harvest_details.get('tstamp', ''),
             "conformsTo": extract_attrib(
                 self.elem, ['@noNamespaceSchemaLocation']).split()
         }
@@ -182,6 +170,8 @@ class FgdcItemReader(BaseItemReader):
         dataset = {
             "object_id": dataset_object_id,
             "identifier": datsetid,
+            "dateCreated": self.harvest_details.get('tstamp', ''),
+            "lastUpdated": self.harvest_details.get('tstamp', ''),
             "abstract": extract_item(
                 self.elem, ['idinfo', 'descript', 'abstract']),
             "title": extract_item(

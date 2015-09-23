@@ -2,6 +2,7 @@ import json
 from uuid import uuid4
 from rdflib import Graph, Literal, Namespace, URIRef
 from rdflib.namespace import DC, DCTERMS, FOAF, XSD, OWL
+from semproc.ontology import _ontology_uris
 
 
 class RdfGrapher(object):
@@ -12,22 +13,6 @@ class RdfGrapher(object):
     to be decided...
     '''
 
-    # some namespaces
-    _ontology_uris = {
-        'bcube': 'http://purl.org/BCube/#',
-        'vcard': 'http://www.w3.org/TR/vcard-rdf/#',
-        'esip': 'http://purl.org/esip/#',
-        'vivo': 'http://vivo.ufl.edu/ontology/vivo-ufl/#',
-        'bibo': 'http://purl.org/ontology/bibo/#',
-        'dcat': 'http://www.w3.org/TR/vocab-dcat/#',
-        "prov": "http://purl.org/net/provenance/ns#",
-        'dc': str(DC),
-        'dct': str(DCTERMS),
-        'foaf': str(FOAF),
-        'xsd': str(XSD),
-        'owl': str(OWL)
-    }
-
     def __init__(self, data):
         self.graph = Graph()
         self._bind_namespaces()
@@ -35,18 +20,19 @@ class RdfGrapher(object):
 
     def _bind_namespaces(self):
         # bind our lovely namespaces
-        for prefix, uri in self._ontology_uris.iteritems():
+        for prefix, uri in _ontology_uris.iteritems():
             self.graph.bind(prefix, uri)
 
     def _generate_predicate(self, prefix, name):
-        return Namespace(self._ontology_uris[prefix])[name]
+        return Namespace(_ontology_uris[prefix])[name]
 
     def _identify_prefix(self, predicate):
         # this is, granted, a lesson in technical debt.
         debt = {
             "dc": ["description", "conformsTo", "relation"],
             "dcat": ["publisher"],
-            "foaf": ["primaryTopic"]
+            "foaf": ["primaryTopic"],
+            "vaem": ["dateCreated", "lastUpdated"]
         }
 
         for k, v in debt.iteritems():
@@ -63,7 +49,7 @@ class RdfGrapher(object):
         # and just assign it to type if it's not overridden
         identifier = identifier if identifier else uuid4().urn
         resource = self.graph.resource(identifier)
-        ref = Namespace(self._ontology_uris[resource_prefix])[resource_type]
+        ref = Namespace(_ontology_uris[resource_prefix])[resource_type]
         resource.add(OWL.a, URIRef(ref))
         return resource
 
@@ -74,8 +60,11 @@ class RdfGrapher(object):
             self._generate_predicate('vcard', 'hasURL'),
             Literal(entity['url']))
         catalog_record.add(
-            self._generate_predicate('vivo', 'harvestDate'),
-            Literal(entity['harvestDate']))
+            self._generate_predicate('vaem', 'dateCreated'),
+            Literal(entity['dateCreated']))
+        catalog_record.add(
+            self._generate_predicate('vaem', 'lastUpdated'),
+            Literal(entity['lastUpdated']))
         for conforms in entity.get('conformsTo', []):
             catalog_record.add(DC.conformsTo, Literal(conforms))
 
@@ -133,6 +122,12 @@ class RdfGrapher(object):
             DCTERMS.title, Literal(self._stringify(entity['title'])))
         service.add(
             DC.description, Literal(self._stringify(entity['abstract'])))
+        service.add(
+            self._generate_predicate('vaem', 'dateCreated'),
+            Literal(entity['dateCreated']))
+        service.add(
+            self._generate_predicate('vaem', 'lastUpdated'),
+            Literal(entity['lastUpdated']))
 
         # TODO: at some point, this might have operations, params, etc
 
@@ -158,6 +153,12 @@ class RdfGrapher(object):
             DCTERMS.title, Literal(self._stringify(entity['title'])))
         dataset.add(
             DC.description, Literal(self._stringify(entity['abstract'])))
+        dataset.add(
+            self._generate_predicate('vaem', 'dateCreated'),
+            Literal(entity['dateCreated']))
+        dataset.add(
+            self._generate_predicate('vaem', 'lastUpdated'),
+            Literal(entity['lastUpdated']))
 
         if 'temporal_extent' in entity:
             for temporal_predicate, temporal_value in self._handle_temporal(
