@@ -13,8 +13,12 @@ def extract_attrib(elem, tags):
 
 
 def extract_attribs(elem, tags):
-    e = extract_elem(elem, tags)
-    return [m.strip() for m in e]
+    e = extract_elems(elem, tags)
+    # return [m.strip() for m in e]
+    return list(
+        [' '.join(m.strip().split()) for m in e if m]
+        if isinstance(e, list) else [' '.join(e.split())]
+    )
 
 
 def extract_item(elem, tags):

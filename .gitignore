@@ -43,3 +43,5 @@ notebooks/identifier_extraction.log
 notebooks/harvest_linkrot_20150504-1940_date_processed.sqlite
 
 Semantics_Preprocessing.egg-info/
+
+fabfile.py

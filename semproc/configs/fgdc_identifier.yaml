@@ -15,4 +15,3 @@
             - type: xpath
               object: content
               value: 'concat(//metstdn/text(), ", ", //metstdv/text())'
-  

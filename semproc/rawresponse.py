@@ -1,4 +1,5 @@
 import re
+import codecs
 
 
 class RawResponse():
@@ -24,6 +25,30 @@ class RawResponse():
         self.options = options
 
         self.content = ''
+
+    def _strip_bom(self):
+        """ return the raw (assumed) xml response without the BOM
+        """
+        boms = [
+            codecs.BOM,
+            codecs.BOM_BE,
+            codecs.BOM_LE,
+            codecs.BOM_UTF8,
+            codecs.BOM_UTF16,
+            codecs.BOM_UTF16_LE,
+            codecs.BOM_UTF16_BE,
+            codecs.BOM_UTF32,
+            codecs.BOM_UTF32_LE,
+            codecs.BOM_UTF32_BE
+        ]
+        content = self.content
+        if not isinstance(content, unicode):
+            for bom in boms:
+                if content.startswith(bom):
+                    content = content.replace(bom, '')
+                    break
+
+        self.content = content
 
     def _extract_from_cdata(self):
         pttn = u'^<!\[CDATA\[(.*?)\]\]>$'
