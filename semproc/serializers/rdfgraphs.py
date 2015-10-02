@@ -32,7 +32,7 @@ class RdfGrapher(object):
             "dc": ["description", "conformsTo", "relation"],
             "dcat": ["publisher"],
             "foaf": ["primaryTopic"],
-            "vaem": ["dateCreated", "lastUpdated"]
+            "bcube": ["dateCreated", "lastUpdated"]
         }
 
         for k, v in debt.iteritems():

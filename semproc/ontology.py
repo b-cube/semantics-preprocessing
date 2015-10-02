@@ -11,7 +11,6 @@ _ontology_uris = {
     'bibo': 'http://purl.org/ontology/bibo/#',
     'dcat': 'http://www.w3.org/TR/vocab-dcat/#',
     "prov": "http://purl.org/net/provenance/ns#",
-    "vaem": "http://www.linkedmodel.org/schema/vaem#",
     'dc': str(DC),
     'dct': str(DCTERMS),
     'foaf': str(FOAF),

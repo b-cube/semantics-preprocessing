@@ -6,15 +6,7 @@ from semproc.urlbuilders.opensearch_links import OpenSearchLink
 
 
 class OpenSearchReader(Processor):
-    def __init__(self, identify, response, url, parent_url=''):
-        self.response = response
-        self.url = url
-        self.identify = identify
-        self.parent_url = parent_url
-        self.description = {}
-
-        self._load_xml()
-
+    # parent_url is contained in harvest_details
     def parse(self):
         self.description = {}
 

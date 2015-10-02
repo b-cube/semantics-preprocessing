@@ -20,7 +20,10 @@ class BagParser():
             pttn = re.compile('<|>')
             return pttn.sub(' ', s)
 
-        soup = BeautifulSoup(text.strip())
+        try:
+            soup = BeautifulSoup(text.strip())
+        except UserWarning:
+            return ''
 
         # get all of the text and any a/@href values
         texts = [_handle_bad_html(t.strip('"'))

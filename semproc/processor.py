@@ -1,5 +1,6 @@
 from semproc.parser import Parser
 from semproc.xml_utils import extract_elems
+from semproc.utils import tidy_dict
 
 
 class Processor(object):
@@ -48,3 +49,18 @@ class Processor(object):
 
     def _parse_child(self, child):
         pass
+
+    def _generate_harvest_manifest(self, **kwargs):
+        harvest = {
+            "hasUrl": self.url,
+            "atTime": self.harvest_details.get('harvest_date'),
+            "statusCodeValue": 200,
+            "reasonPhrase": "OK",
+            "HTTPStatusFamilyCode": 200,
+            "HTTPStatusFamilyType": "Success message",
+            "hasUrlSource": "",
+            "hasConfidence": "",
+            "validatedOn": self.harvest_details.get('harvest_date')
+        }
+        harvest.update(kwargs)
+        return tidy_dict(harvest)

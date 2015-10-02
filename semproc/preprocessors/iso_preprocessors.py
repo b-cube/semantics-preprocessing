@@ -40,6 +40,21 @@ class IsoReader():
         self.parser = Parser(text)
         self.parse()
 
+    def _generate_harvest_manifest(self, **kwargs):
+        harvest = {
+            "hasUrl": self.url,
+            "atTime": self.harvest_details.get('harvest_date'),
+            "statusCodeValue": 200,
+            "reasonPhrase": "OK",
+            "HTTPStatusFamilyCode": 200,
+            "HTTPStatusFamilyType": "Success message",
+            "hasUrlSource": "",
+            "hasConfidence": "",
+            "validatedOn": self.harvest_details.get('harvest_date')
+        }
+        harvest.update(kwargs)
+        return tidy_dict(harvest)
+
     def parse(self):
         '''
         run the routing
@@ -68,6 +83,10 @@ class IsoReader():
             "conformsTo": extract_attrib(self.parser.xml, ['@schemaLocation']),
             "relationships": []
         }
+        catalog_record.upate(self._generate_harvest_manifest(**{
+            "hasUrlSource": "Harvested",
+            "hasConfidence": "Good"
+        }))
 
         if metadata_type == 'Data Series':
             # run the set

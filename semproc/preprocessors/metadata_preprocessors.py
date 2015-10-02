@@ -121,6 +121,21 @@ class BaseItemReader():
     def parse_item(self):
         pass
 
+    def _generate_harvest_manifest(self, **kwargs):
+        harvest = {
+            "hasUrl": self.url,
+            "atTime": self.harvest_details.get('harvest_date'),
+            "statusCodeValue": 200,
+            "reasonPhrase": "OK",
+            "HTTPStatusFamilyCode": 200,
+            "HTTPStatusFamilyType": "Success message",
+            "hasUrlSource": "",
+            "hasConfidence": "",
+            "validatedOn": self.harvest_details.get('harvest_date')
+        }
+        harvest.update(kwargs)
+        return tidy_dict(harvest)
+
 
 class FgdcItemReader(BaseItemReader):
     '''
@@ -162,6 +177,14 @@ class FgdcItemReader(BaseItemReader):
             "conformsTo": extract_attrib(
                 self.elem, ['@noNamespaceSchemaLocation']).split()
         }
+
+        # add the harvest info
+        output['catalog_record'].update(
+            self._generate_harvest_manifest(**{
+                "hasUrlSource": "Harvested",
+                "hasConfidence": "Good",
+            })
+        )
 
         datsetid = extract_item(self.elem, ['idinfo', 'datsetid'])
         dataset_object_id = generate_sha_urn(datsetid) if datsetid \

@@ -72,7 +72,12 @@ class RawResponse():
         '''
         execute after CDATA extract
         '''
-        self.content = self.content[self.content.index('<'):]
+        try:
+            index = self.content.index('<')
+        except ValueError:
+            # one hopes it's json
+            index = 0
+        self.content = self.content[index:]
 
     def _strip_whitespace(self):
         self.content = self.content.replace('\\n', ' ').replace('\\t', ' ')
@@ -108,6 +113,7 @@ class RawResponse():
             newline, remove unicode cruft)
         '''
         self._extract_from_cdata()
+        self.content = self.content.decode('string_escape')
         self._strip_invalid_start()
         self._strip_unicode_replace()
         self._strip_whitespace()
