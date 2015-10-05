@@ -1,5 +1,7 @@
 import re
 import codecs
+import json
+from lxml import etree
 
 
 class RawResponse():
@@ -13,18 +15,63 @@ class RawResponse():
         digest hash
     '''
 
-    def __init__(self, source_url, source_content, identifier, **options):
+    def __init__(self, source_content, content_type, **options):
         '''
         options:
             strip whitespace: boolean
             strip unicode escaped text: boolean
         '''
-        self.identifier = identifier
         self.response = source_content
-        self.url = source_url
+        self.content_type = content_type.lower()
         self.options = options
 
         self.content = ''
+        self.datatype = self._determine_type()
+
+    def _determine_type(self):
+        '''
+        so let's see if we think it's json or xml
+        '''
+        json_substrings = ['application/json', 'text/json', '+json']
+        xml_substrings = ['application/xml', 'text/xml', '+xml', '_xml']
+
+        # absolutely reject these
+        reject_substrings = [
+            'x-download',
+            'jnlp',
+            'forcedownload',
+            'flash',
+            'silverlight',
+            'x-trash',
+            'x-unknown',
+            'x-upload',
+            'cache-manifest',
+            'force-download',
+            'quicktime'
+        ]
+        if any(substring in self.content_type for substring in reject_substrings):
+            return 'reject'
+        elif any(substring in self.content_type for substring in json_substrings):
+            return 'json'
+        elif any(substring in self.content_type for substring in xml_substrings):
+            return 'xml'
+
+        # and now we aren't sure what we have
+        # based on the content header
+        try:
+            j = json.loads(self.content)
+            return 'json'
+        except ValueError:
+            pass
+
+        try:
+            x = etree.fromstring(self.content)
+            return 'xml'
+        except Exception as ex:
+            print ex
+            pass
+
+        return ''
 
     def _strip_bom(self):
         """ return the raw (assumed) xml response without the BOM
@@ -72,6 +119,9 @@ class RawResponse():
         '''
         execute after CDATA extract
         '''
+        if self.datatype != 'xml':
+            return
+
         try:
             index = self.content.index('<')
         except ValueError:
