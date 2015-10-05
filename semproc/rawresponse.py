@@ -26,12 +26,13 @@ class RawResponse():
         self.options = options
 
         self.content = ''
-        self.datatype = self._determine_type()
 
     def _determine_type(self):
         '''
         so let's see if we think it's json or xml
         '''
+
+        # yes, these are a little ridiculous, but explicit.
         json_substrings = ['application/json', 'text/json', '+json']
         xml_substrings = ['application/xml', 'text/xml', '+xml', '_xml']
 
@@ -65,16 +66,18 @@ class RawResponse():
             pass
 
         try:
+            # there is just no nice way to do anything
             x = etree.fromstring(self.content)
             return 'xml'
         except Exception as ex:
-            print ex
             pass
 
         return ''
 
     def _strip_bom(self):
         """ return the raw (assumed) xml response without the BOM
+        (note: this might not be necessary with the index bit
+            but haven't verified re: json)
         """
         boms = [
             codecs.BOM,
@@ -164,9 +167,12 @@ class RawResponse():
         '''
         self._extract_from_cdata()
         self.content = self.content.decode('string_escape')
-        self._strip_invalid_start()
         self._strip_unicode_replace()
         self._strip_whitespace()
+
+        self.datatype = self._determine_type()
+        self._strip_invalid_start()
+
         # self._strip_greedy_encoding()
 
         return self.content
