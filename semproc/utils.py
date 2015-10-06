@@ -84,6 +84,17 @@ def extract_element_tag(tag):
     return tag.split('}')[-1]
 
 
+def convert_header_list(headers):
+    '''
+    convert from the list of strings, one string
+    per kvp, to a dict with keys normalized
+    '''
+    return dict(
+        (k.strip().lower(), v.strip()) for k, v in (
+            h.split(':', 1) for h in headers)
+    )
+
+
 def remap_http_method(original_method):
     '''
     return the "full" http method from some input
@@ -169,6 +180,7 @@ def strip_whitespace_from_xml(xml):
 
 
 def strip_html(xml):
+    # NOTE: this is deprecated by new parsers (10/1/2015)
     for elem in xml.iter():
         t = elem.text.strip() if elem.text else ''
         if not t:

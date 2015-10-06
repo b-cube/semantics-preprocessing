@@ -17,7 +17,7 @@ class Identify():
                  of a protocol, identify if it's a dataset service
                  for a protocol
     '''
-    def __init__(self, yaml_files, source_content, source_url):
+    def __init__(self, yaml_files, source_content, source_url, **options):
         '''
         **options:
             parser: Parser from source_content
