@@ -114,7 +114,7 @@ class RawResponse():
 
         m = re.search(pttn, raw_content)
 
-        assert m, 'Failed to extract from CDATA (%s)' % self.identifier
+        assert m, 'Failed to extract from CDATA'
 
         self.content = m.group(1)
 
