@@ -32,6 +32,7 @@ class RdfGrapher(object):
             "dc": ["description", "conformsTo", "relation"],
             "dcat": ["publisher"],
             "foaf": ["primaryTopic"],
+            "vcard": ["hasUrl"],
             "bcube": [
                 "dateCreated",
                 "lastUpdated",
@@ -85,12 +86,13 @@ class RdfGrapher(object):
 
         for pred, key in options:
             val = entity.get(key, None)
-            if val:
-                catalog_record.add(
-                    self._generate_predicate(
-                        self._identify_prefix(pred),
-                        pred), Literal(val)
-                )
+            if not val:
+                continue
+            catalog_record.add(
+                self._generate_predicate(
+                    self._identify_prefix(pred),
+                    pred), Literal(val)
+            )
 
         for conforms in entity.get('conformsTo', []):
             catalog_record.add(DC.conformsTo, Literal(conforms))
