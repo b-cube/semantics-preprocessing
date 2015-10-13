@@ -60,10 +60,10 @@ class RdfGrapher(object):
             self._generate_predicate('vcard', 'hasURL'),
             Literal(entity['url']))
         catalog_record.add(
-            self._generate_predicate('vaem', 'dateCreated'),
+            self._generate_predicate('bcube', 'dateCreated'),
             Literal(entity['dateCreated']))
         catalog_record.add(
-            self._generate_predicate('vaem', 'lastUpdated'),
+            self._generate_predicate('bcube', 'lastUpdated'),
             Literal(entity['lastUpdated']))
         for conforms in entity.get('conformsTo', []):
             catalog_record.add(DC.conformsTo, Literal(conforms))
@@ -123,10 +123,10 @@ class RdfGrapher(object):
         service.add(
             DC.description, Literal(self._stringify(entity['abstract'])))
         service.add(
-            self._generate_predicate('vaem', 'dateCreated'),
+            self._generate_predicate('bcube', 'dateCreated'),
             Literal(entity['dateCreated']))
         service.add(
-            self._generate_predicate('vaem', 'lastUpdated'),
+            self._generate_predicate('bcube', 'lastUpdated'),
             Literal(entity['lastUpdated']))
 
         # TODO: at some point, this might have operations, params, etc
@@ -154,10 +154,10 @@ class RdfGrapher(object):
         dataset.add(
             DC.description, Literal(self._stringify(entity['abstract'])))
         dataset.add(
-            self._generate_predicate('vaem', 'dateCreated'),
+            self._generate_predicate('bcube', 'dateCreated'),
             Literal(entity['dateCreated']))
         dataset.add(
-            self._generate_predicate('vaem', 'lastUpdated'),
+            self._generate_predicate('bcube', 'lastUpdated'),
             Literal(entity['lastUpdated']))
 
         if 'temporal_extent' in entity:
