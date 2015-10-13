@@ -89,9 +89,7 @@ class RdfGrapher(object):
                 catalog_record.add(
                     self._generate_predicate(
                         self._identify_prefix(pred),
-                        pred,
-                        Literal(val)
-                    )
+                        pred), Literal(val)
                 )
 
         for conforms in entity.get('conformsTo', []):
