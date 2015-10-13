@@ -65,7 +65,7 @@ class Router():
         # we're going to pull the class name trick for the set
         # that is straightforward and hope not many are wonky
         protocol = 'Xml' if self.optional_params.get('parse_as_xml', False) \
-            and not protocol else ''
+            and not protocol else protocol
 
         # see if it's a loaded object
         try:
