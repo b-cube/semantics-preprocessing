@@ -172,8 +172,8 @@ class FgdcItemReader(BaseItemReader):
         output['catalog_record'] = {
             "object_id": catalog_object_id,
             "url": self.url,
-            "dateCreated": self.harvest_details.get('tstamp', ''),
-            "lastUpdated": self.harvest_details.get('tstamp', ''),
+            "dateCreated": self.harvest_details.get('harvest_date', ''),
+            "lastUpdated": self.harvest_details.get('harvest_date', ''),
             "conformsTo": extract_attrib(
                 self.elem, ['@noNamespaceSchemaLocation']).split()
         }
@@ -193,8 +193,8 @@ class FgdcItemReader(BaseItemReader):
         dataset = {
             "object_id": dataset_object_id,
             "identifier": datsetid,
-            "dateCreated": self.harvest_details.get('tstamp', ''),
-            "lastUpdated": self.harvest_details.get('tstamp', ''),
+            "dateCreated": self.harvest_details.get('harvest_date', ''),
+            "lastUpdated": self.harvest_details.get('harvest_date', ''),
             "abstract": extract_item(
                 self.elem, ['idinfo', 'descript', 'abstract']),
             "title": extract_item(

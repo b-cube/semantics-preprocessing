@@ -32,7 +32,18 @@ class RdfGrapher(object):
             "dc": ["description", "conformsTo", "relation"],
             "dcat": ["publisher"],
             "foaf": ["primaryTopic"],
-            "bcube": ["dateCreated", "lastUpdated"]
+            "bcube": [
+                "dateCreated",
+                "lastUpdated",
+                "atTime",
+                "statusCodeValue",
+                "reasonPhrase",
+                "HTTPStatusFamilyCode",
+                "HTTPStatusFamilyType",
+                "hasUrlSource",
+                "hasConfidence",
+                "validatedOn"
+            ]
         }
 
         for k, v in debt.iteritems():
@@ -56,15 +67,33 @@ class RdfGrapher(object):
     def _process_catalog(self, entity):
         catalog_record = self._create_resource(
             'dcat', 'CatalogRecord', entity['object_id'])
-        catalog_record.add(
-            self._generate_predicate('vcard', 'hasURL'),
-            Literal(entity['url']))
-        catalog_record.add(
-            self._generate_predicate('bcube', 'dateCreated'),
-            Literal(entity['dateCreated']))
-        catalog_record.add(
-            self._generate_predicate('bcube', 'lastUpdated'),
-            Literal(entity['lastUpdated']))
+
+        # our potential hash (this is idiotic) as pred, key
+        options = [
+            ('hasUrl', 'url'),
+            ('dateCreated', 'dateCreated'),
+            ('lastUpdated', 'lastUpdated'),
+            ('atTime', 'atTime'),
+            ('statusCodeValue', 'statusCodeValue'),
+            ('reasonPhrase', 'reasonPhrase'),
+            ('HTTPStatusFamilyCode', 'HTTPStatusFamilyCode'),
+            ('HTTPStatusFamilyType', 'HTTPStatusFamilyType'),
+            ('hasUrlSource', 'hasUrlSource'),
+            ('hasConfidence', 'hasConfidence'),
+            ('validatedOn', 'validatedOn')
+        ]
+
+        for pred, key in options:
+            val = entity.get(key, None)
+            if val:
+                catalog_record.add(
+                    self._generate_predicate(
+                        self._identify_prefix(pred),
+                        pred,
+                        Literal(val)
+                    )
+                )
+
         for conforms in entity.get('conformsTo', []):
             catalog_record.add(DC.conformsTo, Literal(conforms))
 
