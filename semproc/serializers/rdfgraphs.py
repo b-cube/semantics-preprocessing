@@ -96,11 +96,11 @@ class RdfGrapher(object):
             )
 
         for url in entity.get('urls', []):
+            self._handle_url(url)
             catalog_record.add(
                 self._generate_predicate(
                     'bcube', 'has'), url.get('object_id')
             )
-            self._handle_url(url)
 
         for conforms in entity.get('conformsTo', []):
             catalog_record.add(DC.conformsTo, Literal(conforms))
