@@ -126,8 +126,6 @@ class RdfGrapher(object):
                     k), Literal(v)
             )
 
-        # return entity
-
     def _handle_temporal(self, temporal):
         for option in ['startDate', 'endDate']:
             # NOTE: make these iso 8601 first
@@ -227,6 +225,13 @@ class RdfGrapher(object):
             self.relates.append(
                 (dataset, relationship['relate'], relationship['object_id']))
 
+        for url in entity.get('urls', []):
+            self._handle_url(url)
+            dataset.add(
+                self._generate_predicate(
+                    'bcube', 'has'), Literal(url.get('object_id'))
+            )
+
     def _process_keywords(self, entity):
         for keywords in entity:
             keyset = self._create_resource(
@@ -263,9 +268,14 @@ class RdfGrapher(object):
         for webpage in entity:
             relation = self._create_resource(
                 'bibo', 'WebPage', webpage['object_id'])
+            # relation.add(
+            #     self._generate_predicate('vcard', 'hasURL'),
+            #     Literal(webpage['url'])
+            # )
+            self._handle_url(webpage)
             relation.add(
-                self._generate_predicate('vcard', 'hasURL'),
-                Literal(webpage['url'])
+                self._generate_predicate(
+                    'bcube', 'has'), Literal(webpage.get('object_id'))
             )
 
     def emit_format(self):

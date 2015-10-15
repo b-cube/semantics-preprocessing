@@ -181,20 +181,14 @@ class FgdcItemReader(BaseItemReader):
 
         # add the harvest info
         # NOTE: this is not the sha from the url
-        url_object_id = generate_uuid_urn()
-        url_entity = {
-            "object_id": url_object_id
-        }
-
-        url_entity.update(
+        output['catalog_record']['urls'].append(
             self._generate_harvest_manifest(**{
                 "hasUrlSource": "Harvested",
                 "hasConfidence": "Good",
-                "hasUrl": self.url
+                "hasUrl": self.url,
+                "object_id": generate_uuid_urn()
             })
         )
-
-        output['catalog_record']['urls'].append(url_entity)
 
         datsetid = extract_item(self.elem, ['idinfo', 'datsetid'])
         dataset_object_id = generate_sha_urn(datsetid) if datsetid \
@@ -208,7 +202,8 @@ class FgdcItemReader(BaseItemReader):
             "abstract": extract_item(
                 self.elem, ['idinfo', 'descript', 'abstract']),
             "title": extract_item(
-                self.elem, ['idinfo', 'citation', 'citeinfo', 'title'])
+                self.elem, ['idinfo', 'citation', 'citeinfo', 'title']),
+            "urls": []
         }
 
         bbox_elem = extract_elem(self.elem, ['idinfo', 'spdom', 'bounding'])
@@ -271,35 +266,40 @@ class FgdcItemReader(BaseItemReader):
             "object_id": publisher['object_id']
         })
 
-        # TODO: is the distribution bit working? not in the example
         distrib_elems = extract_elems(
-            self.elem, ['distinfo', 'distrib', 'stdorder', 'digform'])
-        webpages = []
+            self.elem, ['distinfo', 'stdorder', 'digform'])
+
         for distrib_elem in distrib_elems:
             link = extract_item(
                 distrib_elem,
                 ['digtopt', 'onlinopt', 'computer', 'networka', 'networkr'])
-            format = extract_item(distrib_elem, ['digtinfo', 'formname'])
-            dist = tidy_dict(
-                {
-                    "object_id": generate_sha_urn(link),
-                    "url": link,
-                    "format": format
-                }
-            )
+            # format = extract_item(distrib_elem, ['digtinfo', 'formname'])
+            dist = self._generate_harvest_manifest(**{
+                "hasUrlSource": "Harvested",
+                "hasConfidence": "Good",
+                "hasUrl": link,
+                "object_id": generate_sha_urn(link)
+            })
             if dist:
-                webpages.append(dist)
+                dataset['urls'].append(dist)
 
+        webpages = []
         onlink_elems = extract_elems(
             self.elem, ['idinfo', 'citation', 'citeinfo', 'onlink'])
         for onlink_elem in onlink_elems:
             link = onlink_elem.text.strip() if onlink_elem.text else ''
             if not link:
                 continue
-            dist = tidy_dict({
-                "object_id": generate_sha_urn(link),
-                "url": link,
-                "type": onlink_elem.attrib.get('type', '')
+            # dist = tidy_dict({
+            #     "object_id": generate_sha_urn(link),
+            #     "url": link,
+            #     "type": onlink_elem.attrib.get('type', '')
+            # })
+            dist = self._generate_harvest_manifest(**{
+                "hasUrlSource": "Harvested",
+                "hasConfidence": "Good",
+                "hasUrl": link,
+                "object_id": generate_sha_urn(link)
             })
             if dist:
                 webpages.append(dist)
