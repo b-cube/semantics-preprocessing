@@ -99,7 +99,7 @@ class RdfGrapher(object):
             self._handle_url(url)
             catalog_record.add(
                 self._generate_predicate(
-                    'bcube', 'has'), url.get('object_id')
+                    'bcube', 'has'), Literal(url.get('object_id'))
             )
 
         for conforms in entity.get('conformsTo', []):
