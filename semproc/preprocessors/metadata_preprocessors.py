@@ -303,7 +303,7 @@ class FgdcItemReader(BaseItemReader):
             })
             if dist:
                 webpages.append(
-                    {"object_id": generate_uuid_urn(), "urls": [dist]})
+                    {"object_id": generate_uuid_urn(), "url": dist})
 
         output['webpages'] = webpages
         for webpage in webpages:
