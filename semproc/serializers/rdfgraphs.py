@@ -34,6 +34,7 @@ class RdfGrapher(object):
             "foaf": ["primaryTopic"],
             "vcard": ["hasUrl"],
             "bcube": [
+                "Url",
                 "dateCreated",
                 "lastUpdated",
                 "atTime",
@@ -54,7 +55,8 @@ class RdfGrapher(object):
 
     def _stringify(self, text):
         # TODO: this still has encoding issues!
-        return json.dumps(text)
+        # return json.dumps(text)
+        return text
 
     def _create_resource(self, resource_prefix, resource_type, identifier=''):
         # make a thing with a uuid as a urn
@@ -71,17 +73,16 @@ class RdfGrapher(object):
 
         # our potential hash (this is idiotic) as pred, key
         options = [
-            ('hasUrl', 'url'),
             ('dateCreated', 'dateCreated'),
             ('lastUpdated', 'lastUpdated'),
-            ('atTime', 'atTime'),
-            ('statusCodeValue', 'statusCodeValue'),
-            ('reasonPhrase', 'reasonPhrase'),
-            ('HTTPStatusFamilyCode', 'HTTPStatusFamilyCode'),
-            ('HTTPStatusFamilyType', 'HTTPStatusFamilyType'),
-            ('hasUrlSource', 'hasUrlSource'),
-            ('hasConfidence', 'hasConfidence'),
-            ('validatedOn', 'validatedOn')
+            # ('atTime', 'atTime'),
+            # ('statusCodeValue', 'statusCodeValue'),
+            # ('reasonPhrase', 'reasonPhrase'),
+            # ('HTTPStatusFamilyCode', 'HTTPStatusFamilyCode'),
+            # ('HTTPStatusFamilyType', 'HTTPStatusFamilyType'),
+            # ('hasUrlSource', 'hasUrlSource'),
+            # ('hasConfidence', 'hasConfidence'),
+            # ('validatedOn', 'validatedOn')
         ]
 
         for pred, key in options:
@@ -94,6 +95,13 @@ class RdfGrapher(object):
                     pred), Literal(val)
             )
 
+        for url in entity.get('urls', []):
+            catalog_record.add(
+                self._generate_predicate(
+                    'bcube', 'has'), url.get('object_id')
+            )
+            self._handle_url(url)
+
         for conforms in entity.get('conformsTo', []):
             catalog_record.add(DC.conformsTo, Literal(conforms))
 
@@ -103,6 +111,22 @@ class RdfGrapher(object):
                 (catalog_record, relationship['relate'],
                     relationship['object_id'])
             )
+
+    def _handle_url(self, url):
+        entity = self._create_resource(
+            'bcube', 'Url', url.get('object_id')
+        )
+        for k, v in url.iteritems():
+            if k == 'object_id':
+                continue
+
+            entity.add(
+                self._generate_predicate(
+                    self._identify_prefix(k),
+                    k), Literal(v)
+            )
+
+        # return entity
 
     def _handle_temporal(self, temporal):
         for option in ['startDate', 'endDate']:

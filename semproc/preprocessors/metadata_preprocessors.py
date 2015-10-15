@@ -171,20 +171,30 @@ class FgdcItemReader(BaseItemReader):
 
         output['catalog_record'] = {
             "object_id": catalog_object_id,
-            "url": self.url,
             "dateCreated": self.harvest_details.get('harvest_date', ''),
             "lastUpdated": self.harvest_details.get('harvest_date', ''),
             "conformsTo": extract_attrib(
-                self.elem, ['@noNamespaceSchemaLocation']).split()
+                self.elem, ['@noNamespaceSchemaLocation']).split(),
+            "relationships": [],
+            "urls": []
         }
 
         # add the harvest info
-        output['catalog_record'].update(
+        # NOTE: this is not the sha from the url
+        url_object_id = generate_uuid_urn()
+        url_entity = {
+            "object_id": url_object_id
+        }
+
+        url_entity.update(
             self._generate_harvest_manifest(**{
                 "hasUrlSource": "Harvested",
                 "hasConfidence": "Good",
+                "hasUrl": self.url
             })
         )
+
+        output['catalog_record']['urls'].append(url_entity)
 
         datsetid = extract_item(self.elem, ['idinfo', 'datsetid'])
         dataset_object_id = generate_sha_urn(datsetid) if datsetid \
@@ -337,11 +347,11 @@ class FgdcItemReader(BaseItemReader):
         output['datasets'] = [dataset]
 
         # add the metadata relate
-        output['catalog_record']['relationships'] = [
+        output['catalog_record']['relationships'].append(
             {
                 "relate": "primaryTopic",
                 "object_id": dataset_object_id
             }
-        ]
+        )
 
         self.description = tidy_dict(output)
