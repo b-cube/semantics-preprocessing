@@ -99,7 +99,7 @@ class RdfGrapher(object):
             self._handle_url(url)
             catalog_record.add(
                 self._generate_predicate(
-                    'bcube', 'has'), Literal(url.get('object_id'))
+                    'bcube', 'has'), URIRef(url.get('object_id'))
             )
 
         for conforms in entity.get('conformsTo', []):
@@ -229,7 +229,7 @@ class RdfGrapher(object):
             self._handle_url(url)
             dataset.add(
                 self._generate_predicate(
-                    'bcube', 'has'), Literal(url.get('object_id'))
+                    'bcube', 'has'), URIRef(url.get('object_id'))
             )
 
     def _process_keywords(self, entity):
@@ -275,7 +275,7 @@ class RdfGrapher(object):
             self._handle_url(webpage)
             relation.add(
                 self._generate_predicate(
-                    'bcube', 'has'), Literal(webpage.get('object_id'))
+                    'bcube', 'has'), URIRef(webpage.get('object_id'))
             )
 
     def emit_format(self):
