@@ -268,14 +268,10 @@ class RdfGrapher(object):
         for webpage in entity:
             relation = self._create_resource(
                 'bibo', 'WebPage', webpage['object_id'])
-            # relation.add(
-            #     self._generate_predicate('vcard', 'hasURL'),
-            #     Literal(webpage['url'])
-            # )
-            self._handle_url(webpage)
+            self._handle_url(webpage.get('url'))
             relation.add(
                 self._generate_predicate(
-                    'bcube', 'has'), URIRef(webpage.get('object_id'))
+                    'bcube', 'has'), URIRef(webpage.get('url').get('object_id'))
             )
 
     def emit_format(self):

@@ -302,7 +302,8 @@ class FgdcItemReader(BaseItemReader):
                 "object_id": generate_sha_urn(link)
             })
             if dist:
-                webpages.append(dist)
+                webpages.append(
+                    {"object_id": generate_uuid_urn(), "urls": [dist]})
 
         output['webpages'] = webpages
         for webpage in webpages:
