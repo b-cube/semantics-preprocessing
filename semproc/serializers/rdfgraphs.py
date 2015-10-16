@@ -44,7 +44,8 @@ class RdfGrapher(object):
                 "HTTPStatusFamilyType",
                 "hasUrlSource",
                 "hasConfidence",
-                "validatedOn"
+                "validatedOn",
+                "hasMetadataRecord"
             ]
         }
 

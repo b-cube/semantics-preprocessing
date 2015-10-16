@@ -246,7 +246,7 @@ class FgdcItemReader(BaseItemReader):
 
         dataset['relationships'] = [
             {
-                "relate": "description",
+                "relate": "hasMetadataRecord",
                 "object_id": catalog_object_id
             }
         ]

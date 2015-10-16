@@ -10,6 +10,7 @@ from semproc.yaml_configs import import_yaml_configs
 from semproc.geo_utils import bbox_to_geom, reproject, to_wkt
 from semproc.utils import tidy_dict, remap_http_method
 import dateutil.parser as dateparser
+from semproc.utils import generate_sha_urn, generate_uuid_urn
 
 
 class OgcReader(Processor):
@@ -189,7 +190,10 @@ class OgcReader(Processor):
         return min(timestamps), max(timestamps)
 
     def parse(self):
-        self.description = {}
+        # for ogc, a catalog record is the getcapabilities rsp
+        output = {}
+
+        
 
         if 'service' in self.identify:
             # run the owslib getcapabilities parsers
@@ -198,8 +202,39 @@ class OgcReader(Processor):
             reader = self._get_service_reader(service, version)
             if not reader:
                 return {}
+
+            catalog_object_id = generate_sha_urn(self.url)
+            output['catalog_record'] = {
+                "object_id": catalog_object_id,
+                "dateCreated": self.harvest_details.get('harvest_date', ''),
+                "lastUpdated": self.harvest_details.get('harvest_date', ''),
+                "conformsTo": extract_attrib(
+                    self.elem, ['@noNamespaceSchemaLocation']).split(),
+                "relationships": [],
+                "urls": []
+            }
+
+            # NOTE: this is not the sha from the url
+            output['catalog_record']['urls'].append(
+                self._generate_harvest_manifest(**{
+                    "hasUrlSource": "Harvested",
+                    "hasConfidence": "Good",
+                    "hasUrl": self.url,
+                    "object_id": generate_uuid_urn()
+                })
+            )
+
             self._get_service_config(service, version)
             self.description['service'] = self._parse_service(reader, service, version)
+
+
+
+
+        
+
+
+
+
 
         if 'dataset' in self.identify:
             # run the owslib wcs/wfs describe* parsers
