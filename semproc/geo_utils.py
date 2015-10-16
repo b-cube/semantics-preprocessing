@@ -84,4 +84,6 @@ def gml_to_geom(gml):
 
 def to_wkt(geom):
     # wkt = 'SRID=%s;%s' % (srid, wkt) if srid else wkt
+    if not geom:
+        return ''
     return geom.ExportToWkt()

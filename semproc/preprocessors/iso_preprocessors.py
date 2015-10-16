@@ -1,13 +1,12 @@
 from semproc.parser import Parser
 from semproc.utils import tidy_dict
-from semproc.preprocessors.iso_helpers import parse_identification_info
-from semproc.preprocessors.iso_helpers import parse_distribution
-from semproc.preprocessors.iso_helpers import parse_responsibleparty
-from semproc.xml_utils import extract_item, extract_items, generate_localname_xpath
+from semproc.xml_utils import extract_item, extract_items
+# , generate_localname_xpath
 from semproc.xml_utils import extract_elem, extract_elems, extract_attrib
 from semproc.geo_utils import bbox_to_geom, gml_to_geom, reproject, to_wkt
 from semproc.utils import generate_sha_urn, generate_uuid_urn
 from itertools import chain
+import dateutil.parser as dateparser
 # leaving this here for potential use in the json keys
 # from semproc.ontology import _ontology_uris
 # from rdflib.namespace import DC, DCTERMS, FOAF, XSD, OWL
@@ -40,20 +39,106 @@ class IsoReader():
         self.parser = Parser(text)
         self.parse()
 
+    def _generate_harvest_manifest(self, **kwargs):
+        harvest = {
+            "hasUrl": self.url,
+            "atTime": self.harvest_details.get('harvest_date'),
+            "statusCodeValue": 200,
+            "reasonPhrase": "OK",
+            "HTTPStatusFamilyCode": 200,
+            "HTTPStatusFamilyType": "Success message",
+            "hasUrlSource": "",
+            "hasConfidence": "",
+            "validatedOn": self.harvest_details.get('harvest_date')
+        }
+        harvest.update(kwargs)
+        return tidy_dict(harvest)
+
+    def parse(self):
+        '''
+        run the routing
+        '''
+
+        if not self.identity:
+            # we're going to have to sort it out
+            self.identity = {}
+
+        metadata = self.identity.get('metadata', {})
+        if not metadata:
+            return {}
+
+        metadata_type = metadata.get('name', '')
+        if not metadata_type:
+            return {}
+
+        # TODO: this is unlikely to be correct, given the ds record
+        #       but we're not going there just yet
+        # TODO: deal with conformsTo (multiple schemaLocations, etc)
+        catalog_record = {
+            "object_id": generate_sha_urn(self.url),
+            "dateCreated": self.harvest_details.get('harvest_date', ''),
+            "lastUpdated": self.harvest_details.get('harvest_date', ''),
+            "conformsTo": extract_attrib(self.parser.xml, ['@schemaLocation']),
+            "relationships": [],
+            "urls": []
+        }
+        catalog_record['urls'].append(
+            self._generate_harvest_manifest(**{
+                "hasUrlSource": "Harvested",
+                "hasConfidence": "Good",
+                "hasUrl": self.url,
+                "object_id": generate_uuid_urn()
+            })
+        )
+
+        if metadata_type == 'Data Series':
+            # run the set
+            self.reader = DsParser(self.parser.xml, catalog_record)
+        elif metadata_type == '19119':
+            # run that
+            for srv in extract_elems(
+                self.parser.xml,
+                    ['identificationInfo', 'SV_ServiceIdentification']):
+                reader = SrvParser(srv, catalog_record)
+                reader.parse()
+        elif metadata_type == '19115':
+            # it's a mi/md so run that
+            self.reader = MxParser(
+                self.parser.xml,
+                catalog_record,
+                self.harvest_details
+            )
+            self.reader.parse()
+
+        # self.reader.parse()
+        # # pass it back up the chain a bit
+        self.description = self.reader.output
+
+
+class IsoParser(object):
+    def __init__(self, elem, catalog_record, harvest_details):
+        pass
+
     # helper methods
     def _parse_identification_info(self, elem):
         # ignoring the larger get all the identifiers above
         # in favor of, hopefully, getting a better dataset id
         dataset_identifier = extract_item(elem, [
-            'citation', 'CI_Citation', 'identifier', 'MD_Identifier', 'code', 'CharacterString'
+            'citation',
+            'CI_Citation',
+            'identifier',
+            'MD_Identifier',
+            'code',
+            'CharacterString'
         ])
 
         dataset = {
-            "object_id": generate_sha_urn(dataset_identifier) 
+            "object_id": generate_sha_urn(dataset_identifier)
                 if dataset_identifier else generate_uuid_urn(),
             "identifier": dataset_identifier,
             "abstract": extract_item(elem, ['abstract', 'CharacterString']),
-            "title": extract_item(elem, ['citation', 'CI_Citation', 'title', 'CharacterString']),
+            "title": extract_item(elem, [
+                'citation', 'CI_Citation', 'title', 'CharacterString']),
             "relationships": []
         }
 
@@ -71,8 +156,7 @@ class IsoReader():
                 "relate": "conformsTo",
                 "object_id": keyword['object_id']
             })
-
-        return {"dataset": tidy_dict(dataset), "keywords": keywords}
+        return tidy_dict(dataset), keywords
 
     def _parse_keywords(self, elem):
         '''
@@ -294,82 +378,8 @@ class IsoReader():
         })
     # end helpers
 
-    def _generate_harvest_manifest(self, **kwargs):
-        harvest = {
-            "hasUrl": self.url,
-            "atTime": self.harvest_details.get('harvest_date'),
-            "statusCodeValue": 200,
-            "reasonPhrase": "OK",
-            "HTTPStatusFamilyCode": 200,
-            "HTTPStatusFamilyType": "Success message",
-            "hasUrlSource": "",
-            "hasConfidence": "",
-            "validatedOn": self.harvest_details.get('harvest_date')
-        }
-        harvest.update(kwargs)
-        return tidy_dict(harvest)
 
-    def parse(self):
-        '''
-        run the routing
-        '''
-
-        if not self.identity:
-            # we're going to have to sort it out
-            self.identity = {}
-
-        metadata = self.identity.get('metadata', {})
-        if not metadata:
-            return {}
-
-        metadata_type = metadata.get('name', '')
-        if not metadata_type:
-            return {}
-
-        # TODO: this is unlikely to be correct, given the ds record
-        #       but we're not going there just yet
-        # TODO: deal with conformsTo (multiple schemaLocations, etc)
-        catalog_record = {
-            "object_id": generate_sha_urn(self.url),
-            "dateCreated": self.harvest_details.get('harvest_date', ''),
-            "lastUpdated": self.harvest_details.get('harvest_date', ''),
-            "conformsTo": extract_attrib(self.parser.xml, ['@schemaLocation']),
-            "relationships": [],
-            "urls": []
-        }
-        catalog_record['urls'].append(
-            self._generate_harvest_manifest(**{
-                "hasUrlSource": "Harvested",
-                "hasConfidence": "Good",
-                "hasUrl": self.url,
-                "object_id": generate_uuid_urn()
-            })
-        )
-
-        if metadata_type == 'Data Series':
-            # run the set
-            self.reader = DsParser(self.parser.xml, catalog_record)
-        elif metadata_type == '19119':
-            # run that
-            for srv in extract_elems(
-                self.parser.xml,
-                    ['identificationInfo', 'SV_ServiceIdentification']):
-                reader = SrvParser(srv, catalog_record)
-                reader.parse()
-        elif metadata_type == '19115':
-            # it's a mi/md so run that
-            self.reader = MxParser(
-                self.parser.xml,
-                catalog_record,
-                self.harvest_details
-            )
-
-        # self.reader.parse()
-        # # pass it back up the chain a bit
-        self.description = self.reader.output
-
-
-class MxParser(object):
+class MxParser(IsoParser):
     '''
     parse an mi or md element (as whole record or some csw/oai-pmh/ds child)
     '''
@@ -381,7 +391,11 @@ class MxParser(object):
         or part of some other catalog service
         '''
         self.elem = elem
-        self.output = {"catalog_record": catalog_record, "relationships": []}
+        self.output = {
+            "catalog_record": catalog_record,
+            "datasets": [],
+            "keywords": []
+        }
         self.harvest_details = harvest_details
 
     def parse(self):
@@ -391,78 +405,77 @@ class MxParser(object):
             extent) if identificationInfo contains SV_ServiceIdentification,
             add as child distribution info
         '''
-        # TODO: this is just some unfortunate nesting
-        id_elem = extract_elem(
-            self.elem,
-            ['identificationInfo', 'MD_DataIdentification'])
-        if id_elem is not None:
-            identification = parse_identification_info(id_elem)
-            identification['dataset']['relationships'].append({
-                "relate": "description",
+        for id_elem in extract_elems(self.elem, ['//*', 'identificationInfo', 'MD_DataIdentification']):
+            dataset, keywords = self._parse_identification_info(id_elem)
+            dataset['relationships'].append({
+                "relate": "hasMetadataRecord",
                 "object_id": self.output['catalog_record']['object_id']
             })
-            identification['dataset'].update({
+            dataset.update({
                 "dateCreated": self.harvest_details.get('harvest_date', ''),
                 "lastUpdated": self.harvest_details.get('harvest_date', '')
             })
-
-            self.output.update(identification)
             self.output['catalog_record']['relationships'].append({
                 "relate": "primaryTopic",
-                "object_id": identification['dataset']['object_id']
+                "object_id": dataset['object_id']
             })
+            self.output['datasets'].append(dataset)
+            self.output['keywords'] += keywords
 
-        # point of contact from the root node and this might be an issue
-        # in things like the -1/-3 from ngdc so try for an idinfo blob
-        poc_elem = extract_elem(self.elem, [
-            'identificationInfo',
-            'MD_DataIdentification',
-            'pointOfContact',
-            'CI_ResponsibleParty'])
-        if poc_elem is None:
-            # and if that fails try for the root-level contact
-            poc_elem = extract_elem(
-                self.elem,
-                ['contact', 'CI_ResponsibleParty'])
+            
 
-        # TODO: point of contact is not necessarily the publisher
-        if poc_elem is not None:
-            poc = parse_responsibleparty(poc_elem)
-            location = (
-                ' '.join(
-                    [poc['contact'].get('city', ''),
-                     poc['contact'].get('country', '')])
-            ).strip() if poc.get('contact', {}) else ''
+        # # point of contact from the root node and this might be an issue
+        # # in things like the -1/-3 from ngdc so try for an idinfo blob
+        # poc_elem = extract_elem(self.elem, [
+        #     'identificationInfo',
+        #     'MD_DataIdentification',
+        #     'pointOfContact',
+        #     'CI_ResponsibleParty'])
+        # if poc_elem is None:
+        #     # and if that fails try for the root-level contact
+        #     poc_elem = extract_elem(
+        #         self.elem,
+        #         ['contact', 'CI_ResponsibleParty'])
 
-            self.output['publisher'] = tidy_dict({
-                "object_id": generate_uuid_urn(),
-                "name": poc.get('organization', ''),
-                "location": location
-            })
-            self.output['dataset']['relationships'].append({
-                "relate": "publisher",
-                "object_id": self.output['publisher']['object_id']
-            })
+        # # TODO: point of contact is not necessarily the publisher
+        # if poc_elem is not None:
+        #     poc = parse_responsibleparty(poc_elem)
+        #     location = (
+        #         ' '.join(
+        #             [poc['contact'].get('city', ''),
+        #              poc['contact'].get('country', '')])
+        #     ).strip() if poc.get('contact', {}) else ''
 
-        # TODO: removing this until we have a definition for SERVICE
-        # # check for the service elements
-        # service_elems = extract_elems(self.elem,
-        #     ['identificationInfo', 'SV_ServiceIdentification'])
-        # self.description['services'] = []
-        # for service_elem in service_elems:
-        #     sv = SrvParser(service_elem)
-        #     self.description['services'].append(sv.parse())
+        #     self.output['publisher'] = tidy_dict({
+        #         "object_id": generate_uuid_urn(),
+        #         "name": poc.get('organization', ''),
+        #         "location": location
+        #     })
+        #     self.output['dataset']['relationships'].append({
+        #         "relate": "publisher",
+        #         "object_id": self.output['publisher']['object_id']
+        #     })
 
-        dist_elems = extract_elems(self.elem, ['distributionInfo'])
-        self.output['webpages'] = []
-        for dist_elem in dist_elems:
-            self.output['webpages'] = list(
-                chain(self.output['webpages'], parse_distribution(dist_elem)))
-        for webpage in self.output['webpages']:
-            self.output['dataset']['relationships'].append({
-                "relate": "relation",
-                "object_id": webpage['object_id']
-            })
+        # # TODO: removing this until we have a definition for SERVICE
+        # # # check for the service elements
+        # # service_elems = extract_elems(self.elem,
+        # #     ['identificationInfo', 'SV_ServiceIdentification'])
+        # # self.description['services'] = []
+        # # for service_elem in service_elems:
+        # #     sv = SrvParser(service_elem)
+        # #     self.description['services'].append(sv.parse())
+
+        # dist_elems = extract_elems(self.elem, ['distributionInfo'])
+        # self.output['webpages'] = []
+        # for dist_elem in dist_elems:
+        #     self.output['webpages'] = list(
+        #         chain(self.output['webpages'],
+        #               self._parse_distribution(dist_elem)))
+        # for webpage in self.output['webpages']:
+        #     self.output['dataset']['relationships'].append({
+        #         "relate": "relation",
+        #         "object_id": webpage['object_id']
+        #     })
 
         self.description = tidy_dict(self.output)
 
