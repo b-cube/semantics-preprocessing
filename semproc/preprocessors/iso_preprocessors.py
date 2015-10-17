@@ -394,7 +394,9 @@ class MxParser(IsoParser):
         self.output = {
             "catalog_record": catalog_record,
             "datasets": [],
-            "keywords": []
+            "keywords": [],
+            "publishers": [],
+            "webpages": []
         }
         self.harvest_details = harvest_details
 
@@ -419,63 +421,62 @@ class MxParser(IsoParser):
                 "relate": "primaryTopic",
                 "object_id": dataset['object_id']
             })
+
+            # point of contact from the root node and this might be an issue
+            # in things like the -1/-3 from ngdc so try for an idinfo blob
+            poc_elem = extract_elem(id_elem, [
+                'identificationInfo',
+                'MD_DataIdentification',
+                'pointOfContact',
+                'CI_ResponsibleParty'])
+            # if poc_elem is None:
+            #     # and if that fails try for the root-level contact
+            #     poc_elem = extract_elem(
+            #         self.elem,
+            #         ['contact', 'CI_ResponsibleParty'])
+
+            # TODO: point of contact is not necessarily the publisher
+            if poc_elem is not None:
+                poc = self._parse_responsibleparty(poc_elem)
+                location = (
+                    ' '.join(
+                        [poc['contact'].get('city', ''),
+                         poc['contact'].get('country', '')])
+                ).strip() if poc.get('contact', {}) else ''
+
+                self.output['publishers'].append(tidy_dict({
+                    "object_id": generate_uuid_urn(),
+                    "name": poc.get('organization', ''),
+                    "location": location
+                }))
+                dataset['relationships'].append({
+                    "relate": "publisher",
+                    "object_id": self.output['publisher']['object_id']
+                })
+
+            dist_elems = extract_elems(self.elem, ['distributionInfo'])
+            dataset['urls'] = []
+            for dist_elem in dist_elems:
+                dataset['urls'] = list(
+                    chain(dataset['urls'],
+                          self._parse_distribution(dist_elem)))
+            for webpage in dataset['urls']:
+                dataset['relationships'].append({
+                    "relate": "relation",
+                    "object_id": webpage['object_id']
+                })
+
             self.output['datasets'].append(dataset)
             self.output['keywords'] += keywords
 
-            
-
-        # # point of contact from the root node and this might be an issue
-        # # in things like the -1/-3 from ngdc so try for an idinfo blob
-        # poc_elem = extract_elem(self.elem, [
-        #     'identificationInfo',
-        #     'MD_DataIdentification',
-        #     'pointOfContact',
-        #     'CI_ResponsibleParty'])
-        # if poc_elem is None:
-        #     # and if that fails try for the root-level contact
-        #     poc_elem = extract_elem(
-        #         self.elem,
-        #         ['contact', 'CI_ResponsibleParty'])
-
-        # # TODO: point of contact is not necessarily the publisher
-        # if poc_elem is not None:
-        #     poc = parse_responsibleparty(poc_elem)
-        #     location = (
-        #         ' '.join(
-        #             [poc['contact'].get('city', ''),
-        #              poc['contact'].get('country', '')])
-        #     ).strip() if poc.get('contact', {}) else ''
-
-        #     self.output['publisher'] = tidy_dict({
-        #         "object_id": generate_uuid_urn(),
-        #         "name": poc.get('organization', ''),
-        #         "location": location
-        #     })
-        #     self.output['dataset']['relationships'].append({
-        #         "relate": "publisher",
-        #         "object_id": self.output['publisher']['object_id']
-        #     })
-
-        # # TODO: removing this until we have a definition for SERVICE
-        # # # check for the service elements
-        # # service_elems = extract_elems(self.elem,
-        # #     ['identificationInfo', 'SV_ServiceIdentification'])
-        # # self.description['services'] = []
-        # # for service_elem in service_elems:
-        # #     sv = SrvParser(service_elem)
-        # #     self.description['services'].append(sv.parse())
-
-        # dist_elems = extract_elems(self.elem, ['distributionInfo'])
-        # self.output['webpages'] = []
-        # for dist_elem in dist_elems:
-        #     self.output['webpages'] = list(
-        #         chain(self.output['webpages'],
-        #               self._parse_distribution(dist_elem)))
-        # for webpage in self.output['webpages']:
-        #     self.output['dataset']['relationships'].append({
-        #         "relate": "relation",
-        #         "object_id": webpage['object_id']
-        #     })
+        # TODO: removing this until we have a definition for SERVICE
+        # # check for the service elements
+        # service_elems = extract_elems(self.elem,
+        #     ['identificationInfo', 'SV_ServiceIdentification'])
+        # self.description['services'] = []
+        # for service_elem in service_elems:
+        #     sv = SrvParser(service_elem)
+        #     self.description['services'].append(sv.parse())
 
         self.description = tidy_dict(self.output)
 
