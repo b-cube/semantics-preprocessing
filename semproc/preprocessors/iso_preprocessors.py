@@ -1,7 +1,7 @@
 from semproc.parser import Parser
 from semproc.utils import tidy_dict
 from semproc.xml_utils import extract_item, extract_items
-# , generate_localname_xpath
+from semproc.xml_utils import generate_localname_xpath
 from semproc.xml_utils import extract_elem, extract_elems, extract_attrib
 from semproc.geo_utils import bbox_to_geom, gml_to_geom, reproject, to_wkt
 from semproc.utils import generate_sha_urn, generate_uuid_urn
@@ -199,7 +199,8 @@ class IsoParser(object):
         #       ['descriptiveKeywords', 'MD_Keywords', 'keyword', 'Anchor']
 
         # add a generic set for the iso topic category
-        isotopics = extract_items(elem, ['topicCategory', 'MD_TopicCategoryCode'])
+        isotopics = extract_items(
+            elem, ['topicCategory', 'MD_TopicCategoryCode'])
         if isotopics:
             keywords.append(
                 tidy_dict({
@@ -217,9 +218,11 @@ class IsoParser(object):
         starting from the *:extent element
         '''
         extents = {}
-        geo_elem = extract_elem(elem, ['extent', 'EX_Extent', 'geographicElement'])
+        geo_elem = extract_elem(
+            elem, ['extent', 'EX_Extent', 'geographicElement'])
         if geo_elem is not None:
-            # we need to sort out what kind of thing it is bbox, polygon, list of points
+            # we need to sort out what kind of thing it
+            # is bbox, polygon, list of points
             bbox_elem = extract_elem(geo_elem, ['EX_GeographicBoundingBox'])
             if bbox_elem is not None:
                 extents['spatial_extent'] = self._handle_bbox(bbox_elem)
@@ -229,7 +232,17 @@ class IsoParser(object):
             if poly_elem is not None:
                 extents['spatial_extent'] = self._handle_polygon(poly_elem)
 
-        time_elem = extract_elem(elem, ['extent', 'EX_Extent', 'temporalElement', 'EX_TemporalExtent', 'extent', 'TimePeriod'])
+        time_elem = extract_elem(
+            elem,
+            [
+                'extent',
+                'EX_Extent',
+                'temporalElement',
+                'EX_TemporalExtent',
+                'extent',
+                'TimePeriod'
+            ]
+        )
         if time_elem is not None:
             begin_position = extract_elem(time_elem, ['beginPosition'])
             end_position = extract_elem(time_elem, ['endPosition'])
@@ -309,8 +322,8 @@ class IsoParser(object):
             # but where the transferoptions can be in some nested
             # distributor thing or at the root of the element (NOT
             # the root of the file)
-            transfer_elems = extract_elems(dist_elem,
-                                           ['//*', 'MD_DigitalTransferOptions'])
+            transfer_elems = extract_elems(
+                dist_elem, ['//*', 'MD_DigitalTransferOptions'])
             for transfer_elem in transfer_elems:
                 transfer = {}
                 transfer['url'] = extract_item(
@@ -325,7 +338,8 @@ class IsoParser(object):
                     transfer['format'] = ' '.join([
                         extract_item(format_elem,
                                      ['name', 'CharacterString']),
-                        extract_item(format_elem, ['version', 'CharacterString'])])
+                        extract_item(
+                            format_elem, ['version', 'CharacterString'])])
 
                 webpages.append(tidy_dict(transfer))
 
@@ -454,16 +468,19 @@ class MxParser(IsoParser):
                     "object_id": self.output['publisher']['object_id']
                 })
 
-            dist_elems = extract_elems(self.elem, ['distributionInfo'])
             dataset['urls'] = []
+            dist_elems = extract_elems(self.elem, ['distributionInfo'])
             for dist_elem in dist_elems:
-                dataset['urls'] = list(
-                    chain(dataset['urls'],
-                          self._parse_distribution(dist_elem)))
-            for webpage in dataset['urls']:
+                dists = self._parse_distribution(dist_elem)
+                if dists:
+                    dataset['urls'] += dists
+
+            print dataset['urls']
+
+            for url in dataset['urls']:
                 dataset['relationships'].append({
                     "relate": "relation",
-                    "object_id": webpage['object_id']
+                    "object_id": url['object_id']
                 })
 
             self.output['datasets'].append(dataset)
