@@ -78,7 +78,7 @@ class IsoReader():
             "object_id": generate_sha_urn(self.url),
             "dateCreated": self.harvest_details.get('harvest_date', ''),
             "lastUpdated": self.harvest_details.get('harvest_date', ''),
-            "conformsTo": extract_attrib(self.parser.xml, ['@schemaLocation']),
+            "conformsTo": [extract_attrib(self.parser.xml, ['@schemaLocation'])],
             "relationships": [],
             "urls": []
         }
@@ -118,6 +118,21 @@ class IsoReader():
 class IsoParser(object):
     def __init__(self, elem, catalog_record, harvest_details):
         pass
+
+    def _generate_harvest_manifest(self, **kwargs):
+        harvest = {
+            "hasUrl": "",
+            "atTime": self.harvest_details.get('harvest_date'),
+            "statusCodeValue": 200,
+            "reasonPhrase": "OK",
+            "HTTPStatusFamilyCode": 200,
+            "HTTPStatusFamilyType": "Success message",
+            "hasUrlSource": "",
+            "hasConfidence": "",
+            "validatedOn": self.harvest_details.get('harvest_date')
+        }
+        harvest.update(kwargs)
+        return tidy_dict(harvest)
 
     # helper methods
     def _parse_identification_info(self, elem):
@@ -325,23 +340,34 @@ class IsoParser(object):
             transfer_elems = extract_elems(
                 dist_elem, ['//*', 'MD_DigitalTransferOptions'])
             for transfer_elem in transfer_elems:
-                transfer = {}
-                transfer['url'] = extract_item(
-                    transfer_elem,
-                    ['onLine', 'CI_OnlineResource', 'linkage', 'URL'])
-                transfer['object_id'] = generate_sha_urn(transfer['url'])
+                # _transfer = {}
+                # transfer['url'] = extract_item(
+                #     transfer_elem,
+                #     ['onLine', 'CI_OnlineResource', 'linkage', 'URL'])
+                # transfer['objectid'] = generate_sha_urn(transfer['url'])
 
-                xp = generate_localname_xpath(
-                    ['..', '..', 'distributorFormat', 'MD_Format'])
-                format_elem = next(iter(transfer_elem.xpath(xp)), None)
-                if format_elem is not None:
-                    transfer['format'] = ' '.join([
-                        extract_item(format_elem,
-                                     ['name', 'CharacterString']),
-                        extract_item(
-                            format_elem, ['version', 'CharacterString'])])
+                # xp = generate_localname_xpath(
+                #     ['..', '..', 'distributorFormat', 'MD_Format'])
+                # format_elem = next(iter(transfer_elem.xpath(xp)), None)
+                # if format_elem is not None:
+                #     transfer['format'] = ' '.join([
+                #         extract_item(format_elem,
+                #                      ['name', 'CharacterString']),
+                #         extract_item(
+                #             format_elem, ['version', 'CharacterString'])])
 
-                webpages.append(tidy_dict(transfer))
+                # NOTE: it's a uuid identifier given that the urls might be
+                #       repeated in a record
+                dist = self._generate_harvest_manifest(**{
+                    "hasUrlSource": "Harvested",
+                    "hasConfidence": "Good",
+                    "hasUrl": extract_item(
+                        transfer_elem,
+                        ['onLine', 'CI_OnlineResource', 'linkage', 'URL']),
+                    "object_id": generate_uuid_urn()
+                })
+
+                webpages.append(dist)
 
         return webpages
 
@@ -474,8 +500,6 @@ class MxParser(IsoParser):
                 dists = self._parse_distribution(dist_elem)
                 if dists:
                     dataset['urls'] += dists
-
-            print dataset['urls']
 
             for url in dataset['urls']:
                 dataset['relationships'].append({

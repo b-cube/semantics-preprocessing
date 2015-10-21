@@ -1,4 +1,3 @@
-import json
 from uuid import uuid4
 from rdflib import Graph, Literal, Namespace, URIRef
 from rdflib.namespace import DC, DCTERMS, FOAF, XSD, OWL
@@ -53,11 +52,6 @@ class RdfGrapher(object):
             if predicate in v:
                 return k
         return ''
-
-    def _stringify(self, text):
-        # TODO: this still has encoding issues!
-        # return json.dumps(text)
-        return text
 
     def _create_resource(self, resource_prefix, resource_type, identifier=''):
         # make a thing with a uuid as a urn
@@ -171,9 +165,9 @@ class RdfGrapher(object):
         if entity['identifier']:
             service.add(DCTERMS.identifier, Literal(entity['identifier']))
         service.add(
-            DCTERMS.title, Literal(self._stringify(entity['title'])))
+            DCTERMS.title, Literal(entity['title']))
         service.add(
-            DC.description, Literal(self._stringify(entity['abstract'])))
+            DC.description, Literal(entity['abstract']))
         service.add(
             self._generate_predicate('bcube', 'dateCreated'),
             Literal(entity['dateCreated']))
@@ -202,9 +196,9 @@ class RdfGrapher(object):
         if entity['identifier']:
             dataset.add(DCTERMS.identifier, Literal(entity['identifier']))
         dataset.add(
-            DCTERMS.title, Literal(self._stringify(entity['title'])))
+            DCTERMS.title, Literal(entity['title']))
         dataset.add(
-            DC.description, Literal(self._stringify(entity['abstract'])))
+            DC.description, Literal(entity['abstract']))
         dataset.add(
             self._generate_predicate('bcube', 'dateCreated'),
             Literal(entity['dateCreated']))
@@ -240,19 +234,19 @@ class RdfGrapher(object):
             if 'type' in keywords:
                 keyset.add(
                     DC.hasType,
-                    Literal(self._stringify(keywords['type']))
+                    Literal(keywords['type'])
                 )
             if 'thesaurus' in keywords:
                 keyset.add(
                     DC.partOf,
-                    Literal(self._stringify(keywords['thesaurus']))
+                    Literal(keywords['thesaurus'])
                 )
 
             try:
                 for term in keywords['terms']:
                     keyset.add(
                         self._generate_predicate('bcube', 'hasValue'),
-                        Literal(self._stringify(term))
+                        Literal(term)
                     )
             except:
                 print keywords
@@ -262,8 +256,8 @@ class RdfGrapher(object):
             'dcat', 'publisher', entity['object_id'])
         if 'location' in entity:
             publisher.add(
-                DC.location, Literal(self._stringify(entity['location'])))
-        publisher.add(FOAF.name, Literal(self._stringify(entity['name'])))
+                DC.location, Literal(entity['location']))
+        publisher.add(FOAF.name, Literal(entity['name']))
 
     def _process_webpages(self, entity):
         for webpage in entity:
@@ -272,11 +266,12 @@ class RdfGrapher(object):
             self._handle_url(webpage.get('url'))
             relation.add(
                 self._generate_predicate(
-                    'bcube', 'has'), URIRef(webpage.get('url').get('object_id'))
+                    'bcube', 'has'),
+                URIRef(webpage.get('url').get('object_id'))
             )
 
     def emit_format(self):
-        return self.graph.serialize(format='turtle')
+        return self.graph.serialize(format='turtle', encoding='utf-8')
 
     def serialize(self):
         '''
