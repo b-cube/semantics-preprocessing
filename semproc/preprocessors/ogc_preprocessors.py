@@ -9,6 +9,7 @@ from semproc.preprocessors.csw_preprocessors import CswReader
 from semproc.yaml_configs import import_yaml_configs
 from semproc.geo_utils import bbox_to_geom, reproject, to_wkt
 from semproc.utils import tidy_dict, remap_http_method
+from semproc.xml_utils import extract_attrib
 import dateutil.parser as dateparser
 from semproc.utils import generate_sha_urn, generate_uuid_urn
 
@@ -193,12 +194,10 @@ class OgcReader(Processor):
         # for ogc, a catalog record is the getcapabilities rsp
         output = {}
 
-        
-
         if 'service' in self.identify:
             # run the owslib getcapabilities parsers
             service = self.identify['service'].get('name', '')
-            version = self.identify['service'].get('version', '')
+            version = next(iter(self.identify['service'].get('version', [])), '')
             reader = self._get_service_reader(service, version)
             if not reader:
                 return {}
@@ -209,7 +208,11 @@ class OgcReader(Processor):
                 "dateCreated": self.harvest_details.get('harvest_date', ''),
                 "lastUpdated": self.harvest_details.get('harvest_date', ''),
                 "conformsTo": extract_attrib(
-                    self.elem, ['@noNamespaceSchemaLocation']).split(),
+                    self.parser.xml, ['@noNamespaceSchemaLocation']
+                ).split() +
+                extract_attrib(
+                    self.parser.xml, ['@schemaLocation']
+                ).split(),
                 "relationships": [],
                 "urls": []
             }
@@ -225,49 +228,61 @@ class OgcReader(Processor):
             )
 
             self._get_service_config(service, version)
-            self.description['service'] = self._parse_service(reader, service, version)
+            service = self._parse_service(reader, service, version)
 
+            # map to triples
+            output['catalog_record'].update({
+                "description": service.get('abstract')
+            })
 
+            keywords = service.get('subject', [])
+            if keywords:
+                output['keywords'] = [{
+                    "object_id": generate_uuid_urn(),
+                    "terms": keywords,
+                    "thesaurus": "Unknown",
+                    "type": "theme"
+                }]
+                for k in output['keywords']:
+                    output['catalog_record']['relationships'].append(
+                        {
+                            "relate": "conformsTo",
+                            "object_id": k['object_id']
+                        }
+                    )
 
+        # if 'dataset' in self.identify:
+        #     # run the owslib wcs/wfs describe* parsers
+        #     request = self.identify['dataset'].get('request', '')
+        #     service = self.identify['dataset'].get('name', '')
+        #     version = self.identify['dataset'].get('version', '')
+        #     if not request or not service:
+        #         return {}
 
-        
+        #     if service == 'WMS' and request == 'GetCapabilities':
+        #         # this is a rehash of the getcap parsing
+        #         # but *only* returning the layers set
+        #         reader = WebMapService('', xml=self.response, version=version)
+        #         self.description['datasets'] = self._parse_getcap_datasets(reader)
+        #     if service == 'WCS' and request == 'DescribeCoverage':
+        #         # need to get the coverage name(s) from the url
+        #         reader = DescribeCoverageReader(version, '', None, xml=self.response)
+        #         self.description['datasets'] = self._parse_coverages(reader)
+        #     elif service == 'SOS' and request == 'GetCapabilities':
+        #         reader = SensorObservationService('', xml=self.response, version=version)
+        #         self.description['datasets'] = self._parse_getcap_datasets(reader)
+        #     elif service == 'WFS' and request == 'GetCapabilities':
+        #         reader = WebFeatureService('', xml=self.response, version=version)
+        #         self.description['datasets'] = self._parse_getcap_datasets(reader)
 
+        # if 'resultset' in self.identify:
+        #     # assuming csw, run the local csw reader
+        #     reader = CswReader(self.identify, self.response, self.url)
+        #     reader.parse()
+        #     # TODO: this is not a good key (children->children)
+        #     self.description['children'] = reader.description
 
-
-
-
-        if 'dataset' in self.identify:
-            # run the owslib wcs/wfs describe* parsers
-            request = self.identify['dataset'].get('request', '')
-            service = self.identify['dataset'].get('name', '')
-            version = self.identify['dataset'].get('version', '')
-            if not request or not service:
-                return {}
-
-            if service == 'WMS' and request == 'GetCapabilities':
-                # this is a rehash of the getcap parsing
-                # but *only* returning the layers set
-                reader = WebMapService('', xml=self.response, version=version)
-                self.description['datasets'] = self._parse_getcap_datasets(reader)
-            if service == 'WCS' and request == 'DescribeCoverage':
-                # need to get the coverage name(s) from the url
-                reader = DescribeCoverageReader(version, '', None, xml=self.response)
-                self.description['datasets'] = self._parse_coverages(reader)
-            elif service == 'SOS' and request == 'GetCapabilities':
-                reader = SensorObservationService('', xml=self.response, version=version)
-                self.description['datasets'] = self._parse_getcap_datasets(reader)
-            elif service == 'WFS' and request == 'GetCapabilities':
-                reader = WebFeatureService('', xml=self.response, version=version)
-                self.description['datasets'] = self._parse_getcap_datasets(reader)
-
-        if 'resultset' in self.identify:
-            # assuming csw, run the local csw reader
-            reader = CswReader(self.identify, self.response, self.url)
-            reader.parse()
-            # TODO: this is not a good key (children->children)
-            self.description['children'] = reader.description
-
-        self.description = tidy_dict(self.description)
+        self.description = tidy_dict(output)
 
     def _parse_service(self, reader, service, version):
         rights = [reader.identification.accessconstraints]
@@ -276,7 +291,7 @@ class OgcReader(Processor):
         except AttributeError:
             contact = []
 
-        abstract = [reader.identification.abstract]
+        abstract = reader.identification.abstract
         keywords = reader.identification.keywords
         endpoints = self._get_operations(reader, service, version)
 
