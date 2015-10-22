@@ -458,7 +458,7 @@ class OgcReader(Processor):
 
             d['name'] = name
             if dataset.title:
-                d['title'] = [dataset.title]
+                d['title'] = dataset.title
 
             if dataset.abstract:
                 d['abstract'] = dataset.abstract
