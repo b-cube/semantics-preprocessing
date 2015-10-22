@@ -78,7 +78,7 @@ class IsoReader():
             "object_id": generate_sha_urn(self.url),
             "dateCreated": self.harvest_details.get('harvest_date', ''),
             "lastUpdated": self.harvest_details.get('harvest_date', ''),
-            "conformsTo": [extract_attrib(self.parser.xml, ['@schemaLocation'])],
+            "conformsTo": extract_attrib(self.parser.xml, ['@schemaLocation']).split(),
             "relationships": [],
             "urls": []
         }
