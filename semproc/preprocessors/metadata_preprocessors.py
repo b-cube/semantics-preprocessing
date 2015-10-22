@@ -199,7 +199,7 @@ class FgdcItemReader(BaseItemReader):
             "identifier": datsetid,
             "dateCreated": self.harvest_details.get('harvest_date', ''),
             "lastUpdated": self.harvest_details.get('harvest_date', ''),
-            "abstract": extract_item(
+            "description": extract_item(
                 self.elem, ['idinfo', 'descript', 'abstract']),
             "title": extract_item(
                 self.elem, ['idinfo', 'citation', 'citeinfo', 'title']),

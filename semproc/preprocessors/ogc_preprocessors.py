@@ -197,9 +197,11 @@ class OgcReader(Processor):
         if 'service' in self.identify:
             # run the owslib getcapabilities parsers
             service = self.identify['service'].get('name', '')
-            version = next(iter(self.identify['service'].get('version', [])), '')
+            version = next(iter(
+                self.identify['service'].get('version', [])), '')
             reader = self._get_service_reader(service, version)
             if not reader:
+                # TODO: this is not at all a good error response
                 return {}
 
             catalog_object_id = generate_sha_urn(self.url)
@@ -250,20 +252,61 @@ class OgcReader(Processor):
                             "object_id": k['object_id']
                         }
                     )
+            if self.identify['service'].get('request', '') == 'GetCapabilities':
+                # this is also awkward. meh. needs must.
+                datasets = []
+                listed_datasets = self._parse_getcap_datasets(reader)
+
+                for ld in listed_datasets:
+                    dataset = {
+                        "object_id": generate_uuid_urn(),
+                        "dateCreated": self.harvest_details.get('harvest_date', ''),
+                        "lastUpdated": self.harvest_details.get('harvest_date', ''),
+                        "description": ld.get('abstract', ''),
+                        "title": ld.get('title', ''),
+                        "relationships": [
+                            {
+                                "relate": "hasMetadataRecord",
+                                "object_id": output['catalog_record']['object_id']
+                            }
+                        ]
+                    }
+
+                    if 'temporal_extent' in ld:
+                        dataset['temporal_extent'] = tidy_dict(
+                            {
+                                "startDate": ld['temporal_extent'].get('begin', ''),
+                                "endDate": ld['temporal_extent'].get('end', '')
+                            }
+                        )
+
+                    if 'bbox' in ld:
+                        dataset['spatial_extent'] = ld['bbox']
+
+                    datasets.append(dataset)
+
+                if datasets:
+                    output['datasets'] = datasets
+                    for dataset in datasets:
+                        output['catalog_record']['relationships'].append({
+                            "relate": "primaryTopic",
+                            "object_id": dataset['object_id']
+                        })
 
         # if 'dataset' in self.identify:
         #     # run the owslib wcs/wfs describe* parsers
         #     request = self.identify['dataset'].get('request', '')
         #     service = self.identify['dataset'].get('name', '')
         #     version = self.identify['dataset'].get('version', '')
-        #     if not request or not service:
-        #         return {}
+        #     # if not request or not service:
+        #     #     return {}
 
         #     if service == 'WMS' and request == 'GetCapabilities':
         #         # this is a rehash of the getcap parsing
         #         # but *only* returning the layers set
         #         reader = WebMapService('', xml=self.response, version=version)
-        #         self.description['datasets'] = self._parse_getcap_datasets(reader)
+        #         datasets = self._parse_getcap_datasets(reader)
+
         #     if service == 'WCS' and request == 'DescribeCoverage':
         #         # need to get the coverage name(s) from the url
         #         reader = DescribeCoverageReader(version, '', None, xml=self.response)
@@ -418,7 +461,7 @@ class OgcReader(Processor):
                 d['title'] = [dataset.title]
 
             if dataset.abstract:
-                d['abstract'] = [dataset.abstract]
+                d['abstract'] = dataset.abstract
 
             if dataset.metadataUrls:
                 d['metadata_urls'] = dataset.metadataUrls
@@ -433,7 +476,13 @@ class OgcReader(Processor):
                 # convert to wkt (and there's something about sos - maybe not harmonized)
                 if dataset.boundingBoxWGS84:
                     bbox = bbox_to_geom(dataset.boundingBoxWGS84)
-                    d['bbox'] = [to_wkt(bbox)]
+                    d['bbox'] = {
+                        'wkt': to_wkt(bbox),
+                        'west': dataset.boundingBoxWGS84[0],
+                        'east': dataset.boundingBoxWGS84[2],
+                        'north': dataset.boundingBoxWGS84[3],
+                        'south': dataset.boundingBoxWGS84[1]
+                    }
             except AttributeError:
                 pass
 

@@ -193,12 +193,12 @@ class RdfGrapher(object):
 
     def _process_dataset(self, entity):
         dataset = self._create_resource('dcat', 'Dataset', entity['object_id'])
-        if entity['identifier']:
+        if 'identifier' in entity:
             dataset.add(DCTERMS.identifier, Literal(entity['identifier']))
         dataset.add(
             DCTERMS.title, Literal(entity['title']))
         dataset.add(
-            DC.description, Literal(entity['abstract']))
+            DC.description, Literal(entity['description']))
         dataset.add(
             self._generate_predicate('bcube', 'dateCreated'),
             Literal(entity['dateCreated']))

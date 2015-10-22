@@ -151,7 +151,7 @@ class IsoParser(object):
             "object_id": generate_sha_urn(dataset_identifier)
                 if dataset_identifier else generate_uuid_urn(),
             "identifier": dataset_identifier,
-            "abstract": extract_item(elem, ['abstract', 'CharacterString']),
+            "description": extract_item(elem, ['abstract', 'CharacterString']),
             "title": extract_item(elem, [
                 'citation', 'CI_Citation', 'title', 'CharacterString']),
             "relationships": []
