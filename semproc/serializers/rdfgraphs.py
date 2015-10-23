@@ -44,7 +44,8 @@ class RdfGrapher(object):
                 "hasUrlSource",
                 "hasConfidence",
                 "validatedOn",
-                "hasMetadataRecord"
+                "hasMetadataRecord",
+                "Layer"
             ]
         }
 
@@ -69,15 +70,7 @@ class RdfGrapher(object):
         # our potential hash (this is idiotic) as pred, key
         options = [
             ('dateCreated', 'dateCreated'),
-            ('lastUpdated', 'lastUpdated'),
-            # ('atTime', 'atTime'),
-            # ('statusCodeValue', 'statusCodeValue'),
-            # ('reasonPhrase', 'reasonPhrase'),
-            # ('HTTPStatusFamilyCode', 'HTTPStatusFamilyCode'),
-            # ('HTTPStatusFamilyType', 'HTTPStatusFamilyType'),
-            # ('hasUrlSource', 'hasUrlSource'),
-            # ('hasConfidence', 'hasConfidence'),
-            # ('validatedOn', 'validatedOn')
+            ('lastUpdated', 'lastUpdated')
         ]
 
         for pred, key in options:
@@ -94,7 +87,7 @@ class RdfGrapher(object):
             self._handle_url(url)
             catalog_record.add(
                 self._generate_predicate(
-                    'bcube', 'has'), URIRef(url.get('object_id'))
+                    'bcube', 'hasUrl'), URIRef(url.get('object_id'))
             )
 
         for conforms in entity.get('conformsTo', []):

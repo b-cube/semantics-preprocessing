@@ -106,12 +106,15 @@ class OgcReader(Processor):
                 return defaults
 
             for k, v in found_params.iteritems():
-                param = next(iter(d for d in defaults if d['name'] == k.lower()), [])
+                param = next(
+                    iter(d for d in defaults if d['name'] == k.lower()), [])
                 if not param:
                     continue
 
                 found_index = defaults.index(param)
-                param['values'] = [_check_controlled_vocabs(a) for a in v['values']]
+                param['values'] = [
+                    _check_controlled_vocabs(a) for a in v['values']
+                ]
                 defaults[found_index] = param
 
             return defaults
@@ -140,7 +143,9 @@ class OgcReader(Processor):
 
             # get the formatOptions
             try:
-                formats = [_check_controlled_vocabs(fo) for fo in o.formatOptions]
+                formats = [
+                    _check_controlled_vocabs(fo) for fo in o.formatOptions
+                ]
             except AttributeError:
                 formats = []
 
@@ -241,9 +246,7 @@ class OgcReader(Processor):
             if keywords:
                 output['keywords'] = [{
                     "object_id": generate_uuid_urn(),
-                    "terms": keywords,
-                    "thesaurus": "Unknown",
-                    "type": "theme"
+                    "terms": keywords
                 }]
                 for k in output['keywords']:
                     output['catalog_record']['relationships'].append(
@@ -254,11 +257,11 @@ class OgcReader(Processor):
                     )
             if self.identify['service'].get('request', '') == 'GetCapabilities':
                 # this is also awkward. meh. needs must.
-                datasets = []
-                listed_datasets = self._parse_getcap_datasets(reader)
+                layers = []
+                listed_layers = self._parse_getcap_datasets(reader)
 
-                for ld in listed_datasets:
-                    dataset = {
+                for ld in listed_layers:
+                    layer = {
                         "object_id": generate_uuid_urn(),
                         "dateCreated": self.harvest_details.get('harvest_date', ''),
                         "lastUpdated": self.harvest_details.get('harvest_date', ''),
@@ -283,14 +286,14 @@ class OgcReader(Processor):
                     if 'bbox' in ld:
                         dataset['spatial_extent'] = ld['bbox']
 
-                    datasets.append(dataset)
+                    layers.append(layer)
 
-                if datasets:
-                    output['datasets'] = datasets
-                    for dataset in datasets:
+                if layers:
+                    output['layers'] = layers
+                    for layer in layers:
                         output['catalog_record']['relationships'].append({
                             "relate": "primaryTopic",
-                            "object_id": dataset['object_id']
+                            "object_id": layer['object_id']
                         })
 
         # if 'dataset' in self.identify:

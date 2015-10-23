@@ -47,3 +47,7 @@ Semantics_Preprocessing.egg-info/
 fabfile.py
 
 notebooks/Untitled1.ipynb
+
+notebooks/harvest_linkrot_20150504-1940_date_processed.sqlite
+
+notebooks/harvest_linkrot_20150504-1940_processed.sqlite
