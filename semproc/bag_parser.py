@@ -2,6 +2,7 @@ from semproc.parser import Parser
 from bs4 import BeautifulSoup
 import re
 from semproc.utils import unquote
+import warnings
 
 
 # TODO: finish this
@@ -21,7 +22,9 @@ class BagParser():
             return pttn.sub(' ', s)
 
         try:
-            soup = BeautifulSoup(text.strip())
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                soup = BeautifulSoup(text.strip())
         except UserWarning:
             return ''
 
