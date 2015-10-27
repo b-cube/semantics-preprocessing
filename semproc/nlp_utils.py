@@ -82,7 +82,12 @@ def remove_punctuation(text):
     simple_pattern = r'[;|>+:=.,()/?!\[\]{}]'
     text = re.sub(simple_pattern, ' ', text)
     # catch the singleton hyphens
-    return text.replace(' - ', ' ')
+    text = text.replace(' - ', ' ').strip()
+    text = text if text != '-' else ''
+
+    # and handle any terminal punctuation
+    terminal_punctuation = '(){}[].,~|":'
+    return text.strip(terminal_punctuation).strip()
 
 
 def split_words(text):
@@ -132,11 +137,12 @@ def remove_numeric(text):
     note: this doesn't capture the hyphen.
     '''
     match_pttn = ur'\w*\b-?\d\s*\w*'
-    captures = re.findall(match_pttn, text)
+    captures = re.findall(match_pttn, u' {0} '.format(text))
 
     # strip them out
     if captures:
-        return re.sub('|'.join(captures), ' ', text)
+        text = re.sub('|'.join(captures), ' ', text)
+        return '' if text == '0' else text
 
     return text
 

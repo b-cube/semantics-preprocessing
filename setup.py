@@ -31,5 +31,16 @@ setup(name='Semantics-Preprocessing',
       url='http://github.io/bcube/semantics-preprocessors',
       install_requires=reqs,
       cmdclass={'test': PyTest},
-      packages=find_packages(exclude=["local", "response_examples", "tests"])
+      packages=find_packages(exclude=["local", "response_examples", "tests"]),
+      data_files=[
+        (
+          "semproc/corpus",
+          [
+            './semproc/corpus/cat_interop_urns.txt',
+            './semproc/corpus/namespaces.txt',
+            './semproc/corpus/mimetypes.txt',
+            './semproc/corpus/excludes_by_contains.txt',
+          ]
+        )
+      ]
 )

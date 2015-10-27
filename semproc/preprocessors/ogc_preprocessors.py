@@ -197,7 +197,9 @@ class OgcReader(Processor):
 
     def parse(self):
         # for ogc, a catalog record is the getcapabilities rsp
-        output = {}
+        output = {
+            "datasets": []
+        }
 
         if 'service' in self.identify:
             # run the owslib getcapabilities parsers
@@ -275,8 +277,29 @@ class OgcReader(Processor):
                         ]
                     }
 
+                    if 'metadata_urls' in ld:
+                        # add each as a dataset with just a url for now
+                        output['datasets'] += [
+                            {
+                                "object_id": generate_sha_urn(mu.link),
+                                "urls": [self._generate_harvest_manifest(**{
+                                    "hasUrl": mu.link,
+                                    "hasUrlSource": "Harvested",
+                                    "hasConfidence": "Good",
+                                    "object_id": generate_uuid_urn()
+                                })]
+                            }
+                            for mu in ld['metadata_urls']
+                        ]
+
+                        # update the relationships for the layer
+                        layer[''] = {
+
+                        }
+
+
                     if 'temporal_extent' in ld:
-                        dataset['temporal_extent'] = tidy_dict(
+                        layer['temporal_extent'] = tidy_dict(
                             {
                                 "startDate": ld['temporal_extent'].get('begin', ''),
                                 "endDate": ld['temporal_extent'].get('end', '')
@@ -284,7 +307,7 @@ class OgcReader(Processor):
                         )
 
                     if 'bbox' in ld:
-                        dataset['spatial_extent'] = ld['bbox']
+                        layer['spatial_extent'] = ld['bbox']
 
                     layers.append(layer)
 
