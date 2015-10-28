@@ -9,6 +9,7 @@ from nltk.corpus import stopwords
 from nltk.corpus import WordListCorpusReader
 from nltk.stem.wordnet import WordNetLemmatizer
 from itertools import chain
+import dateutil.parser as dateparser
 
 
 _corpus_root = 'corpus'
@@ -83,11 +84,13 @@ def remove_punctuation(text):
     text = re.sub(simple_pattern, ' ', text)
     # catch the singleton hyphens
     text = text.replace(' - ', ' ').strip()
-    text = text if text != '-' else ''
+    return text if text != '-' else ''
 
+
+def strip_terminal_punctuation(text):
     # and handle any terminal punctuation
-    terminal_punctuation = '(){}[].,~|":'
-    return text.strip(terminal_punctuation).strip()
+    terminal_punctuation = '(){}[].,~|":&-'
+    return text.strip(terminal_punctuation)
 
 
 def split_words(text):
@@ -145,6 +148,18 @@ def remove_numeric(text):
         return '' if text == '0' else text
 
     return text
+
+
+def strip_dates(text):
+    # this should still make it an invalid date
+    # text = text[3:] if text.startswith('NaN') else text
+    try:
+        d = dateparser.parse(text)
+        return ''
+    except ValueError:
+        return text
+    except OverflowError:
+        return text
 
 
 def extract_mimetypes(text, do_replace=True):
