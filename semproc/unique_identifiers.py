@@ -47,25 +47,40 @@ _rule_set = [
 
 
 class Identifier(object):
-    def __init__(self, tag, extraction_type, match_type, original_text, potential_identifier):
+    def __init__(
+            self,
+            tag,
+            extraction_type,
+            match_type,
+            original_text,
+            potential_identifier):
         self.tag = tag
         self.extraction_type = extraction_type
         self.match_type = match_type
         self.original_text = original_text
         self.potential_identifier = potential_identifier
-    
+
     def __eq__(self, other):
         return (isinstance(other, self.__class__)
-            and self.__dict__ == other.__dict__)
+                and self.__dict__ == other.__dict__)
 
     def __ne__(self, other):
         return not self.__eq__(other)
-    
+
     def has(self, comparison_identifier):
         return self.potential_identifier == comparison_identifier
 
     def __repr__(self):
         return '<Identifier %s>' % json.dumps(self.__dict__)
+
+    def to_json(self):
+        return {
+            "tag": self.tag,
+            "extraction_type": self.extraction_type,
+            "match_type": self.match_type,
+            "original_text": self.original_text,
+            "potential_identifier": self.potential_identifier
+        }
 
 
 class IdentifierExtractor(object):
@@ -184,7 +199,8 @@ class IdentifierExtractor(object):
             values = [v for v in values if not self._check(v, self.seen_texts)]
             self.texts += list(iter(izip([tag] * len(values), values)))
 
-            if url and not self._check(url, self.identifieds) and not self._check(url, self.seen_texts):
+            if url and not self._check(url, self.identifieds) \
+                    and not self._check(url, self.seen_texts):
                 identify = Identifier(tag, 'regex', 'url', text, url)
                 self.identifieds.append(identify)
                 self.seen_texts.append(identify)
@@ -195,11 +211,19 @@ class IdentifierExtractor(object):
                 # before checking against knowns and appending
                 cleaned_text = self._tidy_text(match_text)
 
-                if cleaned_text and not self._check(cleaned_text, self.identifieds):
-                    self.identifieds.append(Identifier(tag, 'regex', match_type, text, cleaned_text))
+                if cleaned_text and not self._check(
+                        cleaned_text, self.identifieds):
+                    self.identifieds.append(
+                        Identifier(
+                            tag, 'regex', match_type, text, cleaned_text
+                        )
+                    )
                 if not self._check(cleaned_text, self.seen_texts):
                     self.texts.append((tag, cleaned_text))
-                    self.seen_texts.append(Identifier(tag, 'regex', match_type, text, cleaned_text))
+                    self.seen_texts.append(
+                        Identifier(
+                            tag, 'regex', match_type, text, cleaned_text)
+                    )
 
 
 '''
