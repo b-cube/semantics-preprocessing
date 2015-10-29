@@ -84,12 +84,14 @@ class Identifier(object):
 
 
 class IdentifierExtractor(object):
-    def __init__(self, source_url, source_xml_as_str):
+    def __init__(self, source_url, source_xml_as_str, equality_excludes=[], contains_excludes=[]):
         self.source_url = source_url
         self.source_xml_as_str = source_xml_as_str
         self.identifieds = []
         self.texts = [('', self.source_url)]
         self.seen_texts = []
+        self.equality_excludes = equality_excludes
+        self.contains_excludes = contains_excludes
 
         self._parse()
 
@@ -126,8 +128,17 @@ class IdentifierExtractor(object):
             return ''
         return text
 
-    def _strip_excludes(self, text):
-        if any(e.lower() in text.lower() for e in excludes):
+    def _strip_excludes(self, match_type, tag, text):
+        # TODO: how to handle the excludes for skipping
+        #       by tag and skipping by value and what was
+        #       the thinking a few months ago?
+        if match_type == 'url':
+            if text in self.equality_excludes:
+                # equality only
+                return ''
+            return text
+
+        if any(e.lower() in text.lower() for e in self.contains_excludes):
             return ''
         return text
 
