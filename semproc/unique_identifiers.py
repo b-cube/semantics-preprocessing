@@ -24,9 +24,7 @@ _pattern_set = [
     ('urn', re.compile(ur'^([a-z0-9.#]{0,}:([a-z0-9][a-z0-9.-]{0,31}):[a-z0-9A-Z_()+,-.:=@;$!*\'%/?#\[\]]+)', re.IGNORECASE)),
     ('uuid', re.compile(ur'([a-f\d]{8}(-[a-f\d]{4}){3}-[a-f\d]{12}?)', re.IGNORECASE)),
     ('doi', re.compile(ur"((doi:){0,1}10[.][0-9]{4,}(?:[/][0-9]+)*/(?:(?![\"&\\'])\S)+)", re.IGNORECASE)),
-    ('md5', re.compile(ur"(\b([A-Fa-f0-9]{32}))\b", re.IGNORECASE)),
-    # this is not going to be a great regex. it is rel paths or uris
-    ('cooluri', re.compile(ur'((^/{0,1}.*?[\w\d_].+/{0,1})+)', re.IGNORECASE))
+    ('md5', re.compile(ur"(\b([A-Fa-f0-9]{32}))\b", re.IGNORECASE))
 ]
 
 _rule_set = [
@@ -76,7 +74,8 @@ class Identifier(object):
             "tag": self.tag,
             "extraction_type": self.extraction_type,
             "match_type": self.match_type,
-            "original_text": self.original_text,
+            "original_text": self.original_text.replace(
+                '\n', ' ').replace('\r', ' '),
             "potential_identifier": self.potential_identifier
         }
 
@@ -210,6 +209,21 @@ class IdentifierExtractor(object):
         )
         m = match(potential_urn, pttn)
         return potential_urn if m else ''
+
+    def _verify_cool_uri(self, potential_uri):
+        parts = potential_uri.split('/')
+        if len(parts) < 2:
+            return ''
+
+        # it should start with a slash or end with a filename
+        # that's not really an accurate understanding of the things
+        # they are route paths, non-unique and are difficult
+        # to categorize given how badly we put things in the xml
+        starts_with = '/' == potential_uri[0]
+        ends_with = len(parts[-1].split('.')) > 1 or '/' == potential_uri[-1]
+        if not starts_with or not ends_with:
+            return ''
+        return potential_uri
 
     def _verify_url(self, potential_url):
         # ugh
@@ -384,6 +398,11 @@ class IdentifierExtractor(object):
 
             # check if the text is a url
             _urlify(text)
+
+            # check if it's a cool uri
+            uri_verified = self._verify_cool_uri(text)
+            if uri_verified:
+                _append(Identifier(tag, 'extract', 'cooluri', text, text))
 
             # now run the OTHER regex
             for match_type, match_text in self._extract_identifiers(text):

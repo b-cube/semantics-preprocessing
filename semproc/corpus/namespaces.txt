@@ -1169,6 +1169,5 @@ http://xmlns.com/foaf/0.1/Person
 http://xmlns.com/foaf/0.1/Agent
 http://purl.org/linked-data/api/vocab#Page
 http://purl.org/linked-data/api/vocab
-http://esipfed.org/ns/fedsearch/1.0/search#
 http://esipfed.org/ns/fedsearch/1.0/search
 http://tms.osgeo.org/1.0.0
