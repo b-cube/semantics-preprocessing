@@ -38,7 +38,8 @@ _rule_set = [
     ('basic', 'dataset/ID'),  # THREDDS
     ('uri', '@URI'),  # ddi
     ('uri', '@IDNo'),  # ddi
-    ('uri', '@ID')
+    ('uri', '@ID'),
+    ('uri', 'datsetid')
 ]
 
 
