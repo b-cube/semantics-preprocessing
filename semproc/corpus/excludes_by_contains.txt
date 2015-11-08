@@ -38,3 +38,13 @@ foo/bar
 gravatar.
 avatar
 {searchTerms
+xmlmetadata
+coremetadata
+StructMetadata
+meters
+missing
+Downloadable Data
+local
+inapplicable
+dcterms:URI
+HH:MM:SS
