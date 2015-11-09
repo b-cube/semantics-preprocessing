@@ -142,6 +142,8 @@ class IdentifierExtractor(object):
             return ''
         except ValueError:
             pass
+        except OverflowError:
+            pass
 
         known_formats = ['%d/%m/%Y [%H:%M:%S:%f]', '%H:%M:%S%f']
         tests = [try_format(kf) for kf in known_formats]

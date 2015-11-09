@@ -4,6 +4,7 @@
 *.xlsx
 *.log
 env.sh
+notebooks/tmp
 
 bcube_owslib
 
