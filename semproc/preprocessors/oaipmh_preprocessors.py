@@ -25,14 +25,14 @@ class OaiPmhReader(Processor):
         output = {}
 
         service = {
-            "object_id": generate_sha_urn(self.url),
+            "object_id": generate_uuid_urn(),
             "dcterms:title": ' '.join(extract_items(
                 self.parser.xml, ["Identify", "repositoryName"])),
             "rdf:type": "OAI-PMH",
             "relationships": [],
             "urls": []
         }
-        url_id = generate_uuid_urn()
+        url_id = generate_sha_urn(self.url)
         dist = self._generate_harvest_manifest(**{
             "bcube:hasUrlSource": "Harvested",
             "bcube:hasConfidence": "Good",
