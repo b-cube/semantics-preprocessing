@@ -123,15 +123,15 @@ class BaseItemReader():
 
     def _generate_harvest_manifest(self, **kwargs):
         harvest = {
-            "hasUrl": self.url,
-            "atTime": self.harvest_details.get('harvest_date'),
-            "statusCodeValue": 200,
-            "reasonPhrase": "OK",
-            "HTTPStatusFamilyCode": 200,
-            "HTTPStatusFamilyType": "Success message",
-            "hasUrlSource": "",
-            "hasConfidence": "",
-            "validatedOn": self.harvest_details.get('harvest_date')
+            "vcard:hasUrl": self.url,
+            "bcube:atTime": self.harvest_details.get('harvest_date'),
+            "bcube:HTTPStatusCodeValue": 200,
+            "bcube:reasonPhrase": "OK",
+            "bcube:HTTPStatusFamilyCode": 200,
+            "bcube:HTTPStatusFamilyType": "Success message",
+            "bcube:hasUrlSource": "",
+            "bcube:hasConfidence": "",
+            "bcube:validatedOn": self.harvest_details.get('harvest_date')
         }
         harvest.update(kwargs)
         return tidy_dict(harvest)
@@ -171,23 +171,28 @@ class FgdcItemReader(BaseItemReader):
 
         output['catalog_record'] = {
             "object_id": catalog_object_id,
-            "dateCreated": self.harvest_details.get('harvest_date', ''),
-            "lastUpdated": self.harvest_details.get('harvest_date', ''),
-            "conformsTo": extract_attrib(
+            "bcube:dateCreated": self.harvest_details.get('harvest_date', ''),
+            "bcube:lastUpdated": self.harvest_details.get('harvest_date', ''),
+            "dc:conformsTo": extract_attrib(
                 self.elem, ['@noNamespaceSchemaLocation']).split(),
             "relationships": [],
             "urls": []
         }
 
         # add the harvest info
+        original_url = self._generate_harvest_manifest(**{
+            "bcube:hasUrlSource": "Harvested",
+            "bcube:hasConfidence": "Good",
+            "vcard:hasUrl": self.url,
+            "object_id": generate_uuid_urn()
+        })
         # NOTE: this is not the sha from the url
-        output['catalog_record']['urls'].append(
-            self._generate_harvest_manifest(**{
-                "hasUrlSource": "Harvested",
-                "hasConfidence": "Good",
-                "hasUrl": self.url,
-                "object_id": generate_uuid_urn()
-            })
+        output['catalog_record']['urls'].append(original_url)
+        output['catalog_record']['relationships'].append(
+            {
+                "relate": "bcube:originatedFrom",
+                "object_id": original_url['object_id']
+            }
         )
 
         datsetid = extract_item(self.elem, ['idinfo', 'datsetid'])
@@ -196,12 +201,12 @@ class FgdcItemReader(BaseItemReader):
 
         dataset = {
             "object_id": dataset_object_id,
-            "identifier": datsetid,
-            "dateCreated": self.harvest_details.get('harvest_date', ''),
-            "lastUpdated": self.harvest_details.get('harvest_date', ''),
-            "description": extract_item(
+            "dcterms:identifier": datsetid,
+            "bcube:dateCreated": self.harvest_details.get('harvest_date', ''),
+            "bcube:lastUpdated": self.harvest_details.get('harvest_date', ''),
+            "dc:description": extract_item(
                 self.elem, ['idinfo', 'descript', 'abstract']),
-            "title": extract_item(
+            "dcterms:title": extract_item(
                 self.elem, ['idinfo', 'citation', 'citeinfo', 'title']),
             "urls": []
         }
@@ -219,11 +224,11 @@ class FgdcItemReader(BaseItemReader):
 
             dataset.update({
                 "spatial_extent": {
-                    "wkt": bbox,
-                    "west": west,
-                    "east": east,
-                    "north": north,
-                    "south": south
+                    "dc:spatial": bbox,
+                    "esip:westBound": west,
+                    "esip:eastBound": east,
+                    "esip:northBound": north,
+                    "esip:southBound": south
                 }})
 
         time = {}
@@ -232,13 +237,13 @@ class FgdcItemReader(BaseItemReader):
             caldate = extract_item(time_elem, ['sngdate', 'caldate'])
             if caldate:
                 # TODO: we should see if it's at least a valid date
-                time['startDate'] = self._convert_date(caldate)
+                time['esip:startDate'] = self._convert_date(caldate)
 
             rngdate = extract_elem(time_elem, ['rngdates'])
             if rngdate is not None:
-                time['startDate'] = self._convert_date(
+                time['esip:startDate'] = self._convert_date(
                     extract_item(rngdate, ['begdate']))
-                time['endDate'] = self._convert_date(
+                time['esip:endDate'] = self._convert_date(
                     extract_item(rngdate, ['enddate']))
             # TODO: add the min/max of the list of dates
 
@@ -246,7 +251,7 @@ class FgdcItemReader(BaseItemReader):
 
         dataset['relationships'] = [
             {
-                "relate": "hasMetadataRecord",
+                "relate": "bcube:hasMetadataRecord",
                 "object_id": catalog_object_id
             }
         ]
@@ -262,7 +267,7 @@ class FgdcItemReader(BaseItemReader):
         }
         output['publisher'] = publisher
         dataset['relationships'].append({
-            "relate": "publisher",
+            "relate": "dcterms:publisher",
             "object_id": publisher['object_id']
         })
 
@@ -275,13 +280,19 @@ class FgdcItemReader(BaseItemReader):
                 ['digtopt', 'onlinopt', 'computer', 'networka', 'networkr'])
             # format = extract_item(distrib_elem, ['digtinfo', 'formname'])
             dist = self._generate_harvest_manifest(**{
-                "hasUrlSource": "Harvested",
-                "hasConfidence": "Good",
-                "hasUrl": link,
+                "bcube:hasUrlSource": "Harvested",
+                "bcube:hasConfidence": "Good",
+                "vcard:hasUrl": link,
                 "object_id": generate_sha_urn(link)
             })
             if dist:
                 dataset['urls'].append(dist)
+                dataset['relationships'].append(
+                    {
+                        "relate": "dcterms:references",
+                        "object_id": dist['object_id']
+                    }
+                )
 
         webpages = []
         onlink_elems = extract_elems(
@@ -290,25 +301,28 @@ class FgdcItemReader(BaseItemReader):
             link = onlink_elem.text.strip() if onlink_elem.text else ''
             if not link:
                 continue
-            # dist = tidy_dict({
-            #     "object_id": generate_sha_urn(link),
-            #     "url": link,
-            #     "type": onlink_elem.attrib.get('type', '')
-            # })
             dist = self._generate_harvest_manifest(**{
-                "hasUrlSource": "Harvested",
-                "hasConfidence": "Good",
-                "hasUrl": link,
+                "bcube:hasUrlSource": "Harvested",
+                "bcube:hasConfidence": "Good",
+                "vcard:hasUrl": link,
                 "object_id": generate_sha_urn(link)
             })
             if dist:
-                webpages.append(
-                    {"object_id": generate_uuid_urn(), "url": dist})
+                output['catalog_record']['urls'].append(dist)
+                webpages.append({
+                    "object_id": generate_uuid_urn(),
+                    "relationships": [
+                        {
+                            "relate": "dcterms:references",
+                            "object_id": dist['object_id']
+                        }
+                    ]
+                })
 
         output['webpages'] = webpages
         for webpage in webpages:
             dataset['relationships'].append({
-                "relate": "relation",
+                "relate": "dcterms:references",
                 "object_id": webpage['object_id']
             })
 
@@ -331,16 +345,16 @@ class FgdcItemReader(BaseItemReader):
                 keywords.append(
                     tidy_dict({
                         "object_id": generate_uuid_urn(),
-                        "thesaurus": thesaurus,
-                        "type": key_type,
-                        "terms": terms
+                        "dc:partOf": thesaurus,
+                        "bcube:hasType": key_type,
+                        "bcube:hasValue": terms
                     })
                 )
         output['keywords'] = keywords
         for keyword in keywords:
             dataset['relationships'].append(
                 {
-                    "relate": "conformsTo",
+                    "relate": "dc:conformsTo",
                     "object_id": keyword['object_id']
                 }
             )
@@ -350,7 +364,7 @@ class FgdcItemReader(BaseItemReader):
         # add the metadata relate
         output['catalog_record']['relationships'].append(
             {
-                "relate": "primaryTopic",
+                "relate": "foaf:primaryTopic",
                 "object_id": dataset_object_id
             }
         )

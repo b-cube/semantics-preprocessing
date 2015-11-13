@@ -12,7 +12,7 @@ _ontology_uris = {
     'dcat': 'http://www.w3.org/TR/vocab-dcat/#',
     "prov": "http://purl.org/net/provenance/ns#",
     'dc': str(DC),
-    'dct': str(DCTERMS),
+    'dcterms': str(DCTERMS),
     'foaf': str(FOAF),
     'xsd': str(XSD),
     'owl': str(OWL)

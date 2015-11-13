@@ -25,35 +25,6 @@ class RdfGrapher(object):
     def _generate_predicate(self, prefix, name):
         return Namespace(_ontology_uris[prefix])[name]
 
-    def _identify_prefix(self, predicate):
-        # this is, granted, a lesson in technical debt.
-        debt = {
-            "dc": ["description", "conformsTo", "relation"],
-            "dcat": ["publisher"],
-            "foaf": ["primaryTopic"],
-            "vcard": ["hasUrl"],
-            "bcube": [
-                "Url",
-                "dateCreated",
-                "lastUpdated",
-                "atTime",
-                "statusCodeValue",
-                "reasonPhrase",
-                "HTTPStatusFamilyCode",
-                "HTTPStatusFamilyType",
-                "hasUrlSource",
-                "hasConfidence",
-                "validatedOn",
-                "hasMetadataRecord",
-                "Layer"
-            ]
-        }
-
-        for k, v in debt.iteritems():
-            if predicate in v:
-                return k
-        return ''
-
     def _create_resource(self, resource_prefix, resource_type, identifier=''):
         # make a thing with a uuid as a urn
         # and just assign it to type if it's not overridden
@@ -67,36 +38,45 @@ class RdfGrapher(object):
         catalog_record = self._create_resource(
             'dcat', 'CatalogRecord', entity['object_id'])
 
-        # our potential hash (this is idiotic) as pred, key
-        options = [
-            ('dateCreated', 'dateCreated'),
-            ('lastUpdated', 'lastUpdated')
-        ]
-
-        for pred, key in options:
-            val = entity.get(key, None)
+        for pred, val in entity.iteritems():
+            if pred in ['object_id', 'urls', 'relationships', 'datasets', 'webpages']:
+                continue
             if not val:
                 continue
-            catalog_record.add(
-                self._generate_predicate(
-                    self._identify_prefix(pred),
-                    pred), Literal(val)
-            )
+            prefix, name = pred.split(':')
+            val = [val] if not isinstance(val, list) else val
+
+            for v in val:
+                catalog_record.add(
+                    self._generate_predicate(
+                        prefix, name),
+                    Literal(v)
+                )
 
         for url in entity.get('urls', []):
             self._handle_url(url)
-            catalog_record.add(
-                self._generate_predicate(
-                    'bcube', 'hasUrl'), URIRef(url.get('object_id'))
-            )
+            # catalog_record.add(
+            #     self._generate_predicate(
+            #         'bcube', 'hasUrl'), URIRef(url.get('object_id'))
+            # )
 
-        for conforms in entity.get('conformsTo', []):
-            catalog_record.add(DC.conformsTo, Literal(conforms))
+        for webpage in entity.get('webpages', []):
+            self._hande_webpage(webpage)
 
         for relationship in entity['relationships']:
             # so. current object, verb, id of object, existence unknown
             self.relates.append(
                 (catalog_record, relationship['relate'],
+                    relationship['object_id'])
+            )
+
+    def _handle_webpage(self, webpage):
+        entity = self._create_resource(
+            'bibo', 'WebPage', webpage.get('object_id')
+        )
+        for relationship in webpage['relationships']:
+            self.relates.append(
+                (entity, relationship['relate'],
                     relationship['object_id'])
             )
 
@@ -107,17 +87,17 @@ class RdfGrapher(object):
         for k, v in url.iteritems():
             if k == 'object_id':
                 continue
+            prefix, name = k.split(':')
 
             entity.add(
                 self._generate_predicate(
-                    self._identify_prefix(k),
-                    k), Literal(v)
+                    prefix, name), Literal(v)
             )
 
     def _handle_temporal(self, temporal):
         for option in ['startDate', 'endDate']:
             # NOTE: make these iso 8601 first
-            d = temporal.get(option)
+            d = temporal.get('esip:' + option)
             if not d:
                 continue
 
@@ -127,46 +107,39 @@ class RdfGrapher(object):
             )
 
     def _handle_spatial(self, spatial):
-        options = [
-            ('wkt', DC.spatial),
-            ('west', 'esip:westBound'),
-            ('east', 'esip:eastBound'),
-            ('north', 'esip:northBound'),
-            ('south', 'esip:southBound')
-        ]
-
-        for key, predicate in options:
-            blob = spatial.get(key)
-            if not blob:
+        for key, val in spatial.iteritems():
+            if not val:
                 continue
 
+            literal = Literal(val) if key == 'dc:spatial' else Literal(
+                float(val), datatype=XSD.float
+            )
             pred = self._generate_predicate(
-                predicate.split(':')[0], predicate.split(':')[-1]
-            ) if key != 'wkt' else predicate
-
-            literal = Literal(blob) if key == 'wkt' else Literal(
-                float(blob), datatype=XSD.float
+                key.split(':')[0], key.split(':')[-1]
             )
             yield (pred, literal)
 
     def _process_service(self, entity):
         service = self._create_resource(
-            'prov',
-            'DataProvidingService',
+            'bcube',
+            'service',
             entity['object_id']
         )
-        if entity['identifier']:
-            service.add(DCTERMS.identifier, Literal(entity['identifier']))
-        service.add(
-            DCTERMS.title, Literal(entity['title']))
-        service.add(
-            DC.description, Literal(entity['abstract']))
-        service.add(
-            self._generate_predicate('bcube', 'dateCreated'),
-            Literal(entity['dateCreated']))
-        service.add(
-            self._generate_predicate('bcube', 'lastUpdated'),
-            Literal(entity['lastUpdated']))
+
+        for pred, val in entity.iteritems():
+            if pred in ['object_id', 'relationships']:
+                continue
+            if not val:
+                continue
+            prefix, name = pred.split(':')
+            val = [val] if not isinstance(val, list) else val
+
+            for v in val:
+                service.add(
+                    self._generate_predicate(
+                        prefix, name),
+                    Literal(v)
+                )
 
         # TODO: at some point, this might have operations, params, etc
 
@@ -186,18 +159,20 @@ class RdfGrapher(object):
 
     def _process_dataset(self, entity):
         dataset = self._create_resource('dcat', 'Dataset', entity['object_id'])
-        if 'identifier' in entity:
-            dataset.add(DCTERMS.identifier, Literal(entity['identifier']))
-        dataset.add(
-            DCTERMS.title, Literal(entity['title']))
-        dataset.add(
-            DC.description, Literal(entity['description']))
-        dataset.add(
-            self._generate_predicate('bcube', 'dateCreated'),
-            Literal(entity['dateCreated']))
-        dataset.add(
-            self._generate_predicate('bcube', 'lastUpdated'),
-            Literal(entity['lastUpdated']))
+        for pred, val in entity.iteritems():
+            if pred in ['object_id', 'relationships', 'temporal_extent', 'spatial_extent', 'urls']:
+                continue
+            if not val:
+                continue
+            prefix, name = pred.split(':')
+            val = [val] if not isinstance(val, list) else val
+
+            for v in val:
+                dataset.add(
+                    self._generate_predicate(
+                        prefix, name),
+                    Literal(v)
+                )
 
         if 'temporal_extent' in entity:
             for temporal_predicate, temporal_value in self._handle_temporal(
@@ -209,40 +184,31 @@ class RdfGrapher(object):
                     entity['spatial_extent']):
                 dataset.add(spatial_predicate, spatial_value)
 
+        for url in entity.get('urls', []):
+            self._handle_url(url)
+
         for relationship in entity['relationships']:
             self.relates.append(
                 (dataset, relationship['relate'], relationship['object_id']))
-
-        for url in entity.get('urls', []):
-            self._handle_url(url)
-            dataset.add(
-                self._generate_predicate(
-                    'bcube', 'has'), URIRef(url.get('object_id'))
-            )
 
     def _process_keywords(self, entity):
         for keywords in entity:
             keyset = self._create_resource(
                 'bcube', 'thesaurusSubset', keywords['object_id'])
-            if 'type' in keywords:
-                keyset.add(
-                    DC.hasType,
-                    Literal(keywords['type'])
-                )
-            if 'thesaurus' in keywords:
-                keyset.add(
-                    DC.partOf,
-                    Literal(keywords['thesaurus'])
-                )
+            for pred, val in keywords.iteritems():
+                if pred in ['object_id']:
+                    continue
+                if not val:
+                    continue
+                prefix, name = pred.split(':')
+                val = [val] if not isinstance(val, list) else val
 
-            try:
-                for term in keywords['terms']:
+                for v in val:
                     keyset.add(
-                        self._generate_predicate('bcube', 'hasValue'),
-                        Literal(term)
+                        self._generate_predicate(
+                            prefix, name),
+                        Literal(v)
                     )
-            except:
-                print keywords
 
     def _process_publisher(self, entity):
         publisher = self._create_resource(
@@ -251,17 +217,6 @@ class RdfGrapher(object):
             publisher.add(
                 DC.location, Literal(entity['location']))
         publisher.add(FOAF.name, Literal(entity['name']))
-
-    def _process_webpages(self, entity):
-        for webpage in entity:
-            relation = self._create_resource(
-                'bibo', 'WebPage', webpage['object_id'])
-            self._handle_url(webpage.get('url'))
-            relation.add(
-                self._generate_predicate(
-                    'bcube', 'has'),
-                URIRef(webpage.get('url').get('object_id'))
-            )
 
     def emit_format(self):
         return self.graph.serialize(format='turtle', encoding='utf-8')
@@ -293,14 +248,14 @@ class RdfGrapher(object):
                 self._process_publisher(entity)
             elif entity_type == 'keywords':
                 self._process_keywords(entity)
-            elif entity_type == 'webpages':
-                self._process_webpages(entity)
+            # elif entity_type == 'webpages':
+            #     self._process_webpages(entity)
             else:
                 continue
 
         for resource, verb, object_id in self.relates:
+            prefix, name = verb.split(':')
             resource.add(
-                self._generate_predicate(
-                    self._identify_prefix(verb), verb),
+                self._generate_predicate(prefix, name),
                 URIRef(object_id)
             )
