@@ -260,8 +260,8 @@ class OgcReader(Processor):
                 "object_id": service['object_id']
             })
 
-            self._get_service_config(service, version)
-            service_reader = self._parse_service(reader, service, version)
+            self._get_service_config(service_name, version)
+            service_reader = self._parse_service(reader, service_name, version)
 
             # map to triples
             service.update({
@@ -295,6 +295,23 @@ class OgcReader(Processor):
                         "dc:title": ld.get('title', ''),
                         "relationships": []
                     }
+                    service['relationships'].append({
+                        "relate": "bcube:contains",
+                        "object_id": layer['object_id']
+                    })
+
+                    # add the generated url for the service
+                    layer_url = self._generate_harvest_manifest(**{
+                        "vcard:hasUrl": 'http://www.example.com',
+                        "bcube:hasUrlSource": "Generated",
+                        "bcube:hasConfidence": "Good",
+                        "object_id": generate_uuid_urn()
+                    })
+                    service['urls'].append(layer_url)
+                    layer['relationships'].append({
+                        "relate": "dcterms:references",
+                        "object_id": layer_url['object_id']
+                    })
 
                     # add each as a dataset with just a url for now
                     for mu in ld.get('metadata_urls', []):
@@ -333,9 +350,9 @@ class OgcReader(Processor):
                     layers.append(layer)
 
                 if layers:
-                    output['layers'] = layers
+                    service['layers'] = layers
                     for layer in layers:
-                        output['catalog_record']['relationships'].append({
+                        service['relationships'].append({
                             "relate": "foaf:primaryTopic",
                             "object_id": layer['object_id']
                         })
@@ -372,6 +389,7 @@ class OgcReader(Processor):
         #     # TODO: this is not a good key (children->children)
         #     self.description['children'] = reader.description
 
+        output['services'] = [service]
         self.description = tidy_dict(output)
 
     def _parse_service(self, reader, service, version):
@@ -524,11 +542,11 @@ class OgcReader(Processor):
                 if dataset.boundingBoxWGS84:
                     bbox = bbox_to_geom(dataset.boundingBoxWGS84)
                     d['bbox'] = {
-                        'wkt': to_wkt(bbox),
-                        'west': dataset.boundingBoxWGS84[0],
-                        'east': dataset.boundingBoxWGS84[2],
-                        'north': dataset.boundingBoxWGS84[3],
-                        'south': dataset.boundingBoxWGS84[1]
+                        'dc:spatial': to_wkt(bbox),
+                        'esip:westBound': dataset.boundingBoxWGS84[0],
+                        'esip:eastBound': dataset.boundingBoxWGS84[2],
+                        'esip:northBound': dataset.boundingBoxWGS84[3],
+                        'esip:southBound': dataset.boundingBoxWGS84[1]
                     }
             except AttributeError:
                 pass
