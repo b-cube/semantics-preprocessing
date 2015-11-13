@@ -81,11 +81,12 @@ class IsoReader():
         #       but we're not going there just yet
         # TODO: deal with conformsTo (multiple schemaLocations, etc)
         catalog_record = {
-            "object_id": generate_sha_urn(self.url),
+            "object_id": generate_uuid_urn(),
             "rdf:type": self._version_to_urn(),
             "bcube:dateCreated": self.harvest_details.get('harvest_date', ''),
             "bcube:lastUpdated": self.harvest_details.get('harvest_date', ''),
-            "dc:conformsTo": extract_attrib(self.parser.xml, ['@schemaLocation']).split(),
+            "dc:conformsTo": extract_attrib(
+                self.parser.xml, ['@schemaLocation']).split(),
             "relationships": [],
             "urls": []
         }
@@ -93,7 +94,7 @@ class IsoReader():
             "bcube:hasUrlSource": "Harvested",
             "bcube:hasConfidence": "Good",
             "vcard:hasUrl": self.url,
-            "object_id": generate_uuid_urn()
+            "object_id": generate_sha_urn(self.url)
         })
         catalog_record['urls'].append(original_url)
         catalog_record['relationships'].append({
@@ -158,10 +159,10 @@ class IsoParser(object):
         ])
 
         dataset = {
-            "object_id": generate_sha_urn(dataset_identifier)
-                if dataset_identifier else generate_uuid_urn(),
+            "object_id": generate_uuid_urn(),
             "dc:identifier": dataset_identifier,
-            "dc:description": extract_item(elem, ['abstract', 'CharacterString']),
+            "dc:description": extract_item(
+                elem, ['abstract', 'CharacterString']),
             "dcterms:title": extract_item(elem, [
                 'citation', 'CI_Citation', 'title', 'CharacterString']),
             "relationships": []
@@ -169,7 +170,8 @@ class IsoParser(object):
 
         # TODO: i think the rights blob is not in the ontology prototypes
         # the rights information from MD_Constraints or MD_LegalConstraints
-        # rights = extract_item(elem, ['resourceConstraints', '*', 'useLimitation', 'CharacterString'])
+        # rights = extract_item(elem, ['resourceConstraints', '*',
+        #   'useLimitation', 'CharacterString'])
 
         # deal with the extent
         extents = self._parse_extent(elem)
@@ -336,8 +338,6 @@ class IsoParser(object):
 
     def _parse_distribution(self, elem):
         ''' from the distributionInfo element '''
-        webpages = []
-
         for dist_elem in extract_elems(elem, ['MD_Distribution']):
             # this is going to get ugly.
             # super ugly
@@ -368,18 +368,18 @@ class IsoParser(object):
 
                 # NOTE: it's a uuid identifier given that the urls might be
                 #       repeated in a record
-                dist = self._generate_harvest_manifest(**{
-                    "bcube:hasUrlSource": "Harvested",
-                    "bcube:hasConfidence": "Good",
-                    "vcard:hasUrl": extract_item(
-                        transfer_elem,
-                        ['onLine', 'CI_OnlineResource', 'linkage', 'URL']),
-                    "object_id": generate_uuid_urn()
-                })
+                link = extract_item(
+                    transfer_elem,
+                    ['onLine', 'CI_OnlineResource', 'linkage', 'URL'])
+                yield link
+        #         dist = self._generate_harvest_manifest(**{
+        #             "bcube:hasUrlSource": "Harvested",
+        #             "bcube:hasConfidence": "Good",
+        #             "vcard:hasUrl": link,
+        #             "object_id": generate_sha_urn(link)
+        #         })
 
-                webpages.append(dist)
-
-        return webpages
+        # return webpages
 
     def _parse_contact(self, elem):
         '''
@@ -457,15 +457,23 @@ class MxParser(IsoParser):
             extent) if identificationInfo contains SV_ServiceIdentification,
             add as child distribution info
         '''
-        for id_elem in extract_elems(self.elem, ['//*', 'identificationInfo', 'MD_DataIdentification']):
+        # set up the url set
+        urls = set()
+        urls.add(self.output['catalog_record']['urls'][0]['object_id'])
+
+        for id_elem in extract_elems(
+                self.elem,
+                ['//*', 'identificationInfo', 'MD_DataIdentification']):
             dataset, keywords = self._parse_identification_info(id_elem)
             dataset['relationships'].append({
                 "relate": "bcube:hasMetadataRecord",
                 "object_id": self.output['catalog_record']['object_id']
             })
             dataset.update({
-                "bcube:dateCreated": self.harvest_details.get('harvest_date', ''),
-                "bcube:lastUpdated": self.harvest_details.get('harvest_date', '')
+                "bcube:dateCreated":
+                    self.harvest_details.get('harvest_date', ''),
+                "bcube:lastUpdated":
+                    self.harvest_details.get('harvest_date', '')
             })
             self.output['catalog_record']['relationships'].append({
                 "relate": "foaf:primaryTopic",
@@ -507,15 +515,23 @@ class MxParser(IsoParser):
             dataset['urls'] = []
             dist_elems = extract_elems(self.elem, ['distributionInfo'])
             for dist_elem in dist_elems:
-                dists = self._parse_distribution(dist_elem)
-                if dists:
-                    dataset['urls'] += dists
-
-            for url in dataset['urls']:
-                dataset['relationships'].append({
-                    "relate": "dcterms:references",
-                    "object_id": url['object_id']
-                })
+                for d in self._parse_distribution(dist_elem):
+                    if not d:
+                        continue
+                    url_sha = generate_sha_urn(d)
+                    if url_sha not in urls:
+                        urls.add(url_sha)
+                        dist = self._generate_harvest_manifest(**{
+                            "bcube:hasUrlSource": "Harvested",
+                            "bcube:hasConfidence": "Good",
+                            "vcard:hasUrl": d,
+                            "object_id": url_sha
+                        })
+                        dataset['urls'].append(dist)
+                        dataset['relationships'].append({
+                            "relate": "dcterms:references",
+                            "object_id": url_sha
+                        })
 
             self.output['datasets'].append(dataset)
             self.output['keywords'] += keywords
