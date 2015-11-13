@@ -247,17 +247,18 @@ class OgcReader(Processor):
             }
 
             # NOTE: this is not the sha from the url
+            service_url = generate_uuid_urn()
             service['urls'].append(
                 self._generate_harvest_manifest(**{
                     "bcube:hasUrlSource": "Harvested",
                     "bcube:hasConfidence": "Good",
                     "vcard:hasUrl": self.url,
-                    "object_id": generate_uuid_urn()
+                    "object_id": service_url
                 })
             )
             service['relationships'].append({
                 "relate": "bcube:originatedFrom",
-                "object_id": service['object_id']
+                "object_id": service_url
             })
 
             self._get_service_config(service_name, version)
@@ -305,7 +306,7 @@ class OgcReader(Processor):
                         "vcard:hasUrl": 'http://www.example.com',
                         "bcube:hasUrlSource": "Generated",
                         "bcube:hasConfidence": "Good",
-                        "object_id": generate_uuid_urn()
+                        "object_id": generate_sha_urn('http://www.example.com')
                     })
                     service['urls'].append(layer_url)
                     layer['relationships'].append({
@@ -315,20 +316,25 @@ class OgcReader(Processor):
 
                     # add each as a dataset with just a url for now
                     for mu in ld.get('metadata_urls', []):
+                        url_link = generate_uuid_urn()
                         sha_link = generate_sha_urn(mu.get('url'))
                         output['catalog_records'] += [
                             {
-                                "object_id": sha_link,
+                                "object_id": url_link,
                                 "urls": [self._generate_harvest_manifest(**{
                                     "vcard:hasUrl": mu.get('url'),
                                     "bcube:hasUrlSource": "Harvested",
                                     "bcube:hasConfidence": "Good",
-                                    "object_id": generate_uuid_urn()
+                                    "object_id": sha_link
                                 })],
                                 "relationships": [
                                     {
                                         "relate": "dc:describes",
                                         "object_id": layer['object_id']
+                                    },
+                                    {
+                                        "relate": "bcube:originatedFrom",
+                                        "object_id": sha_link
                                     }
                                 ]
                             }
@@ -355,13 +361,14 @@ class OgcReader(Processor):
 
                     layers.append(layer)
 
-                if layers:
-                    service['layers'] = layers
-                    for layer in layers:
-                        service['relationships'].append({
-                            "relate": "foaf:primaryTopic",
-                            "object_id": layer['object_id']
-                        })
+                service['layers'] = layers
+                # if layers:
+                #     service['layers'] = layers
+                #     for layer in layers:
+                #         service['relationships'].append({
+                #             "relate": "bcube:contains",
+                #             "object_id": layer['object_id']
+                #         })
 
         # if 'dataset' in self.identify:
         #     # run the owslib wcs/wfs describe* parsers
