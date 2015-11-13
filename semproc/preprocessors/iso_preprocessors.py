@@ -89,14 +89,17 @@ class IsoReader():
             "relationships": [],
             "urls": []
         }
-        catalog_record['urls'].append(
-            self._generate_harvest_manifest(**{
-                "bcube:hasUrlSource": "Harvested",
-                "bcube:hasConfidence": "Good",
-                "vcard:hasUrl": self.url,
-                "object_id": generate_uuid_urn()
-            })
-        )
+        original_url = self._generate_harvest_manifest(**{
+            "bcube:hasUrlSource": "Harvested",
+            "bcube:hasConfidence": "Good",
+            "vcard:hasUrl": self.url,
+            "object_id": generate_uuid_urn()
+        })
+        catalog_record['urls'].append(original_url)
+        catalog_record['relationships'].append({
+            "relate": "bcube:originatedFrom",
+            "object_id": original_url['object_id']
+        })
 
         if metadata_type == 'Data Series':
             # run the set
