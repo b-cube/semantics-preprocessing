@@ -58,7 +58,7 @@ class RdfGrapher(object):
         for webpage in entity.get('webpages', []):
             self._hande_webpage(webpage)
 
-        for relationship in entity['relationships']:
+        for relationship in entity.get('relationships', []):
             # so. current object, verb, id of object, existence unknown
             self.relates.append(
                 (catalog_record, relationship['relate'],
@@ -69,7 +69,7 @@ class RdfGrapher(object):
         entity = self._create_resource(
             'bibo', 'WebPage', webpage.get('object_id')
         )
-        for relationship in webpage['relationships']:
+        for relationship in webpage.get('relationships', []):
             self.relates.append(
                 (entity, relationship['relate'],
                     relationship['object_id'])
@@ -87,7 +87,7 @@ class RdfGrapher(object):
         )
         self._handle_triples(layer, entity, ['object_id', 'relationships'])
 
-        for relationship in layer['relationships']:
+        for relationship in layer.get('relationships', []):
             self.relates.append(
                 (entity, relationship['relate'], relationship['object_id']))
 
@@ -139,7 +139,7 @@ class RdfGrapher(object):
         for wp in entity.get('webpages', []):
             self._handle_webpage(wp)
 
-        for relationship in entity['relationships']:
+        for relationship in entity.get('relationships', []):
             self.relates.append(
                 (service, relationship['relate'], relationship['object_id']))
 
@@ -151,7 +151,7 @@ class RdfGrapher(object):
         for url in entity.get('urls', []):
             self._handle_url(url)
 
-        for relationship in entity['relationships']:
+        for relationship in entity.get('relationships', []):
             self.relates.append(
                 (dataset, relationship['relate'], relationship['object_id']))
 

@@ -28,6 +28,7 @@ class OaiPmhReader(Processor):
             "object_id": generate_sha_urn(self.url),
             "dcterms:title": ' '.join(extract_items(
                 self.parser.xml, ["Identify", "repositoryName"])),
+            "rdf:type": "OAI-PMH",
             "relationships": [],
             "urls": []
         }
