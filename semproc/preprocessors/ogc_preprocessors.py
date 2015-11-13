@@ -296,11 +296,12 @@ class OgcReader(Processor):
                         "relationships": []
                     }
 
-                    if 'metadata_urls' in ld:
-                        # add each as a dataset with just a url for now
+                    # add each as a dataset with just a url for now
+                    for mu in ld.get('metadata_urls', []):
+                        sha_link = generate_sha_urn(mu.link)
                         output['catalog_records'] += [
                             {
-                                "object_id": generate_sha_urn(mu.link),
+                                "object_id": sha_link,
                                 "urls": [self._generate_harvest_manifest(**{
                                     "vcard:hasUrl": mu.link,
                                     "bcube:hasUrlSource": "Harvested",
@@ -308,13 +309,13 @@ class OgcReader(Processor):
                                     "object_id": generate_uuid_urn()
                                 })]
                             }
-                            for mu in ld['metadata_urls']:
                         ]
 
                         # update the relationships for the layer
-                        layer[''] = {
-
-                        }
+                        layer['relationships'] .append({
+                            "relate": "dc:describes",
+                            "object_id": sha_link
+                        })
 
                     if 'temporal_extent' in ld:
                         temporal = tidy_dict(

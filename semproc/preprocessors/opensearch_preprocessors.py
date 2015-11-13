@@ -3,6 +3,7 @@ from semproc.processor import Processor
 from semproc.utils import parse_url, tidy_dict
 from semproc.xml_utils import extract_elems, extract_items, extract_item
 from semproc.urlbuilders.opensearch_links import OpenSearchLink
+from semproc.utils import generate_sha_urn, generate_uuid_urn
 
 
 class OpenSearchReader(Processor):
@@ -10,12 +11,12 @@ class OpenSearchReader(Processor):
     def parse(self):
         self.description = {}
 
-        if self.parent_url:
+        if "parent_url" in self.harvest_details:
             # TODO: consider making this a sha
-            self.description['childOf'] = self.parent_url
+            self.description['childOf'] = self.harvest_details['parent_url']
 
         if 'service' in self.identify:
-            self.description['service'] = self._parse_service()
+            self.description['services'] = [self._parse_service()]
 
         if 'resultset' in self.identify:
             # TODO: get the root stats
@@ -26,16 +27,68 @@ class OpenSearchReader(Processor):
 
     def _parse_service(self):
         output = {}
-        output['title'] = extract_items(self.parser.xml, ["ShortName"])
-        output['abstract'] = extract_items(self.parser.xml, ["LongName"]) + \
-            extract_items(self.parser.xml, ["Description"])
-        output['source'] = extract_items(self.parser.xml, ["Attribution"])
-        output['contact'] = extract_items(self.parser.xml, ["Developer"])
-        output['rights'] = extract_items(self.parser.xml, ["SyndicationRight"])
-        output['subject'] = extract_items(self.parser.xml, ["Tags"])
+        service = {
+            "object_id": generate_sha_urn(self.url),
+            "bcube:dateCreated": self.harvest_details.get('harvest_date', ''),
+            "bcube:lastUpdated": self.harvest_details.get('harvest_date', ''),
+            "rdf:type": 'OpenSearch1.1:Description',
+            "dcterms:title": extract_item(self.parser.xml, ["ShortName"]),
+            "dc:description": ' '.join(
+                extract_items(self.parser.xml, ["LongName"]) +
+                extract_items(self.parser.xml, ["Description"])
+            ),
+            "urls": [],
+            "webpages": [],
+            "relationships": []
+        }
+        original_url = self._generate_harvest_manifest(**{
+            "bcube:hasUrlSource": "Harvested",
+            "bcube:hasConfidence": "Good",
+            "vcard:hasUrl": self.url,
+            "object_id": generate_uuid_urn()
+        })
+        service['urls'].append(original_url)
+        service['relationships'].append({
+            "relate": "bcube:originatedFrom",
+            "object_id": original_url['object_id']
+        })
 
-        output['endpoints'] = [self._parse_endpoint(e) for e
-                               in extract_elems(self.parser.xml, ['Url'])]
+        # output['source'] = extract_items(self.parser.xml, ["Attribution"])
+        # output['contact'] = extract_items(self.parser.xml, ["Developer"])
+        # output['rights'] = extract_items(self.parser.xml, ["SyndicationRight"])
+
+        key_id = generate_uuid_urn()
+        output['keywords'] = [
+            {
+                "object_id": key_id,
+                "bcube:hasValue": extract_items(self.parser.xml, ["Tags"])
+            }
+        ]
+        service['relationships'].append({
+            "relate": "dc:conformsTo",
+            "object_id": key_id
+        })
+
+        for t in extract_elems(self.parser.xml, ['Url']):
+            ep = self._parse_endpoint(t)
+            dist = self._generate_harvest_manifest(**{
+                "bcube:hasUrlSource": "Generated",
+                "bcube:hasConfidence": "Not Sure",
+                "vcard:hasUrl": ep['url'],
+                "object_id": generate_sha_urn(ep['url'])
+            })
+            service['urls'].append(dist)
+            service['webpages'].append({
+                "object_id": generate_uuid_urn(),
+                "relationships": [
+                    {
+                        "relate": "dcterms:references",
+                        "object_id": dist['object_id']
+                    }
+                ]
+            })
+
+        output['services'] = [service]
 
         return tidy_dict(output)
 

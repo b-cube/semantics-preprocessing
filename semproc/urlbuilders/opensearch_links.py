@@ -77,7 +77,7 @@ class OpenSearchLink():
                 in params.iteritems()
                 if value in v}
 
-    def _extract_template(self, template_url, append_limit):
+    def _extract_template(self, template_url, append_limit=True):
         parts = urlparse.urlparse(template_url)
         if not parts.scheme:
             return '', '', {}
