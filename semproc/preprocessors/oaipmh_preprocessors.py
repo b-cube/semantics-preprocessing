@@ -3,16 +3,17 @@ from semproc.preprocessors.metadata_preprocessors import DcItemReader
 from semproc.xml_utils import extract_items, extract_elems, extract_item, extract_elem
 from semproc.utils import tidy_dict
 from itertools import chain
+from semproc.utils import generate_sha_urn, generate_uuid_urn
 
 
 class OaiPmhReader(Processor):
     def parse(self):
         self.description = {}
-        if self.parent_url:
-            self.description['childOf'] = self.parent_url
+        if 'parent_url' in self.harvest_details:
+            self.description['childOf'] = self.harvest_details['parent_url']
 
         if 'service' in self.identify:
-            self.description['service'] = self._parse_service()
+            self.description = self._parse_service()
 
         if 'resultset' in self.identify:
             self.description['children'] = self._parse_children(
@@ -22,11 +23,32 @@ class OaiPmhReader(Processor):
 
     def _parse_service(self):
         output = {}
-        output['title'] = extract_items(self.parser.xml, ["Identify", "repositoryName"])
-        output['version'] = extract_items(self.parser.xml, ["Identify", "protocolVersion"])
-        output['endpoints'] = [{'url': e} for e
-                               in extract_items(self.parser.xml, ["Identify", "baseURL"])]
 
+        service = {
+            "object_id": generate_sha_urn(self.url),
+            "dcterms:title": ' '.join(extract_items(
+                self.parser.xml, ["Identify", "repositoryName"])),
+            "relationships": [],
+            "urls": []
+        }
+        url_id = generate_uuid_urn()
+        dist = self._generate_harvest_manifest(**{
+            "bcube:hasUrlSource": "Harvested",
+            "bcube:hasConfidence": "Good",
+            "vcard:hasUrl": self.url,
+            "object_id": url_id
+        })
+        service['urls'] = [dist]
+        service['relationships'].append({
+            "relate": "bcube:originatedFrom",
+            "object_id": url_id
+        })
+
+        # output['version'] = extract_items(self.parser.xml, ["Identify", "protocolVersion"])
+        # output['endpoints'] = [{'url': e} for e
+        #                        in extract_items(self.parser.xml, ["Identify", "baseURL"])]
+
+        output['services'] = [service]
         return tidy_dict(output)
 
     def _parse_children(self, dialect):
