@@ -52,15 +52,15 @@ class Processor(object):
 
     def _generate_harvest_manifest(self, **kwargs):
         harvest = {
-            "hasUrl": self.url,
-            "atTime": self.harvest_details.get('harvest_date'),
-            "statusCodeValue": 200,
-            "reasonPhrase": "OK",
-            "HTTPStatusFamilyCode": 200,
+            "vcard:hasUrl": self.url,
+            "bcube:atTime": self.harvest_details.get('harvest_date'),
+            "bcube:HTTPStatusCodeValue": 200,
+            "bcube:reasonPhrase": "OK",
+            "bcube:HTTPStatusFamilyCode": 200,
             "HTTPStatusFamilyType": "Success message",
-            "hasUrlSource": "",
-            "hasConfidence": "",
-            "validatedOn": self.harvest_details.get('harvest_date')
+            "bcube:hasUrlSource": "",
+            "bcube:hasConfidence": "",
+            "bcube:validatedOn": self.harvest_details.get('harvest_date')
         }
         harvest.update(kwargs)
         return tidy_dict(harvest)

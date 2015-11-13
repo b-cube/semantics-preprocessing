@@ -41,6 +41,12 @@ setup(name='Semantics-Preprocessing',
             './semproc/corpus/mimetypes.txt',
             './semproc/corpus/excludes_by_contains.txt',
           ]
+        ),
+        (
+          "semproc/configs",
+          [
+            "./semproc/configs/ogc_parameters.yaml"
+          ]
         )
       ]
 )

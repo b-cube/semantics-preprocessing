@@ -159,8 +159,9 @@ class RdfGrapher(object):
         '''
         self.relates = []
         for entity_type, entity in self.data.iteritems():
-            if entity_type == 'catalog_record':
-                self._process_catalog(entity)
+            if entity_type == 'catalog_records':
+                for catalog_record in entity:
+                    self._process_catalog(catalog_record)
             elif entity_type == 'datasets':
                 for dataset in entity:
                     self._process_dataset(dataset)

@@ -12,6 +12,7 @@ from semproc.utils import tidy_dict, remap_http_method
 from semproc.xml_utils import extract_attrib
 import dateutil.parser as dateparser
 from semproc.utils import generate_sha_urn, generate_uuid_urn
+import os
 
 
 class OgcReader(Processor):
@@ -29,24 +30,39 @@ class OgcReader(Processor):
                  CSW 2.0.2
                  SOS 1.0.0
     '''
+    # TODO: there are far better ways of dealing with the cat-interop urns
     def _get_service_reader(self, service, version):
         if service == 'WMS' and version in ['1.1.1', '1.3.0']:
             reader = WebMapService('', xml=self.response, version=version)
+            self.urn = 'OGC:WMS'
         elif service == 'WFS' and version in ['1.0.0', '1.1.0']:
             reader = WebFeatureService('', xml=self.response, version=version)
+            self.urn = 'OGC:WFS'
         elif service == 'WCS' and version in ['1.0.0', '1.1.0', '1.1.1', '1.1.2']:
-            reader = WebCoverageService('', xml=self.response, version=version)
+            reader = WebCoverageService(
+                '', xml=self.response, version=version)
+            self.urn = 'OGC:WCS'
         elif service == 'CSW' and version in ['2.0.2']:
-            reader = CatalogueServiceWeb('', xml=self.response, version=version)
+            reader = CatalogueServiceWeb(
+                '', xml=self.response, version=version)
+            self.urn = 'OGC:CSW'
         elif service == 'SOS' and version in ['1.0.0']:
-            reader = SensorObservationService('', xml=self.response, version=version)
+            reader = SensorObservationService(
+                '', xml=self.response, version=version)
+            self.urn = 'OGC:SOS'
         else:
             return None
         return reader
 
     def _get_service_config(self, service, version):
         # get the config file
-        data = import_yaml_configs(['../semproc/configs/ogc_parameters.yaml'])
+        __location__ = os.path.join(
+            '/'.join(os.path.abspath(
+                os.path.dirname(__file__)).split('/')[:-1]),
+            'configs',
+            "ogc_parameters.yaml"
+        )
+        data = import_yaml_configs([__location__])
         self.config = next(d for d in data if d['name'] == service.upper() +
                            version.replace('.', ''))
 
@@ -198,62 +214,70 @@ class OgcReader(Processor):
     def parse(self):
         # for ogc, a catalog record is the getcapabilities rsp
         output = {
-            "datasets": []
+            "layers": [],
+            "catalog_records": []
         }
 
         if 'service' in self.identify:
             # run the owslib getcapabilities parsers
-            service = self.identify['service'].get('name', '')
+            service_name = self.identify['service'].get('name', '')
             version = next(iter(
                 self.identify['service'].get('version', [])), '')
-            reader = self._get_service_reader(service, version)
+            reader = self._get_service_reader(service_name, version)
             if not reader:
                 # TODO: this is not at all a good error response
                 return {}
 
-            catalog_object_id = generate_sha_urn(self.url)
-            output['catalog_record'] = {
-                "object_id": catalog_object_id,
-                "dateCreated": self.harvest_details.get('harvest_date', ''),
-                "lastUpdated": self.harvest_details.get('harvest_date', ''),
-                "conformsTo": extract_attrib(
+            service_id = generate_sha_urn(self.url)
+            service = {
+                "object_id": service_id,
+                "bcube:dateCreated": self.harvest_details.get(
+                    'harvest_date', ''),
+                "bcube:lastUpdated": self.harvest_details.get(
+                    'harvest_date', ''),
+                "dc:conformsTo": extract_attrib(
                     self.parser.xml, ['@noNamespaceSchemaLocation']
                 ).split() +
                 extract_attrib(
                     self.parser.xml, ['@schemaLocation']
                 ).split(),
                 "relationships": [],
-                "urls": []
+                "urls": [],
+                "rdf:type": self.urn
             }
 
             # NOTE: this is not the sha from the url
-            output['catalog_record']['urls'].append(
+            service['urls'].append(
                 self._generate_harvest_manifest(**{
-                    "hasUrlSource": "Harvested",
-                    "hasConfidence": "Good",
-                    "hasUrl": self.url,
+                    "bcube:hasUrlSource": "Harvested",
+                    "bcube:hasConfidence": "Good",
+                    "vcard:hasUrl": self.url,
                     "object_id": generate_uuid_urn()
                 })
             )
-
-            self._get_service_config(service, version)
-            service = self._parse_service(reader, service, version)
-
-            # map to triples
-            output['catalog_record'].update({
-                "description": service.get('abstract')
+            service['relationships'].append({
+                "relate": "bcube:originatedFrom",
+                "object_id": service['object_id']
             })
 
-            keywords = service.get('subject', [])
+            self._get_service_config(service, version)
+            service_reader = self._parse_service(reader, service, version)
+
+            # map to triples
+            service.update({
+                "dc:description": service_reader.get('abstract')
+            })
+
+            keywords = service_reader.get('subject', [])
             if keywords:
                 output['keywords'] = [{
                     "object_id": generate_uuid_urn(),
-                    "terms": keywords
+                    "bcube:hasValue": keywords
                 }]
                 for k in output['keywords']:
-                    output['catalog_record']['relationships'].append(
+                    service['relationships'].append(
                         {
-                            "relate": "conformsTo",
+                            "relate": "dc:conformsTo",
                             "object_id": k['object_id']
                         }
                     )
@@ -265,31 +289,26 @@ class OgcReader(Processor):
                 for ld in listed_layers:
                     layer = {
                         "object_id": generate_uuid_urn(),
-                        "dateCreated": self.harvest_details.get('harvest_date', ''),
-                        "lastUpdated": self.harvest_details.get('harvest_date', ''),
-                        "description": ld.get('abstract', ''),
-                        "title": ld.get('title', ''),
-                        "relationships": [
-                            {
-                                "relate": "hasMetadataRecord",
-                                "object_id": output['catalog_record']['object_id']
-                            }
-                        ]
+                        "bcube:dateCreated": self.harvest_details.get('harvest_date', ''),
+                        "bcube:lastUpdated": self.harvest_details.get('harvest_date', ''),
+                        "dc:description": ld.get('abstract', ''),
+                        "dc:title": ld.get('title', ''),
+                        "relationships": []
                     }
 
                     if 'metadata_urls' in ld:
                         # add each as a dataset with just a url for now
-                        output['datasets'] += [
+                        output['catalog_records'] += [
                             {
                                 "object_id": generate_sha_urn(mu.link),
                                 "urls": [self._generate_harvest_manifest(**{
-                                    "hasUrl": mu.link,
-                                    "hasUrlSource": "Harvested",
-                                    "hasConfidence": "Good",
+                                    "vcard:hasUrl": mu.link,
+                                    "bcube:hasUrlSource": "Harvested",
+                                    "bcube:hasConfidence": "Good",
                                     "object_id": generate_uuid_urn()
                                 })]
                             }
-                            for mu in ld['metadata_urls']
+                            for mu in ld['metadata_urls']:
                         ]
 
                         # update the relationships for the layer
@@ -297,17 +316,18 @@ class OgcReader(Processor):
 
                         }
 
-
                     if 'temporal_extent' in ld:
-                        layer['temporal_extent'] = tidy_dict(
+                        temporal = tidy_dict(
                             {
-                                "startDate": ld['temporal_extent'].get('begin', ''),
-                                "endDate": ld['temporal_extent'].get('end', '')
+                                "esip:startDate": ld['temporal_extent'].get('begin', ''),
+                                "esip:endDate": ld['temporal_extent'].get('end', '')
                             }
                         )
+                        if temporal:
+                            layer.update(temporal)
 
                     if 'bbox' in ld:
-                        layer['spatial_extent'] = ld['bbox']
+                        layer.update(ld['bbox'])
 
                     layers.append(layer)
 
@@ -315,7 +335,7 @@ class OgcReader(Processor):
                     output['layers'] = layers
                     for layer in layers:
                         output['catalog_record']['relationships'].append({
-                            "relate": "primaryTopic",
+                            "relate": "foaf:primaryTopic",
                             "object_id": layer['object_id']
                         })
 

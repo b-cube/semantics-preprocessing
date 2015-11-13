@@ -529,6 +529,9 @@ class MxParser(IsoParser):
         #     sv = SrvParser(service_elem)
         #     self.description['services'].append(sv.parse())
 
+        # switch the catalog record to a list for conformity. eep.
+        self.output['catalog_records'] = [self.output['catalog_record']]
+        del self.output['catalog_record']
         self.description = tidy_dict(self.output)
 
 

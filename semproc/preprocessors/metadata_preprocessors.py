@@ -367,4 +367,6 @@ class FgdcItemReader(BaseItemReader):
             }
         )
 
+        output['catalog_records'] = [output['catalog_record']]
+        del output['catalog_record']
         self.description = tidy_dict(output)
