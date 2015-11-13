@@ -218,6 +218,8 @@ class OgcReader(Processor):
             "catalog_records": []
         }
 
+        urls = set()
+
         if 'service' in self.identify:
             # run the owslib getcapabilities parsers
             service_name = self.identify['service'].get('name', '')
@@ -228,26 +230,26 @@ class OgcReader(Processor):
                 # TODO: this is not at all a good error response
                 return {}
 
-            service_id = generate_sha_urn(self.url)
+            service_id = generate_uuid_urn()
             service = {
                 "object_id": service_id,
                 "bcube:dateCreated": self.harvest_details.get(
                     'harvest_date', ''),
                 "bcube:lastUpdated": self.harvest_details.get(
                     'harvest_date', ''),
-                "dc:conformsTo": extract_attrib(
-                    self.parser.xml, ['@noNamespaceSchemaLocation']
-                ).split() +
-                extract_attrib(
-                    self.parser.xml, ['@schemaLocation']
-                ).split(),
+                # "dc:conformsTo": extract_attrib(
+                #     self.parser.xml, ['@noNamespaceSchemaLocation']
+                # ).split() +
+                # extract_attrib(
+                #     self.parser.xml, ['@schemaLocation']
+                # ).split(),
                 "relationships": [],
                 "urls": [],
                 "rdf:type": self.urn
             }
 
-            # NOTE: this is not the sha from the url
-            service_url = generate_uuid_urn()
+            service_url = generate_sha_urn(self.url)
+            urls.add(service_url)
             service['urls'].append(
                 self._generate_harvest_manifest(**{
                     "bcube:hasUrlSource": "Harvested",
@@ -290,8 +292,10 @@ class OgcReader(Processor):
                 for ld in listed_layers:
                     layer = {
                         "object_id": generate_uuid_urn(),
-                        "bcube:dateCreated": self.harvest_details.get('harvest_date', ''),
-                        "bcube:lastUpdated": self.harvest_details.get('harvest_date', ''),
+                        "bcube:dateCreated":
+                            self.harvest_details.get('harvest_date', ''),
+                        "bcube:lastUpdated":
+                            self.harvest_details.get('harvest_date', ''),
                         "dc:description": ld.get('abstract', ''),
                         "dc:title": ld.get('title', ''),
                         "relationships": []
@@ -302,55 +306,62 @@ class OgcReader(Processor):
                     })
 
                     # add the generated url for the service
-                    layer_url = self._generate_harvest_manifest(**{
-                        "vcard:hasUrl": 'http://www.example.com',
-                        "bcube:hasUrlSource": "Generated",
-                        "bcube:hasConfidence": "Good",
-                        "object_id": generate_sha_urn('http://www.example.com')
-                    })
-                    service['urls'].append(layer_url)
+                    url_sha = generate_sha_urn('http://www.example.com')
+                    if url_sha not in urls:
+                        urls.add(url_sha)
+                        layer_url = self._generate_harvest_manifest(**{
+                            "vcard:hasUrl": 'http://www.example.com',
+                            "bcube:hasUrlSource": "Generated",
+                            "bcube:hasConfidence": "Good",
+                            "object_id": url_sha
+                        })
+                        service['urls'].append(layer_url)
+                    # don't add to the larger set, but do
+                    # include the reference within the layer
                     layer['relationships'].append({
                         "relate": "dcterms:references",
-                        "object_id": layer_url['object_id']
+                        "object_id": url_sha
                     })
 
                     # add each as a dataset with just a url for now
                     for mu in ld.get('metadata_urls', []):
                         url_link = generate_uuid_urn()
-                        sha_link = generate_sha_urn(mu.get('url'))
-                        output['catalog_records'] += [
-                            {
-                                "object_id": url_link,
-                                "urls": [self._generate_harvest_manifest(**{
-                                    "vcard:hasUrl": mu.get('url'),
-                                    "bcube:hasUrlSource": "Harvested",
-                                    "bcube:hasConfidence": "Good",
-                                    "object_id": sha_link
-                                })],
-                                "relationships": [
-                                    {
-                                        "relate": "dc:describes",
-                                        "object_id": layer['object_id']
-                                    },
-                                    {
-                                        "relate": "bcube:originatedFrom",
-                                        "object_id": sha_link
-                                    }
-                                ]
-                            }
-                        ]
+                        url_sha = generate_sha_urn(mu.get('url'))
 
-                        # # update the relationships for the layer
-                        # layer['relationships'] .append({
-                        #     "relate": "dc:describes",
-                        #     "object_id": sha_link
-                        # })
+                        if url_sha not in urls:
+                            urls.add(url_sha)
+
+                            output['catalog_records'] += [
+                                {
+                                    "object_id": url_link,
+                                    "urls": [
+                                        self._generate_harvest_manifest(**{
+                                            "vcard:hasUrl": mu.get('url'),
+                                            "bcube:hasUrlSource": "Harvested",
+                                            "bcube:hasConfidence": "Good",
+                                            "object_id": url_sha
+                                        })
+                                    ],
+                                    "relationships": [
+                                        {
+                                            "relate": "dc:describes",
+                                            "object_id": layer['object_id']
+                                        },
+                                        {
+                                            "relate": "bcube:originatedFrom",
+                                            "object_id": url_sha
+                                        }
+                                    ]
+                                }
+                            ]
 
                     if 'temporal_extent' in ld:
                         temporal = tidy_dict(
                             {
-                                "esip:startDate": ld['temporal_extent'].get('begin', ''),
-                                "esip:endDate": ld['temporal_extent'].get('end', '')
+                                "esip:startDate":
+                                    ld['temporal_extent'].get('begin', ''),
+                                "esip:endDate":
+                                    ld['temporal_extent'].get('end', '')
                             }
                         )
                         if temporal:

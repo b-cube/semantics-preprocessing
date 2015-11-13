@@ -175,8 +175,8 @@ class FgdcItemReader(BaseItemReader):
             "object_id": catalog_object_id,
             "bcube:dateCreated": self.harvest_details.get('harvest_date', ''),
             "bcube:lastUpdated": self.harvest_details.get('harvest_date', ''),
-            "dc:conformsTo": extract_attrib(
-                self.elem, ['@noNamespaceSchemaLocation']).split(),
+            # "dc:conformsTo": extract_attrib(
+            #     self.elem, ['@noNamespaceSchemaLocation']).split(),
             "rdf:type": "FGDC:CSDGM",
             "relationships": [],
             "urls": []

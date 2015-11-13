@@ -85,8 +85,8 @@ class IsoReader():
             "rdf:type": self._version_to_urn(),
             "bcube:dateCreated": self.harvest_details.get('harvest_date', ''),
             "bcube:lastUpdated": self.harvest_details.get('harvest_date', ''),
-            "dc:conformsTo": extract_attrib(
-                self.parser.xml, ['@schemaLocation']).split(),
+            # "dc:conformsTo": extract_attrib(
+            #     self.parser.xml, ['@schemaLocation']).split(),
             "relationships": [],
             "urls": []
         }
@@ -366,20 +366,10 @@ class IsoParser(object):
                 #         extract_item(
                 #             format_elem, ['version', 'CharacterString'])])
 
-                # NOTE: it's a uuid identifier given that the urls might be
-                #       repeated in a record
                 link = extract_item(
                     transfer_elem,
                     ['onLine', 'CI_OnlineResource', 'linkage', 'URL'])
                 yield link
-        #         dist = self._generate_harvest_manifest(**{
-        #             "bcube:hasUrlSource": "Harvested",
-        #             "bcube:hasConfidence": "Good",
-        #             "vcard:hasUrl": link,
-        #             "object_id": generate_sha_urn(link)
-        #         })
-
-        # return webpages
 
     def _parse_contact(self, elem):
         '''
