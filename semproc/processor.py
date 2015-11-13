@@ -57,7 +57,7 @@ class Processor(object):
             "bcube:HTTPStatusCodeValue": 200,
             "bcube:reasonPhrase": "OK",
             "bcube:HTTPStatusFamilyCode": 200,
-            "HTTPStatusFamilyType": "Success message",
+            "bcube:HTTPStatusFamilyType": "Success message",
             "bcube:hasUrlSource": "",
             "bcube:hasConfidence": "",
             "bcube:validatedOn": self.harvest_details.get('harvest_date')

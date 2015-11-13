@@ -16,7 +16,7 @@ class OpenSearchReader(Processor):
             self.description['childOf'] = self.harvest_details['parent_url']
 
         if 'service' in self.identify:
-            self.description['services'] = [self._parse_service()]
+            self.description = self._parse_service()
 
         if 'resultset' in self.identify:
             # TODO: get the root stats

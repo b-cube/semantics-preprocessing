@@ -118,6 +118,12 @@ class RdfGrapher(object):
             ['object_id', 'urls', 'relationships', 'webpages']
         )
 
+        for url in entity.get('urls', []):
+            self._handle_url(url)
+
+        for wp in entity.get('webpages', []):
+            self._handle_webpage(wp)
+
         for relationship in entity['relationships']:
             self.relates.append(
                 (service, relationship['relate'], relationship['object_id']))
