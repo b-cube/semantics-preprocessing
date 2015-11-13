@@ -175,6 +175,7 @@ class FgdcItemReader(BaseItemReader):
             "bcube:lastUpdated": self.harvest_details.get('harvest_date', ''),
             "dc:conformsTo": extract_attrib(
                 self.elem, ['@noNamespaceSchemaLocation']).split(),
+            "rdf:type": "FGDC:CSDGM",
             "relationships": [],
             "urls": []
         }
@@ -223,13 +224,12 @@ class FgdcItemReader(BaseItemReader):
             bbox = to_wkt(bbox)
 
             dataset.update({
-                "spatial_extent": {
-                    "dc:spatial": bbox,
-                    "esip:westBound": west,
-                    "esip:eastBound": east,
-                    "esip:northBound": north,
-                    "esip:southBound": south
-                }})
+                "dc:spatial": bbox,
+                "esip:westBound": west,
+                "esip:eastBound": east,
+                "esip:northBound": north,
+                "esip:southBound": south
+            })
 
         time = {}
         time_elem = extract_elem(self.elem, ['idinfo', 'timeperd', 'timeinfo'])
@@ -237,17 +237,15 @@ class FgdcItemReader(BaseItemReader):
             caldate = extract_item(time_elem, ['sngdate', 'caldate'])
             if caldate:
                 # TODO: we should see if it's at least a valid date
-                time['esip:startDate'] = self._convert_date(caldate)
+                dataset['esip:startDate'] = self._convert_date(caldate)
 
             rngdate = extract_elem(time_elem, ['rngdates'])
             if rngdate is not None:
-                time['esip:startDate'] = self._convert_date(
+                dataset['esip:startDate'] = self._convert_date(
                     extract_item(rngdate, ['begdate']))
-                time['esip:endDate'] = self._convert_date(
+                dataset['esip:endDate'] = self._convert_date(
                     extract_item(rngdate, ['enddate']))
             # TODO: add the min/max of the list of dates
-
-        dataset['temporal_extent'] = tidy_dict(time)
 
         dataset['relationships'] = [
             {
