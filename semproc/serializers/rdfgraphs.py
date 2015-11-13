@@ -80,15 +80,6 @@ class RdfGrapher(object):
             'bcube', 'Url', url.get('object_id')
         )
         self._handle_triples(url, entity, ['object_id'])
-        # for k, v in url.iteritems():
-        #     if k == 'object_id':
-        #         continue
-        #     prefix, name = k.split(':')
-
-        #     entity.add(
-        #         self._generate_predicate(
-        #             prefix, name), Literal(v)
-        #     )
 
     def _handle_layer(self, layer):
         entity = self._create_resource(
@@ -101,6 +92,8 @@ class RdfGrapher(object):
                 (entity, relationship['relate'], relationship['object_id']))
 
     def _handle_triples(self, entity, thing, excludes):
+        # today in badly named things, entity is the
+        # json blob, thing is the parent rdf object
         for pred, val in entity.iteritems():
             if pred in excludes:
                 continue
