@@ -56,7 +56,7 @@ class RdfGrapher(object):
             self._handle_url(url)
 
         for webpage in entity.get('webpages', []):
-            self._hande_webpage(webpage)
+            self._handle_webpage(webpage)
 
         for relationship in entity.get('relationships', []):
             # so. current object, verb, id of object, existence unknown
