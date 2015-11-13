@@ -41,18 +41,24 @@ class IsoReader():
 
     def _generate_harvest_manifest(self, **kwargs):
         harvest = {
-            "hasUrl": self.url,
-            "atTime": self.harvest_details.get('harvest_date'),
-            "statusCodeValue": 200,
-            "reasonPhrase": "OK",
-            "HTTPStatusFamilyCode": 200,
-            "HTTPStatusFamilyType": "Success message",
-            "hasUrlSource": "",
-            "hasConfidence": "",
-            "validatedOn": self.harvest_details.get('harvest_date')
+            "vcard:hasUrl": self.url,
+            "bcube:atTime": self.harvest_details.get('harvest_date'),
+            "bcube:HTTPStatusCodeValue": 200,
+            "bcube:reasonPhrase": "OK",
+            "bcube:HTTPStatusFamilyCode": 200,
+            "bcube:HTTPStatusFamilyType": "Success message",
+            "bcube:hasUrlSource": "",
+            "bcube:hasConfidence": "",
+            "bcube:validatedOn": self.harvest_details.get('harvest_date')
         }
         harvest.update(kwargs)
         return tidy_dict(harvest)
+
+    def _version_to_urn(self):
+        metadata_name = self.identity.get('metadata', {}).get('name')
+        if metadata_name == '19115':
+            return 'ISO 19115:2003/19139'
+        return 'NaN'
 
     def parse(self):
         '''
@@ -76,17 +82,18 @@ class IsoReader():
         # TODO: deal with conformsTo (multiple schemaLocations, etc)
         catalog_record = {
             "object_id": generate_sha_urn(self.url),
-            "dateCreated": self.harvest_details.get('harvest_date', ''),
-            "lastUpdated": self.harvest_details.get('harvest_date', ''),
-            "conformsTo": extract_attrib(self.parser.xml, ['@schemaLocation']).split(),
+            "rdf:type": self._version_to_urn(),
+            "bcube:dateCreated": self.harvest_details.get('harvest_date', ''),
+            "bcube:lastUpdated": self.harvest_details.get('harvest_date', ''),
+            "dc:conformsTo": extract_attrib(self.parser.xml, ['@schemaLocation']).split(),
             "relationships": [],
             "urls": []
         }
         catalog_record['urls'].append(
             self._generate_harvest_manifest(**{
-                "hasUrlSource": "Harvested",
-                "hasConfidence": "Good",
-                "hasUrl": self.url,
+                "bcube:hasUrlSource": "Harvested",
+                "bcube:hasConfidence": "Good",
+                "vcard:hasUrl": self.url,
                 "object_id": generate_uuid_urn()
             })
         )
@@ -121,15 +128,15 @@ class IsoParser(object):
 
     def _generate_harvest_manifest(self, **kwargs):
         harvest = {
-            "hasUrl": "",
-            "atTime": self.harvest_details.get('harvest_date'),
-            "statusCodeValue": 200,
-            "reasonPhrase": "OK",
-            "HTTPStatusFamilyCode": 200,
-            "HTTPStatusFamilyType": "Success message",
-            "hasUrlSource": "",
-            "hasConfidence": "",
-            "validatedOn": self.harvest_details.get('harvest_date')
+            "vcard:hasUrl": "",
+            "bcube:atTime": self.harvest_details.get('harvest_date'),
+            "bcube:HTTPStatusCodeValue": 200,
+            "bcube:reasonPhrase": "OK",
+            "bcube:HTTPStatusFamilyCode": 200,
+            "bcube:HTTPStatusFamilyType": "Success message",
+            "bcube:hasUrlSource": "",
+            "bcube:hasConfidence": "",
+            "bcube:validatedOn": self.harvest_details.get('harvest_date')
         }
         harvest.update(kwargs)
         return tidy_dict(harvest)
@@ -150,9 +157,9 @@ class IsoParser(object):
         dataset = {
             "object_id": generate_sha_urn(dataset_identifier)
                 if dataset_identifier else generate_uuid_urn(),
-            "identifier": dataset_identifier,
-            "description": extract_item(elem, ['abstract', 'CharacterString']),
-            "title": extract_item(elem, [
+            "dc:identifier": dataset_identifier,
+            "dc:description": extract_item(elem, ['abstract', 'CharacterString']),
+            "dcterms:title": extract_item(elem, [
                 'citation', 'CI_Citation', 'title', 'CharacterString']),
             "relationships": []
         }
@@ -168,7 +175,7 @@ class IsoParser(object):
         keywords = self._parse_keywords(elem)
         for keyword in keywords:
             dataset['relationships'].append({
-                "relate": "conformsTo",
+                "relate": "dc:conformsTo",
                 "object_id": keyword['object_id']
             })
         return tidy_dict(dataset), keywords
@@ -204,9 +211,9 @@ class IsoParser(object):
                 keywords.append(
                     tidy_dict({
                         "object_id": generate_uuid_urn(),
-                        "thesaurus": thesaurus,
-                        "type": key_type,
-                        "terms": terms
+                        "dc:partOf": thesaurus,
+                        "bcube:hasType": key_type,
+                        "bcube:hasValue": terms
                     })
                 )
 
@@ -220,8 +227,8 @@ class IsoParser(object):
             keywords.append(
                 tidy_dict({
                     "object_id": generate_uuid_urn(),
-                    "thesaurus": 'IsoTopicCategories',
-                    "terms": isotopics
+                    "dc:partOf": 'IsoTopicCategories',
+                    "bcube:hasValue": isotopics
                 })
             )
 
@@ -240,12 +247,12 @@ class IsoParser(object):
             # is bbox, polygon, list of points
             bbox_elem = extract_elem(geo_elem, ['EX_GeographicBoundingBox'])
             if bbox_elem is not None:
-                extents['spatial_extent'] = self._handle_bbox(bbox_elem)
+                extents.update(self._handle_bbox(bbox_elem))
 
             # NOTE: this will obv overwrite the above
             poly_elem = extract_elem(geo_elem, ['EX_BoundingPolygon'])
             if poly_elem is not None:
-                extents['spatial_extent'] = self._handle_polygon(poly_elem)
+                extents.update(self._handle_polygon(poly_elem))
 
         time_elem = extract_elem(
             elem,
@@ -267,10 +274,10 @@ class IsoParser(object):
             if end_position is not None and 'indeterminatePosition' not in end_position.attrib:
                 end_position = self._parse_timestamp(end_position.text)
 
-            extents['temporal_extent'] = {
-                "startDate": begin_position.isoformat(),
-                "endDate": end_position.isoformat()
-            }
+            extents.update({
+                "esip:startDate": begin_position.isoformat(),
+                "esip:endDate": end_position.isoformat()
+            })
 
         return extents
 
@@ -292,11 +299,11 @@ class IsoParser(object):
 
         geom = bbox_to_geom(bbox)
         return {
-            "wkt": to_wkt(geom),
-            "west": west,
-            "east": east,
-            "south": south,
-            "north": north
+            "dc:spatial": to_wkt(geom),
+            "esip:westBound": west,
+            "esip:eastBound": east,
+            "esip:southBound": south,
+            "esip:northBound": north
         }
 
     def _handle_polygon(self, polygon_elem):
@@ -308,7 +315,7 @@ class IsoParser(object):
             geom = reproject(geom, srs_name, 'EPSG:4326')
 
         # TODO: generate the envelope?
-        return {"wkt": to_wkt(geom)}
+        return {"dc:spatial": to_wkt(geom)}
 
     def _handle_points(self, point_elem):
         # this may not exist in the -2?
@@ -359,9 +366,9 @@ class IsoParser(object):
                 # NOTE: it's a uuid identifier given that the urls might be
                 #       repeated in a record
                 dist = self._generate_harvest_manifest(**{
-                    "hasUrlSource": "Harvested",
-                    "hasConfidence": "Good",
-                    "hasUrl": extract_item(
+                    "bcube:hasUrlSource": "Harvested",
+                    "bcube:hasConfidence": "Good",
+                    "vcard:hasUrl": extract_item(
                         transfer_elem,
                         ['onLine', 'CI_OnlineResource', 'linkage', 'URL']),
                     "object_id": generate_uuid_urn()
@@ -450,15 +457,15 @@ class MxParser(IsoParser):
         for id_elem in extract_elems(self.elem, ['//*', 'identificationInfo', 'MD_DataIdentification']):
             dataset, keywords = self._parse_identification_info(id_elem)
             dataset['relationships'].append({
-                "relate": "hasMetadataRecord",
+                "relate": "bcube:hasMetadataRecord",
                 "object_id": self.output['catalog_record']['object_id']
             })
             dataset.update({
-                "dateCreated": self.harvest_details.get('harvest_date', ''),
-                "lastUpdated": self.harvest_details.get('harvest_date', '')
+                "bcube:dateCreated": self.harvest_details.get('harvest_date', ''),
+                "bcube:lastUpdated": self.harvest_details.get('harvest_date', '')
             })
             self.output['catalog_record']['relationships'].append({
-                "relate": "primaryTopic",
+                "relate": "foaf:primaryTopic",
                 "object_id": dataset['object_id']
             })
 
@@ -490,7 +497,7 @@ class MxParser(IsoParser):
                     "location": location
                 }))
                 dataset['relationships'].append({
-                    "relate": "publisher",
+                    "relate": "dcterms:publisher",
                     "object_id": self.output['publisher']['object_id']
                 })
 
@@ -503,7 +510,7 @@ class MxParser(IsoParser):
 
             for url in dataset['urls']:
                 dataset['relationships'].append({
-                    "relate": "relation",
+                    "relate": "dcterms:references",
                     "object_id": url['object_id']
                 })
 
