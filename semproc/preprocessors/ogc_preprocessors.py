@@ -372,7 +372,7 @@ class OgcReader(Processor):
                             layer_url = self._generate_harvest_manifest(**{
                                 "vcard:hasUrl": generated_url,
                                 "bcube:hasUrlSource": "Generated",
-                                "bcube:hasConfidence": "Good",
+                                "bcube:hasConfidence": "Not Sure",
                                 "object_id": url_sha
                             })
                             service['urls'].append(layer_url)
