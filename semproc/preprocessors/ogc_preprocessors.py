@@ -8,11 +8,12 @@ from semproc.processor import Processor
 from semproc.preprocessors.csw_preprocessors import CswReader
 from semproc.yaml_configs import import_yaml_configs
 from semproc.geo_utils import bbox_to_geom, reproject, to_wkt
-from semproc.utils import tidy_dict, remap_http_method
+from semproc.utils import tidy_dict, remap_http_method, break_url
 from semproc.xml_utils import extract_attrib
 import dateutil.parser as dateparser
 from semproc.utils import generate_sha_urn, generate_uuid_urn
 import os
+import urllib
 
 
 class OgcReader(Processor):
@@ -211,6 +212,57 @@ class OgcReader(Processor):
 
         return min(timestamps), max(timestamps)
 
+    def _generate_url(self, url, layer_name, bbox, service, version):
+        base_url, values = break_url(url)
+        bbox = [
+            str(bbox.get('esip:westBound')),
+            str(bbox.get('esip:southBound')),
+            str(bbox.get('esip:eastBound')),
+            str(bbox.get('esip:northBound'))
+        ]
+        if service == 'WMS':
+            params = {
+                "service": service,
+                "request": "GetMap",
+                "version": version,
+                "layers": layer_name,
+                "width": 500,
+                "height": 500,
+                "styles": "",
+                "format": "image/png"  # totes wrong
+            }
+            if version == '1.3.0':
+                params['crs'] = 'CRS:84'
+            else:
+                params['srs'] = 'EPSG:4326'
+            params['bbox'] = ','.join(bbox)
+        elif service == 'WFS':
+            params = {
+                "service": service,
+                "request": "GetFeature",
+                "version": version,
+                "featureid": layer_name,
+                "typenames": "namespace:featuretype"
+            }
+        elif service == 'WCS':
+            params = {
+                "service": service,
+                "request": "GetCoverage",
+                "version": version,
+                "coverage": layer_name,
+                "width": 500,
+                "height": 500,
+                'crs': 'CRS:84',
+                'bbox': ','.join(bbox),
+                "format": "GTiff"  # this is so wrong
+            }
+        elif service == 'CSW':
+            return ''
+        elif service == 'SOS':
+            return ''
+
+        return base_url + '?' + urllib.urlencode(params)
+
     def parse(self):
         # for ogc, a catalog record is the getcapabilities rsp
         output = {
@@ -306,22 +358,30 @@ class OgcReader(Processor):
                     })
 
                     # add the generated url for the service
-                    url_sha = generate_sha_urn('http://www.example.com')
-                    if url_sha not in urls:
-                        urls.add(url_sha)
-                        layer_url = self._generate_harvest_manifest(**{
-                            "vcard:hasUrl": 'http://www.example.com',
-                            "bcube:hasUrlSource": "Generated",
-                            "bcube:hasConfidence": "Good",
+                    generated_url = self._generate_url(
+                        self.url,
+                        ld.get('name'),
+                        ld.get('bbox'),
+                        service_name,
+                        version
+                    )
+                    if generated_url:
+                        url_sha = generate_sha_urn(generated_url)
+                        if url_sha not in urls:
+                            urls.add(url_sha)
+                            layer_url = self._generate_harvest_manifest(**{
+                                "vcard:hasUrl": generated_url,
+                                "bcube:hasUrlSource": "Generated",
+                                "bcube:hasConfidence": "Good",
+                                "object_id": url_sha
+                            })
+                            service['urls'].append(layer_url)
+                        # don't add to the larger set, but do
+                        # include the reference within the layer
+                        layer['relationships'].append({
+                            "relate": "dcterms:references",
                             "object_id": url_sha
                         })
-                        service['urls'].append(layer_url)
-                    # don't add to the larger set, but do
-                    # include the reference within the layer
-                    layer['relationships'].append({
-                        "relate": "dcterms:references",
-                        "object_id": url_sha
-                    })
 
                     # add each as a dataset with just a url for now
                     for mu in ld.get('metadata_urls', []):
@@ -380,38 +440,6 @@ class OgcReader(Processor):
                 #             "relate": "bcube:contains",
                 #             "object_id": layer['object_id']
                 #         })
-
-        # if 'dataset' in self.identify:
-        #     # run the owslib wcs/wfs describe* parsers
-        #     request = self.identify['dataset'].get('request', '')
-        #     service = self.identify['dataset'].get('name', '')
-        #     version = self.identify['dataset'].get('version', '')
-        #     # if not request or not service:
-        #     #     return {}
-
-        #     if service == 'WMS' and request == 'GetCapabilities':
-        #         # this is a rehash of the getcap parsing
-        #         # but *only* returning the layers set
-        #         reader = WebMapService('', xml=self.response, version=version)
-        #         datasets = self._parse_getcap_datasets(reader)
-
-        #     if service == 'WCS' and request == 'DescribeCoverage':
-        #         # need to get the coverage name(s) from the url
-        #         reader = DescribeCoverageReader(version, '', None, xml=self.response)
-        #         self.description['datasets'] = self._parse_coverages(reader)
-        #     elif service == 'SOS' and request == 'GetCapabilities':
-        #         reader = SensorObservationService('', xml=self.response, version=version)
-        #         self.description['datasets'] = self._parse_getcap_datasets(reader)
-        #     elif service == 'WFS' and request == 'GetCapabilities':
-        #         reader = WebFeatureService('', xml=self.response, version=version)
-        #         self.description['datasets'] = self._parse_getcap_datasets(reader)
-
-        # if 'resultset' in self.identify:
-        #     # assuming csw, run the local csw reader
-        #     reader = CswReader(self.identify, self.response, self.url)
-        #     reader.parse()
-        #     # TODO: this is not a good key (children->children)
-        #     self.description['children'] = reader.description
 
         output['services'] = [service]
         self.description = tidy_dict(output)
