@@ -211,12 +211,65 @@ class OgcReader(Processor):
 
         return min(timestamps), max(timestamps)
 
+    def _generate_url(self, url, layer_name, bbox, service, version):
+        base_url, values = break_url(url)
+        bbox = [
+            str(bbox.get('esip:westBound')),
+            str(bbox.get('esip:southBound')),
+            str(bbox.get('esip:eastBound')),
+            str(bbox.get('esip:northBound'))
+        ]
+        if service == 'WMS':
+            params = {
+                "service": service,
+                "request": "GetMap",
+                "version": version,
+                "layers": layer_name,
+                "width": 500,
+                "height": 500,
+                "styles": "",
+                "format": "image/png"  # totes wrong
+            }
+            if version == '1.3.0':
+                params['crs'] = 'CRS:84'
+            else:
+                params['srs'] = 'EPSG:4326'
+            params['bbox'] = ','.join(bbox)
+        elif service == 'WFS':
+            params = {
+                "service": service,
+                "request": "GetFeature",
+                "version": version,
+                "featureid": layer_name,
+                "typenames": "namespace:featuretype"
+            }
+        elif service == 'WCS':
+            params = {
+                "service": service,
+                "request": "GetCoverage",
+                "version": version,
+                "coverage": layer_name,
+                "width": 500,
+                "height": 500,
+                'crs': 'CRS:84',
+                'bbox': ','.join(bbox),
+                "format": "GTiff"  # this is so wrong
+            }
+        elif service == 'CSW':
+            return ''
+        elif service == 'SOS':
+            return ''
+
+        return base_url + '?' + urllib.urlencode(params)
+
     def parse(self):
         # for ogc, a catalog record is the getcapabilities rsp
         output = {
             "layers": [],
             "catalog_records": []
         }
+
+        urls = set()
 
         if 'service' in self.identify:
             # run the owslib getcapabilities parsers
@@ -228,40 +281,41 @@ class OgcReader(Processor):
                 # TODO: this is not at all a good error response
                 return {}
 
-            service_id = generate_sha_urn(self.url)
+            service_id = generate_uuid_urn()
             service = {
                 "object_id": service_id,
                 "bcube:dateCreated": self.harvest_details.get(
                     'harvest_date', ''),
                 "bcube:lastUpdated": self.harvest_details.get(
                     'harvest_date', ''),
-                "dc:conformsTo": extract_attrib(
-                    self.parser.xml, ['@noNamespaceSchemaLocation']
-                ).split() +
-                extract_attrib(
-                    self.parser.xml, ['@schemaLocation']
-                ).split(),
+                # "dc:conformsTo": extract_attrib(
+                #     self.parser.xml, ['@noNamespaceSchemaLocation']
+                # ).split() +
+                # extract_attrib(
+                #     self.parser.xml, ['@schemaLocation']
+                # ).split(),
                 "relationships": [],
                 "urls": [],
                 "rdf:type": self.urn
             }
 
-            # NOTE: this is not the sha from the url
+            service_url = generate_sha_urn(self.url)
+            urls.add(service_url)
             service['urls'].append(
                 self._generate_harvest_manifest(**{
                     "bcube:hasUrlSource": "Harvested",
                     "bcube:hasConfidence": "Good",
                     "vcard:hasUrl": self.url,
-                    "object_id": generate_uuid_urn()
+                    "object_id": service_url
                 })
             )
             service['relationships'].append({
                 "relate": "bcube:originatedFrom",
-                "object_id": service['object_id']
+                "object_id": service_url
             })
 
-            self._get_service_config(service, version)
-            service_reader = self._parse_service(reader, service, version)
+            self._get_service_config(service_name, version)
+            service_reader = self._parse_service(reader, service_name, version)
 
             # map to triples
             service.update({
@@ -289,39 +343,84 @@ class OgcReader(Processor):
                 for ld in listed_layers:
                     layer = {
                         "object_id": generate_uuid_urn(),
-                        "bcube:dateCreated": self.harvest_details.get('harvest_date', ''),
-                        "bcube:lastUpdated": self.harvest_details.get('harvest_date', ''),
+                        "bcube:dateCreated":
+                            self.harvest_details.get('harvest_date', ''),
+                        "bcube:lastUpdated":
+                            self.harvest_details.get('harvest_date', ''),
                         "dc:description": ld.get('abstract', ''),
                         "dc:title": ld.get('title', ''),
                         "relationships": []
                     }
+                    service['relationships'].append({
+                        "relate": "bcube:contains",
+                        "object_id": layer['object_id']
+                    })
+
+                    # add the generated url for the service
+                    generated_url = self._generate_url(
+                        self.url,
+                        ld.get('name'),
+                        ld.get('bbox'),
+                        service_name,
+                        version
+                    )
+                    if generated_url:
+                        url_sha = generate_sha_urn(generated_url)
+                        if url_sha not in urls:
+                            urls.add(url_sha)
+                            layer_url = self._generate_harvest_manifest(**{
+                                "vcard:hasUrl": generated_url,
+                                "bcube:hasUrlSource": "Generated",
+                                "bcube:hasConfidence": "Not Sure",
+                                "object_id": url_sha
+                            })
+                            service['urls'].append(layer_url)
+                        # don't add to the larger set, but do
+                        # include the reference within the layer
+                        layer['relationships'].append({
+                            "relate": "dcterms:references",
+                            "object_id": url_sha
+                        })
 
                     # add each as a dataset with just a url for now
                     for mu in ld.get('metadata_urls', []):
-                        sha_link = generate_sha_urn(mu.link)
-                        output['catalog_records'] += [
-                            {
-                                "object_id": sha_link,
-                                "urls": [self._generate_harvest_manifest(**{
-                                    "vcard:hasUrl": mu.link,
-                                    "bcube:hasUrlSource": "Harvested",
-                                    "bcube:hasConfidence": "Good",
-                                    "object_id": generate_uuid_urn()
-                                })]
-                            }
-                        ]
+                        url_link = generate_uuid_urn()
+                        url_sha = generate_sha_urn(mu.get('url'))
 
-                        # update the relationships for the layer
-                        layer['relationships'] .append({
-                            "relate": "dc:describes",
-                            "object_id": sha_link
-                        })
+                        if url_sha not in urls:
+                            urls.add(url_sha)
+
+                            output['catalog_records'] += [
+                                {
+                                    "object_id": url_link,
+                                    "urls": [
+                                        self._generate_harvest_manifest(**{
+                                            "vcard:hasUrl": mu.get('url'),
+                                            "bcube:hasUrlSource": "Harvested",
+                                            "bcube:hasConfidence": "Good",
+                                            "object_id": url_sha
+                                        })
+                                    ],
+                                    "relationships": [
+                                        {
+                                            "relate": "dc:describes",
+                                            "object_id": layer['object_id']
+                                        },
+                                        {
+                                            "relate": "bcube:originatedFrom",
+                                            "object_id": url_sha
+                                        }
+                                    ]
+                                }
+                            ]
 
                     if 'temporal_extent' in ld:
                         temporal = tidy_dict(
                             {
-                                "esip:startDate": ld['temporal_extent'].get('begin', ''),
-                                "esip:endDate": ld['temporal_extent'].get('end', '')
+                                "esip:startDate":
+                                    ld['temporal_extent'].get('begin', ''),
+                                "esip:endDate":
+                                    ld['temporal_extent'].get('end', '')
                             }
                         )
                         if temporal:
@@ -332,46 +431,16 @@ class OgcReader(Processor):
 
                     layers.append(layer)
 
-                if layers:
-                    output['layers'] = layers
-                    for layer in layers:
-                        output['catalog_record']['relationships'].append({
-                            "relate": "foaf:primaryTopic",
-                            "object_id": layer['object_id']
-                        })
+                service['layers'] = layers
+                # if layers:
+                #     service['layers'] = layers
+                #     for layer in layers:
+                #         service['relationships'].append({
+                #             "relate": "bcube:contains",
+                #             "object_id": layer['object_id']
+                #         })
 
-        # if 'dataset' in self.identify:
-        #     # run the owslib wcs/wfs describe* parsers
-        #     request = self.identify['dataset'].get('request', '')
-        #     service = self.identify['dataset'].get('name', '')
-        #     version = self.identify['dataset'].get('version', '')
-        #     # if not request or not service:
-        #     #     return {}
-
-        #     if service == 'WMS' and request == 'GetCapabilities':
-        #         # this is a rehash of the getcap parsing
-        #         # but *only* returning the layers set
-        #         reader = WebMapService('', xml=self.response, version=version)
-        #         datasets = self._parse_getcap_datasets(reader)
-
-        #     if service == 'WCS' and request == 'DescribeCoverage':
-        #         # need to get the coverage name(s) from the url
-        #         reader = DescribeCoverageReader(version, '', None, xml=self.response)
-        #         self.description['datasets'] = self._parse_coverages(reader)
-        #     elif service == 'SOS' and request == 'GetCapabilities':
-        #         reader = SensorObservationService('', xml=self.response, version=version)
-        #         self.description['datasets'] = self._parse_getcap_datasets(reader)
-        #     elif service == 'WFS' and request == 'GetCapabilities':
-        #         reader = WebFeatureService('', xml=self.response, version=version)
-        #         self.description['datasets'] = self._parse_getcap_datasets(reader)
-
-        # if 'resultset' in self.identify:
-        #     # assuming csw, run the local csw reader
-        #     reader = CswReader(self.identify, self.response, self.url)
-        #     reader.parse()
-        #     # TODO: this is not a good key (children->children)
-        #     self.description['children'] = reader.description
-
+        output['services'] = [service]
         self.description = tidy_dict(output)
 
     def _parse_service(self, reader, service, version):
@@ -524,11 +593,11 @@ class OgcReader(Processor):
                 if dataset.boundingBoxWGS84:
                     bbox = bbox_to_geom(dataset.boundingBoxWGS84)
                     d['bbox'] = {
-                        'wkt': to_wkt(bbox),
-                        'west': dataset.boundingBoxWGS84[0],
-                        'east': dataset.boundingBoxWGS84[2],
-                        'north': dataset.boundingBoxWGS84[3],
-                        'south': dataset.boundingBoxWGS84[1]
+                        'dc:spatial': to_wkt(bbox),
+                        'esip:westBound': dataset.boundingBoxWGS84[0],
+                        'esip:eastBound': dataset.boundingBoxWGS84[2],
+                        'esip:northBound': dataset.boundingBoxWGS84[3],
+                        'esip:southBound': dataset.boundingBoxWGS84[1]
                     }
             except AttributeError:
                 pass

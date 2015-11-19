@@ -28,7 +28,7 @@ class OpenSearchReader(Processor):
     def _parse_service(self):
         output = {}
         service = {
-            "object_id": generate_sha_urn(self.url),
+            "object_id": generate_uuid_urn(),
             "bcube:dateCreated": self.harvest_details.get('harvest_date', ''),
             "bcube:lastUpdated": self.harvest_details.get('harvest_date', ''),
             "rdf:type": 'OpenSearch1.1:Description',
@@ -45,7 +45,7 @@ class OpenSearchReader(Processor):
             "bcube:hasUrlSource": "Harvested",
             "bcube:hasConfidence": "Good",
             "vcard:hasUrl": self.url,
-            "object_id": generate_uuid_urn()
+            "object_id": generate_sha_urn(self.url)
         })
         service['urls'].append(original_url)
         service['relationships'].append({

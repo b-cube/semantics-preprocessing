@@ -167,7 +167,9 @@ class FgdcItemReader(BaseItemReader):
     def parse_item(self):
         output = {}
 
-        catalog_object_id = generate_sha_urn(self.url)
+        urls = set()
+
+        catalog_object_id = generate_uuid_urn()
 
         output['catalog_record'] = {
             "object_id": catalog_object_id,
@@ -181,14 +183,16 @@ class FgdcItemReader(BaseItemReader):
         }
 
         # add the harvest info
+        url_sha = generate_sha_urn(self.url)
+        urls.add(url_sha)
         original_url = self._generate_harvest_manifest(**{
             "bcube:hasUrlSource": "Harvested",
             "bcube:hasConfidence": "Good",
             "vcard:hasUrl": self.url,
-            "object_id": generate_uuid_urn()
+            "object_id": url_sha
         })
-        # NOTE: this is not the sha from the url
         output['catalog_record']['urls'].append(original_url)
+        # NOTE: this is not the sha from the url
         output['catalog_record']['relationships'].append(
             {
                 "relate": "bcube:originatedFrom",
@@ -197,8 +201,7 @@ class FgdcItemReader(BaseItemReader):
         )
 
         datsetid = extract_item(self.elem, ['idinfo', 'datsetid'])
-        dataset_object_id = generate_sha_urn(datsetid) if datsetid \
-            else generate_uuid_urn()
+        dataset_object_id = generate_uuid_urn()
 
         dataset = {
             "object_id": dataset_object_id,
@@ -277,20 +280,22 @@ class FgdcItemReader(BaseItemReader):
                 distrib_elem,
                 ['digtopt', 'onlinopt', 'computer', 'networka', 'networkr'])
             # format = extract_item(distrib_elem, ['digtinfo', 'formname'])
-            dist = self._generate_harvest_manifest(**{
-                "bcube:hasUrlSource": "Harvested",
-                "bcube:hasConfidence": "Good",
-                "vcard:hasUrl": link,
-                "object_id": generate_sha_urn(link)
-            })
-            if dist:
+            url_sha = generate_sha_urn(link)
+            if url_sha not in urls:
+                urls.add(url_sha)
+                dist = self._generate_harvest_manifest(**{
+                    "bcube:hasUrlSource": "Harvested",
+                    "bcube:hasConfidence": "Good",
+                    "vcard:hasUrl": link,
+                    "object_id": url_sha
+                })
                 dataset['urls'].append(dist)
-                dataset['relationships'].append(
-                    {
-                        "relate": "dcterms:references",
-                        "object_id": dist['object_id']
-                    }
-                )
+                # this is a distribution link so
+                # we are assuming it is to data
+                dataset['relationships'].append({
+                    "relate": "dcterms:references",
+                    "object_id": url_sha
+                })
 
         webpages = []
         onlink_elems = extract_elems(
@@ -299,23 +304,25 @@ class FgdcItemReader(BaseItemReader):
             link = onlink_elem.text.strip() if onlink_elem.text else ''
             if not link:
                 continue
-            dist = self._generate_harvest_manifest(**{
-                "bcube:hasUrlSource": "Harvested",
-                "bcube:hasConfidence": "Good",
-                "vcard:hasUrl": link,
-                "object_id": generate_sha_urn(link)
-            })
-            if dist:
-                output['catalog_record']['urls'].append(dist)
+            url_sha = generate_sha_urn(link)
+            if url_sha not in urls:
+                urls.add(url_sha)
+                dist = self._generate_harvest_manifest(**{
+                    "bcube:hasUrlSource": "Harvested",
+                    "bcube:hasConfidence": "Good",
+                    "vcard:hasUrl": link,
+                    "object_id": url_sha
+                })
+                dataset['urls'].append(dist)
                 webpages.append({
                     "object_id": generate_uuid_urn(),
                     "relationships": [
                         {
                             "relate": "dcterms:references",
-                            "object_id": dist['object_id']
+                            "object_id": url_sha
                         }
-                    ]
-                })
+                    ]}
+                )
 
         output['webpages'] = webpages
         for webpage in webpages:
