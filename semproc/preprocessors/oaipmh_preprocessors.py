@@ -32,7 +32,7 @@ class OaiPmhReader(Processor):
             "relationships": [],
             "urls": []
         }
-        url_id = generate_sha_urn(self.url)
+        url_id = generate_uuid_urn()
         dist = self._generate_harvest_manifest(**{
             "bcube:hasUrlSource": "Harvested",
             "bcube:hasConfidence": "Good",

@@ -49,12 +49,13 @@ class OpenSearchReader(Processor):
             "bcube:hasUrlSource": "Harvested",
             "bcube:hasConfidence": "Good",
             "vcard:hasUrl": self.url,
-            "object_id": url_sha
+            "object_id": generate_uuid_urn(),
+            "dc:identifier": url_sha
         })
         service['urls'].append(original_url)
         service['relationships'].append({
             "relate": "bcube:originatedFrom",
-            "object_id": url_sha
+            "object_id": original_url['object_id']
         })
 
         # output['source'] = extract_items(
@@ -81,11 +82,13 @@ class OpenSearchReader(Processor):
             url_sha = generate_sha_urn(ep['url'])
             if url_sha not in urls:
                 urls.add(url_sha)
+                url_id = generate_uuid_urn()
                 dist = self._generate_harvest_manifest(**{
                     "bcube:hasUrlSource": "Generated",
                     "bcube:hasConfidence": "Not Sure",
                     "vcard:hasUrl": ep['url'],
-                    "object_id": url_sha
+                    "object_id": url_id,
+                    "dc:identifier": url_sha
                 })
                 service['urls'].append(dist)
                 service['webpages'].append({
@@ -93,7 +96,7 @@ class OpenSearchReader(Processor):
                     "relationships": [
                         {
                             "relate": "dcterms:references",
-                            "object_id": url_sha
+                            "object_id": url_id
                         }
                     ]
                 })

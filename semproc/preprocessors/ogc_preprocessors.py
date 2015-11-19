@@ -300,19 +300,21 @@ class OgcReader(Processor):
                 "rdf:type": self.urn
             }
 
-            service_url = generate_sha_urn(self.url)
-            urls.add(service_url)
+            url_sha = generate_sha_urn(self.url)
+            urls.add(url_sha)
+            url_id = generate_uuid_urn()
             service['urls'].append(
                 self._generate_harvest_manifest(**{
                     "bcube:hasUrlSource": "Harvested",
                     "bcube:hasConfidence": "Good",
                     "vcard:hasUrl": self.url,
-                    "object_id": service_url
+                    "object_id": url_id,
+                    "dc:identifier": url_sha
                 })
             )
             service['relationships'].append({
                 "relate": "bcube:originatedFrom",
-                "object_id": service_url
+                "object_id": url_id
             })
 
             self._get_service_config(service_name, version)
@@ -369,18 +371,20 @@ class OgcReader(Processor):
                         url_sha = generate_sha_urn(generated_url)
                         if url_sha not in urls:
                             urls.add(url_sha)
+                            url_id - generate_uuid_urn()
                             layer_url = self._generate_harvest_manifest(**{
                                 "vcard:hasUrl": generated_url,
                                 "bcube:hasUrlSource": "Generated",
                                 "bcube:hasConfidence": "Not Sure",
-                                "object_id": url_sha
+                                "object_id": url_id,
+                                "dc:identifier": url_sha
                             })
                             service['urls'].append(layer_url)
                         # don't add to the larger set, but do
                         # include the reference within the layer
                         layer['relationships'].append({
                             "relate": "dcterms:references",
-                            "object_id": url_sha
+                            "object_id": url_id
                         })
 
                     # add each as a dataset with just a url for now
@@ -390,7 +394,7 @@ class OgcReader(Processor):
 
                         if url_sha not in urls:
                             urls.add(url_sha)
-
+                            url_id = generate_uuid_urn()
                             output['catalog_records'] += [
                                 {
                                     "object_id": url_link,
@@ -399,7 +403,8 @@ class OgcReader(Processor):
                                             "vcard:hasUrl": mu.get('url'),
                                             "bcube:hasUrlSource": "Harvested",
                                             "bcube:hasConfidence": "Good",
-                                            "object_id": url_sha
+                                            "object_id": url_id,
+                                            "dc:identifier": url_sha
                                         })
                                     ],
                                     "relationships": [
@@ -409,7 +414,7 @@ class OgcReader(Processor):
                                         },
                                         {
                                             "relate": "bcube:originatedFrom",
-                                            "object_id": url_sha
+                                            "object_id": url_id
                                         }
                                     ]
                                 }

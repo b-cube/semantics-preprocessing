@@ -1,6 +1,7 @@
 from semproc.parser import Parser
 from semproc.xml_utils import extract_elems
 from semproc.utils import tidy_dict
+from semproc.utils import generate_sha_urn
 
 
 class Processor(object):
@@ -60,7 +61,8 @@ class Processor(object):
             "bcube:HTTPStatusFamilyType": "Success message",
             "bcube:hasUrlSource": "",
             "bcube:hasConfidence": "",
-            "bcube:validatedOn": self.harvest_details.get('harvest_date')
+            "bcube:validatedOn": self.harvest_details.get('harvest_date'),
+            "dc:identifier": generate_sha_urn(self.url)
         }
         harvest.update(kwargs)
         return tidy_dict(harvest)

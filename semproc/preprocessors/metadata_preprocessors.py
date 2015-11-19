@@ -1,7 +1,6 @@
 from semproc.utils import tidy_dict, extract_element_tag
 from semproc.xml_utils import extract_item, extract_items
 from semproc.xml_utils import extract_elem, extract_elems
-from semproc.xml_utils import extract_attrib
 from semproc.geo_utils import bbox_to_geom, to_wkt
 from semproc.utils import generate_sha_urn, generate_uuid_urn
 from datetime import datetime
@@ -131,7 +130,8 @@ class BaseItemReader():
             "bcube:HTTPStatusFamilyType": "Success message",
             "bcube:hasUrlSource": "",
             "bcube:hasConfidence": "",
-            "bcube:validatedOn": self.harvest_details.get('harvest_date')
+            "bcube:validatedOn": self.harvest_details.get('harvest_date'),
+            "dc:identifier": generate_sha_urn(self.url)
         }
         harvest.update(kwargs)
         return tidy_dict(harvest)
@@ -184,13 +184,15 @@ class FgdcItemReader(BaseItemReader):
         output['urls'] = []
 
         # add the harvest info
+        # this is not necessary as a sha just for set inclusion
         url_sha = generate_sha_urn(self.url)
         urls.add(url_sha)
         original_url = self._generate_harvest_manifest(**{
             "bcube:hasUrlSource": "Harvested",
             "bcube:hasConfidence": "Good",
             "vcard:hasUrl": self.url,
-            "object_id": url_sha
+            "object_id": generate_uuid_urn(),
+            "dc:identifier": url_sha
         })
         output['catalog_record']['urls'].append(original_url)
         # NOTE: this is not the sha from the url
@@ -284,18 +286,20 @@ class FgdcItemReader(BaseItemReader):
             url_sha = generate_sha_urn(link)
             if url_sha not in urls:
                 urls.add(url_sha)
+                url_id = generate_uuid_urn()
                 dist = self._generate_harvest_manifest(**{
                     "bcube:hasUrlSource": "Harvested",
                     "bcube:hasConfidence": "Good",
                     "vcard:hasUrl": link,
-                    "object_id": url_sha
+                    "object_id": url_id,
+                    "dc:identifier": url_sha
                 })
                 dataset['urls'].append(dist)
                 # this is a distribution link so
                 # we are assuming it is to data
                 dataset['relationships'].append({
                     "relate": "dcterms:references",
-                    "object_id": url_sha
+                    "object_id": url_id
                 })
 
         webpages = []
@@ -308,11 +312,13 @@ class FgdcItemReader(BaseItemReader):
             url_sha = generate_sha_urn(link)
             if url_sha not in urls:
                 urls.add(url_sha)
+                url_id = generate_uuid_urn()
                 dist = self._generate_harvest_manifest(**{
                     "bcube:hasUrlSource": "Harvested",
                     "bcube:hasConfidence": "Good",
                     "vcard:hasUrl": link,
-                    "object_id": url_sha
+                    "object_id": url_id,
+                    "dc:identifier": url_sha
                 })
                 dataset['urls'].append(dist)
                 webpages.append({
@@ -320,7 +326,7 @@ class FgdcItemReader(BaseItemReader):
                     "relationships": [
                         {
                             "relate": "dcterms:references",
-                            "object_id": url_sha
+                            "object_id": url_id
                         }
                     ]}
                 )

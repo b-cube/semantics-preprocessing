@@ -49,7 +49,8 @@ class IsoReader():
             "bcube:HTTPStatusFamilyType": "Success message",
             "bcube:hasUrlSource": "",
             "bcube:hasConfidence": "",
-            "bcube:validatedOn": self.harvest_details.get('harvest_date')
+            "bcube:validatedOn": self.harvest_details.get('harvest_date'),
+            "dc:identifier": generate_sha_urn(self.url)
         }
         harvest.update(kwargs)
         return tidy_dict(harvest)
@@ -94,7 +95,7 @@ class IsoReader():
             "bcube:hasUrlSource": "Harvested",
             "bcube:hasConfidence": "Good",
             "vcard:hasUrl": self.url,
-            "object_id": generate_sha_urn(self.url)
+            "object_id": generate_uuid_urn()
         })
         catalog_record['urls'].append(original_url)
         catalog_record['relationships'].append({
@@ -140,7 +141,8 @@ class IsoParser(object):
             "bcube:HTTPStatusFamilyType": "Success message",
             "bcube:hasUrlSource": "",
             "bcube:hasConfidence": "",
-            "bcube:validatedOn": self.harvest_details.get('harvest_date')
+            "bcube:validatedOn": self.harvest_details.get('harvest_date'),
+            "dc:identifier": generate_sha_urn(self.url)
         }
         harvest.update(kwargs)
         return tidy_dict(harvest)
@@ -513,16 +515,18 @@ class MxParser(IsoParser):
                     url_sha = generate_sha_urn(d)
                     if url_sha not in urls:
                         urls.add(url_sha)
+                        url_id = generate_uuid_urn()
                         dist = self._generate_harvest_manifest(**{
                             "bcube:hasUrlSource": "Harvested",
                             "bcube:hasConfidence": "Good",
                             "vcard:hasUrl": d,
-                            "object_id": url_sha
+                            "object_id": url_id,
+                            "dc:identifier": url_sha
                         })
                         dataset['urls'].append(dist)
                         dataset['relationships'].append({
                             "relate": "dcterms:references",
-                            "object_id": url_sha
+                            "object_id": url_id
                         })
 
             self.output['datasets'].append(dataset)
