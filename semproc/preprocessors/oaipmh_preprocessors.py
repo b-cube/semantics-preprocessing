@@ -37,7 +37,8 @@ class OaiPmhReader(Processor):
             "bcube:hasUrlSource": "Harvested",
             "bcube:hasConfidence": "Good",
             "vcard:hasUrl": self.url,
-            "object_id": url_id
+            "object_id": url_id,
+            "dc:identifier": generate_sha_urn(self.url)
         })
         service['urls'] = [dist]
         service['relationships'].append({

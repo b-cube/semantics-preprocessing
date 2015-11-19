@@ -132,6 +132,8 @@ class IsoParser(object):
         pass
 
     def _generate_harvest_manifest(self, **kwargs):
+        # NOTE: for iso, you have to include the dc:identifier sha256
+        #       in the kwargs
         harvest = {
             "vcard:hasUrl": "",
             "bcube:atTime": self.harvest_details.get('harvest_date'),
@@ -141,8 +143,7 @@ class IsoParser(object):
             "bcube:HTTPStatusFamilyType": "Success message",
             "bcube:hasUrlSource": "",
             "bcube:hasConfidence": "",
-            "bcube:validatedOn": self.harvest_details.get('harvest_date'),
-            "dc:identifier": generate_sha_urn(self.url)
+            "bcube:validatedOn": self.harvest_details.get('harvest_date')
         }
         harvest.update(kwargs)
         return tidy_dict(harvest)

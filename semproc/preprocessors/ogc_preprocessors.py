@@ -371,7 +371,7 @@ class OgcReader(Processor):
                         url_sha = generate_sha_urn(generated_url)
                         if url_sha not in urls:
                             urls.add(url_sha)
-                            url_id - generate_uuid_urn()
+                            url_id = generate_uuid_urn()
                             layer_url = self._generate_harvest_manifest(**{
                                 "vcard:hasUrl": generated_url,
                                 "bcube:hasUrlSource": "Generated",

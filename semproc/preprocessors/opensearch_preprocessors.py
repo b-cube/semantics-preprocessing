@@ -91,14 +91,19 @@ class OpenSearchReader(Processor):
                     "dc:identifier": url_sha
                 })
                 service['urls'].append(dist)
+                wb_id = generate_uuid_urn()
                 service['webpages'].append({
-                    "object_id": generate_uuid_urn(),
+                    "object_id": wb_id,
                     "relationships": [
                         {
                             "relate": "dcterms:references",
                             "object_id": url_id
                         }
                     ]
+                })
+                service['relationships'].append({
+                    "relate": "dcterms:references",
+                    "object_id": wb_id
                 })
 
         output['services'] = [service]
