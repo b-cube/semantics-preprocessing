@@ -4,6 +4,7 @@ from semproc.utils import generate_short_uuid
 from semproc.utils import tidy_dict
 from semproc.xml_utils import extract_elems, extract_attrib
 from semproc.urlbuilders.thredds_links import ThreddsLink
+from semproc.utils import generate_sha_urn, generate_uuid_urn
 
 
 class ThreddsReader(Processor):
@@ -136,26 +137,56 @@ class ThreddsReader(Processor):
         return description, endpoints
 
     def parse(self):
-        self.description = {}
+        output = {}
+        urls = set()
 
         if 'service' in self.identify:
-            self.description = {
-                "title": extract_attrib(self.parser.xml, ['@name']),
-                "version": extract_attrib(self.parser.xml, ['@version'])
+            service = {
+                "object_id": generate_uuid_urn(),
+                "dcterms:title": extract_attrib(self.parser.xml, ['@name']),
+                "rdf:type": "UNIDATA:THREDDS {0}".format(
+                    extract_attrib(self.parser.xml, ['@version'])),
+                "bcube:dateCreated":
+                    self.harvest_details.get('harvest_date', ''),
+                "bcube:lastUpdated":
+                    self.harvest_details.get('harvest_date', ''),
+                "relationships": [],
+                "urls": []
             }
+            url_sha = generate_sha_urn(self.url)
+            urls.add(url_sha)
+            original_url = self._generate_harvest_manifest(**{
+                "bcube:hasUrlSource": "Harvested",
+                "bcube:hasConfidence": "Good",
+                "vcard:hasUrl": self.url,
+                "object_id": url_sha
+            })
+            service['urls'].append(original_url)
+            # NOTE: this is not the sha from the url
+            service['relationships'].append(
+                {
+                    "relate": "bcube:originatedFrom",
+                    "object_id": url_sha
+                }
+            )
 
-        service_bases = self.parser.xml.xpath('//*[local-name()="service" and @base != ""]')
-        self.service_bases = {s.attrib.get('name'): s.attrib.get('base') for s in service_bases}
+        # deal with the "dataset"
+        service_bases = self.parser.xml.xpath(
+            '//*[local-name()="service" and @base != ""]'
+        )
+        self.service_bases = {
+            s.attrib.get('name'): s.attrib.get('base') for s in service_bases
+        }
 
-        if 'dataset' in self.identify:
-            # TODO: this is really not right but it is not
-            # a proper web service so meh
-            self.description['datasets'] = self._parse_datasets()
+        # if 'dataset' in self.identify:
+        #     # TODO: this is really not right but it is not
+        #     # a proper web service so meh
+        #     datasets = self._parse_datasets()
 
-        if 'metadata' in self.identify:
-            self.description['metadata'] = self._parse_metadata()
-
-        self.description = tidy_dict(self.description)
+        # # if 'metadata' in self.identify:
+        # #     self.description['metadata'] = self._parse_metadata()
+        output['services'] = [service]
+        self.description = tidy_dict(output)
 
     def _parse_datasets(self):
 

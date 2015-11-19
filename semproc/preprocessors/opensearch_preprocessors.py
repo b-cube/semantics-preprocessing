@@ -27,6 +27,8 @@ class OpenSearchReader(Processor):
 
     def _parse_service(self):
         output = {}
+        urls = set()
+
         service = {
             "object_id": generate_uuid_urn(),
             "bcube:dateCreated": self.harvest_details.get('harvest_date', ''),
@@ -41,21 +43,26 @@ class OpenSearchReader(Processor):
             "webpages": [],
             "relationships": []
         }
+        url_sha = generate_sha_urn(self.url)
+        urls.add(url_sha)
         original_url = self._generate_harvest_manifest(**{
             "bcube:hasUrlSource": "Harvested",
             "bcube:hasConfidence": "Good",
             "vcard:hasUrl": self.url,
-            "object_id": generate_sha_urn(self.url)
+            "object_id": url_sha
         })
         service['urls'].append(original_url)
         service['relationships'].append({
             "relate": "bcube:originatedFrom",
-            "object_id": original_url['object_id']
+            "object_id": url_sha
         })
 
-        # output['source'] = extract_items(self.parser.xml, ["Attribution"])
-        # output['contact'] = extract_items(self.parser.xml, ["Developer"])
-        # output['rights'] = extract_items(self.parser.xml, ["SyndicationRight"])
+        # output['source'] = extract_items(
+        #   self.parser.xml, ["Attribution"])
+        # output['contact'] = extract_items(
+        #     self.parser.xml, ["Developer"])
+        # output['rights'] = extract_items(
+        #   self.parser.xml, ["SyndicationRight"])
 
         key_id = generate_uuid_urn()
         output['keywords'] = [
@@ -71,22 +78,25 @@ class OpenSearchReader(Processor):
 
         for t in extract_elems(self.parser.xml, ['Url']):
             ep = self._parse_endpoint(t)
-            dist = self._generate_harvest_manifest(**{
-                "bcube:hasUrlSource": "Generated",
-                "bcube:hasConfidence": "Not Sure",
-                "vcard:hasUrl": ep['url'],
-                "object_id": generate_sha_urn(ep['url'])
-            })
-            service['urls'].append(dist)
-            service['webpages'].append({
-                "object_id": generate_uuid_urn(),
-                "relationships": [
-                    {
-                        "relate": "dcterms:references",
-                        "object_id": dist['object_id']
-                    }
-                ]
-            })
+            url_sha = generate_sha_urn(ep['url'])
+            if url_sha not in urls:
+                urls.add(url_sha)
+                dist = self._generate_harvest_manifest(**{
+                    "bcube:hasUrlSource": "Generated",
+                    "bcube:hasConfidence": "Not Sure",
+                    "vcard:hasUrl": ep['url'],
+                    "object_id": url_sha
+                })
+                service['urls'].append(dist)
+                service['webpages'].append({
+                    "object_id": generate_uuid_urn(),
+                    "relationships": [
+                        {
+                            "relate": "dcterms:references",
+                            "object_id": url_sha
+                        }
+                    ]
+                })
 
         output['services'] = [service]
 
@@ -98,7 +108,8 @@ class OpenSearchReader(Processor):
         endpoint['template'] = elem.attrib.get('template', '')
         endpoint['parameters'] = self._extract_params(elem)
         endpoint['actionable'] = 'NOPE'
-        # endpoint['url'] = self._generate_url(endpoint['mimetype'], endpoint['template'])
+        # endpoint['url'] = self._generate_url(
+        #   endpoint['mimetype'], endpoint['template'])
 
         osl = OpenSearchLink(elem)
         endpoint['url'] = osl.url

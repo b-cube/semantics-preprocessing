@@ -8,11 +8,12 @@ from semproc.processor import Processor
 from semproc.preprocessors.csw_preprocessors import CswReader
 from semproc.yaml_configs import import_yaml_configs
 from semproc.geo_utils import bbox_to_geom, reproject, to_wkt
-from semproc.utils import tidy_dict, remap_http_method
+from semproc.utils import tidy_dict, remap_http_method, break_url
 from semproc.xml_utils import extract_attrib
 import dateutil.parser as dateparser
 from semproc.utils import generate_sha_urn, generate_uuid_urn
 import os
+import urllib
 
 
 class OgcReader(Processor):

@@ -161,7 +161,8 @@ class IsoParser(object):
         dataset = {
             "object_id": generate_uuid_urn(),
             "dc:identifier": dataset_identifier,
-            "dc:description": extract_item(elem, ['abstract', 'CharacterString']),
+            "dc:description": extract_item(
+                elem, ['abstract', 'CharacterString']),
             "dcterms:title": extract_item(elem, [
                 'citation', 'CI_Citation', 'title', 'CharacterString']),
             "relationships": []
@@ -169,7 +170,8 @@ class IsoParser(object):
 
         # TODO: i think the rights blob is not in the ontology prototypes
         # the rights information from MD_Constraints or MD_LegalConstraints
-        # rights = extract_item(elem, ['resourceConstraints', '*', 'useLimitation', 'CharacterString'])
+        # rights = extract_item(elem, ['resourceConstraints', '*',
+        #   'useLimitation', 'CharacterString'])
 
         # deal with the extent
         extents = self._parse_extent(elem)
@@ -363,9 +365,6 @@ class IsoParser(object):
                 #                      ['name', 'CharacterString']),
                 #         extract_item(
                 #             format_elem, ['version', 'CharacterString'])])
-
-                # NOTE: it's a uuid identifier given that the urls might be
-                #       repeated in a record
                 link = extract_item(
                     transfer_elem,
                     ['onLine', 'CI_OnlineResource', 'linkage', 'URL'])
@@ -450,6 +449,7 @@ class MxParser(IsoParser):
             extent) if identificationInfo contains SV_ServiceIdentification,
             add as child distribution info
         '''
+        # set up the url set
         urls = set()
         urls.add(self.output['catalog_record']['urls'][0]['object_id'])
 

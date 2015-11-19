@@ -175,12 +175,13 @@ class FgdcItemReader(BaseItemReader):
             "object_id": catalog_object_id,
             "bcube:dateCreated": self.harvest_details.get('harvest_date', ''),
             "bcube:lastUpdated": self.harvest_details.get('harvest_date', ''),
-            "dc:conformsTo": extract_attrib(
-                self.elem, ['@noNamespaceSchemaLocation']).split(),
+            # "dc:conformsTo": extract_attrib(
+            #     self.elem, ['@noNamespaceSchemaLocation']).split(),
             "rdf:type": "FGDC:CSDGM",
             "relationships": [],
             "urls": []
         }
+        output['urls'] = []
 
         # add the harvest info
         url_sha = generate_sha_urn(self.url)
@@ -212,7 +213,8 @@ class FgdcItemReader(BaseItemReader):
                 self.elem, ['idinfo', 'descript', 'abstract']),
             "dcterms:title": extract_item(
                 self.elem, ['idinfo', 'citation', 'citeinfo', 'title']),
-            "urls": []
+            "urls": [],
+            "relationships": []
         }
 
         bbox_elem = extract_elem(self.elem, ['idinfo', 'spdom', 'bounding'])
@@ -234,7 +236,6 @@ class FgdcItemReader(BaseItemReader):
                 "esip:southBound": south
             })
 
-        time = {}
         time_elem = extract_elem(self.elem, ['idinfo', 'timeperd', 'timeinfo'])
         if time_elem is not None:
             caldate = extract_item(time_elem, ['sngdate', 'caldate'])
@@ -324,7 +325,7 @@ class FgdcItemReader(BaseItemReader):
                     ]}
                 )
 
-        output['webpages'] = webpages
+        output['catalog_record']['webpages'] = webpages
         for webpage in webpages:
             dataset['relationships'].append({
                 "relate": "dcterms:references",

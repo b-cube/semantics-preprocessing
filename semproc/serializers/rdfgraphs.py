@@ -42,16 +42,23 @@ class RdfGrapher(object):
         self._handle_triples(
             entity,
             catalog_record,
-            ['object_id', 'urls', 'relationships', 'datasets', 'webpages', 'services']
+            [
+                'object_id',
+                'urls',
+                'relationships',
+                'datasets',
+                'webpages',
+                'services'
+            ]
         )
 
         for url in entity.get('urls', []):
             self._handle_url(url)
 
         for webpage in entity.get('webpages', []):
-            self._hande_webpage(webpage)
+            self._handle_webpage(webpage)
 
-        for relationship in entity['relationships']:
+        for relationship in entity.get('relationships', []):
             # so. current object, verb, id of object, existence unknown
             self.relates.append(
                 (catalog_record, relationship['relate'],
@@ -62,7 +69,7 @@ class RdfGrapher(object):
         entity = self._create_resource(
             'bibo', 'WebPage', webpage.get('object_id')
         )
-        for relationship in webpage['relationships']:
+        for relationship in webpage.get('relationships', []):
             self.relates.append(
                 (entity, relationship['relate'],
                     relationship['object_id'])
@@ -72,17 +79,21 @@ class RdfGrapher(object):
         entity = self._create_resource(
             'bcube', 'Url', url.get('object_id')
         )
-        for k, v in url.iteritems():
-            if k == 'object_id':
-                continue
-            prefix, name = k.split(':')
+        self._handle_triples(url, entity, ['object_id'])
 
-            entity.add(
-                self._generate_predicate(
-                    prefix, name), Literal(v)
-            )
+    def _handle_layer(self, layer):
+        entity = self._create_resource(
+            "bcube", 'Layer', layer.get('object_id')
+        )
+        self._handle_triples(layer, entity, ['object_id', 'relationships'])
+
+        for relationship in layer.get('relationships', []):
+            self.relates.append(
+                (entity, relationship['relate'], relationship['object_id']))
 
     def _handle_triples(self, entity, thing, excludes):
+        # today in badly named things, entity is the
+        # json blob, thing is the parent rdf object
         for pred, val in entity.iteritems():
             if pred in excludes:
                 continue
@@ -92,7 +103,8 @@ class RdfGrapher(object):
             val = [val] if not isinstance(val, list) else val
 
             for v in val:
-                if name in ['westBound', 'eastBound', 'northBound', 'southBound']:
+                if name in [
+                        'westBound', 'eastBound', 'northBound', 'southBound']:
                     literal = Literal(float(v), datatype=XSD.float)
                 elif name in ['startDate', 'endDate']:
                     literal = Literal(v, datatype=XSD.date)
@@ -115,8 +127,11 @@ class RdfGrapher(object):
         self._handle_triples(
             entity,
             service,
-            ['object_id', 'urls', 'relationships', 'webpages']
+            ['object_id', 'urls', 'relationships', 'webpages', 'layers']
         )
+
+        for layer in entity.get('layers', []):
+            self._handle_layer(layer)
 
         for url in entity.get('urls', []):
             self._handle_url(url)
@@ -124,18 +139,19 @@ class RdfGrapher(object):
         for wp in entity.get('webpages', []):
             self._handle_webpage(wp)
 
-        for relationship in entity['relationships']:
+        for relationship in entity.get('relationships', []):
             self.relates.append(
                 (service, relationship['relate'], relationship['object_id']))
 
     def _process_dataset(self, entity):
         dataset = self._create_resource('dcat', 'Dataset', entity['object_id'])
-        self._handle_triples(entity, dataset, ['object_id', 'relationships', 'urls'])
+        self._handle_triples(
+            entity, dataset, ['object_id', 'relationships', 'urls'])
 
         for url in entity.get('urls', []):
             self._handle_url(url)
 
-        for relationship in entity['relationships']:
+        for relationship in entity.get('relationships', []):
             self.relates.append(
                 (dataset, relationship['relate'], relationship['object_id']))
 
