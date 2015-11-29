@@ -22,6 +22,11 @@ class Processor(object):
         self.harvest_details = harvest_details
 
         self._load_xml()
+        self._init_reader()
+        self.parse()
+
+    def _init_reader(self):
+        pass
 
     def parse(self):
         pass

@@ -31,6 +31,15 @@ class OgcReader(Processor):
                  CSW 2.0.2
                  SOS 1.0.0
     '''
+    def _init_reader(self):
+        if 'service' in self.identify:
+            # run the owslib getcapabilities parsers
+            self.service_name = self.identify['service'].get('name', '')
+            self.version = next(iter(
+                self.identify['service'].get('version', [])), '')
+            self.reader = self._get_service_reader(
+                self.service_name, self.version)
+
     # TODO: there are far better ways of dealing with the cat-interop urns
     def _get_service_reader(self, service, version):
         if service == 'WMS' and version in ['1.1.1', '1.3.0']:
@@ -272,16 +281,11 @@ class OgcReader(Processor):
 
         urls = set()
 
-        if 'service' in self.identify:
-            # run the owslib getcapabilities parsers
-            service_name = self.identify['service'].get('name', '')
-            version = next(iter(
-                self.identify['service'].get('version', [])), '')
-            reader = self._get_service_reader(service_name, version)
-            if not reader:
-                # TODO: this is not at all a good error response
-                return {}
+        if not self.reader:
+            self.description = {}
+            return
 
+        if 'service' in self.identify:
             service_id = generate_uuid_urn()
             service = {
                 "object_id": service_id,
@@ -289,12 +293,6 @@ class OgcReader(Processor):
                     'harvest_date', ''),
                 "bcube:lastUpdated": self.harvest_details.get(
                     'harvest_date', ''),
-                # "dc:conformsTo": extract_attrib(
-                #     self.parser.xml, ['@noNamespaceSchemaLocation']
-                # ).split() +
-                # extract_attrib(
-                #     self.parser.xml, ['@schemaLocation']
-                # ).split(),
                 "relationships": [],
                 "urls": [],
                 "rdf:type": self.urn
@@ -317,8 +315,9 @@ class OgcReader(Processor):
                 "object_id": url_id
             })
 
-            self._get_service_config(service_name, version)
-            service_reader = self._parse_service(reader, service_name, version)
+            # self._get_service_config(service_name, version)
+            service_reader = self._parse_service(
+                self.reader, self.service_name, self.version)
 
             # map to triples
             service.update({
@@ -341,7 +340,7 @@ class OgcReader(Processor):
             if self.identify['service'].get('request', '') == 'GetCapabilities':
                 # this is also awkward. meh. needs must.
                 layers = []
-                listed_layers = self._parse_getcap_datasets(reader)
+                listed_layers = self._parse_getcap_datasets(self.reader)
 
                 for ld in listed_layers:
                     layer = {
@@ -364,8 +363,8 @@ class OgcReader(Processor):
                         self.url,
                         ld.get('name'),
                         ld.get('bbox'),
-                        service_name,
-                        version
+                        self.service_name,
+                        self.version
                     )
                     if generated_url:
                         url_sha = generate_sha_urn(generated_url)
@@ -458,7 +457,6 @@ class OgcReader(Processor):
 
         abstract = reader.identification.abstract
         keywords = reader.identification.keywords
-        endpoints = self._get_operations(reader, service, version)
 
         service = {
             "title": [reader.identification.title]
@@ -475,9 +473,6 @@ class OgcReader(Processor):
 
         if keywords:
             service['subject'] = keywords
-
-        if endpoints:
-            service['endpoints'] = endpoints
 
         return service
 

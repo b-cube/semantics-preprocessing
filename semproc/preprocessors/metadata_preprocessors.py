@@ -116,6 +116,7 @@ class BaseItemReader():
         self.elem = elem
         self.url = url
         self.harvest_details = harvest_details
+        self.parse()
 
     def parse_item(self):
         pass

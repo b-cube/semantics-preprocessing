@@ -42,8 +42,8 @@ class Router():
         '''
         # TODO: add a filter for known protocol with type
         #       data and bail
-        protocol = next(iter(identity), {})
-        protocol = protocol.get('protocol', '')
+        identity = next(iter(identity), {})
+        protocol = identity.get('protocol', '')
 
         if protocol and protocol in self.optional_params.get(
                 'ignore_protocols', []):
