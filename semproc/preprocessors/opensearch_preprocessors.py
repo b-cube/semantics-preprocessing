@@ -48,7 +48,7 @@ class OpenSearchReader(Processor):
         original_url = self._generate_harvest_manifest(**{
             "bcube:hasUrlSource": "Harvested",
             "bcube:hasConfidence": "Good",
-            "vcard:hasUrl": self.url,
+            "vcard:hasURL": self.url,
             "object_id": generate_uuid_urn(),
             "dc:identifier": url_sha
         })
@@ -86,7 +86,7 @@ class OpenSearchReader(Processor):
                 dist = self._generate_harvest_manifest(**{
                     "bcube:hasUrlSource": "Generated",
                     "bcube:hasConfidence": "Not Sure",
-                    "vcard:hasUrl": ep['url'],
+                    "vcard:hasURL": ep['url'],
                     "object_id": url_id,
                     "dc:identifier": url_sha
                 })

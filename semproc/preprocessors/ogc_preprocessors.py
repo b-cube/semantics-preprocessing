@@ -305,7 +305,7 @@ class OgcReader(Processor):
                 self._generate_harvest_manifest(**{
                     "bcube:hasUrlSource": "Harvested",
                     "bcube:hasConfidence": "Good",
-                    "vcard:hasUrl": self.url,
+                    "vcard:hasURL": self.url,
                     "object_id": url_id,
                     "dc:identifier": url_sha
                 })
@@ -372,7 +372,7 @@ class OgcReader(Processor):
                             urls.add(url_sha)
                             url_id = generate_uuid_urn()
                             layer_url = self._generate_harvest_manifest(**{
-                                "vcard:hasUrl": generated_url,
+                                "vcard:hasURL": generated_url,
                                 "bcube:hasUrlSource": "Generated",
                                 "bcube:hasConfidence": "Not Sure",
                                 "object_id": url_id,
@@ -399,7 +399,7 @@ class OgcReader(Processor):
                                     "object_id": url_link,
                                     "urls": [
                                         self._generate_harvest_manifest(**{
-                                            "vcard:hasUrl": mu.get('url'),
+                                            "vcard:hasURL": mu.get('url'),
                                             "bcube:hasUrlSource": "Harvested",
                                             "bcube:hasConfidence": "Good",
                                             "object_id": url_id,

@@ -123,10 +123,10 @@ class BaseItemReader():
 
     def _generate_harvest_manifest(self, **kwargs):
         harvest = {
-            "vcard:hasUrl": self.url,
+            "vcard:hasURL": self.url,
             "bcube:atTime": self.harvest_details.get('harvest_date'),
             "bcube:HTTPStatusCodeValue": 200,
-            "bcube:reasonPhrase": "OK",
+            "http:reasonPhrase": "OK",
             "bcube:HTTPStatusFamilyCode": 200,
             "bcube:HTTPStatusFamilyType": "Success message",
             "bcube:hasUrlSource": "",
@@ -191,7 +191,7 @@ class FgdcItemReader(BaseItemReader):
         original_url = self._generate_harvest_manifest(**{
             "bcube:hasUrlSource": "Harvested",
             "bcube:hasConfidence": "Good",
-            "vcard:hasUrl": self.url,
+            "vcard:hasURL": self.url,
             "object_id": generate_uuid_urn(),
             "dc:identifier": url_sha
         })
@@ -291,7 +291,7 @@ class FgdcItemReader(BaseItemReader):
                 dist = self._generate_harvest_manifest(**{
                     "bcube:hasUrlSource": "Harvested",
                     "bcube:hasConfidence": "Good",
-                    "vcard:hasUrl": link,
+                    "vcard:hasURL": link,
                     "object_id": url_id,
                     "dc:identifier": url_sha
                 })
@@ -317,7 +317,7 @@ class FgdcItemReader(BaseItemReader):
                 dist = self._generate_harvest_manifest(**{
                     "bcube:hasUrlSource": "Harvested",
                     "bcube:hasConfidence": "Good",
-                    "vcard:hasUrl": link,
+                    "vcard:hasURL": link,
                     "object_id": url_id,
                     "dc:identifier": url_sha
                 })

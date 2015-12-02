@@ -158,7 +158,7 @@ class ThreddsReader(Processor):
             original_url = self._generate_harvest_manifest(**{
                 "bcube:hasUrlSource": "Harvested",
                 "bcube:hasConfidence": "Good",
-                "vcard:hasUrl": self.url,
+                "vcard:hasURL": self.url,
                 "object_id": url_sha
             })
             service['urls'].append(original_url)

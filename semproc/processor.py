@@ -58,10 +58,10 @@ class Processor(object):
 
     def _generate_harvest_manifest(self, **kwargs):
         harvest = {
-            "vcard:hasUrl": self.url,
+            "vcard:hasURL": self.url,
             "bcube:atTime": self.harvest_details.get('harvest_date'),
             "bcube:HTTPStatusCodeValue": 200,
-            "bcube:reasonPhrase": "OK",
+            "http:reasonPhrase": "OK",
             "bcube:HTTPStatusFamilyCode": 200,
             "bcube:HTTPStatusFamilyType": "Success message",
             "bcube:hasUrlSource": "",

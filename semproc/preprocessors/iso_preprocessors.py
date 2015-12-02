@@ -41,10 +41,10 @@ class IsoReader():
 
     def _generate_harvest_manifest(self, **kwargs):
         harvest = {
-            "vcard:hasUrl": self.url,
+            "vcard:hasURL": self.url,
             "bcube:atTime": self.harvest_details.get('harvest_date'),
             "bcube:HTTPStatusCodeValue": 200,
-            "bcube:reasonPhrase": "OK",
+            "http:reasonPhrase": "OK",
             "bcube:HTTPStatusFamilyCode": 200,
             "bcube:HTTPStatusFamilyType": "Success message",
             "bcube:hasUrlSource": "",
@@ -94,7 +94,7 @@ class IsoReader():
         original_url = self._generate_harvest_manifest(**{
             "bcube:hasUrlSource": "Harvested",
             "bcube:hasConfidence": "Good",
-            "vcard:hasUrl": self.url,
+            "vcard:hasURL": self.url,
             "object_id": generate_uuid_urn()
         })
         catalog_record['urls'].append(original_url)
@@ -135,10 +135,10 @@ class IsoParser(object):
         # NOTE: for iso, you have to include the dc:identifier sha256
         #       in the kwargs
         harvest = {
-            "vcard:hasUrl": "",
+            "vcard:hasURL": "",
             "bcube:atTime": self.harvest_details.get('harvest_date'),
             "bcube:HTTPStatusCodeValue": 200,
-            "bcube:reasonPhrase": "OK",
+            "http:reasonPhrase": "OK",
             "bcube:HTTPStatusFamilyCode": 200,
             "bcube:HTTPStatusFamilyType": "Success message",
             "bcube:hasUrlSource": "",
@@ -520,7 +520,7 @@ class MxParser(IsoParser):
                         dist = self._generate_harvest_manifest(**{
                             "bcube:hasUrlSource": "Harvested",
                             "bcube:hasConfidence": "Good",
-                            "vcard:hasUrl": d,
+                            "vcard:hasURL": d,
                             "object_id": url_id,
                             "dc:identifier": url_sha
                         })

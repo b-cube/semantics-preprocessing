@@ -36,7 +36,7 @@ class OaiPmhReader(Processor):
         dist = self._generate_harvest_manifest(**{
             "bcube:hasUrlSource": "Harvested",
             "bcube:hasConfidence": "Good",
-            "vcard:hasUrl": self.url,
+            "vcard:hasURL": self.url,
             "object_id": url_id,
             "dc:identifier": generate_sha_urn(self.url)
         })
