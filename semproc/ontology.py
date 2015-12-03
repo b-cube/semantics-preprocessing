@@ -10,6 +10,7 @@ _ontology_uris = {
     # 'vivo': 'http://vivo.ufl.edu/ontology/vivo-ufl/#',
     'bibo': 'http://purl.org/ontology/bibo/#',
     'dcat': 'http://www.w3.org/TR/vocab-dcat/#',
+    'http': 'http://www.w3.org/2011/http#',
     'dc': str(DC),
     'dcterms': str(DCTERMS),
     'foaf': str(FOAF),
